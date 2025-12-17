@@ -1,17 +1,23 @@
 {
-	"expo": {
-		"scheme": "ai-start",
-		"userInterfaceStyle": "automatic",
-		"orientation": "default",
-		"web": {
-			"bundler": "metro"
-		},
-		"name": "ai-start",
-		"slug": "ai-start",
-		"plugins": ["expo-font"],
-		"experiments": {
-			"typedRoutes": true,
-			"reactCompiler": true
-		}
-	}
+  "expo": {
+    "scheme": "ai-start",
+    "userInterfaceStyle": "automatic",
+    "orientation": "default",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "ai-start",
+    "slug": "ai-start",
+    "plugins": ["expo-font"],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "ios": {
+      "bundleIdentifier": "com.etcetera.ai-start"
+    },
+    "android": {
+      "package": "com.etcetera.aistart"
+    }
+  }
 }

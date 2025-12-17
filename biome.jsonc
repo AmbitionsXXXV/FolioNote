@@ -3,7 +3,7 @@
   "files": {
     "ignoreUnknown": false,
     "includes": [
-      "**",
+      "!**/node_modules",
       "!**/.next",
       "!**/dist",
       "!**/.turbo",
@@ -23,8 +23,21 @@
       "!**/convex/_generated"
     ]
   },
-  "extends": [
-    "ultracite/core",
-    "ultracite/react"
-  ]
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": true,
+    "indentStyle": "tab",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 85
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "semicolons": "asNeeded",
+      "jsxQuoteStyle": "double"
+    }
+  },
+  "extends": ["ultracite/core", "ultracite/react"]
 }

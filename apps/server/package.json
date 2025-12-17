@@ -24,7 +24,7 @@
   "devDependencies": {
     "@types/bun": "catalog:",
     "typescript": "catalog:",
-    "tsdown": "^0.16.5",
+    "tsdown": "^0.18.0",
     "@ai-start/config": "workspace:*"
   }
 }

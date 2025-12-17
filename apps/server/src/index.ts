@@ -1,30 +1,30 @@
-import "dotenv/config";
-import { OpenAPIHandler } from "@orpc/openapi/fetch";
-import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
-import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
-import { RPCHandler } from "@orpc/server/fetch";
-import { onError } from "@orpc/server";
-import { createContext } from "@ai-start/api/context";
-import { appRouter } from "@ai-start/api/routers/index";
-import { auth } from "@ai-start/auth";
-import { Hono } from "hono";
-import { cors } from "hono/cors";
-import { logger } from "hono/logger";
+import 'dotenv/config'
+import { createContext } from '@ai-start/api/context'
+import { appRouter } from '@ai-start/api/routers/index'
+import { auth } from '@ai-start/auth'
+import { OpenAPIHandler } from '@orpc/openapi/fetch'
+import { OpenAPIReferencePlugin } from '@orpc/openapi/plugins'
+import { onError } from '@orpc/server'
+import { RPCHandler } from '@orpc/server/fetch'
+import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4'
+import { Hono } from 'hono'
+import { cors } from 'hono/cors'
+import { logger } from 'hono/logger'
 
-const app = new Hono();
+const app = new Hono()
 
-app.use(logger());
+app.use(logger())
 app.use(
-	"/*",
+	'/*',
 	cors({
-		origin: process.env.CORS_ORIGIN || "",
-		allowMethods: ["GET", "POST", "OPTIONS"],
-		allowHeaders: ["Content-Type", "Authorization"],
+		origin: process.env.CORS_ORIGIN || '',
+		allowMethods: ['GET', 'POST', 'OPTIONS'],
+		allowHeaders: ['Content-Type', 'Authorization'],
 		credentials: true,
-	}),
-);
+	})
+)
 
-app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
+app.on(['POST', 'GET'], '/api/auth/*', (c) => auth.handler(c.req.raw))
 
 export const apiHandler = new OpenAPIHandler(appRouter, {
 	plugins: [
@@ -34,45 +34,43 @@ export const apiHandler = new OpenAPIHandler(appRouter, {
 	],
 	interceptors: [
 		onError((error) => {
-			console.error(error);
+			console.error(error)
 		}),
 	],
-});
+})
 
 export const rpcHandler = new RPCHandler(appRouter, {
 	interceptors: [
 		onError((error) => {
-			console.error(error);
+			console.error(error)
 		}),
 	],
-});
+})
 
-app.use("/*", async (c, next) => {
-	const context = await createContext({ context: c });
+app.use('/*', async (c, next) => {
+	const context = await createContext({ context: c })
 
 	const rpcResult = await rpcHandler.handle(c.req.raw, {
-		prefix: "/rpc",
-		context: context,
-	});
+		prefix: '/rpc',
+		context,
+	})
 
 	if (rpcResult.matched) {
-		return c.newResponse(rpcResult.response.body, rpcResult.response);
+		return c.newResponse(rpcResult.response.body, rpcResult.response)
 	}
 
 	const apiResult = await apiHandler.handle(c.req.raw, {
-		prefix: "/api-reference",
-		context: context,
-	});
+		prefix: '/api-reference',
+		context,
+	})
 
 	if (apiResult.matched) {
-		return c.newResponse(apiResult.response.body, apiResult.response);
+		return c.newResponse(apiResult.response.body, apiResult.response)
 	}
 
-	await next();
-});
+	await next()
+})
 
-app.get("/", (c) => {
-	return c.text("OK");
-});
+app.get('/', (c) => c.text('OK'))
 
-export default app;
+export default app

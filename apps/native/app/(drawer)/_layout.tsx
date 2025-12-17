@@ -1,16 +1,16 @@
-import React, { useCallback } from "react";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
-import { Drawer } from "expo-router/drawer";
-import { useThemeColor } from "heroui-native";
-import { Pressable, Text } from "react-native";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { Link } from 'expo-router'
+import { Drawer } from 'expo-router/drawer'
+import { useThemeColor } from 'heroui-native'
+import { useCallback } from 'react'
+import { Pressable, Text } from 'react-native'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 function DrawerLayout() {
-	const themeColorForeground = useThemeColor("foreground");
-	const themeColorBackground = useThemeColor("background");
+	const themeColorForeground = useThemeColor('foreground')
+	const themeColorBackground = useThemeColor('background')
 
-	const renderThemeToggle = useCallback(() => <ThemeToggle />, []);
+	const renderThemeToggle = useCallback(() => <ThemeToggle />, [])
 
 	return (
 		<Drawer
@@ -18,7 +18,7 @@ function DrawerLayout() {
 				headerTintColor: themeColorForeground,
 				headerStyle: { backgroundColor: themeColorBackground },
 				headerTitleStyle: {
-					fontWeight: "600",
+					fontWeight: '600',
 					color: themeColorForeground,
 				},
 				headerRight: renderThemeToggle,
@@ -28,7 +28,7 @@ function DrawerLayout() {
 			<Drawer.Screen
 				name="index"
 				options={{
-					headerTitle: "Home",
+					headerTitle: 'Home',
 					drawerLabel: ({ color, focused }) => (
 						<Text style={{ color: focused ? color : themeColorForeground }}>
 							Home
@@ -36,9 +36,9 @@ function DrawerLayout() {
 					),
 					drawerIcon: ({ size, color, focused }) => (
 						<Ionicons
+							color={focused ? color : themeColorForeground}
 							name="home-outline"
 							size={size}
-							color={focused ? color : themeColorForeground}
 						/>
 					),
 				}}
@@ -46,7 +46,7 @@ function DrawerLayout() {
 			<Drawer.Screen
 				name="(tabs)"
 				options={{
-					headerTitle: "Tabs",
+					headerTitle: 'Tabs',
 					drawerLabel: ({ color, focused }) => (
 						<Text style={{ color: focused ? color : themeColorForeground }}>
 							Tabs
@@ -54,18 +54,18 @@ function DrawerLayout() {
 					),
 					drawerIcon: ({ size, color, focused }) => (
 						<MaterialIcons
+							color={focused ? color : themeColorForeground}
 							name="border-bottom"
 							size={size}
-							color={focused ? color : themeColorForeground}
 						/>
 					),
 					headerRight: () => (
-						<Link href="/modal" asChild>
+						<Link asChild href="/modal">
 							<Pressable className="mr-4">
 								<Ionicons
+									color={themeColorForeground}
 									name="add-outline"
 									size={24}
-									color={themeColorForeground}
 								/>
 							</Pressable>
 						</Link>
@@ -73,7 +73,7 @@ function DrawerLayout() {
 				}}
 			/>
 		</Drawer>
-	);
+	)
 }
 
-export default DrawerLayout;
+export default DrawerLayout
