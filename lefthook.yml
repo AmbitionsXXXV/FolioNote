@@ -4,11 +4,11 @@ pre-commit:
   commands:
     format:
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: bunx biome check --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
+      run: bun x ultracite fix {staged_files}
       stage_fixed: true
     lint:
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: bunx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
+      run: bun x ultracite check {staged_files}
       stage_fixed: true
 
 commit-msg:
@@ -20,4 +20,4 @@ pre-push:
   commands:
     check:
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: bunx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {push_files}
+      run: bun x ultracite check {push_files}
