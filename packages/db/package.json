@@ -18,7 +18,9 @@
     "db:stop:docker": "docker-compose down",
     "db:init:local": "./scripts/init-local-db.sh",
     "db:start:local": "./scripts/start-local-db.sh",
-    "db:stop:local": "./scripts/stop-local-db.sh"
+    "db:stop:local": "./scripts/stop-local-db.sh",
+    "test": "bun test",
+    "test:watch": "bun test --watch"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.8",
