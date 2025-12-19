@@ -1,16 +1,16 @@
 {
   "extends": "@folio/config/tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "dist",
+    "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@folio/db/__tests__/*": ["../../packages/db/__tests__/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "strictNullChecks": true
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules", "dist", "__tests__"]
+  "include": ["__tests__/**/*.ts", "src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
