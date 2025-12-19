@@ -15,23 +15,27 @@
 
 ### 1) Data model (Drizzle + Postgres)
 
-* [ ] Create tables (minimal, MVP)
-  * [ ] `users` (if not provided by auth layer)
-  * [ ] `entries` (learning notes)
-  * [ ] `tags`
-  * [ ] `entry_tags` (many-to-many)
-  * [ ] `sources` (link/PDF/book/chapter)
-  * [ ] `attachments` (image/file metadata)
-  * [ ] `entry_sources` (many-to-many)
-  * [ ] `review_events` (timestamped “revisit”)
-  * [ ] `daily_logs` (optional MVP, can be Phase 1.5)
-* [ ] Add indexes
-  * [ ] `entries.user_id, entries.updated_at`
-  * [ ] `tags.user_id, tags.name`
-  * [ ] join tables composite indexes
-* [ ] Add soft-delete fields (recommended)
-  * [ ] `deleted_at` for `entries`, `sources`, `attachments`
-* [ ] Add migration workflow conventions (push vs migrations) and document it
+* [x] Create tables (minimal, MVP)
+  * [x] `users` (if not provided by auth layer)
+  * [x] `entries` (learning notes)
+  * [x] `tags`
+  * [x] `entry_tags` (many-to-many)
+  * [x] `sources` (link/PDF/book/chapter)
+  * [x] `attachments` (image/file metadata)
+  * [x] `entry_sources` (many-to-many)
+  * [x] `review_events` (timestamped "revisit")
+  * [x] `daily_logs` (optional MVP, can be Phase 1.5)
+  > Done: 创建了 `packages/db/src/schema/entries.ts`，包含所有业务表定义。entries 表支持 inbox/starred/pinned 状态；tags 支持颜色；sources 支持多种类型（link/pdf/book 等）；attachments 存储文件元数据；review_events 记录复习历史；daily_logs 用于每日回顾。
+* [x] Add indexes
+  * [x] `entries.user_id, entries.updated_at`
+  * [x] `tags.user_id, tags.name`
+  * [x] join tables composite indexes
+  > Done: 为所有表添加了必要的索引，包括复合索引优化查询性能。entries 表有 4 个索引；tags 有 user_id+name 复合索引；所有 join 表都有复合索引。
+* [x] Add soft-delete fields (recommended)
+  * [x] `deleted_at` for `entries`, `sources`, `attachments`
+  > Done: 为 entries、sources、attachments 表添加了 `deleted_at` 字段，并添加了相应的索引以支持高效的软删除查询。
+* [x] Add migration workflow conventions (push vs migrations) and document it
+  > Done: 创建了 `packages/db/MIGRATIONS.md`，文档化了开发环境使用 push、生产环境使用 migrations 的策略，以及完整的工作流程和最佳实践。
 
 ### 2) Auth & identity (Better Auth)
 
@@ -39,13 +43,13 @@
   * [ ] Sign up / sign in / sign out
   * [ ] Session persistence
 * [ ] Protect API routes (user-scoped access control)
-* [ ] Add “current user” endpoint (`/me`)
+* [ ] Add "current user" endpoint (`/me`)
 
 ### 3) API layer (Hono + oRPC)
 
 * [ ] Define DTOs / schemas (zod or equivalent)
 * [ ] Entries API
-  * [ ] Create entry (supports “Inbox” default)
+  * [ ] Create entry (supports "Inbox" default)
   * [ ] Update entry
   * [ ] Delete entry (soft delete)
   * [ ] Get entry by id
@@ -64,12 +68,12 @@
   * [ ] Fetch attachment list per entry
 * [ ] Review API
   * [ ] Add review event for an entry
-  * [ ] “Review queue” endpoint (recent, starred, needs revisit)
+  * [ ] "Review queue" endpoint (recent, starred, needs revisit)
 * [ ] Basic search API
   * [ ] Query by keyword (title/content)
   * [ ] Return highlighted snippets (optional)
 
-### 4) Web app (TanStack Start) — “Organize & Review”
+### 4) Web app (TanStack Start) — "Organize & Review"
 
 * [ ] App shell + navigation
   * [ ] Inbox
@@ -98,13 +102,13 @@
   * [ ] Tag management
   * [ ] Tag detail + linked entries
 * [ ] Review page (MVP)
-  * [ ] “Today” queue
+  * [ ] "Today" queue
   * [ ] Mark as reviewed (creates review event)
 * [ ] Insights page (MVP)
   * [ ] Weekly capture count
   * [ ] Top tags distribution
 
-### 5) Mobile app (Expo) — “Capture & Daily loop”
+### 5) Mobile app (Expo) — "Capture & Daily loop"
 
 * [ ] Auth screens + session restore
 * [ ] Capture flows
@@ -116,7 +120,7 @@
   * [ ] Quick tag assign
 * [ ] Today tab (MVP)
   * [ ] Entries created today
-  * [ ] Quick “reviewed” button
+  * [ ] Quick "reviewed" button
 * [ ] Offline safety (MVP-friendly)
   * [ ] Local pending queue for creates/updates when offline
   * [ ] Retry sync when network returns
@@ -145,11 +149,11 @@
 
 ### 8) Review workflow (lightweight, MVP)
 
-* [ ] Define “needs revisit” logic (simple rules)
+* [ ] Define "needs revisit" logic (simple rules)
   * [ ] New entries in last \(n\) days
   * [ ] Starred entries
   * [ ] Entries not reviewed in \(n\) days
-* [ ] One-click “Reviewed” action (creates `review_event`)
+* [ ] One-click "Reviewed" action (creates `review_event`)
 * [ ] Review history on entry detail
 
 ### 9) Sync & consistency
@@ -157,7 +161,7 @@
 * [ ] Standardize timestamps (`created_at`, `updated_at`)
 * [ ] Last-write-wins strategy (documented)
 * [ ] Minimal conflict handling
-  * [ ] If update fails due to version mismatch, keep local copy and prompt “duplicate entry” resolution (simple MVP)
+  * [ ] If update fails due to version mismatch, keep local copy and prompt "duplicate entry" resolution (simple MVP)
 
 ### 10) Quality, DX, and release readiness
 

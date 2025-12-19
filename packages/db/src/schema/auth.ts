@@ -1,6 +1,10 @@
 import { relations } from 'drizzle-orm'
 import { boolean, index, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
+/**
+ * user - 用户表
+ * 由 better-auth 管理，存储基础用户信息
+ */
 export const user = pgTable('user', {
 	id: text('id').primaryKey(),
 	name: text('name').notNull(),
@@ -73,6 +77,8 @@ export const verification = pgTable(
 	(table) => [index('verification_identifier_idx').on(table.identifier)]
 )
 
+// 注意：user 的业务关系（entries, tags 等）在 entries.ts 中通过反向关系定义
+// 这里只保留 auth 相关的关系
 export const userRelations = relations(user, ({ many }) => ({
 	sessions: many(session),
 	accounts: many(account),
