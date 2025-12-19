@@ -1,0 +1,13 @@
+{
+  "extends": "@folio/config/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "strictNullChecks": true
+  },
+  "include": ["__tests__/**/*.ts", "src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

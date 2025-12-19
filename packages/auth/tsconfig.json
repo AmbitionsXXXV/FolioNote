@@ -6,6 +6,12 @@
     "sourceMap": true,
     "outDir": "dist",
     "composite": true,
-    "strictNullChecks": true
-  }
+    "strictNullChecks": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "__tests__"]
 }
