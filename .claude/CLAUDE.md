@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-FolioNote is a cross-platform personal learning system for capturing, organizing, and revisiting what you learn. Built as a monorepo with Better-T-Stack, it combines React (TanStack Start), React Native (Expo), Hono, oRPC, Drizzle, and PostgreSQL.
+FolioNote is a cross-platform personal learning system for capturing, organizing, and revisiting what you learn. Built as a monorepo, it combines React (TanStack Start), React Native (Expo), Hono, oRPC, Drizzle, and PostgreSQL.
 
 ## Development Commands
 

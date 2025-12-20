@@ -22,9 +22,7 @@ export default function Home() {
 	return (
 		<Container className="p-6">
 			<View className="mb-6 py-4">
-				<Text className="mb-2 font-bold text-4xl text-foreground">
-					BETTER T STACK
-				</Text>
+				<Text className="mb-2 font-bold text-4xl text-foreground">FolioNote</Text>
 			</View>
 
 			{session?.user ? (

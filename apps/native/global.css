@@ -3,3 +3,123 @@
 @import "heroui-native/styles";
 
 @source "./node_modules/heroui-native/lib";
+
+@theme {
+  /* Primitive Colors (Do not change between light and dark) */
+  --white: oklch(100% 0 0);
+  --black: oklch(0% 0 0);
+  --snow: oklch(0.9911 0 0);
+  --eclipse: oklch(0.2103 0.0059 285.89);
+
+  /* Base radius - synced from web */
+  --radius: 0.85rem;
+
+  /* Opacity */
+  --opacity-disabled: 0.5;
+}
+
+@layer theme {
+  :root {
+    @variant light {
+      /* Base Colors - synced from web light theme */
+      --background: oklch(0.9689 0.0090 314.7819);
+      --foreground: oklch(0.3729 0.0306 259.7328);
+
+      /* Surface: Used for non-overlay components (cards, accordions, disclosure groups) */
+      --surface: var(--white);
+      --surface-foreground: var(--foreground);
+
+      /* Overlay: Used for floating/overlay components (dialogs, popovers, modals, menus) */
+      --overlay: var(--white);
+      --overlay-foreground: var(--foreground);
+
+      /* Muted - synced from web */
+      --muted: oklch(0.5510 0.0234 264.3637);
+
+      /* Default - mapped from web secondary */
+      --default: oklch(0.9073 0.0530 306.0902);
+      --default-foreground: oklch(0.4461 0.0263 256.8018);
+
+      /* Accent - mapped from web primary (purple) */
+      --accent: oklch(0.7090 0.1592 293.5412);
+      --accent-foreground: var(--white);
+
+      /* Form Field Defaults - Colors */
+      --field-background: var(--white);
+      --field-foreground: var(--foreground);
+      --field-placeholder: var(--muted);
+      --field-border: oklch(0.9073 0.0530 306.0902);
+
+      /* Status Colors */
+      --success: oklch(0.7329 0.1935 150.81);
+      --success-foreground: var(--eclipse);
+
+      --warning: oklch(0.7819 0.1585 72.33);
+      --warning-foreground: var(--eclipse);
+
+      /* Danger - mapped from web destructive */
+      --danger: oklch(0.8077 0.1035 19.5706);
+      --danger-foreground: var(--white);
+
+      /* Component Colors */
+      --segment: var(--white);
+      --segment-foreground: var(--foreground);
+
+      /* Misc Colors */
+      --border: oklch(0.9073 0.0530 306.0902);
+      --divider: oklch(0.9073 0.0530 306.0902);
+      --link: oklch(0.7090 0.1592 293.5412);
+    }
+
+    @variant dark {
+      /* Base Colors - synced from web dark theme */
+      --background: oklch(0.2161 0.0061 56.0434);
+      --foreground: oklch(0.9299 0.0334 272.7879);
+
+      /* Surface: Used for non-overlay components (cards, accordions, disclosure groups) */
+      --surface: oklch(0.2805 0.0309 307.2326);
+      --surface-foreground: var(--foreground);
+
+      /* Overlay: Used for floating/overlay components (dialogs, popovers, modals, menus) - lighter for contrast */
+      --overlay: oklch(0.3416 0.0444 308.8496);
+      --overlay-foreground: var(--foreground);
+
+      /* Muted - synced from web */
+      --muted: oklch(0.7137 0.0192 261.3246);
+
+      /* Default - mapped from web secondary */
+      --default: oklch(0.3416 0.0444 308.8496);
+      --default-foreground: oklch(0.8717 0.0093 258.3382);
+
+      /* Accent - mapped from web primary (purple) */
+      --accent: oklch(0.7874 0.1179 295.7538);
+      --accent-foreground: oklch(0.2161 0.0061 56.0434);
+
+      /* Form Field Defaults - Colors */
+      --field-background: var(--default);
+      --field-foreground: var(--foreground);
+      --field-placeholder: var(--muted);
+      --field-border: oklch(0.3416 0.0444 308.8496);
+
+      /* Status Colors */
+      --success: oklch(0.7329 0.1935 150.81);
+      --success-foreground: var(--eclipse);
+
+      --warning: oklch(0.8203 0.1388 76.34);
+      --warning-foreground: var(--eclipse);
+
+      /* Danger - mapped from web destructive */
+      --danger: oklch(0.8077 0.1035 19.5706);
+      --danger-foreground: oklch(0.2161 0.0061 56.0434);
+
+      /* Component Colors */
+      --segment: oklch(0.3858 0.0509 304.6383);
+      --segment-foreground: var(--foreground);
+
+      /* Misc Colors */
+      --border: oklch(0.3416 0.0444 308.8496);
+      --divider: oklch(0.3416 0.0444 308.8496);
+      --link: oklch(0.7874 0.1179 295.7538);
+    }
+  }
+}
