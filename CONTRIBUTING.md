@@ -1,6 +1,6 @@
-# Contributing to Folio
+# Contributing to FolioNote
 
-感谢你对 Folio 项目的兴趣！本文档将帮助你快速上手开发环境。
+感谢你对 FolioNote 项目的兴趣！本文档将帮助你快速上手开发环境。
 
 ## 前置要求
 
@@ -194,4 +194,3 @@ bun run commit
 ## 许可证
 
 请查看 [LICENSE](./LICENSE) 文件了解许可证信息。
-

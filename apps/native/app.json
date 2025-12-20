@@ -6,7 +6,7 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "Folio",
+    "name": "FolioNote",
     "slug": "folio",
     "plugins": ["expo-font"],
     "experiments": {

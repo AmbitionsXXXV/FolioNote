@@ -1,8 +1,8 @@
-# Folio MVP Scope
+# FolioNote MVP Scope
 
 ## 概述
 
-Folio 是一个个人知识管理应用，旨在帮助用户捕获、组织和复习学习笔记。MVP 阶段专注于核心的"捕获 → 组织 → 复习"工作流。
+FolioNote 是一个个人知识管理应用，旨在帮助用户捕获、组织和复习学习笔记。MVP 阶段专注于核心的"捕获 → 组织 → 复习"工作流。
 
 ## MVP 范围内 (In Scope)
 
@@ -124,4 +124,3 @@ MVP 完成的标志：
 | 数据库 | PostgreSQL, Drizzle ORM |
 | 认证 | Better Auth |
 | 部署 | 待定 |
-

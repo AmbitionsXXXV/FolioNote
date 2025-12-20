@@ -1,6 +1,6 @@
-# Folio 数据库设计指南
+# FolioNote 数据库设计指南
 
-本文档帮助你理解 Folio 项目的数据库设计，同时学习关系型数据库的核心概念。
+本文档帮助你理解 FolioNote 项目的数据库设计，同时学习关系型数据库的核心概念。
 
 ## 目录
 
@@ -464,7 +464,7 @@ flowchart TB
     end
 ```
 
-### Folio 项目的索引策略
+### FolioNote 项目的索引策略
 
 ```mermaid
 flowchart LR
@@ -757,7 +757,7 @@ flowchart LR
         S4["关联数据创建"]
     end
 
-    subgraph Example["Folio 场景"]
+    subgraph Example["FolioNote 场景"]
         E1["创建笔记 + 标签 + 来源"]
         E2["删除用户所有数据"]
         E3["批量移动笔记"]
@@ -924,7 +924,7 @@ ALTER TABLE "entries"
   ON DELETE CASCADE;
 ```
 
-### Folio 迁移命令
+### FolioNote 迁移命令
 
 ```bash
 # 开发环境：直接推送 schema 变更

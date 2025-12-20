@@ -1,10 +1,10 @@
-# Folio
+# FolioNote
 
-Folio is a cross-platform personal learning system designed to help you **capture**, **organize**, and **revisit** what you learn—turning daily study into an evolving portfolio.
+FolioNote is a cross-platform personal learning system designed to help you **capture**, **organize**, and **revisit** what you learn—turning daily study into an evolving portfolio.
 
 This repository is a monorepo created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), combining React (TanStack Start), React Native (Expo), Hono, oRPC, Drizzle, and more.
 
-## What Folio does (MVP)
+## What FolioNote does (MVP)
 
 * Quick capture on mobile (text, links, photos)
 * Organize on the web (tags, sources, search)

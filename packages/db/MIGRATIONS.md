@@ -1,6 +1,6 @@
 # Database Migration Workflow
 
-本文档说明 Folio 项目的数据库迁移策略和工作流程。
+本文档说明 FolioNote 项目的数据库迁移策略和工作流程。
 
 ## 迁移策略：Push vs Migrations
 
