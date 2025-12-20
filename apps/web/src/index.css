@@ -1,21 +1,67 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
 	--font-sans:
-		"Inter", "Geist", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+		"DM Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
 		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--font-display: "Fraunces", Georgia, serif;
 }
 
 html,
 body {
-	@apply bg-white dark:bg-gray-950;
+	@apply bg-white dark:bg-[#1a1614];
 
 	@media (prefers-color-scheme: dark) {
 		color-scheme: dark;
 	}
+}
+
+/* Editorial Theme Enhancements */
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	background:
+		radial-gradient(circle at 50% 0%, rgba(120, 119, 198, 0.04) 0%, transparent 50%),
+		radial-gradient(circle at 0% 100%, rgba(167, 139, 250, 0.03) 0%, transparent 50%);
+	pointer-events: none;
+	z-index: 0;
+}
+
+/* Subtle paper texture */
+body::after {
+	content: '';
+	position: fixed;
+	inset: 0;
+	background-image:
+		repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(120, 119, 198, 0.008) 2px, rgba(120, 119, 198, 0.008) 4px),
+		repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(167, 139, 250, 0.008) 2px, rgba(167, 139, 250, 0.008) 4px);
+	opacity: 0.4;
+	pointer-events: none;
+	z-index: 0;
+	animation: grain 8s steps(10) infinite;
+}
+
+@keyframes grain {
+	0%, 100% { transform: translate(0, 0); }
+	10% { transform: translate(-5%, -10%); }
+	20% { transform: translate(-15%, 5%); }
+	30% { transform: translate(7%, -25%); }
+	40% { transform: translate(-5%, 25%); }
+	50% { transform: translate(-15%, 10%); }
+	60% { transform: translate(15%, 0%); }
+	70% { transform: translate(0%, 15%); }
+	80% { transform: translate(3%, 25%); }
+	90% { transform: translate(-10%, 10%); }
+}
+
+/* Vignette effect */
+.dark body {
+	box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.3);
 }
 
 :root {
@@ -51,9 +97,10 @@ body {
 	--sidebar-accent-foreground: oklch(0.3729 0.0306 259.7328);
 	--sidebar-border: oklch(0.9073 0.053 306.0902);
 	--sidebar-ring: oklch(0.709 0.1592 293.5412);
-	--font-sans: Open Sans, sans-serif;
+	--font-sans: DM Sans, sans-serif;
 	--font-serif: Source Serif 4, serif;
 	--font-mono: IBM Plex Mono, monospace;
+	--font-display: Fraunces, Georgia, serif;
 	--radius: 1.5rem;
 	--shadow-x: 0px;
 	--shadow-y: 8px;
@@ -111,9 +158,10 @@ body {
 	--sidebar-accent-foreground: oklch(0.8717 0.0093 258.3382);
 	--sidebar-border: oklch(0.3416 0.0444 308.8496);
 	--sidebar-ring: oklch(0.7874 0.1179 295.7538);
-	--font-sans: Open Sans, sans-serif;
+	--font-sans: DM Sans, sans-serif;
 	--font-serif: Source Serif 4, serif;
 	--font-mono: IBM Plex Mono, monospace;
+	--font-display: Fraunces, Georgia, serif;
 	--radius: 1.5rem;
 	--shadow-x: 0px;
 	--shadow-y: 8px;
@@ -173,6 +221,7 @@ body {
 	--font-sans: var(--font-sans);
 	--font-mono: var(--font-mono);
 	--font-serif: var(--font-serif);
+	--font-display: var(--font-display);
 
 	--radius-sm: calc(var(--radius) - 4px);
 	--radius-md: calc(var(--radius) - 2px);
@@ -196,6 +245,55 @@ body {
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+/* Page load animations */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeInScale {
+	from {
+		opacity: 0;
+		transform: scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.animate-fade-in {
+	animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	opacity: 0;
+}
+
+.animate-fade-in-scale {
+	animation: fadeInScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	opacity: 0;
+}
+
+.delay-100 {
+	animation-delay: 100ms;
+}
+
+.delay-200 {
+	animation-delay: 200ms;
+}
+
+.delay-300 {
+	animation-delay: 300ms;
+}
+
+.delay-400 {
+	animation-delay: 400ms;
 }
 
 @utility no-scrollbar {

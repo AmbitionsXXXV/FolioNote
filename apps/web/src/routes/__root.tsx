@@ -47,17 +47,23 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 
 function RootDocument() {
 	return (
-		<html className="dark" lang="en">
+		<html className="dark no-scrollbar bg-background" lang="en">
 			<head>
 				<HeadContent />
 			</head>
-			<body>
+			<body className="bg-background">
 				<CommandPaletteProvider>
-					<div className="grid h-svh grid-rows-[auto_1fr]">
-						<Header />
-						<Outlet />
+					<div className="relative z-10 grid h-svh grid-rows-[auto_1fr]">
+						<div className="animate-fade-in delay-100">
+							<Header />
+						</div>
+						<div className="animate-fade-in-scale delay-200">
+							<Outlet />
+						</div>
 					</div>
-					<CommandPalette />
+					<div className="animate-fade-in delay-300">
+						<CommandPalette />
+					</div>
 				</CommandPaletteProvider>
 				<Toaster richColors />
 				<TanStackRouterDevtools position="bottom-left" />
