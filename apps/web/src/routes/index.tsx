@@ -74,7 +74,11 @@ function HomeComponent() {
 				<div className="mb-16 animate-fade-in">
 					<div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5">
 						<div
-							className={`h-1.5 w-1.5 rounded-full ${healthCheck.data ? 'bg-green-500' : 'bg-red-500'} ${healthCheck.data ? 'animate-pulse' : ''}`}
+							className={cn(
+								'size-1.5 rounded-full',
+								healthCheck.data ? 'bg-green-500' : 'bg-red-500',
+								healthCheck.data ? 'animate-pulse' : ''
+							)}
 						/>
 						<span className="font-medium text-muted-foreground text-xs">
 							{(() => {
@@ -89,7 +93,7 @@ function HomeComponent() {
 							<>
 								Welcome back,
 								<br />
-								<span className="bg-linear-to-br from-primary via-purple-400 to-violet-300 bg-clip-text text-transparent">
+								<span className="bg-linear-to-br from-primary via-purple-400 to-violet-300 bg-clip-text font-script text-transparent">
 									{session.user.name?.split(' ')[0] || 'there'}
 								</span>
 							</>
@@ -138,9 +142,9 @@ function HomeComponent() {
 										)}
 									/>
 									<div className="relative">
-										<div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-transform group-hover:scale-110">
+										<div className="mb-3 flex size-12 items-center justify-center rounded-xl bg-primary/10 transition-transform group-hover:scale-110">
 											<HugeiconsIcon
-												className="h-6 w-6 text-primary"
+												className="size-6 text-primary"
 												icon={action.icon}
 											/>
 										</div>
@@ -158,7 +162,7 @@ function HomeComponent() {
 				{/* Feature Highlights */}
 				<div className="animate-fade-in delay-200">
 					<div className="mb-6 flex items-center gap-3">
-						<HugeiconsIcon className="h-5 w-5 text-primary" icon={BookOpen01Icon} />
+						<HugeiconsIcon className="size-5 text-primary" icon={BookOpen01Icon} />
 						<h2 className="font-display font-semibold text-2xl">What You Can Do</h2>
 					</div>
 

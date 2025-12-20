@@ -41,7 +41,11 @@ export default function Header() {
 				<nav className="flex items-center gap-6">
 					{links.map(({ to, label, isLogo, icon }) =>
 						isLogo ? (
-							<Link className="font-bold text-lg text-primary" key={to} to={to}>
+							<Link
+								className="font-bold font-script text-4xl text-primary"
+								key={to}
+								to={to}
+							>
 								{label}
 							</Link>
 						) : (
