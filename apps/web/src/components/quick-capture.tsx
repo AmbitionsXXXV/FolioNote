@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { type KeyboardEvent, useState } from 'react'
 import { orpc } from '@/utils/orpc'
 import { Button } from './ui/button'
-import { Input } from './ui/input'
+import { Textarea } from './ui/textarea'
 
 type QuickCaptureProps = {
 	placeholder?: string
@@ -15,13 +15,13 @@ type QuickCaptureProps = {
 const TITLE_PUNCTUATION_REGEX = /[.。!！?？]$/
 
 /**
- * Compact input for quickly creating an inbox entry from typed text.
+ * Compact textarea for quickly creating an inbox entry from typed text.
  *
- * Splits multi-line input into a short title (first line) and content when the first line is under 100 characters and does not end with punctuation; otherwise treats the whole input as content. On successful creation the input is cleared and the 'entries' cache is invalidated.
+ * Splits multi-line input into a short title (first line) and content when the first line is under 100 characters and does not end with punctuation; otherwise treats the whole input as content. Use Ctrl/Cmd+Enter to submit. On successful creation the input is cleared and the 'entries' cache is invalidated.
  *
- * @param placeholder - Placeholder text shown inside the input
+ * @param placeholder - Placeholder text shown inside the textarea
  * @param onSuccess - Optional callback invoked after a successful entry creation
- * @returns A React element that renders the quick-capture input and submit button
+ * @returns A React element that renders the quick-capture textarea and submit button
  */
 export function QuickCapture({
 	placeholder = '快速记录想法...',
@@ -67,8 +67,8 @@ export function QuickCapture({
 		}
 	}
 
-	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === 'Enter' && !e.shiftKey) {
+	const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
 			e.preventDefault()
 			handleSubmit()
 		}
@@ -77,7 +77,7 @@ export function QuickCapture({
 	return (
 		<div className="flex gap-2">
 			<div className="relative flex-1">
-				<Input
+				<Textarea
 					className="pr-10"
 					disabled={createMutation.isPending}
 					onChange={(e) => setValue(e.target.value)}
@@ -86,7 +86,7 @@ export function QuickCapture({
 					value={value}
 				/>
 				{createMutation.isPending ? (
-					<div className="absolute top-1/2 right-3 -translate-y-1/2">
+					<div className="absolute top-3 right-3">
 						<HugeiconsIcon
 							className="size-4 animate-spin text-muted-foreground"
 							icon={Loading02Icon}
