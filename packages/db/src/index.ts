@@ -62,7 +62,6 @@ export const db = drizzle(process.env.DATABASE_URL || '', {
 })
 
 // Re-export schema for external use
-// biome-ignore lint/performance/noBarrelFile: Database package entry point needs to export all schemas
 export {
 	account,
 	accountRelations,

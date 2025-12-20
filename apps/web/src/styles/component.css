@@ -352,7 +352,7 @@
 .cn-command-input-wrapper {
 	@apply p-1 pb-0;
 }
-yle .cn-command-input-group {
+.cn-command-input-group {
 	@apply bg-input/30 border-input/30 h-8! rounded-lg! shadow-none! *:data-[slot=input-group-addon]:pl-2!;
 }
 

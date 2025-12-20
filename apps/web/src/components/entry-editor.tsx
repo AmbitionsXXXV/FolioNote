@@ -3,7 +3,13 @@
 import Placeholder from '@tiptap/extension-placeholder'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { CodeBlockShiki } from './editor/code-block-extension'
+import {
+	getDefaultSlashCommands,
+	SlashCommand,
+	type SlashCommandItem,
+} from './editor/slash-command'
 
 type EntryEditorProps = {
 	content: string
@@ -12,6 +18,8 @@ type EntryEditorProps = {
 	editable?: boolean
 	autoFocus?: boolean
 	className?: string
+	/** Additional slash commands to include */
+	additionalCommands?: SlashCommandItem[]
 }
 
 /**
@@ -32,8 +40,15 @@ export function EntryEditor({
 	editable = true,
 	autoFocus = false,
 	className = '',
+	additionalCommands = [],
 }: EntryEditorProps) {
 	const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+	// Combine default commands with additional commands
+	const commands = useMemo(() => {
+		const defaults = getDefaultSlashCommands()
+		return [...defaults, ...additionalCommands]
+	}, [additionalCommands])
 
 	const editor = useEditor({
 		extensions: [
@@ -41,10 +56,18 @@ export function EntryEditor({
 				heading: {
 					levels: [1, 2, 3],
 				},
+				// Disable the default code block in favor of CodeBlockLowlight
+				codeBlock: false,
+			}),
+			CodeBlockShiki.configure({
+				defaultLanguage: 'plaintext',
 			}),
 			Placeholder.configure({
 				placeholder,
 				emptyEditorClass: 'is-editor-empty',
+			}),
+			SlashCommand.configure({
+				commands,
 			}),
 		],
 		content,

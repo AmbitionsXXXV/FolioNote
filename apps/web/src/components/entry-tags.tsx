@@ -1,7 +1,7 @@
 import { Cancel01Icon, PlusSignIcon, Tag01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { type Ref, useImperativeHandle, useState } from 'react'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -15,15 +15,25 @@ type Tag = {
 	color: string | null
 }
 
+/**
+ * Ref methods for EntryTags component
+ */
+export type EntryTagsRef = {
+	openTagPicker: () => void
+	getTags: () => Tag[]
+	addTag: (tagId: string) => void
+}
+
 type EntryTagsProps = {
 	entryId: string
+	ref?: Ref<EntryTagsRef>
 }
 
 /**
  * Component for managing tags on an entry.
  * Displays current tags and allows adding/removing tags.
  */
-export function EntryTags({ entryId }: EntryTagsProps) {
+export function EntryTags({ entryId, ref }: EntryTagsProps) {
 	const queryClient = useQueryClient()
 	const [isOpen, setIsOpen] = useState(false)
 	const [newTagName, setNewTagName] = useState('')
@@ -112,6 +122,13 @@ export function EntryTags({ entryId }: EntryTagsProps) {
 			handleCreateTag()
 		}
 	}
+
+	// Expose methods via ref
+	useImperativeHandle(ref, () => ({
+		openTagPicker: () => setIsOpen(true),
+		getTags: () => allTags as Tag[],
+		addTag: (tagId: string) => handleAddTag(tagId),
+	}))
 
 	// Filter out tags that are already on the entry
 	const entryTagIds = new Set(entryTags.map((t: Tag) => t.id))

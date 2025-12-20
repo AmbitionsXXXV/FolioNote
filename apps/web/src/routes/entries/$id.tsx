@@ -10,10 +10,11 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import { createTagCommand } from '@/components/editor/tag-command'
 import { EntryEditor } from '@/components/entry-editor'
-import { EntryTags } from '@/components/entry-tags'
+import { EntryTags, type EntryTagsRef } from '@/components/entry-tags'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getUser } from '@/functions/get-user'
@@ -45,6 +46,7 @@ function EntryEditPage() {
 	const { id } = Route.useParams()
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
+	const entryTagsRef = useRef<EntryTagsRef>(null)
 
 	// Local state for optimistic updates
 	const [localTitle, setLocalTitle] = useState<string | null>(null)
@@ -55,6 +57,20 @@ function EntryEditPage() {
 		queryKey: ['entries', id],
 		queryFn: () => orpc.entries.get.call({ id }),
 	})
+
+	// Create tag command for slash menu
+	const tagCommand = useMemo(
+		() =>
+			createTagCommand({
+				getTags: () => entryTagsRef.current?.getTags() ?? [],
+				onAddTag: (tagId) => {
+					entryTagsRef.current?.addTag(tagId)
+				},
+			}),
+		[]
+	)
+
+	const additionalCommands = useMemo(() => [tagCommand], [tagCommand])
 
 	// Update mutation
 	const updateMutation = useMutation({
@@ -269,15 +285,16 @@ function EntryEditPage() {
 
 			{/* Tags */}
 			<div className="mb-4">
-				<EntryTags entryId={id} />
+				<EntryTags entryId={id} ref={entryTagsRef} />
 			</div>
 
 			{/* Editor */}
 			<EntryEditor
+				additionalCommands={additionalCommands}
 				autoFocus
 				content={content}
 				onChange={handleContentChange}
-				placeholder="开始写作..."
+				placeholder="开始写作... 输入 / 打开命令菜单"
 			/>
 
 			{/* Metadata footer */}

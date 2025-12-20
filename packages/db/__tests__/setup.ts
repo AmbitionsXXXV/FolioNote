@@ -27,5 +27,4 @@
 
 // For now, export the PostgreSQL db for testing
 // This will use the actual database connection
-// biome-ignore lint/performance/noBarrelFile: Test setup file re-exports db for convenience
 export { db } from '../src'
