@@ -2,7 +2,9 @@ import {
 	BookOpen01Icon,
 	InboxIcon,
 	Link01Icon,
+	Rocket01Icon,
 	Search01Icon,
+	Tag01Icon,
 } from '@hugeicons/core-free-icons'
 import type { IconSvgElement } from '@hugeicons/react'
 import { HugeiconsIcon } from '@hugeicons/react'
@@ -28,7 +30,9 @@ export default function Header() {
 		{ to: '/', label: 'FolioNote', isLogo: true },
 		{ to: '/inbox', label: '收件箱', icon: InboxIcon },
 		{ to: '/library', label: '资料库', icon: BookOpen01Icon },
+		{ to: '/tags', label: '标签', icon: Tag01Icon },
 		{ to: '/sources', label: '来源', icon: Link01Icon },
+		{ to: '/review', label: '复习', icon: Rocket01Icon },
 	]
 
 	return (
