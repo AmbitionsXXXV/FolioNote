@@ -13,6 +13,9 @@ describe('entries router', () => {
 			expect(entriesRouter).toHaveProperty('restore')
 			expect(entriesRouter).toHaveProperty('get')
 			expect(entriesRouter).toHaveProperty('list')
+			expect(entriesRouter).toHaveProperty('addTag')
+			expect(entriesRouter).toHaveProperty('removeTag')
+			expect(entriesRouter).toHaveProperty('getTags')
 		})
 
 		it('has correct procedure types', () => {
@@ -22,6 +25,9 @@ describe('entries router', () => {
 			expect(typeof entriesRouter.restore).toBe('object')
 			expect(typeof entriesRouter.get).toBe('object')
 			expect(typeof entriesRouter.list).toBe('object')
+			expect(typeof entriesRouter.addTag).toBe('object')
+			expect(typeof entriesRouter.removeTag).toBe('object')
+			expect(typeof entriesRouter.getTags).toBe('object')
 		})
 	})
 
@@ -100,6 +106,12 @@ describe('entries router integration with appRouter', () => {
 		expect(appRouter.entries.restore).toBeDefined()
 		expect(appRouter.entries.get).toBeDefined()
 		expect(appRouter.entries.list).toBeDefined()
+	})
+
+	it('should have tag-related operations', () => {
+		expect(appRouter.entries.addTag).toBeDefined()
+		expect(appRouter.entries.removeTag).toBeDefined()
+		expect(appRouter.entries.getTags).toBeDefined()
 	})
 })
 

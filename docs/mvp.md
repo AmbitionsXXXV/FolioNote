@@ -26,9 +26,11 @@ Done: 实现了完整的 entries API router（CRUD + 列表筛选 + 游标分页
 
 #### 3. 标签系统 (Tags)
 
-- [ ] 创建/编辑/删除标签
-- [ ] 为条目添加/移除标签
-- [ ] 按标签筛选条目
+- [x] 创建/编辑/删除标签
+- [x] 为条目添加/移除标签
+- [x] 按标签筛选条目
+
+Done: 实现了完整的 tags API router（CRUD + 列表），以及 entries router 扩展（addTag/removeTag/getTags + tagId 筛选）。包含完整的单元测试。
 
 #### 4. 来源管理 (Sources)
 

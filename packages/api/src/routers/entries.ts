@@ -1,6 +1,6 @@
-import { db, entries } from '@folio/db'
+import { db, entries, entryTags, tags } from '@folio/db'
 import { ORPCError } from '@orpc/server'
-import { and, desc, eq, isNotNull, isNull } from 'drizzle-orm'
+import { and, desc, eq, inArray, isNotNull, isNull, lt } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 import { protectedProcedure } from '../index'
@@ -45,8 +45,17 @@ const GetEntryInputSchema = z.object({
  */
 const ListEntriesInputSchema = z.object({
 	filter: EntryFilterSchema,
+	tagId: z.string().optional(),
 	cursor: z.string().optional(),
 	limit: z.number().int().min(1).max(100).default(20),
+})
+
+/**
+ * Input schema for adding/removing tags from entries
+ */
+const EntryTagInputSchema = z.object({
+	entryId: z.string(),
+	tagId: z.string(),
 })
 
 /**
@@ -206,7 +215,7 @@ export const listEntries = protectedProcedure
 	.input(ListEntriesInputSchema)
 	.handler(async ({ context, input }) => {
 		const userId = context.session.user.id
-		const { filter, cursor, limit } = input
+		const { filter, tagId, cursor, limit } = input
 
 		// Build filter conditions based on filter type
 		const conditions = [eq(entries.userId, userId)]
@@ -232,6 +241,34 @@ export const listEntries = protectedProcedure
 				break
 		}
 
+		// Filter by tag if tagId is provided
+		if (tagId) {
+			// First verify the tag belongs to the user
+			const [tag] = await db
+				.select()
+				.from(tags)
+				.where(and(eq(tags.id, tagId), eq(tags.userId, userId)))
+				.limit(1)
+
+			if (!tag) {
+				throw new ORPCError('NOT_FOUND', { message: 'Tag not found' })
+			}
+
+			// Get entry IDs that have this tag
+			const taggedEntries = await db
+				.select({ entryId: entryTags.entryId })
+				.from(entryTags)
+				.where(eq(entryTags.tagId, tagId))
+
+			const entryIds = taggedEntries.map((et) => et.entryId)
+
+			if (entryIds.length === 0) {
+				return { items: [], nextCursor: undefined, hasMore: false }
+			}
+
+			conditions.push(inArray(entries.id, entryIds))
+		}
+
 		// Add cursor condition for pagination
 		if (cursor) {
 			// Cursor is the ID of the last item from the previous page
@@ -243,7 +280,6 @@ export const listEntries = protectedProcedure
 				.limit(1)
 
 			if (cursorEntry) {
-				const { lt } = await import('drizzle-orm')
 				conditions.push(lt(entries.updatedAt, cursorEntry.updatedAt))
 			}
 		}
@@ -267,6 +303,140 @@ export const listEntries = protectedProcedure
 	})
 
 /**
+ * entries.addTag - Add a tag to an entry
+ */
+export const addTagToEntry = protectedProcedure
+	.input(EntryTagInputSchema)
+	.handler(async ({ context, input }) => {
+		const userId = context.session.user.id
+		const { entryId, tagId } = input
+
+		// Verify the entry belongs to the user and is not deleted
+		const [entry] = await db
+			.select()
+			.from(entries)
+			.where(
+				and(
+					eq(entries.id, entryId),
+					eq(entries.userId, userId),
+					isNull(entries.deletedAt)
+				)
+			)
+			.limit(1)
+
+		if (!entry) {
+			throw new ORPCError('NOT_FOUND', { message: 'Entry not found' })
+		}
+
+		// Verify the tag belongs to the user
+		const [tag] = await db
+			.select()
+			.from(tags)
+			.where(and(eq(tags.id, tagId), eq(tags.userId, userId)))
+			.limit(1)
+
+		if (!tag) {
+			throw new ORPCError('NOT_FOUND', { message: 'Tag not found' })
+		}
+
+		// Check if the association already exists
+		const [existingAssociation] = await db
+			.select()
+			.from(entryTags)
+			.where(and(eq(entryTags.entryId, entryId), eq(entryTags.tagId, tagId)))
+			.limit(1)
+
+		if (existingAssociation) {
+			// Already exists, return success
+			return { success: true, entryTag: existingAssociation }
+		}
+
+		// Create the association
+		const [entryTag] = await db
+			.insert(entryTags)
+			.values({
+				id: nanoid(),
+				entryId,
+				tagId,
+			})
+			.returning()
+
+		return { success: true, entryTag }
+	})
+
+/**
+ * entries.removeTag - Remove a tag from an entry
+ */
+export const removeTagFromEntry = protectedProcedure
+	.input(EntryTagInputSchema)
+	.handler(async ({ context, input }) => {
+		const userId = context.session.user.id
+		const { entryId, tagId } = input
+
+		// Verify the entry belongs to the user
+		const [entry] = await db
+			.select()
+			.from(entries)
+			.where(
+				and(
+					eq(entries.id, entryId),
+					eq(entries.userId, userId),
+					isNull(entries.deletedAt)
+				)
+			)
+			.limit(1)
+
+		if (!entry) {
+			throw new ORPCError('NOT_FOUND', { message: 'Entry not found' })
+		}
+
+		// Delete the association
+		const result = await db
+			.delete(entryTags)
+			.where(and(eq(entryTags.entryId, entryId), eq(entryTags.tagId, tagId)))
+			.returning()
+
+		return { success: true, deleted: result.length > 0 }
+	})
+
+/**
+ * entries.getTags - Get all tags for an entry
+ */
+export const getEntryTags = protectedProcedure
+	.input(GetEntryInputSchema)
+	.handler(async ({ context, input }) => {
+		const userId = context.session.user.id
+
+		// Verify the entry belongs to the user
+		const [entry] = await db
+			.select()
+			.from(entries)
+			.where(
+				and(
+					eq(entries.id, input.id),
+					eq(entries.userId, userId),
+					isNull(entries.deletedAt)
+				)
+			)
+			.limit(1)
+
+		if (!entry) {
+			throw new ORPCError('NOT_FOUND', { message: 'Entry not found' })
+		}
+
+		// Get all tags for this entry
+		const associations = await db
+			.select({
+				tag: tags,
+			})
+			.from(entryTags)
+			.innerJoin(tags, eq(entryTags.tagId, tags.id))
+			.where(eq(entryTags.entryId, input.id))
+
+		return associations.map((a) => a.tag)
+	})
+
+/**
  * Entries router - all entry-related procedures
  */
 export const entriesRouter = {
@@ -276,4 +446,7 @@ export const entriesRouter = {
 	restore: restoreEntry,
 	get: getEntry,
 	list: listEntries,
+	addTag: addTagToEntry,
+	removeTag: removeTagFromEntry,
+	getTags: getEntryTags,
 }
