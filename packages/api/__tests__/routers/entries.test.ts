@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'bun:test'
 import { ORPCError } from '@orpc/server'
+import { describe, expect, it } from 'vitest'
 import { appRouter } from '../../src/routers'
 import { entriesRouter } from '../../src/routers/entries'
 import { createMockContext, createMockSession } from '../mocks/context'
