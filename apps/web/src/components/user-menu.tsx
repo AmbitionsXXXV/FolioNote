@@ -12,6 +12,11 @@ import { authClient } from '@/lib/auth-client'
 import { Button } from './ui/button'
 import { Skeleton } from './ui/skeleton'
 
+/**
+ * Render a user account menu that displays a loading placeholder, a sign-in link when unauthenticated, or a dropdown with account details and a sign-out action when authenticated.
+ *
+ * @returns A React element containing either a loading skeleton, a "Sign In" link button, or an account dropdown showing the user's name, email, and a "Sign Out" action that navigates to the root on success.
+ */
 export default function UserMenu() {
 	const navigate = useNavigate()
 	const { data: session, isPending } = authClient.useSession()

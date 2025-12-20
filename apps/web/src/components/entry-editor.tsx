@@ -15,8 +15,15 @@ type EntryEditorProps = {
 }
 
 /**
- * Tiptap-based rich text editor for entry content
- * Supports Markdown shortcuts and auto-save
+ * A TipTap-based rich text editor for editing entry content with Markdown shortcuts and debounced auto-save.
+ *
+ * @param content - Initial HTML content displayed in the editor.
+ * @param onChange - Optional callback invoked with the editor's current HTML after edits (debounced 500ms).
+ * @param placeholder - Text shown when the editor is empty; defaults to "Write something...".
+ * @param editable - Whether the editor is editable; defaults to `true`.
+ * @param autoFocus - If `true`, focuses the editor and places the cursor at the end on mount; defaults to `false`.
+ * @param className - Additional CSS classes applied to the editor container.
+ * @returns The rendered editor React element.
  */
 export function EntryEditor({
 	content,
@@ -102,7 +109,10 @@ export function EntryEditor({
 }
 
 /**
- * Hook to get editor commands for toolbar integration
+ * Provide memoized editor command functions for toolbar controls.
+ *
+ * @param editor - The TipTap editor instance returned from `useEditor`.
+ * @returns An object containing command functions (`toggleBold`, `toggleItalic`, `toggleHeading`, `toggleBulletList`, `toggleOrderedList`, `toggleBlockquote`, `toggleCode`, `toggleCodeBlock`) that focus the editor and toggle the corresponding formatting, and `isActive(name, attributes?)` which returns `true` if the specified mark or node is currently active, `false` otherwise.
  */
 export function useEntryEditorCommands(editor: ReturnType<typeof useEditor>) {
 	const toggleBold = useCallback(() => {

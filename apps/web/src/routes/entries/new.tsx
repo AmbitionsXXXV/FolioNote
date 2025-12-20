@@ -25,6 +25,13 @@ export const Route = createFileRoute('/entries/new')({
 	},
 })
 
+/**
+ * Page for composing a new entry and saving it to the library.
+ *
+ * Presents a title input and rich editor, lets the user save a new entry (which invalidates the entries cache, shows success or error toasts, and navigates to the new entry's edit page), and provides a back button to return to the library.
+ *
+ * @returns The rendered JSX for the New Entry page component
+ */
 function NewEntryPage() {
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()

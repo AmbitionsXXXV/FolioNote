@@ -26,6 +26,13 @@ export const Route = createFileRoute('/library')({
 	},
 })
 
+/**
+ * Render the library page that displays user entries with filter tabs, a header, and paginated entry list.
+ *
+ * Renders filter controls for selecting which entries to show, a button to create a new entry, and an EntryList that supports loading more pages and shows an appropriate empty-state message per filter.
+ *
+ * @returns The React element for the library page UI.
+ */
 function LibraryPage() {
 	const [filter, setFilter] = useState<FilterType>('all')
 

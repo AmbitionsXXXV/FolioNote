@@ -6,6 +6,11 @@ export const Route = createFileRoute('/')({
 	component: HomeComponent,
 })
 
+/**
+ * Displays the home page section that reports the API health status.
+ *
+ * @returns A JSX element containing an "API Status" panel with a colored dot (green when health is present, red when absent) and status text: "Checking..." while loading, "Connected" when healthy, and "Disconnected" otherwise.
+ */
 function HomeComponent() {
 	const healthCheck = useQuery(orpc.healthCheck.queryOptions())
 

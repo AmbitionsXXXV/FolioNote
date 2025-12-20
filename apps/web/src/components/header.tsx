@@ -4,6 +4,11 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { Link } from '@tanstack/react-router'
 import UserMenu from './user-menu'
 
+/**
+ * Renders the top application header with a logo link, navigation links (optional icons), and a user menu.
+ *
+ * @returns The header element containing the logo/home link, navigation links (Inbox and Library) with optional icons, and the user menu on the right.
+ */
 export default function Header() {
 	const links: Array<{
 		to: string

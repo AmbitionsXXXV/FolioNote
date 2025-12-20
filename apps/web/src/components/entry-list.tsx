@@ -26,7 +26,9 @@ type EntryListProps = {
 }
 
 /**
- * List component for displaying entries
+ * Renders a list of entries with support for pinned ordering, loading and empty states, and an optional "load more" control.
+ *
+ * @returns A React element containing the entries grid, including pinned and regular sections, skeletons for loading, an empty message when there are no entries, and an optional load-more button.
  */
 export function EntryList({
 	entries,

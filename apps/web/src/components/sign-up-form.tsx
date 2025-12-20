@@ -8,6 +8,16 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 
+/**
+ * Render a sign-up form UI and handle user registration flow.
+ *
+ * Renders a name, email, and password form with validation; while the authentication
+ * session is pending, renders a Loader instead. Submitting the form attempts to
+ * create an account via the auth client — on success navigates to `/dashboard` and
+ * shows a success toast; on error shows an error toast with the server message.
+ *
+ * @returns A React element containing the sign-up form or a Loader when the session is pending.
+ */
 export default function SignUpForm() {
 	const navigate = useNavigate({
 		from: '/',

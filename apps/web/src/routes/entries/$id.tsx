@@ -33,6 +33,13 @@ export const Route = createFileRoute('/entries/$id')({
 	},
 })
 
+/**
+ * Render the entry editing page for the current route id, providing title and content editing plus actions to move between inbox/library, toggle star/pin, and delete the entry.
+ *
+ * Shows a loading spinner while fetching the entry and a not-found fallback if the entry does not exist.
+ *
+ * @returns The entry editor page UI for the current entry.
+ */
 function EntryEditPage() {
 	const { id } = Route.useParams()
 	const navigate = useNavigate()

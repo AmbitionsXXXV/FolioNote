@@ -8,6 +8,15 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
 
+/**
+ * Render the sign-in form UI and handle user authentication.
+ *
+ * Displays a loader while session state is pending. Presents email and password fields,
+ * validates inputs (email format and password length), and submits credentials to authenticate.
+ * On successful sign-in navigates to the dashboard and shows a success toast; on failure shows an error toast.
+ *
+ * @returns The React element for the sign-in form.
+ */
 export default function SignInForm() {
 	const navigate = useNavigate({
 		from: '/',

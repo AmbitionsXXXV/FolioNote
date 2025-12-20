@@ -18,7 +18,13 @@ type EntryCardProps = {
 }
 
 /**
- * Card component for displaying an entry in a list
+ * Renders a card representing an entry with title, content preview, and updated date.
+ *
+ * The card shows pinned/star indicators in the header and reveals action buttons (star, pin, delete)
+ * on hover. Action buttons, when provided, prevent navigation and stop event propagation before invoking
+ * their callbacks. The content preview is plain-text (HTML stripped) and truncated to 150 characters.
+ *
+ * @returns A JSX element representing the entry card suitable for use in a list or grid.
  */
 export function EntryCard({
 	id,

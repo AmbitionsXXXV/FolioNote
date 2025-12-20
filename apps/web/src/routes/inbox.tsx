@@ -22,6 +22,11 @@ export const Route = createFileRoute('/inbox')({
 	},
 })
 
+/**
+ * Renders the inbox page with header, quick-capture input, and an infinitely paginated entry list.
+ *
+ * @returns The page's React element containing the inbox header, QuickCapture input, and EntryList wired to infinite query state
+ */
 function InboxPage() {
 	const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
 		useInfiniteQuery({
