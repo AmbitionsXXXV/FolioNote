@@ -11,7 +11,7 @@ type EntryCardProps = {
 	content: string
 	isStarred: boolean
 	isPinned: boolean
-	updatedAt: Date
+	updatedAt: string | number | Date
 	onStar?: () => void
 	onPin?: () => void
 	onDelete?: () => void
@@ -40,13 +40,16 @@ export function EntryCard({
 	const preview =
 		plainContent.slice(0, 150) + (plainContent.length > 150 ? '...' : '')
 
+	// Normalize date to Date object
+	const date = new Date(updatedAt)
+
 	// Format date
 	const formattedDate = new Intl.DateTimeFormat('zh-CN', {
 		month: 'short',
 		day: 'numeric',
 		hour: '2-digit',
 		minute: '2-digit',
-	}).format(new Date(updatedAt))
+	}).format(date)
 
 	return (
 		<Card className="group relative transition-all hover:shadow-md">

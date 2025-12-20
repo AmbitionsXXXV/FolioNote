@@ -12,8 +12,8 @@ type Entry = {
 	isStarred: boolean
 	isPinned: boolean
 	isInbox: boolean
-	updatedAt: Date
-	createdAt: Date
+	updatedAt: string | number | Date
+	createdAt: string | number | Date
 }
 
 type EntryListProps = {
