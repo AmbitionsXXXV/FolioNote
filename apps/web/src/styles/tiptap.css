@@ -203,6 +203,21 @@
 	opacity: 0.8;
 }
 
+/* Entry reference links */
+.tiptap a.entry-ref {
+	background: var(--primary) / 10;
+	border-radius: 0.25rem;
+	color: var(--primary);
+	padding: 0.125rem 0.375rem;
+	text-decoration: none;
+	transition: background-color 0.15s ease;
+}
+
+.tiptap a.entry-ref:hover {
+	background: var(--primary) / 20;
+	opacity: 1;
+}
+
 /* Slash Command Menu Styles */
 .slash-command-container {
 	z-index: 50;

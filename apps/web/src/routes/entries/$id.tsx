@@ -10,10 +10,18 @@ import {
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import {
+	createRefCommandWithEvent,
+	getCurrentEditor,
+	insertEntryRef,
+} from '@/components/editor/ref-command'
+import { createSourceCommandWithEvent } from '@/components/editor/source-command'
 import { createTagCommand } from '@/components/editor/tag-command'
 import { EntryEditor } from '@/components/entry-editor'
+import { EntryPicker, type EntryPickerRef } from '@/components/entry-picker'
+import { EntrySources, type EntrySourcesRef } from '@/components/entry-sources'
 import { EntryTags, type EntryTagsRef } from '@/components/entry-tags'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -47,6 +55,8 @@ function EntryEditPage() {
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
 	const entryTagsRef = useRef<EntryTagsRef>(null)
+	const entrySourcesRef = useRef<EntrySourcesRef>(null)
+	const entryPickerRef = useRef<EntryPickerRef>(null)
 
 	// Local state for optimistic updates
 	const [localTitle, setLocalTitle] = useState<string | null>(null)
@@ -70,7 +80,38 @@ function EntryEditPage() {
 		[]
 	)
 
-	const additionalCommands = useMemo(() => [tagCommand], [tagCommand])
+	// Create source command for slash menu
+	const sourceCommand = useMemo(() => createSourceCommandWithEvent(), [])
+
+	// Create ref command for slash menu
+	const refCommand = useMemo(() => createRefCommandWithEvent(), [])
+
+	const additionalCommands = useMemo(
+		() => [tagCommand, sourceCommand, refCommand],
+		[tagCommand, sourceCommand, refCommand]
+	)
+
+	// Listen for custom events from slash commands
+	useEffect(() => {
+		const handleOpenSourcePicker = () => {
+			entrySourcesRef.current?.openSourcePicker()
+		}
+
+		const handleOpenEntryPicker = () => {
+			entryPickerRef.current?.open()
+		}
+
+		document.addEventListener('folio:open-source-picker', handleOpenSourcePicker)
+		document.addEventListener('folio:open-entry-picker', handleOpenEntryPicker)
+
+		return () => {
+			document.removeEventListener(
+				'folio:open-source-picker',
+				handleOpenSourcePicker
+			)
+			document.removeEventListener('folio:open-entry-picker', handleOpenEntryPicker)
+		}
+	}, [])
 
 	// Update mutation
 	const updateMutation = useMutation({
@@ -288,6 +329,11 @@ function EntryEditPage() {
 				<EntryTags entryId={id} ref={entryTagsRef} />
 			</div>
 
+			{/* Sources */}
+			<div className="mb-4">
+				<EntrySources entryId={id} ref={entrySourcesRef} />
+			</div>
+
 			{/* Editor */}
 			<EntryEditor
 				additionalCommands={additionalCommands}
@@ -320,6 +366,19 @@ function EntryEditPage() {
 					}).format(new Date(entry.updatedAt))}
 				</p>
 			</div>
+
+			{/* Entry picker dialog for /ref command */}
+			<EntryPicker
+				excludeId={id}
+				onSelect={(selectedEntry) => {
+					// Get the editor instance stored by the ref command
+					const editor = getCurrentEditor()
+					if (editor) {
+						insertEntryRef(editor, selectedEntry)
+					}
+				}}
+				ref={entryPickerRef}
+			/>
 		</div>
 	)
 }

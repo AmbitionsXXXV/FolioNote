@@ -80,7 +80,7 @@ function HomeComponent() {
 								healthCheck.data ? 'animate-pulse' : ''
 							)}
 						/>
-						<span className="font-medium text-muted-foreground text-xs">
+						<span className="font-medium font-script text-muted-foreground text-xs">
 							{(() => {
 								if (healthCheck.isLoading) return 'Connecting...'
 								return healthCheck.data ? 'System Ready' : 'Offline'
@@ -123,7 +123,7 @@ function HomeComponent() {
 								className="h-5 w-5 text-primary"
 								icon={MagicWand01Icon}
 							/>
-							<h2 className="font-display font-semibold text-2xl">Quick Actions</h2>
+							<h2 className="font-script font-semibold text-2xl">Quick Actions</h2>
 						</div>
 
 						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -163,7 +163,7 @@ function HomeComponent() {
 				<div className="animate-fade-in delay-200">
 					<div className="mb-6 flex items-center gap-3">
 						<HugeiconsIcon className="size-5 text-primary" icon={BookOpen01Icon} />
-						<h2 className="font-display font-semibold text-2xl">What You Can Do</h2>
+						<h2 className="font-script font-semibold text-2xl">What You Can Do</h2>
 					</div>
 
 					<div className="grid gap-6 md:grid-cols-3">
