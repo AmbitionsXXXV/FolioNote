@@ -9,6 +9,7 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
 import { orpc } from '@/utils/orpc'
 
 type Entry = {
@@ -123,47 +124,56 @@ export function EntryPicker({
 
 				{/* Entries list */}
 				<div className="max-h-80 overflow-y-auto">
-					{isLoading ? (
-						<div className="space-y-2 py-4">
-							{Array.from({ length: 3 }).map((_, i) => (
-								<div
-									className="h-16 animate-pulse rounded-lg bg-muted"
-									key={`skeleton-${i}`}
-								/>
-							))}
-						</div>
-					) : filteredEntries.length > 0 ? (
-						<div className="space-y-1">
-							{filteredEntries.map((entry) => (
-								<button
-									className="flex w-full items-start gap-3 rounded-lg p-3 text-left transition-colors hover:bg-muted"
-									key={entry.id}
-									onClick={() => handleSelect(entry)}
-									type="button"
-								>
-									<HugeiconsIcon
-										className="mt-0.5 size-4 shrink-0 text-muted-foreground"
-										icon={FileEditIcon}
-									/>
-									<div className="min-w-0 flex-1">
-										<p className="truncate font-medium">{entry.title || '无标题'}</p>
-										{entry.content ? (
-											<p className="truncate text-muted-foreground text-xs">
-												{getPreview(entry.content)}
-											</p>
-										) : null}
-									</div>
-									<span className="shrink-0 text-muted-foreground text-xs">
-										{formatDate(entry.updatedAt)}
-									</span>
-								</button>
-							))}
-						</div>
-					) : (
-						<div className="py-8 text-center text-muted-foreground">
-							{searchQuery ? <p>没有找到匹配的条目</p> : <p>暂无可引用的条目</p>}
-						</div>
-					)}
+					{(() => {
+						if (isLoading) {
+							return (
+								<div className="space-y-2 py-4">
+									<Skeleton className="h-16 rounded-lg bg-muted" />
+									<Skeleton className="h-16 rounded-lg bg-muted" />
+									<Skeleton className="h-16 rounded-lg bg-muted" />
+								</div>
+							)
+						}
+
+						if (filteredEntries.length > 0) {
+							return (
+								<div className="space-y-1">
+									{filteredEntries.map((entry) => (
+										<button
+											className="flex w-full items-start gap-3 rounded-lg p-3 text-left transition-colors hover:bg-muted"
+											key={entry.id}
+											onClick={() => handleSelect(entry)}
+											type="button"
+										>
+											<HugeiconsIcon
+												className="mt-0.5 size-4 shrink-0 text-muted-foreground"
+												icon={FileEditIcon}
+											/>
+											<div className="min-w-0 flex-1">
+												<p className="truncate font-medium">
+													{entry.title || '无标题'}
+												</p>
+												{entry.content ? (
+													<p className="truncate text-muted-foreground text-xs">
+														{getPreview(entry.content)}
+													</p>
+												) : null}
+											</div>
+											<span className="shrink-0 text-muted-foreground text-xs">
+												{formatDate(entry.updatedAt)}
+											</span>
+										</button>
+									))}
+								</div>
+							)
+						}
+
+						return (
+							<div className="py-8 text-center text-muted-foreground">
+								{searchQuery ? <p>没有找到匹配的条目</p> : <p>暂无可引用的条目</p>}
+							</div>
+						)
+					})()}
 				</div>
 			</DialogContent>
 		</Dialog>
