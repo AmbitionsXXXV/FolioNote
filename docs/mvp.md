@@ -80,10 +80,15 @@ Done: review API router（getQueue/markReviewed/history/todayStats/reviewCount�
   * [x] 分割线：`/divider`
 * [x] FolioNote 相关命令（至少落地 1 个）
   * [x] `/tag`：搜索并插入/绑定标签
-  * [ ] `/source`：搜索并插入/关联来源
-  * [ ] `/ref`：插入条目引用（可先生成可点击的内部链接）
+  * [x] `/source`：搜索并插入/关联来源
+  * [x] `/ref`：插入条目引用（可先生成可点击的内部链接）
 
-Done: 实现了 Tiptap Slash Command 扩展，支持 `/` 触发命令菜单，包含标题（H1/H2/H3）、引用、代码块（带语法高亮）、无序/有序列表、分割线等基础命令。实现了 `/tag` 命令用于快速添加标签到条目。菜单支持键盘导航（上下箭头、回车确认、Esc 关闭）和搜索过滤。代码块使用 lowlight 实现语法高亮，支持常见编程语言。
+Done: 实现了完整的 Tiptap Slash Command 扩展：
+
+* 基础命令：标题（H1/H2/H3）、引用、代码块（Shiki 语法高亮）、无序/有序列表、分割线
+* FolioNote 命令：`/tag` 快速添加标签、`/source` 关联来源、`/ref` 插入条目引用链接
+* 交互特性：键盘导航（上下箭头、回车确认、Esc 关闭）、搜索过滤、分组显示
+* 新增组件：EntrySources（来源管理）、EntryPicker（条目选择器）
 
 验收标准：
 

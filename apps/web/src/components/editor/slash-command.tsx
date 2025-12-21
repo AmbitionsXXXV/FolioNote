@@ -1,3 +1,14 @@
+import {
+	CodeIcon,
+	DivideSignIcon,
+	Heading01Icon,
+	Heading02Icon,
+	Heading03Icon,
+	LeftToRightListBulletIcon,
+	LeftToRightListNumberIcon,
+	QuoteUpIcon,
+} from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import type { Editor, Range } from '@tiptap/core'
 import { Extension } from '@tiptap/core'
 import type { SuggestionOptions, SuggestionProps } from '@tiptap/suggestion'
@@ -190,7 +201,7 @@ export const getDefaultSlashCommands = (): SlashCommandItem[] => [
 	{
 		title: '标题 1',
 		description: '大标题',
-		icon: <span className="slash-icon">H1</span>,
+		icon: <HugeiconsIcon className="size-4" icon={Heading01Icon} />,
 		keywords: ['h1', 'heading1', 'title', '标题'],
 		group: '标题',
 		command: ({ editor, range }) => {
@@ -200,7 +211,7 @@ export const getDefaultSlashCommands = (): SlashCommandItem[] => [
 	{
 		title: '标题 2',
 		description: '中标题',
-		icon: <span className="slash-icon">H2</span>,
+		icon: <HugeiconsIcon className="size-4" icon={Heading02Icon} />,
 		keywords: ['h2', 'heading2', 'subtitle', '标题'],
 		group: '标题',
 		command: ({ editor, range }) => {
@@ -210,7 +221,7 @@ export const getDefaultSlashCommands = (): SlashCommandItem[] => [
 	{
 		title: '标题 3',
 		description: '小标题',
-		icon: <span className="slash-icon">H3</span>,
+		icon: <HugeiconsIcon className="size-4" icon={Heading03Icon} />,
 		keywords: ['h3', 'heading3', '标题'],
 		group: '标题',
 		command: ({ editor, range }) => {
@@ -220,7 +231,7 @@ export const getDefaultSlashCommands = (): SlashCommandItem[] => [
 	{
 		title: '引用',
 		description: '引用块',
-		icon: <span className="slash-icon">"</span>,
+		icon: <HugeiconsIcon className="size-4" icon={QuoteUpIcon} />,
 		keywords: ['quote', 'blockquote', '引用'],
 		group: '基础块',
 		command: ({ editor, range }) => {
@@ -230,7 +241,7 @@ export const getDefaultSlashCommands = (): SlashCommandItem[] => [
 	{
 		title: '代码块',
 		description: '代码片段',
-		icon: <span className="slash-icon">{'</>'}</span>,
+		icon: <HugeiconsIcon className="size-4" icon={CodeIcon} />,
 		keywords: ['code', 'codeblock', '代码'],
 		group: '基础块',
 		command: ({ editor, range }) => {
@@ -240,7 +251,7 @@ export const getDefaultSlashCommands = (): SlashCommandItem[] => [
 	{
 		title: '无序列表',
 		description: '项目符号列表',
-		icon: <span className="slash-icon">•</span>,
+		icon: <HugeiconsIcon className="size-4" icon={LeftToRightListBulletIcon} />,
 		keywords: ['bullet', 'list', 'unordered', '列表'],
 		group: '列表',
 		command: ({ editor, range }) => {
@@ -250,7 +261,7 @@ export const getDefaultSlashCommands = (): SlashCommandItem[] => [
 	{
 		title: '有序列表',
 		description: '编号列表',
-		icon: <span className="slash-icon">1.</span>,
+		icon: <HugeiconsIcon className="size-4" icon={LeftToRightListNumberIcon} />,
 		keywords: ['ordered', 'list', 'numbered', '列表'],
 		group: '列表',
 		command: ({ editor, range }) => {
@@ -260,7 +271,7 @@ export const getDefaultSlashCommands = (): SlashCommandItem[] => [
 	{
 		title: '分割线',
 		description: '水平分隔线',
-		icon: <span className="slash-icon">—</span>,
+		icon: <HugeiconsIcon className="size-4" icon={DivideSignIcon} />,
 		keywords: ['divider', 'hr', 'horizontal', '分割'],
 		group: '基础块',
 		command: ({ editor, range }) => {

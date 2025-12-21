@@ -1,5 +1,3 @@
-'use client'
-
 import { NodeViewContent, type NodeViewProps, NodeViewWrapper } from '@tiptap/react'
 import { useEffect, useState } from 'react'
 import { codeToHtml } from 'shiki'

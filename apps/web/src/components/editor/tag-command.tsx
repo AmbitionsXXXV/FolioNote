@@ -1,5 +1,5 @@
-'use client'
-
+import { Tag01Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import type { Editor, Range } from '@tiptap/core'
 import type { SlashCommandItem } from './slash-command'
 
@@ -39,7 +39,7 @@ export function createTagCommand(
 	return {
 		title: '添加标签',
 		description: '为条目添加标签',
-		icon: <span className="slash-icon">#</span>,
+		icon: <HugeiconsIcon className="size-4" icon={Tag01Icon} />,
 		keywords: ['tag', 'label', '标签'],
 		group: 'FolioNote',
 		command: ({ editor, range }: { editor: Editor; range: Range }) => {
@@ -72,7 +72,7 @@ export function createTagCommandWithEvent(): SlashCommandItem {
 	return {
 		title: '添加标签',
 		description: '为条目添加标签',
-		icon: <span className="slash-icon">#</span>,
+		icon: <HugeiconsIcon className="size-4" icon={Tag01Icon} />,
 		keywords: ['tag', 'label', '标签'],
 		group: 'FolioNote',
 		command: ({ editor, range }: { editor: Editor; range: Range }) => {
