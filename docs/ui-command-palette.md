@@ -13,12 +13,14 @@
 
 ```css
 .cn-command-item {
-	@apply data-[selected=true]:bg-muted;
+ @apply data-[selected=true]:bg-muted;
 }
 
 .cn-command-shortcut {
-	@apply group-data-[selected=true]/command-item:text-foreground;
+ @apply group-data-[selected=true]/command-item:text-foreground;
 }
 ```
 
+## 修复记录
 
+- 2025-12-21：将 `.cn-command-item` / `.cn-command-shortcut` 的选中态从 `data-selected:` / `group-data-selected:` 改为 `data-[selected=true]:` / `group-data-[selected=true]`，避免 `data-selected="false"` 误命中。
