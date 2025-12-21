@@ -1,4 +1,40 @@
 {
+  "home": {
+    "systemReady": "系统就绪",
+    "offline": "离线",
+    "connecting": "连接中...",
+    "welcomePersonal": "您的个人",
+    "learningSystem": "学习系统",
+    "subtitleGuest": "捕捉、整理并重温您学到的一切。一个终身学习的跨平台系统。",
+    "subtitleUser": "继续构建您的知识库。捕捉灵感，整理思绪，重温重要内容。",
+    "quickActions": "快速操作",
+    "actionDescription": {
+      "newEntry": "记录新的学习时刻",
+      "inbox": "处理您的收集",
+      "library": "浏览您的收藏",
+      "search": "查找您学到的内容"
+    },
+    "whatYouCanDo": "您可以做什么",
+    "feature": {
+      "capture": {
+        "title": "捕捉灵感",
+        "desc": "快速记下您正在学习的内容。富文本、代码片段等。"
+      },
+      "organize": {
+        "title": "自由整理",
+        "desc": "标签、分类并链接您的笔记。构建您的个人知识图谱。"
+      },
+      "revisit": {
+        "title": "随时重温",
+        "desc": "强大的搜索和复习工具帮助您重新发现学到的内容。"
+      }
+    },
+    "cta": {
+      "title": "准备好开始学习了吗？",
+      "desc": "立即加入 FolioNote，构建您的个人知识系统。",
+      "getStarted": "开始使用"
+    }
+  },
   "common": {
     "save": "保存",
     "cancel": "取消",

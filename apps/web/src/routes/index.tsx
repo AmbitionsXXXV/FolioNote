@@ -10,6 +10,7 @@ import type { IconSvgElement } from '@hugeicons/react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, Link } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { getUser } from '@/functions/get-user'
 import { cn } from '@/lib/utils'
 import { orpc } from '@/utils/orpc'
@@ -23,6 +24,7 @@ export const Route = createFileRoute('/')({
 })
 
 function HomeComponent() {
+	const { t } = useTranslation()
 	const { session } = Route.useRouteContext()
 	const healthCheck = useQuery(orpc.healthCheck.queryOptions())
 
@@ -35,32 +37,32 @@ function HomeComponent() {
 	}> = [
 		{
 			icon: PencilEdit02Icon,
-			label: 'New Entry',
-			description: 'Capture a new learning moment',
+			label: t('entry.newEntry'),
+			description: t('home.actionDescription.newEntry'),
 			href: '/entries/new',
 			color:
 				'from-violet-500/10 to-purple-500/10 hover:from-violet-500/20 hover:to-purple-500/20',
 		},
 		{
 			icon: InboxIcon,
-			label: 'Inbox',
-			description: 'Process your captures',
+			label: t('entry.inbox'),
+			description: t('home.actionDescription.inbox'),
 			href: '/inbox',
 			color:
 				'from-blue-500/10 to-indigo-500/10 hover:from-blue-500/20 hover:to-indigo-500/20',
 		},
 		{
 			icon: LibraryIcon,
-			label: 'Library',
-			description: 'Browse your collection',
+			label: t('entry.library'),
+			description: t('home.actionDescription.library'),
 			href: '/library',
 			color:
 				'from-purple-500/10 to-pink-500/10 hover:from-purple-500/20 hover:to-pink-500/20',
 		},
 		{
 			icon: Search01Icon,
-			label: 'Search',
-			description: 'Find what you learned',
+			label: t('common.search'),
+			description: t('home.actionDescription.search'),
 			href: '/search',
 			color:
 				'from-fuchsia-500/10 to-violet-500/10 hover:from-fuchsia-500/20 hover:to-violet-500/20',
@@ -82,8 +84,8 @@ function HomeComponent() {
 						/>
 						<span className="font-medium font-script text-muted-foreground text-xs">
 							{(() => {
-								if (healthCheck.isLoading) return 'Connecting...'
-								return healthCheck.data ? 'System Ready' : 'Offline'
+								if (healthCheck.isLoading) return t('home.connecting')
+								return healthCheck.data ? t('home.systemReady') : t('home.offline')
 							})()}
 						</span>
 					</div>
@@ -91,7 +93,7 @@ function HomeComponent() {
 					<h1 className="mb-4 font-display font-semibold text-5xl leading-tight tracking-tight md:text-6xl">
 						{session ? (
 							<>
-								Welcome back,
+								{t('auth.welcome')},
 								<br />
 								<span className="bg-linear-to-br from-primary via-purple-400 to-violet-300 bg-clip-text font-script text-transparent">
 									{session.user.name?.split(' ')[0] || 'there'}
@@ -99,19 +101,17 @@ function HomeComponent() {
 							</>
 						) : (
 							<>
-								Your personal
+								{t('home.welcomePersonal')}
 								<br />
 								<span className="bg-linear-to-br from-primary via-purple-400 to-violet-300 bg-clip-text text-transparent">
-									learning system
+									{t('home.learningSystem')}
 								</span>
 							</>
 						)}
 					</h1>
 
 					<p className="max-w-2xl text-lg text-muted-foreground leading-relaxed">
-						{session
-							? 'Continue building your knowledge repository. Capture insights, organize thoughts, and revisit what matters.'
-							: 'Capture, organize, and revisit everything you learn. A cross-platform system for lifelong learning.'}
+						{session ? t('home.subtitleUser') : t('home.subtitleGuest')}
 					</p>
 				</div>
 
@@ -123,7 +123,9 @@ function HomeComponent() {
 								className="h-5 w-5 text-primary"
 								icon={MagicWand01Icon}
 							/>
-							<h2 className="font-script font-semibold text-2xl">Quick Actions</h2>
+							<h2 className="font-script font-semibold text-2xl">
+								{t('home.quickActions')}
+							</h2>
 						</div>
 
 						<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -163,52 +165,51 @@ function HomeComponent() {
 				<div className="animate-fade-in delay-200">
 					<div className="mb-6 flex items-center gap-3">
 						<HugeiconsIcon className="size-5 text-primary" icon={BookOpen01Icon} />
-						<h2 className="font-script font-semibold text-2xl">What You Can Do</h2>
+						<h2 className="font-script font-semibold text-2xl">
+							{t('home.whatYouCanDo')}
+						</h2>
 					</div>
 
 					<div className="grid gap-6 md:grid-cols-3">
 						<div className="group rounded-xl border border-border/50 bg-card/50 p-6 transition-colors hover:border-primary/30">
 							<img
-								alt="Capture Insights"
+								alt={t('home.feature.capture.title')}
 								className="mb-3 size-12"
 								src="/img/note.png"
 							/>
 							<h3 className="mb-2 font-display font-semibold text-lg">
-								Capture Insights
+								{t('home.feature.capture.title')}
 							</h3>
 							<p className="text-muted-foreground text-sm leading-relaxed">
-								Quickly jot down what you're learning. Rich text, code snippets, and
-								more.
+								{t('home.feature.capture.desc')}
 							</p>
 						</div>
 
 						<div className="group rounded-xl border border-border/50 bg-card/50 p-6 transition-colors hover:border-primary/30">
 							<img
-								alt="Organize Freely"
+								alt={t('home.feature.organize.title')}
 								className="mb-3 size-12"
 								src="/img/bookmark.png"
 							/>
 							<h3 className="mb-2 font-display font-semibold text-lg">
-								Organize Freely
+								{t('home.feature.organize.title')}
 							</h3>
 							<p className="text-muted-foreground text-sm leading-relaxed">
-								Tag, categorize, and link your notes. Build your personal knowledge
-								graph.
+								{t('home.feature.organize.desc')}
 							</p>
 						</div>
 
 						<div className="group rounded-xl border border-border/50 bg-card/50 p-6 transition-colors hover:border-primary/30">
 							<img
-								alt="Revisit Anytime"
+								alt={t('home.feature.revisit.title')}
 								className="mb-3 size-12"
 								src="/img/zoom.png"
 							/>
 							<h3 className="mb-2 font-display font-semibold text-lg">
-								Revisit Anytime
+								{t('home.feature.revisit.title')}
 							</h3>
 							<p className="text-muted-foreground text-sm leading-relaxed">
-								Powerful search and review tools help you rediscover what you've
-								learned.
+								{t('home.feature.revisit.desc')}
 							</p>
 						</div>
 					</div>
@@ -219,23 +220,21 @@ function HomeComponent() {
 					<div className="mt-16 animate-fade-in text-center delay-300">
 						<div className="mx-auto max-w-xl rounded-2xl border border-primary/20 bg-linear-to-br from-primary/5 via-purple-500/5 to-transparent p-8">
 							<h3 className="mb-3 font-display font-semibold text-2xl">
-								Ready to start learning?
+								{t('home.cta.title')}
 							</h3>
-							<p className="mb-6 text-muted-foreground">
-								Join FolioNote and build your personal knowledge system today.
-							</p>
+							<p className="mb-6 text-muted-foreground">{t('home.cta.desc')}</p>
 							<div className="flex flex-wrap justify-center gap-3">
 								<Link
 									className="rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground transition-transform hover:scale-105"
 									to="/register"
 								>
-									Get Started
+									{t('home.cta.getStarted')}
 								</Link>
 								<Link
 									className="rounded-xl border border-border px-6 py-3 font-semibold transition-colors hover:bg-accent"
 									to="/login"
 								>
-									Sign In
+									{t('auth.signIn')}
 								</Link>
 							</div>
 						</div>

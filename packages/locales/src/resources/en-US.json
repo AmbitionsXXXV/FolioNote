@@ -170,5 +170,41 @@
     "emailInvalid": "Please enter a valid email address",
     "titleRequired": "Title is required",
     "unknown": "An unknown error occurred"
+  },
+  "home": {
+    "systemReady": "System Ready",
+    "offline": "Offline",
+    "connecting": "Connecting...",
+    "welcomePersonal": "Your personal",
+    "learningSystem": "learning system",
+    "subtitleGuest": "Capture, organize, and revisit everything you learn. A cross-platform system for lifelong learning.",
+    "subtitleUser": "Continue building your knowledge repository. Capture insights, organize thoughts, and revisit what matters.",
+    "quickActions": "Quick Actions",
+    "actionDescription": {
+      "newEntry": "Capture a new learning moment",
+      "inbox": "Process your captures",
+      "library": "Browse your collection",
+      "search": "Find what you learned"
+    },
+    "whatYouCanDo": "What You Can Do",
+    "feature": {
+      "capture": {
+        "title": "Capture Insights",
+        "desc": "Quickly jot down what you're learning. Rich text, code snippets, and more."
+      },
+      "organize": {
+        "title": "Organize Freely",
+        "desc": "Tag, categorize, and link your notes. Build your personal knowledge graph."
+      },
+      "revisit": {
+        "title": "Revisit Anytime",
+        "desc": "Powerful search and review tools help you rediscover what you've learned."
+      }
+    },
+    "cta": {
+      "title": "Ready to start learning?",
+      "desc": "Join FolioNote and build your personal knowledge system today.",
+      "getStarted": "Get Started"
+    }
   }
 }
