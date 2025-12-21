@@ -80,7 +80,7 @@ export function createTagCommandWithEvent(): SlashCommandItem {
 			editor.chain().focus().deleteRange(range).run()
 
 			// Dispatch a custom event that the parent can listen to
-			const event = new CustomEvent('folio:open-tag-picker', {
+			const event = new CustomEvent('folio-note:open-tag-picker', {
 				bubbles: true,
 				detail: { editor },
 			})

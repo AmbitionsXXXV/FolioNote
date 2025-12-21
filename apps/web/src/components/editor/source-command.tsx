@@ -87,7 +87,7 @@ export function createSourceCommandWithEvent(): SlashCommandItem {
 			editor.chain().focus().deleteRange(range).run()
 
 			// Dispatch a custom event that the parent can listen to
-			const event = new CustomEvent('folio:open-source-picker', {
+			const event = new CustomEvent('folio-note:open-source-picker', {
 				bubbles: true,
 				detail: { editor },
 			})

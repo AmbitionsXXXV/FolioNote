@@ -102,7 +102,7 @@ export function createRefCommandWithEvent(): SlashCommandItem {
 			currentEditor = editor
 
 			// Dispatch a custom event that the parent can listen to
-			const event = new CustomEvent('folio:open-entry-picker', {
+			const event = new CustomEvent('folio-note:open-entry-picker', {
 				bubbles: true,
 				detail: { editor },
 			})

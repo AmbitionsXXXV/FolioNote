@@ -101,15 +101,21 @@ function EntryEditPage() {
 			entryPickerRef.current?.open()
 		}
 
-		document.addEventListener('folio:open-source-picker', handleOpenSourcePicker)
-		document.addEventListener('folio:open-entry-picker', handleOpenEntryPicker)
+		document.addEventListener(
+			'folio-note:open-source-picker',
+			handleOpenSourcePicker
+		)
+		document.addEventListener('folio-note:open-entry-picker', handleOpenEntryPicker)
 
 		return () => {
 			document.removeEventListener(
-				'folio:open-source-picker',
+				'folio-note:open-source-picker',
 				handleOpenSourcePicker
 			)
-			document.removeEventListener('folio:open-entry-picker', handleOpenEntryPicker)
+			document.removeEventListener(
+				'folio-note:open-entry-picker',
+				handleOpenEntryPicker
+			)
 		}
 	}, [])
 
