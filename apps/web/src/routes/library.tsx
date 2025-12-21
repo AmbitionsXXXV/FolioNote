@@ -4,6 +4,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { EntryList } from '@/components/entry-list'
 import { Button } from '@/components/ui/button'
 import { getUser } from '@/functions/get-user'
@@ -34,6 +35,7 @@ export const Route = createFileRoute('/library')({
  * @returns The React element for the library page UI.
  */
 function LibraryPage() {
+	const { t } = useTranslation()
 	const [filter, setFilter] = useState<FilterType>('all')
 
 	const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
@@ -54,9 +56,9 @@ function LibraryPage() {
 	const entries =
 		filter === 'all' ? allEntries.filter((e) => !e.isInbox) : allEntries
 
-	const filters: { key: FilterType; label: string; icon?: IconSvgElement }[] = [
-		{ key: 'all', label: '全部' },
-		{ key: 'starred', label: '收藏', icon: StarIcon },
+	const filters: { key: FilterType; labelKey: string; icon?: IconSvgElement }[] = [
+		{ key: 'all', labelKey: 'review.allItems' },
+		{ key: 'starred', labelKey: 'entry.starred', icon: StarIcon },
 	]
 
 	return (
@@ -68,22 +70,24 @@ function LibraryPage() {
 						<HugeiconsIcon className="size-6 text-primary" icon={BookOpen01Icon} />
 					</div>
 					<div>
-						<h1 className="font-bold text-2xl">资料库</h1>
-						<p className="text-muted-foreground text-sm">整理好的学习笔记</p>
+						<h1 className="font-bold text-2xl">{t('entry.library')}</h1>
+						<p className="text-muted-foreground text-sm">
+							{t('entry.emptyLibrary')}
+						</p>
 					</div>
 				</div>
 
 				<Link to="/entries/new">
 					<Button>
 						<HugeiconsIcon className="mr-2 size-4" icon={Add01Icon} />
-						新建笔记
+						{t('entry.newEntry')}
 					</Button>
 				</Link>
 			</div>
 
 			{/* Filter tabs */}
 			<div className="mb-6 flex gap-2">
-				{filters.map(({ key, label, icon }) => (
+				{filters.map(({ key, labelKey, icon }) => (
 					<Button
 						key={key}
 						onClick={() => setFilter(key)}
@@ -91,18 +95,14 @@ function LibraryPage() {
 						variant={filter === key ? 'default' : 'outline'}
 					>
 						{icon ? <HugeiconsIcon className="mr-1 size-4" icon={icon} /> : null}
-						{label}
+						{t(labelKey)}
 					</Button>
 				))}
 			</div>
 
 			{/* Entry list */}
 			<EntryList
-				emptyMessage={
-					filter === 'starred'
-						? '暂无收藏的笔记'
-						: '资料库是空的，从收件箱整理笔记或创建新笔记'
-				}
+				emptyMessage={t('entry.emptyLibrary')}
 				entries={entries}
 				hasMore={hasNextPage}
 				isLoading={isLoading}

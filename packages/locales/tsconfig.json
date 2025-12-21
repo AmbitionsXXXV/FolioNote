@@ -1,0 +1,9 @@
+{
+  "extends": "@folio/config/tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"]
+}

@@ -1,4 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -18,6 +19,7 @@ import { Skeleton } from './ui/skeleton'
  * @returns A React element containing either a loading skeleton, a "Sign In" link button, or an account dropdown showing the user's name, email, and a "Sign Out" action that navigates to the root on success.
  */
 export default function UserMenu() {
+	const { t } = useTranslation()
 	const navigate = useNavigate()
 	const { data: session, isPending } = authClient.useSession()
 
@@ -28,7 +30,7 @@ export default function UserMenu() {
 	if (!session) {
 		return (
 			<Link to="/login">
-				<Button variant="outline">Sign In</Button>
+				<Button variant="outline">{t('auth.signIn')}</Button>
 			</Link>
 		)
 	}
@@ -40,7 +42,7 @@ export default function UserMenu() {
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="min-w-max max-w-40 bg-card">
 				<DropdownMenuGroup>
-					<DropdownMenuLabel>My Account</DropdownMenuLabel>
+					<DropdownMenuLabel>{t('common.settings')}</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem className="break-all" title={session.user.email}>
 						{session.user.email}
@@ -60,7 +62,7 @@ export default function UserMenu() {
 					}}
 					variant="destructive"
 				>
-					Sign Out
+					{t('auth.signOut')}
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>

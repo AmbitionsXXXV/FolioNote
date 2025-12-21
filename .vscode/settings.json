@@ -1,4 +1,19 @@
 {
+  "i18n-ally.localesPaths": [
+    "packages/locales/src/resources"
+  ],
+  "i18n-ally.sourceLanguage": "en-US",
+  "i18n-ally.enabledParsers": [
+    "ts",
+    "json"
+  ],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.enabledFrameworks": [
+    "react-i18next",
+    "i18next"
+  ],
+  "i18n-ally.keepFulfilled": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
@@ -35,6 +50,7 @@
   "cSpell.words": [
     "Fraunces",
     "isready",
+    "Noninteractive",
     "Noto"
   ]
 }

@@ -2,6 +2,7 @@ import { InboxIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { createFileRoute, redirect } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { EntryList } from '@/components/entry-list'
 import { QuickCapture } from '@/components/quick-capture'
 import { getUser } from '@/functions/get-user'
@@ -28,6 +29,7 @@ export const Route = createFileRoute('/inbox')({
  * @returns The page's React element containing the inbox header, QuickCapture input, and EntryList wired to infinite query state
  */
 function InboxPage() {
+	const { t } = useTranslation()
 	const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
 		useInfiniteQuery({
 			queryKey: ['entries', 'inbox'],
@@ -52,19 +54,19 @@ function InboxPage() {
 					<HugeiconsIcon className="size-6 text-primary" icon={InboxIcon} />
 				</div>
 				<div>
-					<h1 className="font-bold text-2xl">收件箱</h1>
-					<p className="text-muted-foreground text-sm">快速捕获想法，稍后整理</p>
+					<h1 className="font-bold text-2xl">{t('entry.inbox')}</h1>
+					<p className="text-muted-foreground text-sm">{t('entry.quickCapture')}</p>
 				</div>
 			</div>
 
 			{/* Quick capture */}
 			<div className="mb-8">
-				<QuickCapture placeholder="快速记录想法，按 Enter 保存..." />
+				<QuickCapture placeholder={t('entry.placeholder')} />
 			</div>
 
 			{/* Entry list */}
 			<EntryList
-				emptyMessage="收件箱是空的，开始记录你的第一个想法吧！"
+				emptyMessage={t('entry.emptyInbox')}
 				entries={entries}
 				hasMore={hasNextPage}
 				isLoading={isLoading}

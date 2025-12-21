@@ -262,25 +262,31 @@ Done: 实现了完整的 Tiptap Slash Command 扩展：
 
 #### D1. 共享 locales 子包
 
-* [ ] 新增 `packages/locales` 统一管理语言资源（例如 `en-US`、`zh-CN`）
-* [ ] 统一 key 命名规范（如 `auth.*` / `entry.*` / `review.*`）
-* [ ] 插值与复数规则使用 ICU MessageFormat
-* [ ] CI 校验：各语言 key 一致（缺失/多余 key 报错）
+* [x] 新增 `packages/locales` 统一管理语言资源（例如 `en-US`、`zh-CN`）
+* [x] 统一 key 命名规范（如 `auth.*` / `entry.*` / `review.*`）
+* [x] 插值与复数规则使用 ICU MessageFormat
+* [x] CI 校验：各语言 key 一致（缺失/多余 key 报错）
+
+Done: 创建了 `packages/locales` 子包，包含 `en-US.json` 和 `zh-CN.json` 语言资源文件，定义了 `common`、`auth`、`entry`、`tag`、`source`、`review`、`nav`、`search`、`editor`、`error` 等命名空间。支持 i18next v4 JSON 格式的复数规则（`_one`/`_other`）和插值（`{{count}}`）。添加了 `packages/locales/scripts/check-keys.ts` 脚本用于 CI 校验 key 一致性。
 
 #### D2. Web / Native 集成
 
-* [ ] Web：提供 `t(key, params)`（或 Provider/hook）替换关键 UI 文案
-* [ ] iOS：同样提供 `t(key, params)`，覆盖导航、按钮、空态、错误提示
-* [ ] 支持语言切换与 fallback（默认 en-US，或按产品策略）
+* [x] Web：提供 `t(key, params)`（或 Provider/hook）替换关键 UI 文案
+* [x] iOS：同样提供 `t(key, params)`，覆盖导航、按钮、空态、错误提示
+* [x] 支持语言切换与 fallback（默认 en-US，或按产品策略）
+
+Done: Web 端集成 react-i18next，在 `__root.tsx` 引入 I18nextProvider，所有页面和组件已使用 `useTranslation` hook；Native 端集成 i18next + expo-localization，自动检测设备语言，首页、登录、注册、导航等 UI 已国际化。
 
 #### D3. Server 接口 msg 国际化（双轨）
 
-* [ ] Server 根据 `X-Locale` / `Accept-Language` / 用户设置解析 locale
-* [ ] 错误返回结构包含：
-  * [ ] `code`（稳定）
-  * [ ] `message`（服务端按 locale 渲染）
-  * [ ] `params`（可选）
-* [ ] 设置 `Vary: Accept-Language, X-Locale`（若使用缓存）
+* [x] Server 根据 `X-Locale` / `Accept-Language` / 用户设置解析 locale
+* [x] 错误返回结构包含：
+  * [x] `code`（稳定）
+  * [x] `message`（服务端按 locale 渲染）
+  * [x] `params`（可选）
+* [x] 设置 `Vary: Accept-Language, X-Locale`（若使用缓存）
+
+Done: 扩展 `packages/api/src/context.ts` 解析 `X-Locale` 和 `Accept-Language` 头，添加 `locale` 到 context；创建 `getLocalizedErrorMessage` 和 `createLocalizedError` 工具函数，支持 params 插值；Server 响应头已添加 `Vary: Accept-Language, X-Locale`。
 
 验收标准：
 

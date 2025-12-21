@@ -1,5 +1,6 @@
 import { Card, useThemeColor } from 'heroui-native'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ActivityIndicator, Pressable, Text, TextInput, View } from 'react-native'
 import { authClient } from '@/lib/auth-client'
 import { queryClient } from '@/utils/orpc'
@@ -53,6 +54,7 @@ function signUpHandler({
 }
 
 export function SignUp() {
+	const { t } = useTranslation()
 	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -77,7 +79,7 @@ export function SignUp() {
 
 	return (
 		<Card className="mt-6 p-4" variant="secondary">
-			<Card.Title className="mb-4">Create Account</Card.Title>
+			<Card.Title className="mb-4">{t('auth.createAccount')}</Card.Title>
 
 			{error ? (
 				<View className="mb-4 rounded-lg bg-danger/10 p-3">
@@ -88,7 +90,7 @@ export function SignUp() {
 			<TextInput
 				className="mb-3 rounded-lg border border-divider bg-surface px-4 py-3 text-foreground"
 				onChangeText={setName}
-				placeholder="Name"
+				placeholder={t('auth.name')}
 				placeholderTextColor={mutedColor}
 				value={name}
 			/>
@@ -98,7 +100,7 @@ export function SignUp() {
 				className="mb-3 rounded-lg border border-divider bg-surface px-4 py-3 text-foreground"
 				keyboardType="email-address"
 				onChangeText={setEmail}
-				placeholder="Email"
+				placeholder={t('auth.email')}
 				placeholderTextColor={mutedColor}
 				value={email}
 			/>
@@ -106,7 +108,7 @@ export function SignUp() {
 			<TextInput
 				className="mb-4 rounded-lg border border-divider bg-surface px-4 py-3 text-foreground"
 				onChangeText={setPassword}
-				placeholder="Password"
+				placeholder={t('auth.password')}
 				placeholderTextColor={mutedColor}
 				secureTextEntry
 				value={password}
@@ -120,7 +122,7 @@ export function SignUp() {
 				{isLoading ? (
 					<ActivityIndicator color={foregroundColor} size="small" />
 				) : (
-					<Text className="font-medium text-foreground">Sign Up</Text>
+					<Text className="font-medium text-foreground">{t('auth.signUp')}</Text>
 				)}
 			</Pressable>
 		</Card>
