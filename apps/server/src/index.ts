@@ -10,6 +10,9 @@ import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
+import { initI18n } from './i18n'
+
+await initI18n()
 
 const app = new Hono()
 
@@ -19,7 +22,7 @@ app.use(
 	cors({
 		origin: process.env.CORS_ORIGIN || '',
 		allowMethods: ['GET', 'POST', 'OPTIONS'],
-		allowHeaders: ['Content-Type', 'Authorization'],
+		allowHeaders: ['Content-Type', 'Authorization', 'X-Locale', 'Accept-Language'],
 		credentials: true,
 	})
 )
@@ -49,6 +52,8 @@ export const rpcHandler = new RPCHandler(appRouter, {
 
 app.use('/*', async (c, next) => {
 	const context = await createContext({ context: c })
+
+	c.header('Vary', 'Accept-Language, X-Locale')
 
 	const rpcResult = await rpcHandler.handle(c.req.raw, {
 		prefix: '/rpc',

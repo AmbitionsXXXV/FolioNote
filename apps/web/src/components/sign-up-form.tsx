@@ -1,5 +1,6 @@
 import { useForm } from '@tanstack/react-form'
 import { Link, useNavigate } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import z from 'zod'
 import { authClient } from '@/lib/auth-client'
@@ -19,6 +20,7 @@ import { Label } from './ui/label'
  * @returns A React element containing the sign-up form or a Loader when the session is pending.
  */
 export default function SignUpForm() {
+	const { t } = useTranslation()
 	const navigate = useNavigate({
 		from: '/',
 	})
@@ -65,7 +67,9 @@ export default function SignUpForm() {
 
 	return (
 		<div className="mx-auto mt-10 w-full max-w-md p-6">
-			<h1 className="mb-6 text-center font-bold text-3xl">Create Account</h1>
+			<h1 className="mb-6 text-center font-bold text-3xl">
+				{t('auth.createAccount')}
+			</h1>
 
 			<form
 				className="space-y-4"
@@ -79,7 +83,7 @@ export default function SignUpForm() {
 					<form.Field name="name">
 						{(field) => (
 							<div className="space-y-2">
-								<Label htmlFor={field.name}>Name</Label>
+								<Label htmlFor={field.name}>{t('auth.name')}</Label>
 								<Input
 									id={field.name}
 									name={field.name}
@@ -101,7 +105,7 @@ export default function SignUpForm() {
 					<form.Field name="email">
 						{(field) => (
 							<div className="space-y-2">
-								<Label htmlFor={field.name}>Email</Label>
+								<Label htmlFor={field.name}>{t('auth.email')}</Label>
 								<Input
 									id={field.name}
 									name={field.name}
@@ -124,7 +128,7 @@ export default function SignUpForm() {
 					<form.Field name="password">
 						{(field) => (
 							<div className="space-y-2">
-								<Label htmlFor={field.name}>Password</Label>
+								<Label htmlFor={field.name}>{t('auth.password')}</Label>
 								<Input
 									id={field.name}
 									name={field.name}
@@ -150,7 +154,7 @@ export default function SignUpForm() {
 							disabled={!state.canSubmit || state.isSubmitting}
 							type="submit"
 						>
-							{state.isSubmitting ? 'Submitting...' : 'Sign Up'}
+							{state.isSubmitting ? t('common.loading') : t('auth.signUp')}
 						</Button>
 					)}
 				</form.Subscribe>
@@ -158,7 +162,7 @@ export default function SignUpForm() {
 
 			<div className="mt-4 text-center">
 				<Link className="text-indigo-600 hover:text-indigo-800" to="/login">
-					Already have an account? Sign In
+					{t('auth.hasAccount')} {t('auth.signIn')}
 				</Link>
 			</div>
 		</div>

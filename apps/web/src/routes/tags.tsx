@@ -9,6 +9,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -70,6 +71,7 @@ export const Route = createFileRoute('/tags')({
 })
 
 function TagsPage() {
+	const { t } = useTranslation()
 	const queryClient = useQueryClient()
 	const [isDialogOpen, setIsDialogOpen] = useState(false)
 	const [editingTag, setEditingTag] = useState<Tag | null>(null)
@@ -177,7 +179,8 @@ function TagsPage() {
 
 	const isPending = createMutation.isPending || updateMutation.isPending
 
-	const getSubmitButtonText = (editing: Tag | null) => (editing ? '保存' : '创建')
+	const getSubmitButtonText = (editing: Tag | null) =>
+		editing ? t('common.save') : t('common.create')
 
 	return (
 		<div className="container mx-auto max-w-5xl px-4 py-8">
@@ -188,14 +191,14 @@ function TagsPage() {
 						<HugeiconsIcon className="size-6 text-primary" icon={Tag01Icon} />
 					</div>
 					<div>
-						<h1 className="font-bold text-2xl">标签</h1>
-						<p className="text-muted-foreground text-sm">管理笔记标签</p>
+						<h1 className="font-bold text-2xl">{t('tag.tags')}</h1>
+						<p className="text-muted-foreground text-sm">{t('tag.noTags')}</p>
 					</div>
 				</div>
 
 				<Button onClick={handleOpenCreate}>
 					<HugeiconsIcon className="mr-2 size-4" icon={Add01Icon} />
-					新建标签
+					{t('tag.newTag')}
 				</Button>
 			</div>
 
@@ -217,13 +220,11 @@ function TagsPage() {
 						className="mb-4 size-12 text-muted-foreground/50"
 						icon={Tag01Icon}
 					/>
-					<p className="mb-2 font-medium text-muted-foreground">暂无标签</p>
-					<p className="mb-4 text-muted-foreground text-sm">
-						创建标签来组织你的笔记
-					</p>
+					<p className="mb-2 font-medium text-muted-foreground">{t('tag.noTags')}</p>
+					<p className="mb-4 text-muted-foreground text-sm">{t('tag.addTag')}</p>
 					<Button onClick={handleOpenCreate} variant="outline">
 						<HugeiconsIcon className="mr-2 size-4" icon={Add01Icon} />
-						创建第一个标签
+						{t('tag.newTag')}
 					</Button>
 				</div>
 			) : null}
@@ -245,25 +246,27 @@ function TagsPage() {
 			<Dialog onOpenChange={setIsDialogOpen} open={isDialogOpen}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>{editingTag ? '编辑标签' : '新建标签'}</DialogTitle>
+						<DialogTitle>
+							{editingTag ? t('tag.editTag') : t('tag.newTag')}
+						</DialogTitle>
 					</DialogHeader>
 
 					<form className="space-y-4" onSubmit={handleSubmit}>
 						<div className="space-y-2">
-							<Label htmlFor="tag-name">名称</Label>
+							<Label htmlFor="tag-name">{t('tag.tagName')}</Label>
 							<Input
 								autoFocus
 								disabled={isPending}
 								id="tag-name"
 								maxLength={50}
 								onChange={(e) => setTagName(e.target.value)}
-								placeholder="输入标签名称"
+								placeholder={t('tag.tagName')}
 								value={tagName}
 							/>
 						</div>
 
 						<div className="space-y-2">
-							<Label>颜色</Label>
+							<Label>{t('tag.tagColor')}</Label>
 							<div className="flex flex-wrap gap-2">
 								{/* No color option */}
 								<button
@@ -317,10 +320,10 @@ function TagsPage() {
 								type="button"
 								variant="outline"
 							>
-								取消
+								{t('common.cancel')}
 							</Button>
 							<Button disabled={!tagName.trim() || isPending} type="submit">
-								{isPending ? '保存中...' : getSubmitButtonText(editingTag)}
+								{isPending ? t('common.loading') : getSubmitButtonText(editingTag)}
 							</Button>
 						</DialogFooter>
 					</form>

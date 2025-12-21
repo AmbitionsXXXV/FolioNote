@@ -12,6 +12,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { SourceCard } from '@/components/source-card'
 import { SourceDialog } from '@/components/source-dialog'
@@ -53,6 +54,7 @@ export const Route = createFileRoute('/sources')({
 })
 
 function SourcesPage() {
+	const { t } = useTranslation()
 	const [filter, setFilter] = useState<FilterType>('all')
 	const [isDialogOpen, setIsDialogOpen] = useState(false)
 	const [editingSource, setEditingSource] = useState<{
@@ -93,13 +95,13 @@ function SourcesPage() {
 
 	const sources = data?.pages.flatMap((page) => page.items) ?? []
 
-	const filters: { key: FilterType; label: string; icon?: IconSvgElement }[] = [
-		{ key: 'all', label: '全部' },
-		{ key: 'link', label: '链接', icon: Link01Icon },
-		{ key: 'book', label: '书籍', icon: Book02Icon },
-		{ key: 'article', label: '文章', icon: News01Icon },
-		{ key: 'video', label: '视频', icon: Video01Icon },
-		{ key: 'podcast', label: '播客', icon: MusicNote01Icon },
+	const filters: { key: FilterType; labelKey: string; icon?: IconSvgElement }[] = [
+		{ key: 'all', labelKey: 'review.allItems' },
+		{ key: 'link', labelKey: 'source.link', icon: Link01Icon },
+		{ key: 'book', labelKey: 'source.book', icon: Book02Icon },
+		{ key: 'article', labelKey: 'source.article', icon: News01Icon },
+		{ key: 'video', labelKey: 'source.video', icon: Video01Icon },
+		{ key: 'podcast', labelKey: 'source.podcast', icon: MusicNote01Icon },
 	]
 
 	const handleEdit = (source: (typeof sources)[0]) => {
@@ -134,20 +136,20 @@ function SourcesPage() {
 						<HugeiconsIcon className="size-6 text-primary" icon={Link01Icon} />
 					</div>
 					<div>
-						<h1 className="font-bold text-2xl">来源</h1>
-						<p className="text-muted-foreground text-sm">管理学习资料的来源</p>
+						<h1 className="font-bold text-2xl">{t('source.sources')}</h1>
+						<p className="text-muted-foreground text-sm">{t('source.noSources')}</p>
 					</div>
 				</div>
 
 				<Button onClick={handleCreate}>
 					<HugeiconsIcon className="mr-2 size-4" icon={Add01Icon} />
-					添加来源
+					{t('source.addSource')}
 				</Button>
 			</div>
 
 			{/* Filter tabs */}
 			<div className="mb-6 flex flex-wrap gap-2">
-				{filters.map(({ key, label, icon }) => (
+				{filters.map(({ key, labelKey, icon }) => (
 					<Button
 						key={key}
 						onClick={() => setFilter(key)}
@@ -155,7 +157,7 @@ function SourcesPage() {
 						variant={filter === key ? 'default' : 'outline'}
 					>
 						{icon ? <HugeiconsIcon className="mr-1 size-4" icon={icon} /> : null}
-						{label}
+						{t(labelKey)}
 					</Button>
 				))}
 			</div>
@@ -178,15 +180,15 @@ function SourcesPage() {
 						className="mb-4 size-12 text-muted-foreground/50"
 						icon={Link01Icon}
 					/>
-					<p className="mb-2 font-medium text-muted-foreground">暂无来源</p>
+					<p className="mb-2 font-medium text-muted-foreground">
+						{t('source.noSources')}
+					</p>
 					<p className="mb-4 text-muted-foreground text-sm">
-						{filter === 'all'
-							? '添加书籍、文章、视频等学习资料的来源'
-							: `暂无${filters.find((f) => f.key === filter)?.label || ''}类型的来源`}
+						{t('source.addSource')}
 					</p>
 					<Button onClick={handleCreate} variant="outline">
 						<HugeiconsIcon className="mr-2 size-4" icon={Add01Icon} />
-						添加第一个来源
+						{t('source.newSource')}
 					</Button>
 				</div>
 			) : null}
@@ -218,7 +220,7 @@ function SourcesPage() {
 								onClick={() => fetchNextPage()}
 								variant="outline"
 							>
-								{isFetchingNextPage ? '加载中...' : '加载更多'}
+								{isFetchingNextPage ? t('common.loading') : t('common.more')}
 							</Button>
 						</div>
 					) : null}

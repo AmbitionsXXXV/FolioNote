@@ -3,14 +3,25 @@ import { Link } from 'expo-router'
 import { Drawer } from 'expo-router/drawer'
 import { useThemeColor } from 'heroui-native'
 import { useCallback } from 'react'
-import { Pressable, Text } from 'react-native'
+import { useTranslation } from 'react-i18next'
+import { Pressable, Text, View } from 'react-native'
+import { SettingsButton } from '@/components/settings-button'
 import { ThemeToggle } from '@/components/theme-toggle'
 
 function DrawerLayout() {
+	const { t } = useTranslation()
 	const themeColorForeground = useThemeColor('foreground')
 	const themeColorBackground = useThemeColor('background')
 
-	const renderThemeToggle = useCallback(() => <ThemeToggle />, [])
+	const renderHeaderRight = useCallback(
+		() => (
+			<View className="flex-row items-center">
+				<SettingsButton />
+				<ThemeToggle />
+			</View>
+		),
+		[]
+	)
 
 	return (
 		<Drawer
@@ -21,17 +32,17 @@ function DrawerLayout() {
 					fontWeight: '600',
 					color: themeColorForeground,
 				},
-				headerRight: renderThemeToggle,
+				headerRight: renderHeaderRight,
 				drawerStyle: { backgroundColor: themeColorBackground },
 			}}
 		>
 			<Drawer.Screen
 				name="index"
 				options={{
-					headerTitle: 'Home',
+					headerTitle: t('nav.home'),
 					drawerLabel: ({ color, focused }) => (
 						<Text style={{ color: focused ? color : themeColorForeground }}>
-							Home
+							{t('nav.home')}
 						</Text>
 					),
 					drawerIcon: ({ size, color, focused }) => (
@@ -46,10 +57,10 @@ function DrawerLayout() {
 			<Drawer.Screen
 				name="(tabs)"
 				options={{
-					headerTitle: 'Tabs',
+					headerTitle: t('nav.dashboard'),
 					drawerLabel: ({ color, focused }) => (
 						<Text style={{ color: focused ? color : themeColorForeground }}>
-							Tabs
+							{t('nav.dashboard')}
 						</Text>
 					),
 					drawerIcon: ({ size, color, focused }) => (

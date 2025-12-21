@@ -1,5 +1,6 @@
 import { useForm } from '@tanstack/react-form'
 import { Link, useNavigate } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import z from 'zod'
 import { authClient } from '@/lib/auth-client'
@@ -17,6 +18,7 @@ import { Label } from './ui/label'
  * @returns The React element for the sign-in form.
  */
 export default function SignInForm() {
+	const { t } = useTranslation()
 	const navigate = useNavigate({
 		from: '/',
 	})
@@ -60,7 +62,7 @@ export default function SignInForm() {
 
 	return (
 		<div className="mx-auto mt-10 w-full max-w-md p-6">
-			<h1 className="mb-6 text-center font-bold text-3xl">Welcome Back</h1>
+			<h1 className="mb-6 text-center font-bold text-3xl">{t('auth.welcome')}</h1>
 
 			<form
 				className="space-y-4"
@@ -74,7 +76,7 @@ export default function SignInForm() {
 					<form.Field name="email">
 						{(field) => (
 							<div className="space-y-2">
-								<Label htmlFor={field.name}>Email</Label>
+								<Label htmlFor={field.name}>{t('auth.email')}</Label>
 								<Input
 									id={field.name}
 									name={field.name}
@@ -97,7 +99,7 @@ export default function SignInForm() {
 					<form.Field name="password">
 						{(field) => (
 							<div className="space-y-2">
-								<Label htmlFor={field.name}>Password</Label>
+								<Label htmlFor={field.name}>{t('auth.password')}</Label>
 								<Input
 									id={field.name}
 									name={field.name}
@@ -123,7 +125,7 @@ export default function SignInForm() {
 							disabled={!state.canSubmit || state.isSubmitting}
 							type="submit"
 						>
-							{state.isSubmitting ? 'Submitting...' : 'Sign In'}
+							{state.isSubmitting ? t('common.loading') : t('auth.signIn')}
 						</Button>
 					)}
 				</form.Subscribe>
@@ -131,7 +133,7 @@ export default function SignInForm() {
 
 			<div className="mt-4 text-center">
 				<Link className="text-indigo-600 hover:text-indigo-800" to="/register">
-					Need an account? Sign Up
+					{t('auth.noAccount')} {t('auth.signUp')}
 				</Link>
 			</div>
 		</div>

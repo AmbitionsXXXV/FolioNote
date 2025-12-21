@@ -19,10 +19,12 @@
     "@orpc/zod": "catalog:",
     "better-auth": "catalog:",
     "dotenv": "catalog:",
+    "i18next": "catalog:",
     "zod": "catalog:",
     "@folio/api": "workspace:*",
     "@folio/auth": "workspace:*",
-    "@folio/db": "workspace:*"
+    "@folio/db": "workspace:*",
+    "@folio/locales": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "catalog:",

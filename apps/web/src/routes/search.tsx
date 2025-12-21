@@ -3,6 +3,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { createFileRoute, redirect, useSearch } from '@tanstack/react-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { EntryList } from '@/components/entry-list'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -28,6 +29,7 @@ export const Route = createFileRoute('/search')({
 })
 
 function SearchPage() {
+	const { t } = useTranslation()
 	const { q } = useSearch({ from: '/search' })
 	const [searchInput, setSearchInput] = useState(q)
 
@@ -67,8 +69,8 @@ function SearchPage() {
 					<HugeiconsIcon className="size-6 text-primary" icon={Search01Icon} />
 				</div>
 				<div>
-					<h1 className="font-bold text-2xl">搜索</h1>
-					<p className="text-muted-foreground text-sm">搜索笔记标题和内容</p>
+					<h1 className="font-bold text-2xl">{t('nav.search')}</h1>
+					<p className="text-muted-foreground text-sm">{t('search.placeholder')}</p>
 				</div>
 			</div>
 
@@ -83,12 +85,12 @@ function SearchPage() {
 						<Input
 							className="pl-10"
 							onChange={(e) => setSearchInput(e.target.value)}
-							placeholder="输入关键词搜索..."
+							placeholder={t('search.placeholder')}
 							type="search"
 							value={searchInput}
 						/>
 					</div>
-					<Button type="submit">搜索</Button>
+					<Button type="submit">{t('nav.search')}</Button>
 				</div>
 			</form>
 
@@ -97,11 +99,11 @@ function SearchPage() {
 				<>
 					<p className="mb-4 text-muted-foreground text-sm">
 						{isLoading
-							? '搜索中...'
-							: `找到 ${entries.length}${hasNextPage ? '+' : ''} 条结果`}
+							? t('common.loading')
+							: t('search.resultCount', { count: entries.length })}
 					</p>
 					<EntryList
-						emptyMessage={`未找到包含"${q}"的笔记`}
+						emptyMessage={t('search.noResults')}
 						entries={entries}
 						hasMore={hasNextPage}
 						isLoading={isLoading}
@@ -115,10 +117,8 @@ function SearchPage() {
 						className="mb-4 size-12 text-muted-foreground/50"
 						icon={Search01Icon}
 					/>
-					<p className="mb-2 font-medium text-muted-foreground">开始搜索</p>
-					<p className="text-muted-foreground text-sm">
-						输入关键词搜索笔记的标题和内容
-					</p>
+					<p className="mb-2 font-medium text-muted-foreground">{t('nav.search')}</p>
+					<p className="text-muted-foreground text-sm">{t('search.placeholder')}</p>
 				</div>
 			)}
 		</div>

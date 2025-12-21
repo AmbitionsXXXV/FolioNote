@@ -50,6 +50,7 @@
         "noNoninteractiveElementInteractions": "off"
       },
       "style": {
+        "noExportedImports": "off",
         "useBlockStatements": "off"
       },
       "correctness": {
