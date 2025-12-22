@@ -100,13 +100,21 @@ Done: 实现了完整的 Tiptap Slash Command 扩展：
 
 目标：为 iOS WebView 编辑器与搜索/预览/复习提供统一数据基础，降低格式漂移与转换成本。
 
-* [ ] 内容主存为 ProseMirror JSON（Tiptap doc）
-* [ ] 派生字段（用于搜索/列表/复习摘要）
-  * [ ] `content_text`：纯文本（用于 ILIKE 搜索与摘要）
-  * [ ] 可选：`content_preview`（截断预览）
-* [ ] 迁移与兼容
-  * [ ] 现有 Markdown/字符串内容迁移到 JSON 或保持兼容读取策略
-  * [ ] API 返回中提供 `content.json` 与 `content.text`（或等价结构）
+* [x] 内容主存为 ProseMirror JSON（Tiptap doc）
+* [x] 派生字段（用于搜索/列表/复习摘要）
+  * [x] `content_text`：纯文本（用于 ILIKE 搜索与摘要）
+  * [x] 可选：`content_preview`（截断预览）- 通过 `generateContentPreview` 工具函数实现
+* [x] 迁移与兼容
+  * [x] 现有 Markdown/字符串内容迁移到 JSON 或保持兼容读取策略
+  * [x] API 返回中提供 `content.json` 与 `content.text`（或等价结构）
+
+Done - 实现说明：
+
+1. 数据库 Schema 新增 `contentJson`（ProseMirror JSON）和 `contentText`（纯文本）字段
+2. API 层自动处理内容转换：优先使用 `contentJson`，向后兼容 `content`（HTML）
+3. 前端编辑器支持 JSON 格式存储，onChange 同时返回 HTML 和 JSON
+4. EntryCard 优先使用 `contentText` 进行预览显示
+5. 内容转换工具函数位于 `packages/api/src/utils/content.ts`
 
 验收标准：
 

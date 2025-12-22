@@ -1,3 +1,4 @@
+import type { JSONContent } from '@tiptap/core'
 import Placeholder from '@tiptap/extension-placeholder'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -9,9 +10,20 @@ import {
 	type SlashCommandItem,
 } from './editor/slash-command'
 
+/**
+ * 内容格式类型
+ * - json: ProseMirror JSON 格式（推荐）
+ * - html: HTML 字符串格式（向后兼容）
+ */
+type ContentFormat = 'json' | 'html'
+
 type EntryEditorProps = {
+	/** 初始内容，可以是 JSON 字符串或 HTML */
 	content: string
-	onChange?: (content: string) => void
+	/** 内容变更回调 */
+	onChange?: (content: string, json: string) => void
+	/** 内容格式，默认 'json' */
+	contentFormat?: ContentFormat
 	placeholder?: string
 	editable?: boolean
 	autoFocus?: boolean
@@ -21,10 +33,32 @@ type EntryEditorProps = {
 }
 
 /**
+ * 解析内容字符串为编辑器可用的格式
+ */
+function parseContent(content: string, format: ContentFormat): string | JSONContent {
+	if (!content) {
+		return ''
+	}
+
+	if (format === 'json') {
+		try {
+			return JSON.parse(content) as JSONContent
+		} catch {
+			// 如果 JSON 解析失败，尝试作为 HTML 处理
+			return content
+		}
+	}
+
+	return content
+}
+
+/**
  * A TipTap-based rich text editor for editing entry content with Markdown shortcuts and debounced auto-save.
  *
- * @param content - Initial HTML content displayed in the editor.
- * @param onChange - Optional callback invoked with the editor's current HTML after edits (debounced 500ms).
+ * @param content - Initial content displayed in the editor (JSON string or HTML).
+ * @param onChange - Optional callback invoked with the editor's current content after edits (debounced 500ms).
+ *                   Returns both HTML and JSON string formats.
+ * @param contentFormat - Content format: 'json' (recommended) or 'html' (backward compatible). Defaults to 'json'.
  * @param placeholder - Text shown when the editor is empty; defaults to "Write something...".
  * @param editable - Whether the editor is editable; defaults to `true`.
  * @param autoFocus - If `true`, focuses the editor and places the cursor at the end on mount; defaults to `false`.
@@ -34,6 +68,7 @@ type EntryEditorProps = {
 export function EntryEditor({
 	content,
 	onChange,
+	contentFormat = 'json',
 	placeholder = 'Write something...',
 	editable = true,
 	autoFocus = false,
@@ -47,6 +82,13 @@ export function EntryEditor({
 		const defaults = getDefaultSlashCommands()
 		return [...defaults, ...additionalCommands]
 	}, [additionalCommands])
+
+	// Parse initial content based on format
+	const initialContent = useMemo(
+		() => parseContent(content, contentFormat),
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- 只在初始化时解析
+		[]
+	)
 
 	const editor = useEditor({
 		extensions: [
@@ -68,7 +110,7 @@ export function EntryEditor({
 				commands,
 			}),
 		],
-		content,
+		content: initialContent,
 		editable,
 		immediatelyRender: false,
 		editorProps: {
@@ -83,7 +125,9 @@ export function EntryEditor({
 					clearTimeout(debounceRef.current)
 				}
 				debounceRef.current = setTimeout(() => {
-					onChange(editorInstance.getHTML())
+					const html = editorInstance.getHTML()
+					const json = JSON.stringify(editorInstance.getJSON())
+					onChange(html, json)
 				}, 500)
 			}
 		},
@@ -98,10 +142,21 @@ export function EntryEditor({
 
 	// Update content when it changes externally
 	useEffect(() => {
-		if (editor && content !== editor.getHTML()) {
+		if (!editor) {
+			return
+		}
+
+		// 根据格式比较内容
+		if (contentFormat === 'json') {
+			const currentJson = JSON.stringify(editor.getJSON())
+			if (content !== currentJson) {
+				const parsed = parseContent(content, contentFormat)
+				editor.commands.setContent(parsed)
+			}
+		} else if (content !== editor.getHTML()) {
 			editor.commands.setContent(content)
 		}
-	}, [content, editor])
+	}, [content, contentFormat, editor])
 
 	// Cleanup debounce on unmount
 	useEffect(

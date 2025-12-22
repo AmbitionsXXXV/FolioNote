@@ -10,6 +10,8 @@ type Entry = {
 	id: string
 	title: string
 	content: string
+	/** 纯文本内容，用于预览（优先使用） */
+	contentText?: string | null
 	isStarred: boolean
 	isPinned: boolean
 	isInbox: boolean
@@ -133,6 +135,7 @@ export function EntryList({
 						{pinnedEntries.map((entry) => (
 							<EntryCard
 								content={entry.content}
+								contentText={entry.contentText}
 								id={entry.id}
 								isPinned={entry.isPinned}
 								isStarred={entry.isStarred}
@@ -158,6 +161,7 @@ export function EntryList({
 						{regularEntries.map((entry) => (
 							<EntryCard
 								content={entry.content}
+								contentText={entry.contentText}
 								id={entry.id}
 								isPinned={entry.isPinned}
 								isStarred={entry.isStarred}

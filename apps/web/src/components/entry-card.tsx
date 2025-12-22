@@ -8,7 +8,10 @@ import { Card, CardContent, CardHeader } from './ui/card'
 type EntryCardProps = {
 	id: string
 	title: string
+	/** @deprecated 使用 contentText 替代 */
 	content: string
+	/** 纯文本内容，用于预览（优先使用） */
+	contentText?: string | null
 	isStarred: boolean
 	isPinned: boolean
 	updatedAt: string | number | Date
@@ -28,6 +31,7 @@ export function EntryCard({
 	id,
 	title,
 	content,
+	contentText,
 	isStarred,
 	isPinned,
 	updatedAt,
@@ -35,8 +39,8 @@ export function EntryCard({
 	onPin,
 	onDelete,
 }: EntryCardProps) {
-	// Strip HTML tags for preview
-	const plainContent = content.replace(/<[^>]*>/g, '').trim()
+	// 优先使用 contentText，向后兼容从 HTML 提取
+	const plainContent = contentText ?? content.replace(/<[^>]*>/g, '').trim()
 	const preview =
 		plainContent.slice(0, 150) + (plainContent.length > 150 ? '...' : '')
 

@@ -26,11 +26,16 @@ function NewEntryPage() {
 
 	const [title, setTitle] = useState('')
 	const [content, setContent] = useState('')
+	const [contentJson, setContentJson] = useState('')
 
 	// Create mutation
 	const createMutation = useMutation({
-		mutationFn: (data: { title?: string; content?: string; isInbox?: boolean }) =>
-			orpc.entries.create.call(data),
+		mutationFn: (data: {
+			title?: string
+			content?: string
+			contentJson?: string
+			isInbox?: boolean
+		}) => orpc.entries.create.call(data),
 		onSuccess: (entry) => {
 			queryClient.invalidateQueries({ queryKey: ['entries'] })
 			toast.success('笔记已创建')
@@ -44,13 +49,19 @@ function NewEntryPage() {
 		},
 	})
 
+	const handleContentChange = useCallback((html: string, json: string) => {
+		setContent(html)
+		setContentJson(json)
+	}, [])
+
 	const handleSave = useCallback(() => {
 		createMutation.mutate({
 			title,
 			content,
+			contentJson,
 			isInbox: false, // New entries from this page go to library
 		})
-	}, [createMutation, title, content])
+	}, [createMutation, title, content, contentJson])
 
 	const handleGoBack = useCallback(() => {
 		navigate({ to: '/library' })
@@ -94,8 +105,9 @@ function NewEntryPage() {
 
 			{/* Editor */}
 			<EntryEditor
-				content={content}
-				onChange={setContent}
+				content={contentJson}
+				contentFormat="json"
+				onChange={handleContentChange}
 				placeholder="开始写作..."
 			/>
 		</div>

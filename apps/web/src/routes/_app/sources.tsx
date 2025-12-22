@@ -67,14 +67,16 @@ function SourcesPage() {
 		isFetchingNextPage,
 		refetch,
 	} = useInfiniteQuery({
-		queryKey: ['sources', filter],
+		// 使用独立的 infinite queryKey，避免与 useQuery(['sources', 'all']) 等非 infinite 查询产生缓存结构冲突
+		queryKey: ['sources', 'infinite', filter],
 		queryFn: ({ pageParam }) =>
 			orpc.sources.list.call({
 				type: filter === 'all' ? undefined : filter,
 				cursor: pageParam,
 				limit: 20,
 			}),
-		getNextPageParam: (lastPage) => lastPage?.nextCursor,
+		getNextPageParam: (lastPage) =>
+			lastPage?.hasMore ? lastPage.nextCursor : undefined,
 		initialPageParam: undefined as string | undefined,
 	})
 

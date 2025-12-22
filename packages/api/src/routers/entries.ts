@@ -4,6 +4,7 @@ import { and, desc, eq, inArray, isNotNull, isNull, lt } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 import { protectedProcedure } from '../index'
+import { extractTextFromHtml, processContentUpdate } from '../utils/content'
 
 /**
  * Entry filter types for list queries
@@ -14,20 +15,34 @@ const EntryFilterSchema = z
 
 /**
  * Input schema for creating an entry
+ *
+ * 支持两种内容格式：
+ * - contentJson: ProseMirror JSON（推荐，用于富文本编辑器）
+ * - content: HTML 字符串（向后兼容）
  */
 const CreateEntryInputSchema = z.object({
 	title: z.string().optional().default(''),
+	/** @deprecated 使用 contentJson 替代 */
 	content: z.string().optional().default(''),
+	/** ProseMirror JSON 格式内容 */
+	contentJson: z.string().optional(),
 	isInbox: z.boolean().optional().default(true),
 })
 
 /**
  * Input schema for updating an entry
+ *
+ * 支持两种内容格式：
+ * - contentJson: ProseMirror JSON（推荐，用于富文本编辑器）
+ * - content: HTML 字符串（向后兼容）
  */
 const UpdateEntryInputSchema = z.object({
 	id: z.string(),
 	title: z.string().optional(),
+	/** @deprecated 使用 contentJson 替代 */
 	content: z.string().optional(),
+	/** ProseMirror JSON 格式内容 */
+	contentJson: z.string().optional(),
 	isInbox: z.boolean().optional(),
 	isStarred: z.boolean().optional(),
 	isPinned: z.boolean().optional(),
@@ -60,12 +75,28 @@ const EntryTagInputSchema = z.object({
 
 /**
  * entries.create - Create a new entry
+ *
+ * 优先使用 contentJson，自动派生 contentText 用于搜索
+ * 如果只提供 content（HTML），则从 HTML 提取纯文本
  */
 export const createEntry = protectedProcedure
 	.input(CreateEntryInputSchema)
 	.handler(async ({ context, input }) => {
 		const userId = context.session.user.id
 		const id = nanoid()
+
+		// 处理内容：优先使用 contentJson
+		let contentJson: string | null = null
+		let contentText: string | null = null
+
+		if (input.contentJson) {
+			const processed = processContentUpdate(input.contentJson)
+			contentJson = processed.contentJson
+			contentText = processed.contentText
+		} else if (input.content) {
+			// 向后兼容：从 HTML 提取纯文本
+			contentText = extractTextFromHtml(input.content)
+		}
 
 		const [entry] = await db
 			.insert(entries)
@@ -74,6 +105,8 @@ export const createEntry = protectedProcedure
 				userId,
 				title: input.title,
 				content: input.content,
+				contentJson,
+				contentText,
 				isInbox: input.isInbox,
 			})
 			.returning()
@@ -83,6 +116,9 @@ export const createEntry = protectedProcedure
 
 /**
  * entries.update - Update an existing entry
+ *
+ * 优先使用 contentJson，自动派生 contentText 用于搜索
+ * 如果只提供 content（HTML），则从 HTML 提取纯文本
  */
 export const updateEntry = protectedProcedure
 	.input(UpdateEntryInputSchema)
@@ -95,9 +131,20 @@ export const updateEntry = protectedProcedure
 		if (updateData.title !== undefined) {
 			fieldsToUpdate.title = updateData.title
 		}
-		if (updateData.content !== undefined) {
+
+		// 处理内容更新：优先使用 contentJson
+		if (updateData.contentJson !== undefined) {
+			const processed = processContentUpdate(updateData.contentJson)
+			fieldsToUpdate.contentJson = processed.contentJson
+			fieldsToUpdate.contentText = processed.contentText
+			// 同时更新 content 以保持向后兼容（可选）
+			fieldsToUpdate.content = updateData.content ?? ''
+		} else if (updateData.content !== undefined) {
+			// 向后兼容：从 HTML 提取纯文本
 			fieldsToUpdate.content = updateData.content
+			fieldsToUpdate.contentText = extractTextFromHtml(updateData.content)
 		}
+
 		if (updateData.isInbox !== undefined) {
 			fieldsToUpdate.isInbox = updateData.isInbox
 		}

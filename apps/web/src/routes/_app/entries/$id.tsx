@@ -113,6 +113,7 @@ function EntryEditPage() {
 			id: string
 			title?: string
 			content?: string
+			contentJson?: string
 			isInbox?: boolean
 			isStarred?: boolean
 			isPinned?: boolean
@@ -146,9 +147,9 @@ function EntryEditPage() {
 	)
 
 	const handleContentChange = useCallback(
-		(newContent: string) => {
-			setLocalContent(newContent)
-			updateMutation.mutate({ id, content: newContent })
+		(html: string, json: string) => {
+			setLocalContent(json)
+			updateMutation.mutate({ id, content: html, contentJson: json })
 		},
 		[id, updateMutation]
 	)
@@ -226,7 +227,8 @@ function EntryEditPage() {
 	}
 
 	const title = localTitle ?? entry.title
-	const content = localContent ?? entry.content
+	// 优先使用 contentJson，向后兼容 content（HTML）
+	const content = localContent ?? entry.contentJson ?? entry.content
 
 	return (
 		<div className="container mx-auto max-w-4xl px-4 py-6">
@@ -333,6 +335,7 @@ function EntryEditPage() {
 				additionalCommands={additionalCommands}
 				autoFocus
 				content={content}
+				contentFormat={entry.contentJson ? 'json' : 'html'}
 				onChange={handleContentChange}
 				placeholder="开始写作... 输入 / 打开命令菜单"
 			/>
