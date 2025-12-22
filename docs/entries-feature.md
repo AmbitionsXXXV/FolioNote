@@ -267,6 +267,7 @@ Tiptap 富文本编辑器封装，支持：
 - 添加/移除标签
 - 创建新标签
 - 弹出式选择器
+- 弹出层基于 Base UI Popover； Trigger 使用 `render` 传入 `Button`（不要使用 `asChild`）
 
 ## 文件结构
 

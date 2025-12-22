@@ -145,6 +145,51 @@
     "nameExists": "标签名称已存在",
     "preview": "预览"
   },
+  "entryTags": {
+    "addTagFailed": "添加标签失败",
+    "removeTagFailed": "移除标签失败",
+    "createTagFailed": "创建标签失败",
+    "tagAlreadyExists": "标签已存在",
+    "removeTag": "移除标签",
+    "newTagPlaceholder": "新建标签...",
+    "existingTags": "现有标签",
+    "allTagsAdded": "所有标签已添加",
+    "noTagsCreateNew": "暂无标签，输入名称创建"
+  },
+  "entrySources": {
+    "linkSource": "关联来源",
+    "sourceLinked": "来源已关联",
+    "linkSourceFailed": "关联来源失败",
+    "sourceRemoved": "来源已移除",
+    "removeSourceFailed": "移除来源失败",
+    "removeSource": "移除来源",
+    "selectSource": "选择来源",
+    "allSourcesLinked": "所有来源已关联",
+    "noSourcesAvailable": "暂无来源，请先在来源页面添加",
+    "manageSources": "管理来源"
+  },
+  "entryPicker": {
+    "selectEntry": "选择要引用的条目",
+    "searchPlaceholder": "搜索条目...",
+    "noMatchingEntries": "没有找到匹配的条目",
+    "noEntriesAvailable": "暂无可引用的条目",
+    "untitled": "无标题"
+  },
+  "entryCard": {
+    "untitled": "无标题",
+    "emptyNote": "空白笔记"
+  },
+  "commandPalette": {
+    "title": "命令面板",
+    "description": "搜索笔记或快速导航",
+    "searchPlaceholder": "搜索笔记或输入命令...",
+    "searching": "搜索中...",
+    "noResults": "未找到结果",
+    "entries": "笔记",
+    "quickNavigation": "快速导航",
+    "untitled": "无标题",
+    "searchPage": "搜索页面"
+  },
   "source": {
     "sources": "来源",
     "addSource": "添加来源",
@@ -233,7 +278,38 @@
     "codeBlockLines_one": "{{count}} 行",
     "codeBlockLines_other": "{{count}} 行",
     "codeBlockShowAll": "显示全部 {{count}} 行",
-    "codeBlockCollapse": "收起"
+    "codeBlockCollapse": "收起",
+    "slashCommand": {
+      "noMatchingCommands": "没有匹配的命令",
+      "basic": "基础",
+      "headings": "标题",
+      "heading1": "标题 1",
+      "heading1Desc": "大标题",
+      "heading2": "标题 2",
+      "heading2Desc": "中标题",
+      "heading3": "标题 3",
+      "heading3Desc": "小标题",
+      "quote": "引用",
+      "quoteDesc": "引用块",
+      "codeBlock": "代码块",
+      "codeBlockDesc": "代码片段",
+      "basicBlocks": "基础块",
+      "lists": "列表",
+      "bulletList": "无序列表",
+      "bulletListDesc": "项目符号列表",
+      "orderedList": "有序列表",
+      "orderedListDesc": "编号列表",
+      "divider": "分割线",
+      "dividerDesc": "水平分隔线"
+    },
+    "sourceCommand": {
+      "linkSource": "关联来源",
+      "linkSourceDesc": "搜索并关联书籍、文章等来源"
+    },
+    "tagCommand": {
+      "addTag": "添加标签",
+      "addTagDesc": "为条目添加标签"
+    }
   },
   "error": {
     "unauthorized": "请登录后继续",

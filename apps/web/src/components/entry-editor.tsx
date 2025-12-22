@@ -3,12 +3,13 @@ import Placeholder from '@tiptap/extension-placeholder'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { CodeBlockShiki } from './editor/code-block-extension'
 import { CustomLink } from './editor/link-extension'
 import { PasteHandler, type PasteStrategy } from './editor/paste-handler-extension'
 import {
+	createSlashCommand,
 	getDefaultSlashCommands,
-	SlashCommand,
 	type SlashCommandItem,
 } from './editor/slash-command'
 
@@ -81,12 +82,13 @@ export function EntryEditor({
 	pasteStrategy = 'preserve',
 }: EntryEditorProps) {
 	const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+	const { t } = useTranslation()
 	// 跟踪是否是内部更新导致的 content 变化
 	const isInternalUpdateRef = useRef(false)
 
 	// Combine default commands with additional commands
 	const commands = useMemo(() => {
-		const defaults = getDefaultSlashCommands()
+		const defaults = getDefaultSlashCommands(t)
 		return [...defaults, ...additionalCommands]
 	}, [additionalCommands])
 
@@ -119,7 +121,7 @@ export function EntryEditor({
 				placeholder,
 				emptyEditorClass: 'is-editor-empty',
 			}),
-			SlashCommand.configure({
+			createSlashCommand(t).configure({
 				commands,
 			}),
 		],

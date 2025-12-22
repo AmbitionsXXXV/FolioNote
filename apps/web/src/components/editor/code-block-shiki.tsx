@@ -152,7 +152,7 @@ export function CodeBlockShikiView({ node, updateAttributes }: NodeViewProps) {
 							icon={isCollapsed ? ArrowDown01Icon : ArrowUp01Icon}
 						/>
 						<span className="code-block-line-count">
-							{t('editor.codeBlockLines', { count: lineCount })}
+							{t('editor.codeBlockLines_one', { count: lineCount })}
 						</span>
 					</button>
 				)}

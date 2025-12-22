@@ -33,13 +33,14 @@ type CreateSourceCommandOptions = {
  * (books, articles, videos, etc.) with the current entry.
  */
 export function createSourceCommand(
-	options: CreateSourceCommandOptions
+	options: CreateSourceCommandOptions,
+	t: (key: string) => string
 ): SlashCommandItem {
 	const { onAddSource, getSources, onOpenSourcePicker } = options
 
 	return {
-		title: '关联来源',
-		description: '搜索并关联书籍、文章等来源',
+		title: t('editor.sourceCommand.linkSource'),
+		description: t('editor.sourceCommand.linkSourceDesc'),
 		icon: <HugeiconsIcon className="size-4" icon={Book02Icon} />,
 		keywords: ['source', 'link', 'book', 'article', '来源', '书籍', '文章'],
 		group: 'FolioNote',
@@ -75,10 +76,12 @@ export function createSourceCommand(
  * Create a source command that dispatches a custom event
  * This allows the parent component to handle source selection UI
  */
-export function createSourceCommandWithEvent(): SlashCommandItem {
+export function createSourceCommandWithEvent(
+	t: (key: string) => string
+): SlashCommandItem {
 	return {
-		title: '关联来源',
-		description: '搜索并关联书籍、文章等来源',
+		title: t('editor.sourceCommand.linkSource'),
+		description: t('editor.sourceCommand.linkSourceDesc'),
 		icon: <HugeiconsIcon className="size-4" icon={Book02Icon} />,
 		keywords: ['source', 'link', 'book', 'article', '来源', '书籍', '文章'],
 		group: 'FolioNote',

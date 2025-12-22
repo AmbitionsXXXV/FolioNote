@@ -2,6 +2,7 @@ import { FileEditIcon, Search01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useQuery } from '@tanstack/react-query'
 import { type Ref, useImperativeHandle, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
 	Dialog,
 	DialogContent,
@@ -41,12 +42,8 @@ type EntryPickerProps = {
  * A dialog component for selecting an entry to reference.
  * Supports search filtering and keyboard navigation.
  */
-export function EntryPicker({
-	ref,
-	onSelect,
-	excludeId,
-	title = '选择要引用的条目',
-}: EntryPickerProps) {
+export function EntryPicker({ ref, onSelect, excludeId, title }: EntryPickerProps) {
+	const { t } = useTranslation()
 	const [isOpen, setIsOpen] = useState(false)
 	const [searchQuery, setSearchQuery] = useState('')
 
@@ -88,7 +85,7 @@ export function EntryPicker({
 
 	const formatDate = (date: string | Date) => {
 		const d = typeof date === 'string' ? new Date(date) : date
-		return d.toLocaleDateString('zh-CN', {
+		return d.toLocaleDateString(undefined, {
 			month: 'short',
 			day: 'numeric',
 		})
@@ -104,7 +101,7 @@ export function EntryPicker({
 		<Dialog onOpenChange={setIsOpen} open={isOpen}>
 			<DialogContent className="max-w-md">
 				<DialogHeader>
-					<DialogTitle>{title}</DialogTitle>
+					<DialogTitle>{title || t('entryPicker.selectEntry')}</DialogTitle>
 				</DialogHeader>
 
 				{/* Search input */}
@@ -117,7 +114,7 @@ export function EntryPicker({
 						autoFocus
 						className="pl-9"
 						onChange={(e) => setSearchQuery(e.target.value)}
-						placeholder="搜索条目..."
+						placeholder={t('entryPicker.searchPlaceholder')}
 						value={searchQuery}
 					/>
 				</div>
@@ -151,7 +148,7 @@ export function EntryPicker({
 											/>
 											<div className="min-w-0 flex-1">
 												<p className="truncate font-medium">
-													{entry.title || '无标题'}
+													{entry.title || t('entryPicker.untitled')}
 												</p>
 												{entry.content ? (
 													<p className="truncate text-muted-foreground text-xs">
@@ -170,7 +167,11 @@ export function EntryPicker({
 
 						return (
 							<div className="py-8 text-center text-muted-foreground">
-								{searchQuery ? <p>没有找到匹配的条目</p> : <p>暂无可引用的条目</p>}
+								{searchQuery ? (
+									<p>{t('entryPicker.noMatchingEntries')}</p>
+								) : (
+									<p>{t('entryPicker.noEntriesAvailable')}</p>
+								)}
 							</div>
 						)
 					})()}

@@ -23,6 +23,7 @@ import {
 	useState,
 } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
+import { useTranslation } from 'react-i18next'
 import tippy, { type Instance as TippyInstance } from 'tippy.js'
 
 /**
@@ -57,6 +58,7 @@ type CommandListProps = {
  * Slash command list component with keyboard navigation
  */
 export function SlashCommandList({ items, command, ref }: CommandListProps) {
+	const { t } = useTranslation()
 	const [selectedIndex, setSelectedIndex] = useState(0)
 	const menuRef = useRef<HTMLDivElement>(null)
 
@@ -124,7 +126,9 @@ export function SlashCommandList({ items, command, ref }: CommandListProps) {
 	if (items.length === 0) {
 		return (
 			<div className="slash-command-menu">
-				<div className="slash-command-empty">没有匹配的命令</div>
+				<div className="slash-command-empty">
+					{t('editor.slashCommand.noMatchingCommands')}
+				</div>
 			</div>
 		)
 	}
@@ -132,7 +136,7 @@ export function SlashCommandList({ items, command, ref }: CommandListProps) {
 	// Group items by their group property
 	const groupedItems = items.reduce<Record<string, SlashCommandItem[]>>(
 		(acc, item) => {
-			const group = item.group ?? '基础'
+			const group = item.group ?? t('editor.slashCommand.basic')
 			if (!acc[group]) {
 				acc[group] = []
 			}
@@ -197,83 +201,85 @@ export function SlashCommandList({ items, command, ref }: CommandListProps) {
 /**
  * Get default slash command items
  */
-export const getDefaultSlashCommands = (): SlashCommandItem[] => [
+export const getDefaultSlashCommands = (
+	t: (key: string) => string
+): SlashCommandItem[] => [
 	{
-		title: '标题 1',
-		description: '大标题',
+		title: t('editor.slashCommand.heading1'),
+		description: t('editor.slashCommand.heading1Desc'),
 		icon: <HugeiconsIcon className="size-4" icon={Heading01Icon} />,
 		keywords: ['h1', 'heading1', 'title', '标题'],
-		group: '标题',
+		group: t('editor.slashCommand.headings'),
 		command: ({ editor, range }) => {
 			editor.chain().focus().deleteRange(range).setHeading({ level: 1 }).run()
 		},
 	},
 	{
-		title: '标题 2',
-		description: '中标题',
+		title: t('editor.slashCommand.heading2'),
+		description: t('editor.slashCommand.heading2Desc'),
 		icon: <HugeiconsIcon className="size-4" icon={Heading02Icon} />,
 		keywords: ['h2', 'heading2', 'subtitle', '标题'],
-		group: '标题',
+		group: t('editor.slashCommand.headings'),
 		command: ({ editor, range }) => {
 			editor.chain().focus().deleteRange(range).setHeading({ level: 2 }).run()
 		},
 	},
 	{
-		title: '标题 3',
-		description: '小标题',
+		title: t('editor.slashCommand.heading3'),
+		description: t('editor.slashCommand.heading3Desc'),
 		icon: <HugeiconsIcon className="size-4" icon={Heading03Icon} />,
 		keywords: ['h3', 'heading3', '标题'],
-		group: '标题',
+		group: t('editor.slashCommand.headings'),
 		command: ({ editor, range }) => {
 			editor.chain().focus().deleteRange(range).setHeading({ level: 3 }).run()
 		},
 	},
 	{
-		title: '引用',
-		description: '引用块',
+		title: t('editor.slashCommand.quote'),
+		description: t('editor.slashCommand.quoteDesc'),
 		icon: <HugeiconsIcon className="size-4" icon={QuoteUpIcon} />,
 		keywords: ['quote', 'blockquote', '引用'],
-		group: '基础块',
+		group: t('editor.slashCommand.basicBlocks'),
 		command: ({ editor, range }) => {
 			editor.chain().focus().deleteRange(range).setBlockquote().run()
 		},
 	},
 	{
-		title: '代码块',
-		description: '代码片段',
+		title: t('editor.slashCommand.codeBlock'),
+		description: t('editor.slashCommand.codeBlockDesc'),
 		icon: <HugeiconsIcon className="size-4" icon={CodeIcon} />,
 		keywords: ['code', 'codeblock', '代码'],
-		group: '基础块',
+		group: t('editor.slashCommand.basicBlocks'),
 		command: ({ editor, range }) => {
 			editor.chain().focus().deleteRange(range).setCodeBlock().run()
 		},
 	},
 	{
-		title: '无序列表',
-		description: '项目符号列表',
+		title: t('editor.slashCommand.bulletList'),
+		description: t('editor.slashCommand.bulletListDesc'),
 		icon: <HugeiconsIcon className="size-4" icon={LeftToRightListBulletIcon} />,
 		keywords: ['bullet', 'list', 'unordered', '列表'],
-		group: '列表',
+		group: t('editor.slashCommand.lists'),
 		command: ({ editor, range }) => {
 			editor.chain().focus().deleteRange(range).toggleBulletList().run()
 		},
 	},
 	{
-		title: '有序列表',
-		description: '编号列表',
+		title: t('editor.slashCommand.orderedList'),
+		description: t('editor.slashCommand.orderedListDesc'),
 		icon: <HugeiconsIcon className="size-4" icon={LeftToRightListNumberIcon} />,
 		keywords: ['ordered', 'list', 'numbered', '列表'],
-		group: '列表',
+		group: t('editor.slashCommand.lists'),
 		command: ({ editor, range }) => {
 			editor.chain().focus().deleteRange(range).toggleOrderedList().run()
 		},
 	},
 	{
-		title: '分割线',
-		description: '水平分隔线',
+		title: t('editor.slashCommand.divider'),
+		description: t('editor.slashCommand.dividerDesc'),
 		icon: <HugeiconsIcon className="size-4" icon={DivideSignIcon} />,
 		keywords: ['divider', 'hr', 'horizontal', '分割'],
-		group: '基础块',
+		group: t('editor.slashCommand.basicBlocks'),
 		command: ({ editor, range }) => {
 			editor.chain().focus().deleteRange(range).setHorizontalRule().run()
 		},
@@ -406,41 +412,43 @@ export type SlashCommandOptions = {
 }
 
 /**
- * Create the slash command extension
+ * Create a slash command extension with translations
  */
-export const SlashCommand = Extension.create<SlashCommandOptions>({
-	name: 'slashCommand',
+export function createSlashCommand(t: (key: string) => string) {
+	return Extension.create<SlashCommandOptions>({
+		name: 'slashCommand',
 
-	addOptions() {
-		return {
-			suggestion: {
-				char: '/',
-				startOfLine: false,
-				command: ({
-					editor,
-					range,
-					props,
-				}: {
-					editor: Editor
-					range: Range
-					props: SlashCommandItem
-				}) => {
-					props.command({ editor, range })
+		addOptions() {
+			return {
+				suggestion: {
+					char: '/',
+					startOfLine: false,
+					command: ({
+						editor,
+						range,
+						props,
+					}: {
+						editor: Editor
+						range: Range
+						props: SlashCommandItem
+					}) => {
+						props.command({ editor, range })
+					},
 				},
-			},
-			commands: getDefaultSlashCommands(),
-		}
-	},
+				commands: getDefaultSlashCommands(t),
+			}
+		},
 
-	addProseMirrorPlugins() {
-		return [
-			Suggestion({
-				editor: this.editor,
-				...this.options.suggestion,
-				items: ({ query }: { query: string }) =>
-					filterCommands(this.options.commands ?? [], query),
-				render: createSuggestionRenderer,
-			}),
-		]
-	},
-})
+		addProseMirrorPlugins() {
+			return [
+				Suggestion({
+					editor: this.editor,
+					...this.options.suggestion,
+					items: ({ query }: { query: string }) =>
+						filterCommands(this.options.commands ?? [], query),
+					render: createSuggestionRenderer,
+				}),
+			]
+		},
+	})
+}

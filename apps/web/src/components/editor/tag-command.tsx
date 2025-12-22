@@ -32,13 +32,14 @@ type CreateTagCommandOptions = {
  * mention extension or a custom popup.
  */
 export function createTagCommand(
-	options: CreateTagCommandOptions
+	options: CreateTagCommandOptions,
+	t: (key: string) => string
 ): SlashCommandItem {
 	const { onAddTag, getTags } = options
 
 	return {
-		title: '添加标签',
-		description: '为条目添加标签',
+		title: t('editor.tagCommand.addTag'),
+		description: t('editor.tagCommand.addTagDesc'),
 		icon: <HugeiconsIcon className="size-4" icon={Tag01Icon} />,
 		keywords: ['tag', 'label', '标签'],
 		group: 'FolioNote',
@@ -68,10 +69,12 @@ export function createTagCommand(
  * Create a tag command that dispatches a custom event
  * This allows the parent component to handle tag selection UI
  */
-export function createTagCommandWithEvent(): SlashCommandItem {
+export function createTagCommandWithEvent(
+	t: (key: string) => string
+): SlashCommandItem {
 	return {
-		title: '添加标签',
-		description: '为条目添加标签',
+		title: t('editor.tagCommand.addTag'),
+		description: t('editor.tagCommand.addTagDesc'),
 		icon: <HugeiconsIcon className="size-4" icon={Tag01Icon} />,
 		keywords: ['tag', 'label', '标签'],
 		group: 'FolioNote',

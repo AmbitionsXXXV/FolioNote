@@ -109,6 +109,51 @@
     "nameExists": "Tag name already exists",
     "preview": "Preview"
   },
+  "entryTags": {
+    "addTagFailed": "Failed to add tag",
+    "removeTagFailed": "Failed to remove tag",
+    "createTagFailed": "Failed to create tag",
+    "tagAlreadyExists": "Tag already exists",
+    "removeTag": "Remove tag",
+    "newTagPlaceholder": "Create new tag...",
+    "existingTags": "Existing tags",
+    "allTagsAdded": "All tags already added",
+    "noTagsCreateNew": "No tags yet, enter name to create"
+  },
+  "entrySources": {
+    "linkSource": "Link Source",
+    "sourceLinked": "Source linked",
+    "linkSourceFailed": "Failed to link source",
+    "sourceRemoved": "Source removed",
+    "removeSourceFailed": "Failed to remove source",
+    "removeSource": "Remove source",
+    "selectSource": "Select source",
+    "allSourcesLinked": "All sources already linked",
+    "noSourcesAvailable": "No sources available, please add some in the sources page",
+    "manageSources": "Manage sources"
+  },
+  "entryPicker": {
+    "selectEntry": "Select entry to reference",
+    "searchPlaceholder": "Search entries...",
+    "noMatchingEntries": "No matching entries found",
+    "noEntriesAvailable": "No entries available to reference",
+    "untitled": "Untitled"
+  },
+  "entryCard": {
+    "untitled": "Untitled",
+    "emptyNote": "Empty note"
+  },
+  "commandPalette": {
+    "title": "Command Palette",
+    "description": "Search notes or quick navigation",
+    "searchPlaceholder": "Search notes or enter commands...",
+    "searching": "Searching...",
+    "noResults": "No results found",
+    "entries": "Notes",
+    "quickNavigation": "Quick Navigation",
+    "untitled": "Untitled",
+    "searchPage": "Search Page"
+  },
   "source": {
     "sources": "Sources",
     "addSource": "Add Source",
@@ -197,7 +242,38 @@
     "codeBlockLines_one": "{{count}} line",
     "codeBlockLines_other": "{{count}} lines",
     "codeBlockShowAll": "Show all {{count}} lines",
-    "codeBlockCollapse": "Collapse"
+    "codeBlockCollapse": "Collapse",
+    "slashCommand": {
+      "noMatchingCommands": "No matching commands",
+      "basic": "Basic",
+      "headings": "Headings",
+      "heading1": "Heading 1",
+      "heading1Desc": "Large heading",
+      "heading2": "Heading 2",
+      "heading2Desc": "Medium heading",
+      "heading3": "Heading 3",
+      "heading3Desc": "Small heading",
+      "quote": "Quote",
+      "quoteDesc": "Quote block",
+      "codeBlock": "Code Block",
+      "codeBlockDesc": "Code snippet",
+      "basicBlocks": "Basic Blocks",
+      "lists": "Lists",
+      "bulletList": "Bullet List",
+      "bulletListDesc": "Bullet point list",
+      "orderedList": "Ordered List",
+      "orderedListDesc": "Numbered list",
+      "divider": "Divider",
+      "dividerDesc": "Horizontal separator"
+    },
+    "sourceCommand": {
+      "linkSource": "Link Source",
+      "linkSourceDesc": "Search and link books, articles, and other sources"
+    },
+    "tagCommand": {
+      "addTag": "Add Tag",
+      "addTagDesc": "Add tags to the entry"
+    }
   },
   "error": {
     "unauthorized": "Please sign in to continue",

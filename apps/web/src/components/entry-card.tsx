@@ -1,6 +1,7 @@
 import { Delete02Icon, PinIcon, StarIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Link } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader } from './ui/card'
@@ -39,6 +40,7 @@ export function EntryCard({
 	onPin,
 	onDelete,
 }: EntryCardProps) {
+	const { t } = useTranslation()
 	// 优先使用 contentText，向后兼容从 HTML 提取
 	const plainContent = contentText ?? content.replace(/<[^>]*>/g, '').trim()
 	const preview =
@@ -48,7 +50,7 @@ export function EntryCard({
 	const date = new Date(updatedAt)
 
 	// Format date
-	const formattedDate = new Intl.DateTimeFormat('zh-CN', {
+	const formattedDate = new Intl.DateTimeFormat(undefined, {
 		month: 'short',
 		day: 'numeric',
 		hour: '2-digit',
@@ -61,7 +63,7 @@ export function EntryCard({
 				<CardHeader className="pb-2">
 					<div className="flex items-start justify-between gap-2">
 						<h3 className="line-clamp-1 font-semibold text-foreground">
-							{title || '无标题'}
+							{title || t('entryCard.untitled')}
 						</h3>
 						<div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
 							{isPinned ? (
@@ -81,7 +83,7 @@ export function EntryCard({
 				</CardHeader>
 				<CardContent className="pt-0">
 					<p className="mb-3 line-clamp-2 text-muted-foreground text-sm">
-						{preview || '空白笔记'}
+						{preview || t('entryCard.emptyNote')}
 					</p>
 					<p className="text-muted-foreground text-xs">{formattedDate}</p>
 				</CardContent>

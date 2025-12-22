@@ -12,6 +12,7 @@ import type { IconSvgElement } from '@hugeicons/react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { type Ref, useImperativeHandle, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -55,6 +56,7 @@ type EntrySourcesProps = {
  * Displays current sources and allows adding/removing sources.
  */
 export function EntrySources({ entryId, ref }: EntrySourcesProps) {
+	const { t } = useTranslation()
 	const queryClient = useQueryClient()
 	const [isOpen, setIsOpen] = useState(false)
 
@@ -78,10 +80,10 @@ export function EntrySources({ entryId, ref }: EntrySourcesProps) {
 			orpc.sources.addToEntry.call({ entryId, sourceId }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['entries', entryId, 'sources'] })
-			toast.success('来源已关联')
+			toast.success(t('entrySources.sourceLinked'))
 		},
 		onError: () => {
-			toast.error('关联来源失败')
+			toast.error(t('entrySources.linkSourceFailed'))
 		},
 	})
 
@@ -91,10 +93,10 @@ export function EntrySources({ entryId, ref }: EntrySourcesProps) {
 			orpc.sources.removeFromEntry.call({ entryId, sourceId }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['entries', entryId, 'sources'] })
-			toast.success('来源已移除')
+			toast.success(t('entrySources.sourceRemoved'))
 		},
 		onError: () => {
-			toast.error('移除来源失败')
+			toast.error(t('entrySources.removeSourceFailed'))
 		},
 	})
 
@@ -136,7 +138,7 @@ export function EntrySources({ entryId, ref }: EntrySourcesProps) {
 						className="ml-1 rounded-full p-0.5 hover:bg-muted-foreground/20"
 						disabled={removeSourceMutation.isPending}
 						onClick={() => handleRemoveSource(source.id)}
-						title="移除来源"
+						title={t('entrySources.removeSource')}
 						type="button"
 					>
 						<HugeiconsIcon className="size-3" icon={Cancel01Icon} />
@@ -146,17 +148,21 @@ export function EntrySources({ entryId, ref }: EntrySourcesProps) {
 
 			{/* Add source button */}
 			<Popover onOpenChange={setIsOpen} open={isOpen}>
-				<PopoverTrigger asChild>
-					<Button className="h-6 gap-1 px-2 text-xs" size="sm" variant="ghost">
-						<HugeiconsIcon className="size-3" icon={Link01Icon} />
-						关联来源
-					</Button>
+				<PopoverTrigger
+					render={
+						<Button className="h-6 gap-1 px-2 text-xs" size="sm" variant="ghost" />
+					}
+				>
+					<HugeiconsIcon className="size-3" icon={Link01Icon} />
+					{t('entrySources.linkSource')}
 				</PopoverTrigger>
 				<PopoverContent align="start" className="w-72 p-2">
 					{/* Available sources list */}
 					{availableSources.length > 0 ? (
 						<div className="max-h-64 space-y-1 overflow-y-auto">
-							<p className="mb-1 text-muted-foreground text-xs">选择来源</p>
+							<p className="mb-1 text-muted-foreground text-xs">
+								{t('entrySources.selectSource')}
+							</p>
 							{availableSources.map((source: Source) => (
 								<button
 									className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm hover:bg-muted"
@@ -188,14 +194,14 @@ export function EntrySources({ entryId, ref }: EntrySourcesProps) {
 					{/* Empty state messages */}
 					{availableSources.length === 0 && entrySources.length > 0 && (
 						<p className="py-2 text-center text-muted-foreground text-xs">
-							所有来源已关联
+							{t('entrySources.allSourcesLinked')}
 						</p>
 					)}
 					{availableSources.length === 0 &&
 						entrySources.length === 0 &&
 						allSources.length === 0 && (
 							<p className="py-2 text-center text-muted-foreground text-xs">
-								暂无来源，请先在来源页面添加
+								{t('entrySources.noSourcesAvailable')}
 							</p>
 						)}
 
@@ -206,7 +212,7 @@ export function EntrySources({ entryId, ref }: EntrySourcesProps) {
 							href="/sources"
 						>
 							<HugeiconsIcon className="size-3" icon={PlusSignIcon} />
-							管理来源
+							{t('entrySources.manageSources')}
 						</a>
 					</div>
 				</PopoverContent>

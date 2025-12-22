@@ -129,17 +129,20 @@ function EntryEditPage() {
 	// Create tag command for slash menu
 	const tagCommand = useMemo(
 		() =>
-			createTagCommand({
-				getTags: () => entryTagsRef.current?.getTags() ?? [],
-				onAddTag: (tagId) => {
-					entryTagsRef.current?.addTag(tagId)
+			createTagCommand(
+				{
+					getTags: () => entryTagsRef.current?.getTags() ?? [],
+					onAddTag: (tagId) => {
+						entryTagsRef.current?.addTag(tagId)
+					},
 				},
-			}),
-		[]
+				t
+			),
+		[t]
 	)
 
 	// Create source command for slash menu
-	const sourceCommand = useMemo(() => createSourceCommandWithEvent(), [])
+	const sourceCommand = useMemo(() => createSourceCommandWithEvent(t), [t])
 
 	// Create ref command for slash menu
 	const refCommand = useMemo(() => createRefCommandWithEvent(), [])
