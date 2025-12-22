@@ -1,3 +1,4 @@
+import { LANGUAGE_LABELS } from '@folio/constants'
 import { type SupportedLanguage, supportedLanguages } from '@folio/locales'
 import {
 	LanguageCircleIcon,
@@ -26,7 +27,6 @@ import {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { LANGUAGE_LABELS } from '@/constants'
 import { authClient } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'

@@ -1,0 +1,22 @@
+{
+  "name": "@folio/constants",
+  "version": "1.0.0",
+  "description": "FolioNote 国际化常量定义",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "check-keys": "bun run scripts/check-keys.ts"
+  },
+  "dependencies": {
+    "@folio/locales": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

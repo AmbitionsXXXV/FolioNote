@@ -72,6 +72,7 @@
     "updatedAt": "更新日時",
     "count_one": "{{count}} エントリ",
     "count_other": "{{count}} エントリ",
+    "count": "{{count}} エントリ",
     "deleteConfirm": "このエントリを削除してもよろしいですか？",
     "deleteConfirmTitle": "エントリの削除確認",
     "deleteConfirmDesc": "この操作により、ノートがごみ箱に移動されます。後でごみ箱から復元できます。",

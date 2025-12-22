@@ -8,11 +8,17 @@ const AnimatedView = Animated.createAnimatedComponent(View)
 
 type Props = AnimatedProps<ViewProps> & {
 	className?: string
+	/**
+	 * When true, disables the internal ScrollView.
+	 * Use this when the container contains a FlatList or other VirtualizedList.
+	 */
+	disableScroll?: boolean
 }
 
 export function Container({
 	children,
 	className,
+	disableScroll = false,
 	...props
 }: PropsWithChildren<Props>) {
 	const insets = useSafeAreaInsets()
@@ -22,10 +28,15 @@ export function Container({
 			className={cn('flex-1 bg-background', className)}
 			style={{
 				paddingBottom: insets.bottom,
+				paddingTop: insets.top,
 			}}
 			{...props}
 		>
-			<ScrollView contentContainerStyle={{ flexGrow: 1 }}>{children}</ScrollView>
+			{disableScroll ? (
+				children
+			) : (
+				<ScrollView contentContainerStyle={{ flexGrow: 1 }}>{children}</ScrollView>
+			)}
 		</AnimatedView>
 	)
 }

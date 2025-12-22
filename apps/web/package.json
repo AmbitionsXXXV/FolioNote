@@ -12,6 +12,7 @@
     "@base-ui/react": "^1.0.0",
     "@folio/api": "workspace:*",
     "@folio/auth": "workspace:*",
+    "@folio/constants": "workspace:*",
     "@folio/locales": "workspace:*",
     "@hugeicons/core-free-icons": "catalog:",
     "@hugeicons/react": "^1.1.3",

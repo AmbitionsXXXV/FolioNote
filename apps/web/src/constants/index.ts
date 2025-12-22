@@ -1,4 +1,3 @@
-import type { SupportedLanguage } from '@folio/locales'
 import {
 	Clock01Icon,
 	InboxIcon,
@@ -8,12 +7,6 @@ import {
 } from '@hugeicons/core-free-icons'
 import type { IconSvgElement } from '@hugeicons/react'
 import type { ReviewRule } from '@/types'
-
-export const LANGUAGE_LABELS: Record<SupportedLanguage, string> = {
-	'en-US': 'English',
-	'zh-CN': '简体中文',
-	'ja-JP': '日本語',
-}
 
 export const REVIEW_RULES: {
 	key: ReviewRule

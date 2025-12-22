@@ -72,6 +72,7 @@
     "updatedAt": "Updated at",
     "count_one": "{{count}} entry",
     "count_other": "{{count}} entries",
+    "count": "{{count}} entries",
     "deleteConfirm": "Are you sure you want to delete this entry?",
     "deleteConfirmTitle": "Confirm Delete Entry",
     "deleteConfirmDesc": "This will move the entry to trash. You can restore it later from the trash.",

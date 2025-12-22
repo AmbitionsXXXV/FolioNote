@@ -1,4 +1,5 @@
-import { Ionicons } from '@expo/vector-icons'
+import { Cancel01Icon, Tick01Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react-native'
 import { router } from 'expo-router'
 import { Card, useThemeColor } from 'heroui-native'
 import { Pressable, Text, View } from 'react-native'
@@ -17,7 +18,11 @@ function Modal() {
 				<Card className="w-full max-w-sm p-6" variant="secondary">
 					<Card.Body className="items-center gap-4">
 						<View className="mb-2 h-16 w-16 items-center justify-center rounded-full bg-accent">
-							<Ionicons color={accentForegroundColor} name="checkmark" size={32} />
+							<HugeiconsIcon
+								color={accentForegroundColor}
+								icon={Tick01Icon}
+								size={32}
+							/>
 						</View>
 						<Card.Title className="text-center text-xl">Modal Screen</Card.Title>
 						<Card.Description className="text-center">
@@ -34,9 +39,9 @@ function Modal() {
 								<Text className="mr-2 font-semibold text-accent-foreground text-base">
 									Close Modal
 								</Text>
-								<Ionicons
+								<HugeiconsIcon
 									color={accentForegroundColor}
-									name="close-circle"
+									icon={Cancel01Icon}
 									size={20}
 								/>
 							</View>

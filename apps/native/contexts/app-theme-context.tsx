@@ -1,5 +1,5 @@
 import type React from 'react'
-import { createContext, useCallback, useContext, useMemo } from 'react'
+import { createContext, use, useCallback, useMemo } from 'react'
 import { Uniwind, useUniwind } from 'uniwind'
 
 type ThemeName = 'light' | 'dark'
@@ -40,13 +40,11 @@ export const AppThemeProvider = ({ children }: { children: React.ReactNode }) =>
 		[theme, isLight, isDark, setTheme, toggleTheme]
 	)
 
-	return (
-		<AppThemeContext.Provider value={value}>{children}</AppThemeContext.Provider>
-	)
+	return <AppThemeContext value={value}>{children}</AppThemeContext>
 }
 
 export function useAppTheme() {
-	const context = useContext(AppThemeContext)
+	const context = use(AppThemeContext)
 	if (!context) {
 		throw new Error('useAppTheme must be used within AppThemeProvider')
 	}

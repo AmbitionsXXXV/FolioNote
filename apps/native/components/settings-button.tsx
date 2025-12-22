@@ -1,15 +1,12 @@
-import { Ionicons } from '@expo/vector-icons'
+import { LANGUAGE_LABELS } from '@folio/constants'
 import { type SupportedLanguage, supportedLanguages } from '@folio/locales'
+import { LanguageSkillIcon, Tick02Icon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react-native'
 import { ImpactFeedbackStyle, impactAsync } from 'expo-haptics'
 import { useThemeColor } from 'heroui-native'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Modal, Platform, Pressable, Text } from 'react-native'
-
-const languageLabels: Record<SupportedLanguage, string> = {
-	'en-US': 'English',
-	'zh-CN': '简体中文',
-}
 
 export function SettingsButton() {
 	const { t, i18n } = useTranslation()
@@ -40,7 +37,7 @@ export function SettingsButton() {
 					setVisible(true)
 				}}
 			>
-				<Ionicons color={foregroundColor} name="language" size={20} />
+				<HugeiconsIcon color={foregroundColor} icon={LanguageSkillIcon} size={20} />
 			</Pressable>
 
 			<Modal
@@ -82,10 +79,14 @@ export function SettingsButton() {
 										fontWeight: currentLanguage === lang ? '600' : '400',
 									}}
 								>
-									{languageLabels[lang]}
+									{LANGUAGE_LABELS[lang]}
 								</Text>
 								{currentLanguage === lang && (
-									<Ionicons color={foregroundColor} name="checkmark" size={20} />
+									<HugeiconsIcon
+										color={foregroundColor}
+										icon={Tick02Icon}
+										size={20}
+									/>
 								)}
 							</Pressable>
 						))}

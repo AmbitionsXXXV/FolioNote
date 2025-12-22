@@ -108,6 +108,7 @@
     "updatedAt": "更新于",
     "count_one": "{{count}} 条目",
     "count_other": "{{count}} 条目",
+    "count": "{{count}} 条目",
     "deleteConfirm": "确定要删除此条目吗？",
     "deleteConfirmTitle": "确认删除笔记",
     "deleteConfirmDesc": "此操作将把笔记移至回收站。您可以稍后从回收站中恢复。",

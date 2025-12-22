@@ -1,3 +1,4 @@
+import { LANGUAGE_LABELS } from '@folio/constants'
 import { type SupportedLanguage, supportedLanguages } from '@folio/locales'
 import {
 	LanguageCircleIcon,
@@ -9,7 +10,6 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { LANGUAGE_LABELS } from '@/constants'
 import { Button } from './ui/button'
 import {
 	DropdownMenu,
