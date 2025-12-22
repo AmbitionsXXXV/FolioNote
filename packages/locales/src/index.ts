@@ -1,5 +1,6 @@
 import type { InitOptions } from 'i18next'
 import enUS from './resources/en-US.json'
+import jaJP from './resources/ja-JP.json'
 import zhCN from './resources/zh-CN.json'
 
 // ============================================
@@ -14,6 +15,10 @@ const languageConfig = {
 	'zh-CN': {
 		resource: zhCN,
 		match: ['zh-CN', 'zh'],
+	},
+	'ja-JP': {
+		resource: jaJP,
+		match: ['ja-JP', 'ja'],
 	},
 	// Future-safe:
 	// 'zh-TW': { resource: zhTW, match: ['zh-TW'] },
@@ -103,4 +108,4 @@ export function parseAcceptLanguage(header: string | null): SupportedLanguage {
 }
 
 // Export raw resources for backward compatibility
-export { enUS, zhCN }
+export { enUS, jaJP, zhCN }

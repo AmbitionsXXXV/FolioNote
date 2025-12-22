@@ -177,6 +177,7 @@
         "jsdom": "^26.0.0",
         "typescript": "catalog:",
         "vite": "^7.0.2",
+        "vitest": "catalog:",
         "web-vitals": "^5.0.3",
       },
     },

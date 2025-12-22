@@ -65,14 +65,14 @@ function RootDocumentInner() {
 
 	return (
 		<html
-			className={cn('no-scrollbar bg-background', langClass)}
+			className={cn('no-scrollbar bg-background')}
 			lang={currentLang}
 			suppressHydrationWarning
 		>
 			<head>
 				<HeadContent />
 			</head>
-			<body className="min-h-svh bg-background">
+			<body className={cn('min-h-svh bg-background', langClass)}>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="dark"

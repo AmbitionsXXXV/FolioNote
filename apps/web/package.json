@@ -5,7 +5,8 @@
   "scripts": {
     "build": "vite build",
     "serve": "vite preview",
-    "dev": "vite dev"
+    "dev": "vite dev",
+    "test": "bun test"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
@@ -66,6 +67,7 @@
     "jsdom": "^26.0.0",
     "typescript": "catalog:",
     "vite": "^7.0.2",
+    "vitest": "catalog:",
     "web-vitals": "^5.0.3"
   }
 }

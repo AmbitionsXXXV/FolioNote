@@ -10,6 +10,7 @@ packages/locales/          # 共享语言资源包
 │   ├── index.ts          # 导出配置和工具函数
 │   └── resources/
 │       ├── en-US.json    # 英文资源
+│       ├── ja-JP.json    # 日文资源
 │       └── zh-CN.json    # 中文资源
 
 apps/web/src/lib/i18n.ts   # Web 端 i18n 初始化
@@ -20,7 +21,15 @@ apps/server/src/i18n.ts    # Server 端 i18n 初始化
 ## 支持的语言
 
 - `en-US` - 英文（默认）
+- `ja-JP` - 日语
 - `zh-CN` - 简体中文
+
+## Web 端语言与字体
+
+Web 端会：
+
+- 在 `<html>` 上设置 `lang` 属性（例如 `zh-CN` / `ja-JP`），用于语义与辅助功能。
+- 在 `<body>` 上附加 `lang-zh` / `lang-ja` class，用于 `.font-script` 的语言字体覆盖（见 `apps/web/src/index.css`），并避免覆盖 `next-themes` 写入到 `<html>` 的主题 class（例如 `dark`）。
 
 ## 使用方法
 

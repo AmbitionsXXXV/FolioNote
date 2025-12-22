@@ -26,15 +26,11 @@ import {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { LANGUAGE_LABELS } from '@/constants'
 import { authClient } from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
 import { Button } from './ui/button'
 import { Skeleton } from './ui/skeleton'
-
-const languageLabels: Record<SupportedLanguage, string> = {
-	'en-US': 'English',
-	'zh-CN': '简体中文',
-}
 
 type UserMenuProps = {
 	collapsed?: boolean
@@ -71,7 +67,7 @@ function LanguageSubmenu() {
 					{supportedLanguages.map((lang) => (
 						<DropdownMenuItem key={lang} onClick={() => i18n.changeLanguage(lang)}>
 							<span className={currentLanguage === lang ? 'font-medium' : ''}>
-								{languageLabels[lang]}
+								{LANGUAGE_LABELS[lang] || lang}
 							</span>
 							{currentLanguage === lang && (
 								<span className="ml-auto text-primary">✓</span>

@@ -95,7 +95,7 @@ function HomeComponent() {
 							<>
 								{t('auth.welcome')},
 								<br />
-								<span className="bg-linear-to-br from-primary via-purple-400 to-violet-300 bg-clip-text font-script text-transparent">
+								<span className="bg-linear-to-br from-primary via-purple-400 to-violet-300 bg-clip-text font-script font-script-en text-transparent">
 									{session.user.name?.split(' ')[0] || 'there'}
 								</span>
 							</>

@@ -9,6 +9,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { useTheme } from 'next-themes'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { LANGUAGE_LABELS } from '@/constants'
 import { Button } from './ui/button'
 import {
 	DropdownMenu,
@@ -23,11 +24,6 @@ import {
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
 } from './ui/dropdown-menu'
-
-const languageLabels: Record<SupportedLanguage, string> = {
-	'en-US': 'English',
-	'zh-CN': '简体中文',
-}
 
 function LanguageSubmenu() {
 	const { t, i18n } = useTranslation()
@@ -44,7 +40,7 @@ function LanguageSubmenu() {
 					{supportedLanguages.map((lang) => (
 						<DropdownMenuItem key={lang} onClick={() => i18n.changeLanguage(lang)}>
 							<span className={currentLanguage === lang ? 'font-medium' : ''}>
-								{languageLabels[lang]}
+								{LANGUAGE_LABELS[lang] || lang}
 							</span>
 							{currentLanguage === lang && (
 								<span className="ml-auto text-primary">✓</span>
