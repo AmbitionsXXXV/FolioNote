@@ -31,14 +31,31 @@ export function QuickCapture({
 	const queryClient = useQueryClient()
 
 	const createMutation = useMutation({
-		mutationFn: (data: { title?: string; content?: string; isInbox?: boolean }) =>
-			orpc.entries.create.call(data),
+		mutationFn: (data: {
+			title?: string
+			contentJson?: string
+			isInbox?: boolean
+		}) => orpc.entries.create.call(data),
 		onSuccess: () => {
 			setValue('')
 			queryClient.invalidateQueries({ queryKey: ['entries'] })
 			onSuccess?.()
 		},
 	})
+
+	/**
+	 * 将纯文本转换为 ProseMirror JSON 格式
+	 */
+	const textToProseMirrorJson = (text: string): string => {
+		const paragraphs = text.split('\n').filter((line) => line.trim())
+		return JSON.stringify({
+			type: 'doc',
+			content: paragraphs.map((para) => ({
+				type: 'paragraph',
+				content: para.trim() ? [{ type: 'text', text: para }] : [],
+			})),
+		})
+	}
 
 	const handleSubmit = () => {
 		const trimmedValue = value.trim()
@@ -54,14 +71,14 @@ export function QuickCapture({
 			// First line is title, rest is content
 			createMutation.mutate({
 				title: firstLine,
-				content: `<p>${lines.slice(1).join('</p><p>')}</p>`,
+				contentJson: textToProseMirrorJson(lines.slice(1).join('\n')),
 				isInbox: true,
 			})
 		} else {
 			// Everything is content
 			createMutation.mutate({
 				title: '',
-				content: `<p>${trimmedValue}</p>`,
+				contentJson: textToProseMirrorJson(trimmedValue),
 				isInbox: true,
 			})
 		}

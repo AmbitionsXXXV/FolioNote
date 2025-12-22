@@ -250,21 +250,25 @@ Done: 升级 ReviewCard 组件支持四个评分按钮，新增 `getDueStats` AP
 
 ### 新增/调整（v2）
 
-* [ ] entry_review_state（推荐新增表）
-* [ ] entries 内容字段调整（建议）
-  * [ ] `content_json`（主存）
-  * [ ] `content_text`（派生）
+* [x] entry_review_state（推荐新增表）
+* [x] entries 内容字段调整（建议）
+  * [x] `content_json`（主存）
+  * [x] `content_text`（派生）
+
+Done: 新建 `entry_review_state` 表（entryId 主键 + userId,dueAt 索引），扩展 `review_events` 表添加 `rating` 和 `scheduledDueAt` 字段。使用懒创建策略，首次复习时创建 state。数据库 Schema 新增 `contentJson`（ProseMirror JSON）和 `contentText`（纯文本）字段。
 
 ---
 
 ## API 变更（v2）
 
-* [ ] entries
-  * [ ] 支持读取/保存 `content_json` 与 `content_text`
-* [ ] review
-  * [ ] `markReviewed(entryId, rating?)`
-  * [ ] `getQueue` 默认返回 due 条目（支持 limit、补齐策略参数可选）
-  * [ ] `snooze(entryId, untilAt | preset)`
+* [x] entries
+  * [x] 支持读取/保存 `content_json` 与 `content_text`
+* [x] review
+  * [x] `markReviewed(entryId, rating?)`
+  * [x] `getQueue` 默认返回 due 条目（支持 limit、补齐策略参数可选）
+  * [x] `snooze(entryId, untilAt | preset)`
+
+Done: 实现弱化版 SM-2 算法模块 `spaced-repetition.ts`，升级 `markReviewed` API 支持事务化 upsert，升级 `getQueue` API 支持 due 规则和配额策略。新增 `snooze` API 支持延后到明天/3 天/7 天或自定义日期。
 
 ---
 
@@ -273,8 +277,10 @@ Done: 升级 ReviewCard 组件支持四个评分按钮，新增 `getDueStats` AP
 ### Web 应用
 
 * [x] 现有页面与功能（v1 完整）
-* [ ] 编辑器升级（Slash Menu、粘贴、自动保存、存储统一）
-* [ ] 复习升级（评分、due 队列、snooze、统计扩展）
+* [x] 编辑器升级（Slash Menu、粘贴、自动保存、存储统一）
+* [x] 复习升级（评分、due 队列、snooze、统计扩展）
+
+Done: 实现完整的 Tiptap Slash Command 扩展，支持基础命令和 FolioNote 相关命令。实现 URL 自动链接和富文本粘贴策略。添加自动保存 hook 和保存状态指示器。升级内容存储为 ProseMirror JSON + 纯文本派生字段。升级 ReviewCard 支持四个评分按钮，添加 Snooze 下拉菜单。扩展统计显示包含连续复习天数。
 
 ### 移动应用（Expo，仅 iOS）
 
@@ -347,7 +353,9 @@ Done: 扩展 `packages/api/src/context.ts` 解析 `X-Locale` 和 `Accept-Languag
 
 ### 技术与运营
 
-* ❌ 第三方登录（OAuth）
+* ❌ 第三方登录（OAuth）:
+  * web - Google,Github
+  * mobile(ios) - Google,Apple
 * ❌ 多语言
 * ❌ 自定义主题系统（先跟随系统）
 * ❌ 付费/订阅、用户分析、A/B 测试
@@ -389,7 +397,7 @@ Done: 扩展 `packages/api/src/context.ts` 解析 `X-Locale` 和 `Accept-Languag
 | 层级 | 技术 |
 |---|---|
 | Web 前端 | TanStack Start, React, TailwindCSS |
-| 移动端 | Expo, React Native（仅 iOS） |
+| 移动端 | Expo, React Native（仅 iOS 且优先支持 iOS 26） |
 | 富文本 | Tiptap (ProseMirror)；iOS 端通过 WebView 复用 |
 | API | Hono, oRPC |
 | 数据库 | PostgreSQL, Drizzle ORM |

@@ -5,8 +5,9 @@ export type SnoozePreset = 'tomorrow' | '3days' | '7days' | 'custom'
 export type Entry = {
 	id: string
 	title: string
-	content: string
-	/** 纯文本内容，用于预览（优先使用） */
+	/** ProseMirror JSON 格式内容 */
+	contentJson?: string | null
+	/** 纯文本内容，用于预览和搜索 */
 	contentText?: string | null
 	isStarred: boolean
 	isPinned: boolean

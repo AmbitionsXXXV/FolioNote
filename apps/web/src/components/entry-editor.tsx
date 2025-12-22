@@ -5,6 +5,7 @@ import StarterKit from '@tiptap/starter-kit'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CodeBlockShiki } from './editor/code-block-extension'
+import { CustomCaret } from './editor/custom-caret-extension'
 import { CustomLink } from './editor/link-extension'
 import { PasteHandler, type PasteStrategy } from './editor/paste-handler-extension'
 import {
@@ -124,6 +125,10 @@ export function EntryEditor({
 			createSlashCommand(t).configure({
 				commands,
 			}),
+			// 自定义光标：带彗星尾巴动画效果
+			CustomCaret.configure({
+				enabled: true,
+			}),
 		],
 		content: initialContent,
 		editable,
@@ -206,7 +211,7 @@ export function EntryEditor({
 	}
 
 	return (
-		<div className="entry-editor">
+		<div className="entry-editor tiptap-caret-container">
 			<EditorContent editor={editor} />
 		</div>
 	)

@@ -57,7 +57,7 @@ export function EntryPicker({ ref, onSelect, excludeId, title }: EntryPickerProp
 
 		const query = searchQuery.toLowerCase()
 		const titleMatch = entry.title?.toLowerCase().includes(query)
-		const contentMatch = entry.content?.toLowerCase().includes(query)
+		const contentMatch = entry.contentText?.toLowerCase().includes(query)
 
 		return titleMatch || contentMatch
 	})
@@ -85,9 +85,9 @@ export function EntryPicker({ ref, onSelect, excludeId, title }: EntryPickerProp
 		})
 	}
 
-	const getPreview = (content: string) => {
-		// Strip HTML tags and get first 50 characters
-		const text = content.replace(/<[^>]*>/g, '').trim()
+	const getPreview = (contentText: string | null | undefined) => {
+		if (!contentText) return ''
+		const text = contentText.trim()
 		return text.length > 50 ? `${text.slice(0, 50)}...` : text
 	}
 
@@ -144,9 +144,9 @@ export function EntryPicker({ ref, onSelect, excludeId, title }: EntryPickerProp
 												<p className="truncate font-medium">
 													{entry.title || t('entryPicker.untitled')}
 												</p>
-												{entry.content ? (
+												{entry.contentText ? (
 													<p className="truncate text-muted-foreground text-xs">
-														{getPreview(entry.content)}
+														{getPreview(entry.contentText)}
 													</p>
 												) : null}
 											</div>

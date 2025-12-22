@@ -544,7 +544,7 @@ function ReviewCard({
 	isLoading,
 }: ReviewCardProps) {
 	const { t } = useTranslation()
-	const plainContent = entry.content.replace(/<[^>]*>/g, '').trim()
+	const plainContent = entry.contentText ?? ''
 
 	return (
 		<Card className="overflow-hidden">

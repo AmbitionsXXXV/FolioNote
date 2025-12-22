@@ -127,7 +127,6 @@ export function EntryList({
 					<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						{pinnedEntries.map((entry) => (
 							<EntryCard
-								content={entry.content}
 								contentText={entry.contentText}
 								id={entry.id}
 								isPinned={entry.isPinned}
@@ -155,7 +154,6 @@ export function EntryList({
 					<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 						{regularEntries.map((entry) => (
 							<EntryCard
-								content={entry.content}
 								contentText={entry.contentText}
 								id={entry.id}
 								isPinned={entry.isPinned}

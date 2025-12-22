@@ -15,7 +15,6 @@ import { user } from './auth'
  * 核心内容表，存储用户的学习笔记
  *
  * 内容存储策略：
- * - content: 保留用于向后兼容（HTML 格式）
  * - contentJson: ProseMirror JSON 格式（Tiptap doc），主存储格式
  * - contentText: 纯文本派生字段，用于 ILIKE 搜索与摘要预览
  */
@@ -27,8 +26,6 @@ export const entries = pgTable(
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),
 		title: text('title').notNull().default(''),
-		/** @deprecated 使用 contentJson 替代，保留用于向后兼容 */
-		content: text('content').notNull().default(''),
 		/** ProseMirror JSON 格式内容（Tiptap doc） */
 		contentJson: text('content_json'),
 		/** 纯文本内容，用于搜索和预览 */
