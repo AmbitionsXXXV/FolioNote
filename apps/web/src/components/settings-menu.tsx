@@ -13,6 +13,7 @@ import { Button } from './ui/button'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
+	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuPortal,
@@ -122,7 +123,9 @@ export function SettingsMenu() {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-48">
-				<DropdownMenuLabel>{t('common.settings')}</DropdownMenuLabel>
+				<DropdownMenuGroup>
+					<DropdownMenuLabel>{t('common.settings')}</DropdownMenuLabel>
+				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<LanguageSubmenu />
 				<ThemeSubmenu />

@@ -62,7 +62,7 @@ function RootDocument() {
 				<head>
 					<HeadContent />
 				</head>
-				<body className="bg-background">
+				<body className="min-h-svh bg-background">
 					<ThemeProvider
 						attribute="class"
 						defaultTheme="dark"

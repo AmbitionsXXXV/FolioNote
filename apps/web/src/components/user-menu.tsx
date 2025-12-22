@@ -143,14 +143,16 @@ function SettingsSubmenu() {
 				<HugeiconsIcon className="mr-2 size-4" icon={Settings01Icon} />
 				<span>{t('common.settings')}</span>
 			</DropdownMenuSubTrigger>
-			<DropdownMenuContent>
-				<DropdownMenuGroup>
-					<DropdownMenuLabel>{t('common.settings')}</DropdownMenuLabel>
+			<DropdownMenuPortal>
+				<DropdownMenuSubContent>
+					<DropdownMenuGroup>
+						<DropdownMenuLabel>{t('common.settings')}</DropdownMenuLabel>
+					</DropdownMenuGroup>
 					<DropdownMenuSeparator />
 					<LanguageSubmenu />
 					<ThemeSubmenu />
-				</DropdownMenuGroup>
-			</DropdownMenuContent>
+				</DropdownMenuSubContent>
+			</DropdownMenuPortal>
 		</DropdownMenuSub>
 	)
 }
@@ -165,12 +167,11 @@ function UserMenuTrigger({
 	userEmail: string
 }) {
 	return (
-		<button
+		<div
 			className={cn(
-				'inline-flex w-full items-center justify-start gap-3 rounded-md p-2 font-medium text-sm outline-none transition-all hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring',
+				'inline-flex w-full cursor-pointer items-center justify-start gap-3 rounded-md p-2 font-medium text-sm outline-none transition-all hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring',
 				collapsed && 'size-10 justify-center p-0'
 			)}
-			type="button"
 		>
 			<UserAvatar size="sm" />
 			{!collapsed && (
@@ -187,7 +188,7 @@ function UserMenuTrigger({
 					/>
 				</>
 			)}
-		</button>
+		</div>
 	)
 }
 
