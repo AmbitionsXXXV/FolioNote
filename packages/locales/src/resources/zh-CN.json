@@ -239,6 +239,8 @@
     "dueCount_other": "{{count}} 条待复习",
     "streakDays_one": "连续 {{count}} 天",
     "streakDays_other": "连续 {{count}} 天",
+    "dueEntries": "待复习",
+    "dueEntriesDescription": "基于间隔复习算法到期的条目",
     "newEntries": "新条目",
     "starredEntries": "收藏条目",
     "unreviewedEntries": "未复习",
@@ -265,7 +267,32 @@
     "statsReviewedToday": "今日已复习",
     "statsTotalEntries": "总条目数",
     "statsStarredEntries": "收藏条目",
-    "statsUnreviewedEntries": "未复习"
+    "statsUnreviewedEntries": "未复习",
+    "statsDueEntries": "待复习",
+    "statsOverdueEntries": "已过期",
+    "statsUpcomingEntries": "即将到期",
+    "statsNewEntries": "新条目",
+    "rating": {
+      "again": "重来",
+      "againHint": "稍后再复习",
+      "hard": "困难",
+      "hardHint": "费力回忆起来",
+      "good": "良好",
+      "goodHint": "稍加思考回忆起来",
+      "easy": "简单",
+      "easyHint": "立即回忆起来"
+    },
+    "nextReview": "{{days}} 天后复习",
+    "nextReviewTomorrow": "明天复习",
+    "snoozePreset": {
+      "tomorrow": "明天",
+      "3days": "3 天后",
+      "7days": "7 天后",
+      "custom": "自定义日期"
+    },
+    "snoozed": "已延后至{{preset}}",
+    "snoozeFailed": "延后失败",
+    "statsStreak": "连续天数"
   },
   "dashboard": {
     "welcome": "欢迎 {{name}}",

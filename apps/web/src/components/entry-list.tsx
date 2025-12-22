@@ -2,23 +2,11 @@ import { AlertCircleIcon, Loading02Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import type { Entry } from '@/types'
 import { orpc } from '@/utils/orpc'
 import { EntryCard } from './entry-card'
 import { Button } from './ui/button'
 import { Skeleton } from './ui/skeleton'
-
-type Entry = {
-	id: string
-	title: string
-	content: string
-	/** 纯文本内容，用于预览（优先使用） */
-	contentText?: string | null
-	isStarred: boolean
-	isPinned: boolean
-	isInbox: boolean
-	updatedAt: string | number | Date
-	createdAt: string | number | Date
-}
 
 type EntryListProps = {
 	entries: Entry[]

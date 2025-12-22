@@ -158,6 +158,8 @@
     "dueCount_other": "{{count}} 件の復習待ち",
     "streakDays_one": "{{count}} 日連続",
     "streakDays_other": "{{count}} 日連続",
+    "dueEntries": "復習待ち",
+    "dueEntriesDescription": "間隔反復アルゴリズムに基づく期限切れエントリー",
     "newEntries": "新しいエントリー",
     "starredEntries": "お気に入りエントリー",
     "unreviewedEntries": "未復習",
@@ -184,7 +186,32 @@
     "statsReviewedToday": "今日の復習数",
     "statsTotalEntries": "総エントリー数",
     "statsStarredEntries": "お気に入りエントリー",
-    "statsUnreviewedEntries": "未復習"
+    "statsUnreviewedEntries": "未復習",
+    "statsDueEntries": "復習待ち",
+    "statsOverdueEntries": "期限切れ",
+    "statsUpcomingEntries": "近日期限",
+    "statsNewEntries": "新規",
+    "rating": {
+      "again": "もう一度",
+      "againHint": "もうすぐ復習する",
+      "hard": "難しい",
+      "hardHint": "思い出すのに努力が必要だった",
+      "good": "良い",
+      "goodHint": "いくらか努力して思い出した",
+      "easy": "簡単",
+      "easyHint": "すぐに思い出した"
+    },
+    "nextReview": "{{days}} 日後に復習",
+    "nextReviewTomorrow": "明日復習",
+    "snoozePreset": {
+      "tomorrow": "明日",
+      "3days": "3 日後",
+      "7days": "7 日後",
+      "custom": "カスタム日付"
+    },
+    "snoozed": "{{preset}}まで延期しました",
+    "snoozeFailed": "延期に失敗しました",
+    "statsStreak": "連続日数"
   },
   "dashboard": {
     "welcome": "{{name}} さん、ようこそ",

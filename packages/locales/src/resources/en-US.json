@@ -203,6 +203,8 @@
     "dueCount_other": "{{count}} items due",
     "streakDays_one": "{{count}} day streak",
     "streakDays_other": "{{count}} days streak",
+    "dueEntries": "Due",
+    "dueEntriesDescription": "Entries due for review based on spaced repetition",
     "newEntries": "New Entries",
     "starredEntries": "Starred Entries",
     "unreviewedEntries": "Unreviewed",
@@ -229,7 +231,32 @@
     "statsReviewedToday": "Reviewed Today",
     "statsTotalEntries": "Total Entries",
     "statsStarredEntries": "Starred Entries",
-    "statsUnreviewedEntries": "Unreviewed"
+    "statsUnreviewedEntries": "Unreviewed",
+    "statsDueEntries": "Due",
+    "statsOverdueEntries": "Overdue",
+    "statsUpcomingEntries": "Upcoming",
+    "statsNewEntries": "New",
+    "rating": {
+      "again": "Again",
+      "againHint": "Review again soon",
+      "hard": "Hard",
+      "hardHint": "Took effort to recall",
+      "good": "Good",
+      "goodHint": "Recalled with some effort",
+      "easy": "Easy",
+      "easyHint": "Recalled instantly"
+    },
+    "nextReview": "Next review in {{days}} days",
+    "nextReviewTomorrow": "Next review tomorrow",
+    "snoozePreset": {
+      "tomorrow": "Tomorrow",
+      "3days": "In 3 days",
+      "7days": "In 7 days",
+      "custom": "Custom date"
+    },
+    "snoozed": "Snoozed until {{preset}}",
+    "snoozeFailed": "Failed to snooze",
+    "statsStreak": "Streak"
   },
   "dashboard": {
     "welcome": "Welcome {{name}}",

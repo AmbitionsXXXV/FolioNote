@@ -1,11 +1,13 @@
 import {
 	ArrowRight01Icon,
+	Calendar01Icon,
 	CheckmarkCircle02Icon,
+	Clock01Icon,
+	Fire02Icon,
 	InboxIcon,
 	RefreshIcon,
 	Rocket01Icon,
-	StarIcon,
-	ViewIcon,
+	Time01Icon,
 } from '@hugeicons/core-free-icons'
 import type { IconSvgElement } from '@hugeicons/react'
 import { HugeiconsIcon } from '@hugeicons/react'
@@ -16,61 +18,29 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
+import { REVIEW_RULES } from '@/constants'
 import { cn } from '@/lib/utils'
+import type { Entry, Rating, ReviewRule, SnoozePreset } from '@/types'
 import { orpc } from '@/utils/orpc'
 
-type ReviewRule = 'new' | 'starred' | 'unreviewed' | 'all'
-
-type Entry = {
-	id: string
-	title: string
-	content: string
-	isStarred: boolean
-	isPinned: boolean
-	isInbox: boolean
-	createdAt: Date | string
-	updatedAt: Date | string
-}
-
-const REVIEW_RULES: {
-	key: ReviewRule
-	labelKey: string
-	icon: IconSvgElement
-	descriptionKey: string
-}[] = [
-	{
-		key: 'new',
-		labelKey: 'review.newEntries',
-		icon: InboxIcon,
-		descriptionKey: 'review.newEntriesDescription',
-	},
-	{
-		key: 'starred',
-		labelKey: 'review.starredEntries',
-		icon: StarIcon,
-		descriptionKey: 'review.starredEntriesDescription',
-	},
-	{
-		key: 'unreviewed',
-		labelKey: 'review.unreviewedEntries',
-		icon: ViewIcon,
-		descriptionKey: 'review.unreviewedEntriesDescription',
-	},
-	{
-		key: 'all',
-		labelKey: 'review.allEntries',
-		icon: RefreshIcon,
-		descriptionKey: 'review.allEntriesDescription',
-	},
-]
+/**
+ * Get user's timezone offset in minutes
+ */
+const getUserTimezoneOffset = (): number => -new Date().getTimezoneOffset()
 
 export const Route = createFileRoute('/_app/review')({
 	component: ReviewPage,
 })
 
 function ReviewPage() {
-	const [selectedRule, setSelectedRule] = useState<ReviewRule>('all')
+	const [selectedRule, setSelectedRule] = useState<ReviewRule>('due')
 	const [currentIndex, setCurrentIndex] = useState(0)
 	const [isReviewing, setIsReviewing] = useState(false)
 
@@ -115,6 +85,7 @@ function ReviewSession({
 }: ReviewSessionProps) {
 	const { t } = useTranslation()
 	const queryClient = useQueryClient()
+	const tzOffset = getUserTimezoneOffset()
 
 	const {
 		data: queueData,
@@ -123,18 +94,32 @@ function ReviewSession({
 		error: queueError,
 		refetch: refetchQueue,
 	} = useQuery({
-		queryKey: ['review', 'queue', selectedRule],
+		queryKey: ['review', 'queue', selectedRule, tzOffset],
 		queryFn: () =>
 			orpc.review.getQueue.call({
 				rule: selectedRule,
-				limit: 20,
+				limit: 50,
+				tzOffset,
 			}),
 	})
 
 	const markReviewedMutation = useMutation({
-		mutationFn: (entryId: string) => orpc.review.markReviewed.call({ entryId }),
-		onSuccess: () => {
+		mutationFn: ({ entryId, rating }: { entryId: string; rating: Rating }) =>
+			orpc.review.markReviewed.call({ entryId, rating }),
+		onSuccess: (data) => {
 			queryClient.invalidateQueries({ queryKey: ['review', 'stats'] })
+			queryClient.invalidateQueries({ queryKey: ['review', 'dueStats'] })
+
+			// Show next review info
+			if (data.state) {
+				const days = data.state.intervalDays
+				if (days === 1) {
+					toast.success(t('review.nextReviewTomorrow'))
+				} else {
+					toast.success(t('review.nextReview', { days }))
+				}
+			}
+
 			const queueItems = queueData?.items ?? []
 			if (queueItems.length > 0 && currentIndex < queueItems.length - 1) {
 				onIndexChange((prev) => prev + 1)
@@ -149,10 +134,41 @@ function ReviewSession({
 		},
 	})
 
-	const handleMarkReviewed = () => {
+	const snoozeMutation = useMutation({
+		mutationFn: ({ entryId, preset }: { entryId: string; preset: SnoozePreset }) =>
+			orpc.review.snooze.call({ entryId, preset, tzOffset }),
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey: ['review', 'queue'] })
+			queryClient.invalidateQueries({ queryKey: ['review', 'dueStats'] })
+
+			// Show snooze confirmation
+			const presetLabels: Record<SnoozePreset, string> = {
+				tomorrow: t('review.snoozePreset.tomorrow'),
+				'3days': t('review.snoozePreset.3days'),
+				'7days': t('review.snoozePreset.7days'),
+				custom: t('review.snoozePreset.custom'),
+			}
+			toast.success(t('review.snoozed', { preset: presetLabels[data.preset] }))
+
+			// Move to next entry
+			const queueItems = queueData?.items ?? []
+			if (queueItems.length > 0 && currentIndex < queueItems.length - 1) {
+				onIndexChange((prev) => prev + 1)
+			} else {
+				toast.info(t('review.queueEnd'))
+				onStop()
+				refetchQueue()
+			}
+		},
+		onError: () => {
+			toast.error(t('review.snoozeFailed'))
+		},
+	})
+
+	const handleRate = (rating: Rating) => {
 		const currentEntry = queueData?.items[currentIndex]
 		if (currentEntry) {
-			markReviewedMutation.mutate(currentEntry.id)
+			markReviewedMutation.mutate({ entryId: currentEntry.id, rating })
 		}
 	}
 
@@ -162,6 +178,13 @@ function ReviewSession({
 			onIndexChange((prev) => prev + 1)
 		} else {
 			toast.info(t('review.queueEnd'))
+		}
+	}
+
+	const handleSnooze = (preset: SnoozePreset) => {
+		const currentEntry = queueData?.items[currentIndex]
+		if (currentEntry) {
+			snoozeMutation.mutate({ entryId: currentEntry.id, preset })
 		}
 	}
 
@@ -191,7 +214,6 @@ function ReviewSession({
 				</div>
 			) : null}
 
-			{/* Error state */}
 			{isQueueError ? (
 				<div className="flex flex-col items-center justify-center py-16 text-center">
 					<HugeiconsIcon
@@ -221,9 +243,10 @@ function ReviewSession({
 			{!(isLoadingQueue || isQueueError) && currentEntry ? (
 				<ReviewCard
 					entry={currentEntry}
-					isMarkingReviewed={markReviewedMutation.isPending}
-					onMarkReviewed={handleMarkReviewed}
+					isLoading={markReviewedMutation.isPending || snoozeMutation.isPending}
+					onRate={handleRate}
 					onSkip={handleSkip}
+					onSnooze={handleSnooze}
 				/>
 			) : null}
 		</div>
@@ -298,7 +321,7 @@ function ReviewEmptyState({
 }: ReviewEmptyStateProps) {
 	const { t } = useTranslation()
 	const message =
-		selectedRule === 'all'
+		selectedRule === 'all' || selectedRule === 'due'
 			? t('review.allCompleted')
 			: t('review.noMatchingEntries', { rule: ruleLabel })
 
@@ -324,6 +347,8 @@ type ReviewDashboardProps = {
 
 function ReviewDashboard({ onStartReview }: ReviewDashboardProps) {
 	const { t } = useTranslation()
+	const tzOffset = getUserTimezoneOffset()
+
 	const {
 		data: stats,
 		isLoading: isLoadingStats,
@@ -331,8 +356,13 @@ function ReviewDashboard({ onStartReview }: ReviewDashboardProps) {
 		error: statsError,
 		refetch: refetchStats,
 	} = useQuery({
-		queryKey: ['review', 'stats'],
-		queryFn: () => orpc.review.getTodayStats.call({}),
+		queryKey: ['review', 'stats', tzOffset],
+		queryFn: () => orpc.review.getTodayStats.call({ tzOffset }),
+	})
+
+	const { data: dueStats, isLoading: isLoadingDueStats } = useQuery({
+		queryKey: ['review', 'dueStats', tzOffset],
+		queryFn: () => orpc.review.getDueStats.call({ tzOffset }),
 	})
 
 	return (
@@ -349,9 +379,10 @@ function ReviewDashboard({ onStartReview }: ReviewDashboardProps) {
 
 			<div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				<StatsContent
+					dueStats={dueStats}
 					errorMessage={statsError?.message}
 					isError={isStatsError}
-					isLoading={isLoadingStats}
+					isLoading={isLoadingStats || isLoadingDueStats}
 					onRetry={refetchStats}
 					stats={stats}
 				/>
@@ -397,6 +428,13 @@ type StatsContentProps = {
 		totalEntries: number
 		starredEntries: number
 		unreviewedEntries: number
+		streak: number
+	}
+	dueStats?: {
+		overdue: number
+		dueToday: number
+		upcoming: number
+		newCount: number
 	}
 }
 
@@ -406,6 +444,7 @@ function StatsContent({
 	errorMessage,
 	onRetry,
 	stats,
+	dueStats,
 }: StatsContentProps) {
 	const { t } = useTranslation()
 	if (isLoading) {
@@ -432,8 +471,17 @@ function StatsContent({
 		)
 	}
 
+	// Calculate total due (overdue + dueToday)
+	const totalDue = (dueStats?.overdue ?? 0) + (dueStats?.dueToday ?? 0)
+
 	return (
 		<>
+			<StatsCard
+				description="review.statsDueEntries"
+				icon={Clock01Icon}
+				iconColor="text-orange-500"
+				value={totalDue}
+			/>
 			<StatsCard
 				description="review.statsReviewedToday"
 				icon={CheckmarkCircle02Icon}
@@ -441,22 +489,16 @@ function StatsContent({
 				value={stats?.reviewedToday ?? 0}
 			/>
 			<StatsCard
-				description="review.statsTotalEntries"
-				icon={RefreshIcon}
+				description="review.statsNewEntries"
+				icon={InboxIcon}
 				iconColor="text-blue-500"
-				value={stats?.totalEntries ?? 0}
+				value={dueStats?.newCount ?? 0}
 			/>
 			<StatsCard
-				description="review.statsStarredEntries"
-				icon={StarIcon}
-				iconColor="text-amber-500"
-				value={stats?.starredEntries ?? 0}
-			/>
-			<StatsCard
-				description="review.statsUnreviewedEntries"
-				icon={ViewIcon}
-				iconColor="text-purple-500"
-				value={stats?.unreviewedEntries ?? 0}
+				description="review.statsStreak"
+				icon={Fire02Icon}
+				iconColor="text-red-500"
+				value={stats?.streak ?? 0}
 			/>
 		</>
 	)
@@ -488,16 +530,18 @@ function StatsCard({ value, description, icon, iconColor }: StatsCardProps) {
 
 type ReviewCardProps = {
 	entry: Entry
-	onMarkReviewed: () => void
+	onRate: (rating: Rating) => void
 	onSkip: () => void
-	isMarkingReviewed: boolean
+	onSnooze: (preset: SnoozePreset) => void
+	isLoading: boolean
 }
 
 function ReviewCard({
 	entry,
-	onMarkReviewed,
+	onRate,
 	onSkip,
-	isMarkingReviewed,
+	onSnooze,
+	isLoading,
 }: ReviewCardProps) {
 	const { t } = useTranslation()
 	const plainContent = entry.content.replace(/<[^>]*>/g, '').trim()
@@ -529,34 +573,123 @@ function ReviewCard({
 					</p>
 				</div>
 
-				<div className="flex justify-center gap-4 border-t pt-6">
-					<Button
-						className="min-w-32"
-						disabled={isMarkingReviewed}
-						onClick={onSkip}
-						variant="outline"
-					>
-						{t('review.skip')}
-					</Button>
-					<Button
-						className="min-w-32"
-						disabled={isMarkingReviewed}
-						onClick={onMarkReviewed}
-					>
-						{isMarkingReviewed ? (
-							t('review.marking')
-						) : (
-							<>
-								<HugeiconsIcon
-									className="mr-2 size-4"
-									icon={CheckmarkCircle02Icon}
-								/>
-								{t('review.markReviewed')}
-							</>
-						)}
-					</Button>
+				<div className="border-t pt-6">
+					<RatingButtons isLoading={isLoading} onRate={onRate} />
+					<div className="mt-4 flex items-center justify-center gap-2">
+						<Button
+							className="text-muted-foreground"
+							disabled={isLoading}
+							onClick={onSkip}
+							size="sm"
+							variant="ghost"
+						>
+							{t('review.skip')}
+						</Button>
+						<SnoozeDropdown disabled={isLoading} onSnooze={onSnooze} />
+					</div>
 				</div>
 			</CardContent>
 		</Card>
+	)
+}
+
+type SnoozeDropdownProps = {
+	onSnooze: (preset: SnoozePreset) => void
+	disabled: boolean
+}
+
+function SnoozeDropdown({ onSnooze, disabled }: SnoozeDropdownProps) {
+	const { t } = useTranslation()
+
+	const presets: { key: SnoozePreset; labelKey: string }[] = [
+		{ key: 'tomorrow', labelKey: 'review.snoozePreset.tomorrow' },
+		{ key: '3days', labelKey: 'review.snoozePreset.3days' },
+		{ key: '7days', labelKey: 'review.snoozePreset.7days' },
+	]
+
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button
+					className="text-muted-foreground"
+					disabled={disabled}
+					size="sm"
+					variant="ghost"
+				>
+					<HugeiconsIcon className="mr-1 size-4" icon={Time01Icon} />
+					{t('review.snooze')}
+				</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent align="center">
+				{presets.map(({ key, labelKey }) => (
+					<DropdownMenuItem key={key} onClick={() => onSnooze(key)}>
+						<HugeiconsIcon className="mr-2 size-4" icon={Calendar01Icon} />
+						{t(labelKey)}
+					</DropdownMenuItem>
+				))}
+			</DropdownMenuContent>
+		</DropdownMenu>
+	)
+}
+
+type RatingButtonsProps = {
+	onRate: (rating: Rating) => void
+	isLoading: boolean
+}
+
+function RatingButtons({ onRate, isLoading }: RatingButtonsProps) {
+	const { t } = useTranslation()
+
+	const ratings: {
+		key: Rating
+		labelKey: string
+		hintKey: string
+		variant: 'destructive' | 'outline' | 'default'
+		className?: string
+	}[] = [
+		{
+			key: 'again',
+			labelKey: 'review.rating.again',
+			hintKey: 'review.rating.againHint',
+			variant: 'destructive',
+		},
+		{
+			key: 'hard',
+			labelKey: 'review.rating.hard',
+			hintKey: 'review.rating.hardHint',
+			variant: 'outline',
+			className:
+				'border-orange-500 text-orange-600 hover:bg-orange-50 hover:text-orange-700 dark:hover:bg-orange-950',
+		},
+		{
+			key: 'good',
+			labelKey: 'review.rating.good',
+			hintKey: 'review.rating.goodHint',
+			variant: 'default',
+		},
+		{
+			key: 'easy',
+			labelKey: 'review.rating.easy',
+			hintKey: 'review.rating.easyHint',
+			variant: 'outline',
+			className:
+				'border-blue-500 text-blue-600 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-blue-950',
+		},
+	]
+
+	return (
+		<div className="flex flex-wrap justify-center gap-3">
+			{ratings.map(({ key, labelKey, variant, className }) => (
+				<Button
+					className={cn('min-w-20', className)}
+					disabled={isLoading}
+					key={key}
+					onClick={() => onRate(key)}
+					variant={variant}
+				>
+					{t(labelKey)}
+				</Button>
+			))}
+		</div>
 	)
 }

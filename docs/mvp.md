@@ -139,41 +139,55 @@ Done - 实现说明：
 
 ### B. 复习算法升级（Review v2）
 
-目标：从“规则筛选队列”升级为“到期队列 + 间隔复习”，并保留原模式作为补充视图/过滤器。
+目标：从"规则筛选队列"升级为"到期队列 + 间隔复习"，并保留原模式作为补充视图/过滤器。
 
 #### B1. Review 调度状态（数据模型扩展）
 
-* [ ] 新增 `entry_review_state`（或在 entries 上扩展字段）
-  * [ ] `dueAt`
-  * [ ] `lastReviewedAt`
-  * [ ] `intervalDays`
-  * [ ] `ease`
-  * [ ] `reps`
-  * [ ] `lapses`
-* [ ] `review_events` 增加评分字段
-  * [ ] `rating`: `again | hard | good | easy`（或你定义的档位）
+* [x] 新增 `entry_review_state`（使用 entryId 作为主键）
+  * [x] `dueAt` - 下次到期时间（notNull）
+  * [x] `lastReviewedAt` - 上次复习时间
+  * [x] `intervalDays` - 当前间隔天数
+  * [x] `ease` - SM-2 ease factor，范围 [1.3, 3.0]
+  * [x] `reps` - 连续正确复习次数
+  * [x] `lapses` - 遗忘次数
+* [x] `review_events` 增加评分字段
+  * [x] `rating`: `again | hard | good | easy`（notNull，默认 good）
+  * [x] `scheduledDueAt`: 本次复习后计算的下次到期时间
+
+Done: 新建 `entry_review_state` 表（entryId 主键 + userId,dueAt 索引），扩展 `review_events` 表添加 `rating` 和 `scheduledDueAt` 字段。使用懒创建策略，首次复习时创建 state。
 
 #### B2. 复习动作与算法（最小可行）
 
-* [ ] `markReviewed` 升级为带评分：`markReviewed(entryId, rating)`
-  * [ ] 旧调用兼容：不传 rating 默认 `good`
-* [ ] 最小调度算法（可弱化版 SM-2/自定义）
-  * [ ] again：间隔重置/大幅降低 + lapses++
-  * [ ] hard：小幅增长 + ease 略降
-  * [ ] good：正常增长
-  * [ ] easy：更大增长 + ease 略升
-* [ ] 每日上限与补齐策略
-  * [ ] 优先 due 条目
-  * [ ] 不足时用新条目/未复习补齐
+* [x] `markReviewed` 升级为带评分：`markReviewed(entryId, rating)`
+  * [x] 旧调用兼容：不传 rating 默认 `good`
+  * [x] 事务化：单个事务内完成 review_events 插入和 entry_review_state upsert
+* [x] 最小调度算法（弱化版 SM-2）
+  * [x] again：interval = 1, ease -= 0.20, lapses++
+  * [x] hard：interval = baseInterval * 1.2, ease -= 0.15
+  * [x] good：interval = baseInterval * ease（首轮 = 1）
+  * [x] easy：interval = baseInterval \* ease \* 1.3（首轮 = 2）, ease += 0.10
+  * [x] 边界处理：ease clamp [1.3, 3.0]，interval >= 1，Math.round() 取整
+* [x] 每日上限与补齐策略
+  * [x] dailyLimit：用户可配置（默认 50）
+  * [x] newLimit：30%（Math.min(20, floor(dailyLimit * 0.3))）
+  * [x] 优先 due 条目
+  * [x] 不足时用新条目（无 review_state）补齐
+
+Done: 实现弱化版 SM-2 算法模块 `spaced-repetition.ts`，升级 `markReviewed` API 支持事务化 upsert，升级 `getQueue` API 支持 due 规则和配额策略。
 
 #### B3. 队列与页面（Web）
 
-* [ ] 默认队列：Due Queue（`dueAt <= now`）
-* [ ] 保留原四种模式（new/starred/unreviewed/all）作为过滤器或独立 tab
-* [ ] Snooze（跳过/延后）
-  * [ ] 延后到明天 / 3 天 / 自定义（可先做固定档位）
-* [ ] 今日统计扩展（按需）
-  * [ ] dueCount、reviewedCount、newCount、streak（可选）
+* [x] 默认队列：Due Queue（`dueAt <= now`）
+* [x] 保留原四种模式（new/starred/unreviewed/all）作为过滤器
+* [x] 评分按钮：Again（红色）/ Hard（橙色）/ Good（绿色）/ Easy（蓝色）
+* [x] 统计卡片：待复习数、今日已复习、新条目数、总条目数
+* [x] 用户时区支持：前端传 tzOffset，后端按用户时区计算"今日"
+* [x] Snooze（跳过/延后）
+  * [x] 延后到明天 / 3 天 / 7 天（固定档位）
+* [x] 今日统计扩展
+  * [x] dueCount、reviewedCount、newCount、streak
+
+Done: 升级 ReviewCard 组件支持四个评分按钮，新增 `getDueStats` API 显示到期统计，添加 due 模式作为默认复习模式。实现 Snooze API 支持延后到明天/3 天/7 天，扩展 `getTodayStats` API 添加 streak 连续天数统计，Web 端 ReviewCard 添加 Snooze 下拉菜单，ReviewDashboard 显示连续天数统计卡片。
 
 验收标准：
 

@@ -15,6 +15,13 @@
       "when": 1766371243783,
       "tag": "0001_careful_leo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1766394937035,
+      "tag": "0002_hesitant_maginty",
+      "breakpoints": true
     }
   ]
 }

@@ -11,14 +11,8 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
+import type { Entry } from '@/types'
 import { orpc } from '@/utils/orpc'
-
-type Entry = {
-	id: string
-	title: string
-	content: string
-	updatedAt: string | Date
-}
 
 /**
  * Ref methods for EntryPicker component
@@ -83,8 +77,8 @@ export function EntryPicker({ ref, onSelect, excludeId, title }: EntryPickerProp
 		setSearchQuery('')
 	}
 
-	const formatDate = (date: string | Date) => {
-		const d = typeof date === 'string' ? new Date(date) : date
+	const formatDate = (date: Entry['updatedAt']) => {
+		const d = new Date(date)
 		return d.toLocaleDateString(undefined, {
 			month: 'short',
 			day: 'numeric',

@@ -1,5 +1,13 @@
 import { relations } from 'drizzle-orm'
-import { boolean, index, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
+import {
+	boolean,
+	index,
+	integer,
+	pgTable,
+	real,
+	text,
+	timestamp,
+} from 'drizzle-orm/pg-core'
 import { user } from './auth'
 
 /**
@@ -60,6 +68,10 @@ export const entriesRelations = relations(entries, ({ one, many }) => ({
 	entrySources: many(entrySources),
 	attachments: many(attachments),
 	reviewEvents: many(reviewEvents),
+	reviewState: one(entryReviewState, {
+		fields: [entries.id],
+		references: [entryReviewState.entryId],
+	}),
 }))
 
 /**
@@ -263,8 +275,65 @@ export const attachmentsRelations = relations(attachments, ({ one }) => ({
 }))
 
 /**
+ * entry_review_state - 条目复习调度状态（快照）
+ * 每个 entry 最多一条记录，懒创建（首次复习时创建）
+ */
+export const entryReviewState = pgTable(
+	'entry_review_state',
+	{
+		// 使用 entryId 作为主键（方案 A）
+		entryId: text('entry_id')
+			.notNull()
+			.references(() => entries.id, { onDelete: 'cascade' })
+			.primaryKey(),
+
+		userId: text('user_id')
+			.notNull()
+			.references(() => user.id, { onDelete: 'cascade' }),
+
+		/** 下次到期时间（首次创建时 = now，后续由算法计算） */
+		dueAt: timestamp('due_at', { withTimezone: true }).notNull(),
+		/** 上次复习时间 */
+		lastReviewedAt: timestamp('last_reviewed_at', { withTimezone: true }),
+
+		/** 当前间隔天数（首次 = 0，复习后 >= 1） */
+		intervalDays: integer('interval_days').notNull().default(0),
+		/** SM-2 ease factor，范围 [1.3, 3.0]，默认 2.5 */
+		ease: real('ease').notNull().default(2.5),
+
+		/** 连续正确复习次数 */
+		reps: integer('reps').notNull().default(0),
+		/** 遗忘次数（again 计数） */
+		lapses: integer('lapses').notNull().default(0),
+
+		createdAt: timestamp('created_at', { withTimezone: true })
+			.defaultNow()
+			.notNull(),
+		updatedAt: timestamp('updated_at', { withTimezone: true })
+			.defaultNow()
+			.$onUpdate(() => new Date())
+			.notNull(),
+	},
+	(t) => [
+		// 核心查询索引：getQueue / getDueStats 按用户 + 到期时间查询
+		index('entry_review_state_user_due_idx').on(t.userId, t.dueAt),
+	]
+)
+
+export const entryReviewStateRelations = relations(entryReviewState, ({ one }) => ({
+	entry: one(entries, {
+		fields: [entryReviewState.entryId],
+		references: [entries.id],
+	}),
+	user: one(user, {
+		fields: [entryReviewState.userId],
+		references: [user.id],
+	}),
+}))
+
+/**
  * review_events - 复习事件
- * 记录每次复习的时间戳
+ * 记录每次复习的时间戳和评分
  */
 export const reviewEvents = pgTable(
 	'review_events',
@@ -278,6 +347,10 @@ export const reviewEvents = pgTable(
 			.references(() => entries.id, { onDelete: 'cascade' }),
 		/** 复习时的备注（可选） */
 		note: text('note'),
+		/** 评分：again | hard | good | easy */
+		rating: text('rating').notNull().default('good'),
+		/** 本次复习后计算的下次到期时间（便于调参/回放） */
+		scheduledDueAt: timestamp('scheduled_due_at', { withTimezone: true }),
 		/** 复习时间 */
 		reviewedAt: timestamp('reviewed_at', { withTimezone: true })
 			.defaultNow()
