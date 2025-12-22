@@ -27,7 +27,10 @@ export const searchEntries = protectedProcedure
 		const conditions = [
 			eq(entries.userId, userId),
 			isNull(entries.deletedAt),
-			or(ilike(entries.title, searchPattern), ilike(entries.content, searchPattern)),
+			or(
+				ilike(entries.title, searchPattern),
+				ilike(entries.contentText, searchPattern)
+			),
 		]
 
 		// Add cursor condition for pagination

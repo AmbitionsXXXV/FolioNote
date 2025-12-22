@@ -1,0 +1,306 @@
+/* Custom Caret Styles with Comet Tail Animation */
+
+/* Hide native caret for all textareas and contenteditable elements */
+.custom-caret-container textarea,
+.custom-caret-container [contenteditable="true"],
+.tiptap.ProseMirror {
+	caret-color: transparent;
+}
+
+/* Custom caret wrapper */
+.custom-caret {
+	position: absolute;
+	pointer-events: none;
+	z-index: 10;
+	width: 2px;
+	height: 1.2em;
+	transform-origin: bottom center;
+}
+
+/* Main caret line */
+.custom-caret::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		180deg,
+		var(--primary) 0%,
+		oklch(from var(--primary) l c h / 0.9) 50%,
+		oklch(from var(--primary) l c h / 0.7) 100%
+	);
+	border-radius: 1px;
+	animation: caret-blink 1.1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Comet tail glow effect */
+.custom-caret::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 8px;
+	height: 100%;
+	transform: translateX(-50%);
+	background: radial-gradient(
+		ellipse at center,
+		oklch(from var(--primary) l c h / 0.4) 0%,
+		oklch(from var(--primary) l c h / 0.2) 40%,
+		transparent 70%
+	);
+	filter: blur(3px);
+	animation: caret-glow 1.1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Comet tail particles */
+.custom-caret-tail {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 16px;
+	height: 100%;
+	pointer-events: none;
+	overflow: visible;
+}
+
+.custom-caret-tail::before,
+.custom-caret-tail::after {
+	content: "";
+	position: absolute;
+	border-radius: 50%;
+	animation: particle-float 2s ease-in-out infinite;
+}
+
+.custom-caret-tail::before {
+	width: 3px;
+	height: 3px;
+	top: 20%;
+	left: 30%;
+	background: oklch(from var(--primary) l c h / 0.6);
+	filter: blur(1px);
+	animation-delay: 0s;
+}
+
+.custom-caret-tail::after {
+	width: 2px;
+	height: 2px;
+	top: 60%;
+	left: 60%;
+	background: oklch(from var(--primary) l c h / 0.4);
+	filter: blur(0.5px);
+	animation-delay: 0.5s;
+}
+
+/* Smooth movement transition */
+.custom-caret.moving {
+	transition: transform 80ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Movement trail effect */
+.custom-caret.moving::after {
+	width: 12px;
+	background: radial-gradient(
+		ellipse at center,
+		oklch(from var(--primary) l c h / 0.5) 0%,
+		oklch(from var(--primary) l c h / 0.3) 30%,
+		transparent 60%
+	);
+	filter: blur(4px);
+}
+
+/* Blink animation */
+@keyframes caret-blink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.4;
+	}
+}
+
+/* Glow pulse animation */
+@keyframes caret-glow {
+	0%,
+	100% {
+		opacity: 1;
+		transform: translateX(-50%) scale(1);
+	}
+	50% {
+		opacity: 0.6;
+		transform: translateX(-50%) scale(0.9);
+	}
+}
+
+/* Particle floating animation */
+@keyframes particle-float {
+	0%,
+	100% {
+		transform: translateY(0) scale(1);
+		opacity: 0.6;
+	}
+	25% {
+		transform: translateY(-3px) scale(1.2);
+		opacity: 0.8;
+	}
+	50% {
+		transform: translateY(-1px) scale(0.9);
+		opacity: 0.4;
+	}
+	75% {
+		transform: translateY(-4px) scale(1.1);
+		opacity: 0.7;
+	}
+}
+
+/* TipTap/ProseMirror specific caret styles */
+.tiptap-caret-container {
+	position: relative;
+}
+
+.tiptap-caret {
+	position: absolute;
+	pointer-events: none;
+	z-index: 50;
+	width: 2.5px;
+	height: 1.3em;
+	border-radius: 1px;
+	background: linear-gradient(
+		180deg,
+		var(--primary) 0%,
+		oklch(from var(--primary) l c h / 0.85) 100%
+	);
+	box-shadow:
+		0 0 8px oklch(from var(--primary) l c h / 0.5),
+		0 0 16px oklch(from var(--primary) l c h / 0.3),
+		0 0 24px oklch(from var(--primary) l c h / 0.15);
+	animation: tiptap-caret-pulse 1.2s ease-in-out infinite;
+	transition:
+		left 60ms cubic-bezier(0.22, 0.68, 0, 1),
+		top 60ms cubic-bezier(0.22, 0.68, 0, 1);
+}
+
+/* Comet trail for TipTap caret */
+.tiptap-caret::before {
+	content: "";
+	position: absolute;
+	top: -4px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 6px;
+	height: calc(100% + 8px);
+	background: radial-gradient(
+		ellipse at center,
+		oklch(from var(--primary) l c h / 0.35) 0%,
+		oklch(from var(--primary) l c h / 0.15) 40%,
+		transparent 70%
+	);
+	filter: blur(4px);
+	border-radius: 50%;
+}
+
+/* Sparkle particles */
+.tiptap-caret::after {
+	content: "";
+	position: absolute;
+	top: -2px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 4px;
+	height: 4px;
+	background: oklch(from var(--primary) calc(l + 0.1) c h);
+	border-radius: 50%;
+	filter: blur(1px);
+	animation: sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes tiptap-caret-pulse {
+	0%,
+	100% {
+		opacity: 1;
+		box-shadow:
+			0 0 8px oklch(from var(--primary) l c h / 0.5),
+			0 0 16px oklch(from var(--primary) l c h / 0.3),
+			0 0 24px oklch(from var(--primary) l c h / 0.15);
+	}
+	50% {
+		opacity: 0.7;
+		box-shadow:
+			0 0 4px oklch(from var(--primary) l c h / 0.3),
+			0 0 8px oklch(from var(--primary) l c h / 0.2),
+			0 0 12px oklch(from var(--primary) l c h / 0.1);
+	}
+}
+
+@keyframes sparkle {
+	0%,
+	100% {
+		opacity: 0.8;
+		transform: translateX(-50%) translateY(0) scale(1);
+	}
+	25% {
+		opacity: 1;
+		transform: translateX(-50%) translateY(-2px) scale(1.3);
+	}
+	50% {
+		opacity: 0.5;
+		transform: translateX(-50%) translateY(0) scale(0.8);
+	}
+	75% {
+		opacity: 0.9;
+		transform: translateX(-50%) translateY(-1px) scale(1.1);
+	}
+}
+
+/* Entry editor specific enhancements */
+.entry-editor {
+	position: relative;
+}
+
+.entry-editor .ProseMirror {
+	caret-color: transparent;
+	position: relative;
+}
+
+/* Override ProseMirror focus styles for better caret visibility */
+.entry-editor .ProseMirror:focus {
+	outline: none;
+}
+
+/* Enhanced selection styling */
+.entry-editor .ProseMirror ::selection {
+	background: oklch(from var(--primary) l c h / 0.25);
+}
+
+.entry-editor .ProseMirror::-moz-selection {
+	background: oklch(from var(--primary) l c h / 0.25);
+}
+
+/* Dark mode adjustments */
+.dark .tiptap-caret {
+	box-shadow:
+		0 0 10px oklch(from var(--primary) l c h / 0.6),
+		0 0 20px oklch(from var(--primary) l c h / 0.4),
+		0 0 30px oklch(from var(--primary) l c h / 0.2);
+}
+
+.dark .tiptap-caret::before {
+	background: radial-gradient(
+		ellipse at center,
+		oklch(from var(--primary) l c h / 0.45) 0%,
+		oklch(from var(--primary) l c h / 0.2) 40%,
+		transparent 70%
+	);
+}
+
+/* Textarea custom caret fallback (CSS-only approach) */
+.cn-textarea {
+	caret-color: var(--primary);
+}
+
+/* For browsers that support caret-shape (future-proofing) */
+@supports (caret-shape: bar) {
+	.cn-textarea {
+		caret-shape: bar;
+	}
+}

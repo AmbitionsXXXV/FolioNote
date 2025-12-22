@@ -67,7 +67,6 @@ export const Route = createFileRoute('/_app/entries/$id')({
 type UpdateEntryData = {
 	id: string
 	title?: string
-	content?: string
 	contentJson?: string
 	isInbox?: boolean
 	isStarred?: boolean
@@ -226,11 +225,10 @@ function EntryEditPage() {
 	)
 
 	const handleContentChange = useCallback(
-		(html: string, json: string) => {
+		(_html: string, json: string) => {
 			setLocalContent(json)
 			autoSave({
 				id,
-				content: html,
 				contentJson: json,
 				expectedVersion: currentVersion,
 			})
@@ -332,8 +330,8 @@ function EntryEditPage() {
 	}
 
 	const title = localTitle ?? entry.title
-	// 优先使用 contentJson，向后兼容 content（HTML）
-	const content = localContent ?? entry.contentJson ?? entry.content
+	// 使用 contentJson
+	const editorContent = localContent ?? entry.contentJson ?? ''
 
 	return (
 		<div className="container mx-auto max-w-4xl px-4 py-6">
@@ -434,8 +432,8 @@ function EntryEditPage() {
 			<EntryEditor
 				additionalCommands={additionalCommands}
 				autoFocus
-				content={content}
-				contentFormat={entry.contentJson ? 'json' : 'html'}
+				content={editorContent}
+				contentFormat="json"
 				onChange={handleContentChange}
 				placeholder={t('editor.placeholderWithSlash')}
 			/>

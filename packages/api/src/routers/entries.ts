@@ -4,7 +4,7 @@ import { and, desc, eq, inArray, isNotNull, isNull, lt } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import { z } from 'zod'
 import { protectedProcedure } from '../index'
-import { extractTextFromHtml, processContentUpdate } from '../utils/content'
+import { processContentUpdate } from '../utils/content'
 
 /**
  * Entry filter types for list queries
@@ -16,14 +16,11 @@ const EntryFilterSchema = z
 /**
  * Input schema for creating an entry
  *
- * 支持两种内容格式：
- * - contentJson: ProseMirror JSON（推荐，用于富文本编辑器）
- * - content: HTML 字符串（向后兼容）
+ * 内容格式：
+ * - contentJson: ProseMirror JSON（用于富文本编辑器）
  */
 const CreateEntryInputSchema = z.object({
 	title: z.string().optional().default(''),
-	/** @deprecated 使用 contentJson 替代 */
-	content: z.string().optional().default(''),
 	/** ProseMirror JSON 格式内容 */
 	contentJson: z.string().optional(),
 	isInbox: z.boolean().optional().default(true),
@@ -32,9 +29,8 @@ const CreateEntryInputSchema = z.object({
 /**
  * Input schema for updating an entry
  *
- * 支持两种内容格式：
- * - contentJson: ProseMirror JSON（推荐，用于富文本编辑器）
- * - content: HTML 字符串（向后兼容）
+ * 内容格式：
+ * - contentJson: ProseMirror JSON（用于富文本编辑器）
  *
  * 乐观锁：
  * - expectedVersion: 期望的版本号，用于并发控制
@@ -42,8 +38,6 @@ const CreateEntryInputSchema = z.object({
 const UpdateEntryInputSchema = z.object({
 	id: z.string(),
 	title: z.string().optional(),
-	/** @deprecated 使用 contentJson 替代 */
-	content: z.string().optional(),
 	/** ProseMirror JSON 格式内容 */
 	contentJson: z.string().optional(),
 	isInbox: z.boolean().optional(),
@@ -81,8 +75,7 @@ const EntryTagInputSchema = z.object({
 /**
  * entries.create - Create a new entry
  *
- * 优先使用 contentJson，自动派生 contentText 用于搜索
- * 如果只提供 content（HTML），则从 HTML 提取纯文本
+ * 使用 contentJson，自动派生 contentText 用于搜索
  */
 export const createEntry = protectedProcedure
 	.input(CreateEntryInputSchema)
@@ -90,7 +83,7 @@ export const createEntry = protectedProcedure
 		const userId = context.session.user.id
 		const id = nanoid()
 
-		// 处理内容：优先使用 contentJson
+		// 处理内容
 		let contentJson: string | null = null
 		let contentText: string | null = null
 
@@ -98,9 +91,6 @@ export const createEntry = protectedProcedure
 			const processed = processContentUpdate(input.contentJson)
 			contentJson = processed.contentJson
 			contentText = processed.contentText
-		} else if (input.content) {
-			// 向后兼容：从 HTML 提取纯文本
-			contentText = extractTextFromHtml(input.content)
 		}
 
 		const [entry] = await db
@@ -109,7 +99,6 @@ export const createEntry = protectedProcedure
 				id,
 				userId,
 				title: input.title,
-				content: input.content,
 				contentJson,
 				contentText,
 				isInbox: input.isInbox,
@@ -122,8 +111,7 @@ export const createEntry = protectedProcedure
 /**
  * entries.update - Update an existing entry
  *
- * 优先使用 contentJson，自动派生 contentText 用于搜索
- * 如果只提供 content（HTML），则从 HTML 提取纯文本
+ * 使用 contentJson，自动派生 contentText 用于搜索
  *
  * 乐观锁：如果提供 expectedVersion，则只有版本匹配时才更新
  */
@@ -139,17 +127,11 @@ export const updateEntry = protectedProcedure
 			fieldsToUpdate.title = updateData.title
 		}
 
-		// 处理内容更新：优先使用 contentJson
+		// 处理内容更新
 		if (updateData.contentJson !== undefined) {
 			const processed = processContentUpdate(updateData.contentJson)
 			fieldsToUpdate.contentJson = processed.contentJson
 			fieldsToUpdate.contentText = processed.contentText
-			// 同时更新 content 以保持向后兼容（可选）
-			fieldsToUpdate.content = updateData.content ?? ''
-		} else if (updateData.content !== undefined) {
-			// 向后兼容：从 HTML 提取纯文本
-			fieldsToUpdate.content = updateData.content
-			fieldsToUpdate.contentText = extractTextFromHtml(updateData.content)
 		}
 
 		if (updateData.isInbox !== undefined) {
