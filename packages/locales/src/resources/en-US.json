@@ -186,7 +186,11 @@
     "insertReference": "Insert Reference",
     "saving": "Saving...",
     "saved": "Saved",
-    "saveFailed": "Save failed"
+    "saveFailed": "Save failed",
+    "codeBlockLines_one": "{{count}} line",
+    "codeBlockLines_other": "{{count}} lines",
+    "codeBlockShowAll": "Show all {{count}} lines",
+    "codeBlockCollapse": "Collapse"
   },
   "error": {
     "unauthorized": "Please sign in to continue",

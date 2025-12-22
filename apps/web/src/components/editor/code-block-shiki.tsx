@@ -2,6 +2,7 @@ import { ArrowDown01Icon, ArrowUp01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { NodeViewContent, type NodeViewProps, NodeViewWrapper } from '@tiptap/react'
 import { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { codeToHtml } from 'shiki'
 import {
 	Select,
@@ -67,6 +68,7 @@ async function highlightCode(code: string, lang: string): Promise<string | null>
  * Custom NodeView component for code blocks with Shiki syntax highlighting
  */
 export function CodeBlockShikiView({ node, updateAttributes }: NodeViewProps) {
+	const { t } = useTranslation()
 	const [highlightedHtml, setHighlightedHtml] = useState<string | null>(null)
 	const [previewHtml, setPreviewHtml] = useState<string | null>(null)
 	const [isCollapsed, setIsCollapsed] = useState(true)
@@ -149,7 +151,9 @@ export function CodeBlockShikiView({ node, updateAttributes }: NodeViewProps) {
 							className="code-block-collapse-icon"
 							icon={isCollapsed ? ArrowDown01Icon : ArrowUp01Icon}
 						/>
-						<span className="code-block-line-count">{lineCount} lines</span>
+						<span className="code-block-line-count">
+							{t('editor.codeBlockLines', { count: lineCount })}
+						</span>
 					</button>
 				)}
 				<div className="code-block-header-spacer" />
@@ -203,7 +207,7 @@ export function CodeBlockShikiView({ node, updateAttributes }: NodeViewProps) {
 										className="code-block-expand-icon"
 										icon={ArrowDown01Icon}
 									/>
-									<span>Show all {lineCount} lines</span>
+									<span>{t('editor.codeBlockShowAll', { count: lineCount })}</span>
 								</button>
 							</div>
 						</>
@@ -223,7 +227,7 @@ export function CodeBlockShikiView({ node, updateAttributes }: NodeViewProps) {
 										className="code-block-collapse-icon"
 										icon={ArrowUp01Icon}
 									/>
-									<span>Collapse</span>
+									<span>{t('editor.codeBlockCollapse')}</span>
 								</button>
 							</div>
 						</>

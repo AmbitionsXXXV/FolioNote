@@ -32,6 +32,27 @@ import { type SaveStatus, useAutoSave } from '@/hooks/use-auto-save'
 import { orpc } from '@/utils/orpc'
 
 export const Route = createFileRoute('/_app/entries/$id')({
+	loader: async ({ params }) => {
+		const entry = await orpc.entries.get.call({ id: params.id })
+		return { entry }
+	},
+
+	head: ({ loaderData }) => ({
+		meta: [
+			{
+				title: loaderData?.entry?.title
+					? `Edit · ${loaderData.entry.title}`
+					: 'Edit · Untitled',
+			},
+			{
+				name: 'description',
+				content: loaderData?.entry?.title
+					? `Edit entry: ${loaderData.entry.title}`
+					: 'Edit entry',
+			},
+		],
+	}),
+
 	component: EntryEditPage,
 })
 
@@ -65,6 +86,12 @@ function EntryEditPage() {
 	const entrySourcesRef = useRef<EntrySourcesRef>(null)
 	const entryPickerRef = useRef<EntryPickerRef>(null)
 
+	// Fetch entry data
+	const { data: entry, isLoading } = useQuery({
+		queryKey: ['entries', id],
+		queryFn: () => orpc.entries.get.call({ id }),
+	})
+
 	// Local state for optimistic updates
 	const [localTitle, setLocalTitle] = useState<string | null>(null)
 	const [localContent, setLocalContent] = useState<string | null>(null)
@@ -72,12 +99,6 @@ function EntryEditPage() {
 	const [currentVersion, setCurrentVersion] = useState<string>('1')
 	// 删除确认对话框状态
 	const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-
-	// Fetch entry data
-	const { data: entry, isLoading } = useQuery({
-		queryKey: ['entries', id],
-		queryFn: () => orpc.entries.get.call({ id }),
-	})
 
 	// 当 entry 加载完成时，更新版本号
 	useEffect(() => {

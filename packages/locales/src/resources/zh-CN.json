@@ -222,7 +222,11 @@
     "insertReference": "插入引用",
     "saving": "保存中...",
     "saved": "已保存",
-    "saveFailed": "保存失败"
+    "saveFailed": "保存失败",
+    "codeBlockLines_one": "{{count}} 行",
+    "codeBlockLines_other": "{{count}} 行",
+    "codeBlockShowAll": "显示全部 {{count}} 行",
+    "codeBlockCollapse": "收起"
   },
   "error": {
     "unauthorized": "请登录后继续",
