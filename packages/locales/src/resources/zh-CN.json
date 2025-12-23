@@ -1,4 +1,13 @@
 {
+  "onboarding": {
+    "tagline": "智能笔记与间隔复习",
+    "feature1": "捕捉灵感",
+    "feature1Desc": "轻松书写并整理您的笔记",
+    "feature2": "复习学习",
+    "feature2Desc": "使用间隔复习永久记忆",
+    "feature3": "随时同步",
+    "feature3Desc": "随时随地访问您的笔记"
+  },
   "home": {
     "systemReady": "系统就绪",
     "offline": "离线",
@@ -37,6 +46,7 @@
   },
   "common": {
     "save": "保存",
+    "saving": "保存中...",
     "cancel": "取消",
     "loading": "加载中...",
     "loadFailed": "加载失败",
@@ -81,9 +91,22 @@
     "noAccount": "还没有账号？",
     "hasAccount": "已有账号？",
     "welcome": "欢迎回来",
+    "welcomeBack": "欢迎回来！",
     "createAccount": "创建你的账号",
     "signInSuccess": "登录成功",
-    "signUpSuccess": "账号创建成功"
+    "signUpSuccess": "账号创建成功",
+    "fillAllFields": "请填写所有字段",
+    "signInFailed": "登录失败",
+    "signInSubtitle": "登录以继续使用 FolioNote",
+    "emailPlaceholder": "输入您的邮箱",
+    "passwordPlaceholder": "输入您的密码",
+    "getStarted": "开始使用",
+    "signUpSubtitle": "创建您的账号以开始使用 FolioNote",
+    "namePlaceholder": "输入您的姓名",
+    "passwordHint": "密码至少需要 8 个字符",
+    "passwordTooShort": "密码至少需要 8 个字符",
+    "signUpFailed": "注册失败",
+    "haveAccount": "已有账号？"
   },
   "entry": {
     "title": "标题",
@@ -113,6 +136,7 @@
     "deleteConfirmTitle": "确认删除笔记",
     "deleteConfirmDesc": "此操作将把笔记移至回收站。您可以稍后从回收站中恢复。",
     "notExist": "笔记不存在或已被删除",
+    "notFound": "条目未找到",
     "backToInbox": "返回收件箱",
     "saveSuccess": "条目已保存",
     "saveFailed": "保存失败，请重试",
@@ -122,7 +146,10 @@
     "movedToLibrary": "已移至资料库",
     "movedToInbox": "已移至收件箱",
     "movedToTrash": "已移至回收站",
-    "versionConflict": "内容已被其他客户端修改，请刷新页面"
+    "versionConflict": "内容已被其他客户端修改，请刷新页面",
+    "detail": "条目详情",
+    "emptyContent": "暂无内容",
+    "startWriting": "开始写作"
   },
   "tag": {
     "tags": "标签",
@@ -236,8 +263,10 @@
     "starredItems": "已加星标",
     "reviewedToday_one": "今日已复习 {{count}} 条",
     "reviewedToday_other": "今日已复习 {{count}} 条",
+    "dueCount": "{{count}} 条待复习",
     "dueCount_one": "{{count}} 条待复习",
     "dueCount_other": "{{count}} 条待复习",
+    "streakDays": "连续 {{count}} 天",
     "streakDays_one": "连续 {{count}} 天",
     "streakDays_other": "连续 {{count}} 天",
     "dueEntries": "待复习",

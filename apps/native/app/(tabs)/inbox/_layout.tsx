@@ -7,6 +7,13 @@ export default function InboxLayout() {
 	return (
 		<TabStack>
 			<TabStack.Screen name="index" options={{ title: t('nav.inbox') }} />
+			<TabStack.Screen
+				name="[id]"
+				options={{
+					title: t('entry.detail'),
+					presentation: 'card',
+				}}
+			/>
 		</TabStack>
 	)
 }

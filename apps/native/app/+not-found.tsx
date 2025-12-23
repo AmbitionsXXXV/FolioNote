@@ -1,6 +1,6 @@
 import { Link, Stack } from 'expo-router'
-import { Card } from 'heroui-native'
-import { Pressable, Text, View } from 'react-native'
+import { Button, Card } from 'heroui-native'
+import { Text, View } from 'react-native'
 import { Container } from '@/components/container'
 
 export default function NotFoundScreen() {
@@ -18,11 +18,11 @@ export default function NotFoundScreen() {
 							Sorry, the page you're looking for doesn't exist.
 						</Card.Description>
 						<Link asChild href="/(tabs)/index">
-							<Pressable className="rounded-lg bg-accent px-6 py-3 active:opacity-70">
+							<Button className="bg-accent active:opacity-70">
 								<Text className="font-medium text-accent-foreground text-base">
 									Go to Home
 								</Text>
-							</Pressable>
+							</Button>
 						</Link>
 					</Card>
 				</View>

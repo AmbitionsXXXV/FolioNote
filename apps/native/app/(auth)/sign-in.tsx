@@ -1,7 +1,7 @@
 import { ArrowLeft01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react-native'
 import { router } from 'expo-router'
-import { useThemeColor } from 'heroui-native'
+import { Button, useThemeColor } from 'heroui-native'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -35,9 +35,7 @@ export default function SignInScreen() {
 
 	const handleSignIn = useCallback(async () => {
 		if (!(email.trim() && password.trim())) {
-			setError(
-				t('auth.fillAllFields', { defaultValue: 'Please fill in all fields' })
-			)
+			setError(t('auth.fillAllFields'))
 			return
 		}
 
@@ -58,7 +56,7 @@ export default function SignInScreen() {
 					setEmail('')
 					setPassword('')
 					queryClient.refetchQueries()
-					router.replace('/(tabs)')
+					router.replace('/(tabs)/index')
 				},
 				onFinished() {
 					setIsLoading(false)
@@ -84,7 +82,7 @@ export default function SignInScreen() {
 					{/* Header */}
 					<View className="mb-8 flex-row items-center pt-4">
 						<Pressable
-							className="mr-4 h-10 w-10 items-center justify-center rounded-full active:opacity-70"
+							className="mr-4 size-10 items-center justify-center rounded-full active:opacity-70"
 							onPress={handleBack}
 						>
 							<HugeiconsIcon
@@ -102,13 +100,9 @@ export default function SignInScreen() {
 					<View className="flex-1">
 						{/* Welcome Text */}
 						<Text className="mb-2 font-semibold text-foreground text-xl">
-							{t('auth.welcomeBack', { defaultValue: 'Welcome back!' })}
+							{t('auth.welcomeBack')}
 						</Text>
-						<Text className="mb-8 text-muted">
-							{t('auth.signInSubtitle', {
-								defaultValue: 'Sign in to continue to FolioNote',
-							})}
-						</Text>
+						<Text className="mb-8 text-muted">{t('auth.signInSubtitle')}</Text>
 
 						{/* Error Message */}
 						{error ? (
@@ -125,12 +119,10 @@ export default function SignInScreen() {
 							<TextInput
 								autoCapitalize="none"
 								autoComplete="email"
-								className="rounded-xl border border-divider bg-surface px-4 py-4 text-foreground"
+								className="rounded-xl border border-divider bg-surface p-4 text-foreground"
 								keyboardType="email-address"
 								onChangeText={setEmail}
-								placeholder={t('auth.emailPlaceholder', {
-									defaultValue: 'Enter your email',
-								})}
+								placeholder={t('auth.emailPlaceholder')}
 								placeholderTextColor={mutedColor}
 								value={email}
 							/>
@@ -144,12 +136,10 @@ export default function SignInScreen() {
 							<TextInput
 								autoCapitalize="none"
 								autoComplete="password"
-								className="rounded-xl border border-divider bg-surface px-4 py-4 text-foreground"
+								className="rounded-xl border border-divider bg-surface p-4 text-foreground"
 								onChangeText={setPassword}
 								onSubmitEditing={handleSignIn}
-								placeholder={t('auth.passwordPlaceholder', {
-									defaultValue: 'Enter your password',
-								})}
+								placeholder={t('auth.passwordPlaceholder')}
 								placeholderTextColor={mutedColor}
 								returnKeyType="done"
 								secureTextEntry
@@ -175,14 +165,10 @@ export default function SignInScreen() {
 
 						{/* Sign Up Link */}
 						<View className="flex-row items-center justify-center">
-							<Text className="text-muted">
-								{t('auth.noAccount', {
-									defaultValue: "Don't have an account?",
-								})}{' '}
-							</Text>
-							<Pressable onPress={navigateToSignUp}>
+							<Text className="text-muted">{t('auth.noAccount')} </Text>
+							<Button onPress={navigateToSignUp}>
 								<Text className="font-semibold text-accent">{t('auth.signUp')}</Text>
-							</Pressable>
+							</Button>
 						</View>
 					</View>
 				</View>

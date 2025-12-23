@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "Save",
+    "saving": "Saving...",
     "cancel": "Cancel",
     "loading": "Loading...",
     "loadFailed": "Load failed",
@@ -45,9 +46,22 @@
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
     "welcome": "Welcome back",
+    "welcomeBack": "Welcome back!",
     "createAccount": "Create your account",
     "signInSuccess": "Sign in successful",
-    "signUpSuccess": "Account created successfully"
+    "signUpSuccess": "Account created successfully",
+    "fillAllFields": "Please fill in all fields",
+    "signInFailed": "Sign in failed",
+    "signInSubtitle": "Sign in to continue to FolioNote",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "getStarted": "Get started",
+    "signUpSubtitle": "Create your account to start using FolioNote",
+    "namePlaceholder": "Enter your name",
+    "passwordHint": "Password must be at least 8 characters",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "signUpFailed": "Sign up failed",
+    "haveAccount": "Already have an account?"
   },
   "entry": {
     "title": "Title",
@@ -77,6 +91,7 @@
     "deleteConfirmTitle": "Confirm Delete Entry",
     "deleteConfirmDesc": "This will move the entry to trash. You can restore it later from the trash.",
     "notExist": "Entry not found or has been deleted",
+    "notFound": "Entry not found",
     "backToInbox": "Back to Inbox",
     "saveSuccess": "Entry saved",
     "saveFailed": "Failed to save, please try again",
@@ -86,7 +101,10 @@
     "movedToLibrary": "Moved to Library",
     "movedToInbox": "Moved to Inbox",
     "movedToTrash": "Moved to Trash",
-    "versionConflict": "Content has been modified by another client, please refresh the page"
+    "versionConflict": "Content has been modified by another client, please refresh the page",
+    "detail": "Entry Detail",
+    "emptyContent": "No content yet",
+    "startWriting": "Start Writing"
   },
   "tag": {
     "tags": "Tags",
@@ -200,8 +218,10 @@
     "starredItems": "Starred items",
     "reviewedToday_one": "{{count}} item reviewed today",
     "reviewedToday_other": "{{count}} items reviewed today",
+    "dueCount": "{{count}} item due",
     "dueCount_one": "{{count}} item due",
     "dueCount_other": "{{count}} items due",
+    "streakDays": "{{count}} day streak",
     "streakDays_one": "{{count}} day streak",
     "streakDays_other": "{{count}} days streak",
     "dueEntries": "Due",
@@ -347,6 +367,15 @@
     "emailInvalid": "Please enter a valid email address",
     "titleRequired": "Title is required",
     "unknown": "An unknown error occurred"
+  },
+  "onboarding": {
+    "tagline": "Smart note-taking with spaced repetition",
+    "feature1": "Capture Ideas",
+    "feature1Desc": "Write and organize your notes effortlessly",
+    "feature2": "Review & Learn",
+    "feature2Desc": "Use spaced repetition to remember forever",
+    "feature3": "Sync Everywhere",
+    "feature3Desc": "Access your notes anywhere, anytime"
   },
   "home": {
     "systemReady": "System Ready",

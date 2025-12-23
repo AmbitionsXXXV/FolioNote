@@ -219,17 +219,28 @@ Done: 实现了 iOS 端完整的基础功能闭环：
 
 #### C2. iOS 富文本处理方案（WebView + Tiptap）
 
-* [ ] 只读渲染（优先）
-  * [ ] 条目详情页展示富文本（WebView 渲染 JSON）
-* [ ] 编辑模式（第二步）
-  * [ ] WebView 内嵌 Tiptap 编辑器（复用 Web schema/扩展）
-  * [ ] RN ↔ WebView 消息桥接
-    * [ ] loadDocument(json)
-    * [ ] onChange(json, text)（节流）
-    * [ ] onSave（可选）
-* [ ] 与服务端同步
-  * [ ] 保存 JSON 主内容 + 派生 text
-  * [ ] 冲突策略最小可行（基于 updatedAt/version）
+* [x] 只读渲染（优先）
+  * [x] 条目详情页展示富文本（WebView 渲染 JSON）
+* [x] 编辑模式（第二步）
+  * [x] WebView 内嵌 Tiptap 编辑器（复用 Web schema/扩展）
+  * [x] RN ↔ WebView 消息桥接
+    * [x] loadDocument(json)
+    * [x] onChange(json, text)（节流）
+    * [x] onSave（可选）
+* [x] 与服务端同步
+  * [x] 保存 JSON 主内容 + 派生 text
+  * [x] 冲突策略最小可行（基于 updatedAt/version）
+
+Done - 实现说明：
+
+1. **RichTextViewer 组件**：使用 Expo DOM Components 方式，在 WebView 中渲染 Tiptap 只读编辑器
+2. **RichTextEditor 组件**：使用 Expo DOM Components 方式，在 WebView 中渲染 Tiptap 可编辑器
+3. **消息桥接**：通过 Expo DOM Components 的 props 传递实现双向通信
+   * `content` prop：传递 ProseMirror JSON 内容
+   * `onChange` 回调：节流 300ms，返回 JSON 和纯文本
+   * `onSave` 回调：支持 Cmd/Ctrl+S 快捷键保存
+4. **条目详情页**：`/inbox/[id].tsx` 支持只读和编辑模式切换
+5. **数据同步**：通过 `entries.update` API 保存 `contentJson` 和 `contentText`
 
 验收标准：
 
@@ -297,9 +308,9 @@ Done: 实现完整的 Tiptap Slash Command 扩展，支持基础命令和 FolioN
 * [x] 收件箱列表
 * [x] 今日视图
 * [x] 复习流程
-* [ ] 富文本：WebView 只读渲染（优先）与编辑（次优先）
+* [x] 富文本：WebView 只读渲染（优先）与编辑（次优先）
 
-Done: 实现了 iOS 端基础功能闭环（C1 部分），包括认证、快速捕获、收件箱、今日视图和复习流程。
+Done: 实现了 iOS 端完整功能闭环（C1 + C2 部分），包括认证、快速捕获、收件箱、今日视图、复习流程，以及富文本只读渲染和编辑功能。
 
 ### D. 国际化（i18n）支持（Web + iOS + Server）
 

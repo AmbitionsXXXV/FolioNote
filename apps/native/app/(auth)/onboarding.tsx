@@ -7,10 +7,10 @@ import {
 import type { IconSvgElement } from '@hugeicons/react-native'
 import { HugeiconsIcon } from '@hugeicons/react-native'
 import { router } from 'expo-router'
-import { useThemeColor } from 'heroui-native'
+import { Button, useThemeColor } from 'heroui-native'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Pressable, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Container } from '@/components/container'
 
@@ -36,7 +36,7 @@ export default function OnboardingScreen() {
 				{/* Hero Section */}
 				<View className="flex-1 items-center justify-center px-8">
 					{/* Logo / Icon */}
-					<View className="mb-8 h-24 w-24 items-center justify-center rounded-3xl bg-accent/10">
+					<View className="mb-8 size-24 items-center justify-center rounded-3xl bg-accent/10">
 						<HugeiconsIcon color={accentColor} icon={Book02Icon} size={48} />
 					</View>
 
@@ -47,36 +47,28 @@ export default function OnboardingScreen() {
 
 					{/* Tagline */}
 					<Text className="mb-8 px-4 text-center text-lg text-muted">
-						{t('onboarding.tagline', {
-							defaultValue: 'Smart note-taking with spaced repetition',
-						})}
+						{t('onboarding.tagline')}
 					</Text>
 
 					{/* Features */}
 					<View className="w-full max-w-sm">
 						<FeatureItem
 							accentColor={accentColor}
-							description={t('onboarding.feature1Desc', {
-								defaultValue: 'Write and organize your notes effortlessly',
-							})}
+							description={t('onboarding.feature1Desc')}
 							icon={NoteEditIcon}
-							title={t('onboarding.feature1', { defaultValue: 'Capture Ideas' })}
+							title={t('onboarding.feature1')}
 						/>
 						<FeatureItem
 							accentColor={accentColor}
-							description={t('onboarding.feature2Desc', {
-								defaultValue: 'Use spaced repetition to remember forever',
-							})}
+							description={t('onboarding.feature2Desc')}
 							icon={RefreshIcon}
-							title={t('onboarding.feature2', { defaultValue: 'Review & Learn' })}
+							title={t('onboarding.feature2')}
 						/>
 						<FeatureItem
 							accentColor={accentColor}
-							description={t('onboarding.feature3Desc', {
-								defaultValue: 'Access your notes anywhere, anytime',
-							})}
+							description={t('onboarding.feature3Desc')}
 							icon={CloudIcon}
-							title={t('onboarding.feature3', { defaultValue: 'Sync Everywhere' })}
+							title={t('onboarding.feature3')}
 						/>
 					</View>
 				</View>
@@ -84,24 +76,24 @@ export default function OnboardingScreen() {
 				{/* Action Buttons */}
 				<View className="px-6 pb-4">
 					{/* Sign Up Button (Primary) */}
-					<Pressable
-						className="mb-3 flex-row items-center justify-center rounded-xl bg-accent p-4 active:opacity-80"
+					<Button
+						className="mb-3 flex-row items-center justify-center bg-accent active:opacity-80"
 						onPress={handleSignUp}
 					>
 						<Text className="font-semibold text-lg text-white">
 							{t('auth.createAccount')}
 						</Text>
-					</Pressable>
+					</Button>
 
 					{/* Sign In Button (Secondary) */}
-					<Pressable
-						className="flex-row items-center justify-center rounded-xl border border-divider bg-surface p-4 active:opacity-80"
+					<Button
+						className="flex-row items-center justify-center border border-divider bg-surface active:opacity-80"
 						onPress={handleSignIn}
 					>
 						<Text className="font-semibold text-foreground text-lg">
 							{t('auth.signIn')}
 						</Text>
-					</Pressable>
+					</Button>
 				</View>
 			</View>
 		</Container>
@@ -121,7 +113,7 @@ function FeatureItem({
 }) {
 	return (
 		<View className="mb-4 flex-row items-start">
-			<View className="mr-4 h-10 w-10 items-center justify-center rounded-full bg-accent/10">
+			<View className="mr-4 size-10 items-center justify-center rounded-full bg-accent/10">
 				<HugeiconsIcon color={accentColor} icon={icon} size={20} />
 			</View>
 			<View className="flex-1">

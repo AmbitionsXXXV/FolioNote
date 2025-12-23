@@ -7,7 +7,7 @@ import {
 } from '@hugeicons/core-free-icons'
 import type { IconSvgElement } from '@hugeicons/react-native'
 import { HugeiconsIcon } from '@hugeicons/react-native'
-import { Card, useThemeColor } from 'heroui-native'
+import { Card, cn, useThemeColor } from 'heroui-native'
 import { Pressable, Text, View } from 'react-native'
 
 type ReviewRule = 'due' | 'new' | 'starred' | 'unreviewed' | 'all'
@@ -62,12 +62,15 @@ export function ReviewRuleCard({
 	return (
 		<Pressable onPress={onPress}>
 			<Card
-				className={`mb-3 p-4 ${isSelected ? 'border-2 border-accent' : ''}`}
+				className={cn('mb-3 p-4', isSelected && 'border-2 border-accent')}
 				variant="secondary"
 			>
 				<View className="flex-row items-center">
 					<View
-						className={`mr-3 h-10 w-10 items-center justify-center rounded-lg ${bgColorClass}`}
+						className={cn(
+							'mr-3 size-10 items-center justify-center rounded-lg',
+							bgColorClass
+						)}
 					>
 						<HugeiconsIcon color={iconColor} icon={IconComponent} size={20} />
 					</View>

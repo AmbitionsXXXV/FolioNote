@@ -12,7 +12,7 @@
 	--eclipse: oklch(0.2103 0.0059 285.89);
 
 	/* Base radius - synced from web */
-	--radius: 0.85rem;
+	--radius: 0.75rem;
 
 	/* Opacity */
 	--opacity-disabled: 0.5;

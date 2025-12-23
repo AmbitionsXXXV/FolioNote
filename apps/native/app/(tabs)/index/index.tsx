@@ -167,7 +167,7 @@ export default function HomeScreen() {
 				<Pressable onPress={navigateToInbox}>
 					<Card className="mb-3 p-4" variant="secondary">
 						<View className="flex-row items-center">
-							<View className="mr-3 h-12 w-12 items-center justify-center rounded-lg bg-accent/10">
+							<View className="mr-3 size-12 items-center justify-center rounded-lg bg-accent/10">
 								<HugeiconsIcon color={accentColor} icon={AddCircleIcon} size={24} />
 							</View>
 							<View className="flex-1">
@@ -187,7 +187,7 @@ export default function HomeScreen() {
 				<Pressable onPress={navigateToInbox}>
 					<Card className="mb-3 p-4" variant="secondary">
 						<View className="flex-row items-center">
-							<View className="mr-3 h-12 w-12 items-center justify-center rounded-lg bg-success/10">
+							<View className="mr-3 size-12 items-center justify-center rounded-lg bg-success/10">
 								<HugeiconsIcon color={successColor} icon={Mail01Icon} size={24} />
 							</View>
 							<View className="flex-1">
@@ -205,7 +205,7 @@ export default function HomeScreen() {
 				<Pressable onPress={navigateToToday}>
 					<Card className="mb-3 p-4" variant="secondary">
 						<View className="flex-row items-center">
-							<View className="mr-3 h-12 w-12 items-center justify-center rounded-lg bg-warning/10">
+							<View className="mr-3 size-12 items-center justify-center rounded-lg bg-warning/10">
 								<HugeiconsIcon
 									color={warningColor}
 									icon={Calendar03Icon}
@@ -229,7 +229,7 @@ export default function HomeScreen() {
 				<Pressable onPress={navigateToReview}>
 					<Card className="mb-3 p-4" variant="secondary">
 						<View className="flex-row items-center">
-							<View className="mr-3 h-12 w-12 items-center justify-center rounded-lg bg-muted/10">
+							<View className="mr-3 size-12 items-center justify-center rounded-lg bg-muted/10">
 								<HugeiconsIcon color={mutedColor} icon={RefreshIcon} size={24} />
 							</View>
 							<View className="flex-1">

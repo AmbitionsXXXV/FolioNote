@@ -1,8 +1,8 @@
 import { PlayIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react-native'
-import { Card } from 'heroui-native'
+import { Button, Card } from 'heroui-native'
 import { useTranslation } from 'react-i18next'
-import { Pressable, Text } from 'react-native'
+import { Text } from 'react-native'
 import { TodayStatsGrid } from './today-stats-grid'
 
 type TodayReviewCardProps = {
@@ -43,15 +43,15 @@ export function TodayReviewCard({
 				reviewedToday={reviewedToday}
 			/>
 
-			<Pressable
-				className="flex-row items-center justify-center rounded-lg bg-accent p-4 active:opacity-70"
-				disabled={!hasItemsToReview}
+			<Button
+				className="flex-row items-center justify-center bg-accent active:opacity-70"
+				isDisabled={!hasItemsToReview}
 				onPress={onStartReview}
 				style={{ opacity: hasItemsToReview ? 1 : 0.5 }}
 			>
 				<HugeiconsIcon color="white" icon={PlayIcon} size={20} />
 				<Text className="ml-2 font-semibold text-white">{buttonText}</Text>
-			</Pressable>
+			</Button>
 		</Card>
 	)
 }

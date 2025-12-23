@@ -1,8 +1,8 @@
 import { Cancel01Icon, Tick01Icon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react-native'
 import { router } from 'expo-router'
-import { Card, useThemeColor } from 'heroui-native'
-import { Pressable, Text, View } from 'react-native'
+import { Button, Card, useThemeColor } from 'heroui-native'
+import { Text, View } from 'react-native'
 import { Container } from '@/components/container'
 
 function Modal() {
@@ -31,8 +31,8 @@ function Modal() {
 						</Card.Description>
 					</Card.Body>
 					<Card.Footer className="mt-4">
-						<Pressable
-							className="w-full rounded-lg bg-accent p-4 active:opacity-70"
+						<Button
+							className="w-full bg-accent active:opacity-70"
 							onPress={handleClose}
 						>
 							<View className="flex-row items-center justify-center">
@@ -45,7 +45,7 @@ function Modal() {
 									size={20}
 								/>
 							</View>
-						</Pressable>
+						</Button>
 					</Card.Footer>
 				</Card>
 			</View>
