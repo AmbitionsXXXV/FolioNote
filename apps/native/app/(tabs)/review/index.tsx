@@ -6,12 +6,11 @@ import {
 } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react-native'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Card, useThemeColor } from 'heroui-native'
+import { Button, Card, useThemeColor } from 'heroui-native'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
 	ActivityIndicator,
-	Pressable,
 	RefreshControl,
 	ScrollView,
 	Text,
@@ -64,13 +63,13 @@ function ReviewSessionView({
 		<Container className="flex-1">
 			<View className="flex-1 p-4">
 				<View className="mb-4 flex-row items-center justify-between">
-					<Pressable
+					<Button
 						className="flex-row items-center active:opacity-70"
 						onPress={onEndReview}
 					>
 						<HugeiconsIcon color={mutedColor} icon={Cancel01Icon} size={24} />
 						<Text className="ml-2 text-muted">{t('review.endReview')}</Text>
-					</Pressable>
+					</Button>
 					<Text className="text-muted">
 						{currentIndex + 1} / {entries.length}
 					</Text>
@@ -97,7 +96,7 @@ function ReviewCompletedView({
 	const successColor = useThemeColor('success')
 
 	return (
-		<Container className="flex-1 items-center justify-center p-6">
+		<Container className="flex-1 items-center justify-center p-6" disableScroll>
 			<HugeiconsIcon color={successColor} icon={CheckmarkCircle02Icon} size={80} />
 			<Text className="mt-4 text-center font-semibold text-2xl text-foreground">
 				{t('review.greatJob')}
@@ -108,12 +107,12 @@ function ReviewCompletedView({
 			<Text className="mt-4 text-center text-muted">
 				{t('review.reviewedTodayCount', { count: reviewedCount })}
 			</Text>
-			<Pressable
-				className="mt-8 rounded-lg bg-accent px-8 py-4 active:opacity-70"
+			<Button
+				className="mt-8 bg-accent px-8 py-4 active:opacity-70"
 				onPress={onDone}
 			>
 				<Text className="font-medium text-white">{t('common.done')}</Text>
-			</Pressable>
+			</Button>
 		</Container>
 	)
 }
@@ -295,9 +294,9 @@ export default function ReviewScreen() {
 				/>
 
 				<View className="mt-4">
-					<Pressable
-						className="flex-row items-center justify-center rounded-lg bg-accent p-4 active:opacity-70"
-						disabled={entries.length === 0}
+					<Button
+						className="flex-row items-center justify-center bg-accent p-4 active:opacity-70"
+						isDisabled={entries.length === 0}
 						onPress={handleStartReview}
 						style={{ opacity: entries.length > 0 ? 1 : 0.5 }}
 					>
@@ -307,7 +306,7 @@ export default function ReviewScreen() {
 								? `${t('review.reviewSession')} (${entries.length})`
 								: t('review.noReviewItems')}
 						</Text>
-					</Pressable>
+					</Button>
 				</View>
 			</ScrollView>
 		</Container>

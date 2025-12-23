@@ -1,5 +1,6 @@
 import { PinIcon, StarIcon } from '@hugeicons/core-free-icons'
 import { HugeiconsIcon } from '@hugeicons/react-native'
+import { useRouter } from 'expo-router'
 import { Card, useThemeColor } from 'heroui-native'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,6 +20,8 @@ type Entry = {
 type EntryCardProps = {
 	entry: Entry
 	onPress?: (entry: Entry) => void
+	/** Whether to navigate to detail page on press (default: true) */
+	navigateOnPress?: boolean
 }
 
 function formatDate(date: Date): string {
@@ -53,14 +56,23 @@ function truncateText(text: string | null, maxLength: number): string {
 	return `${text.slice(0, maxLength)}...`
 }
 
-export function EntryCard({ entry, onPress }: EntryCardProps) {
+export function EntryCard({
+	entry,
+	onPress,
+	navigateOnPress = true,
+}: EntryCardProps) {
 	const { t } = useTranslation()
+	const router = useRouter()
 	const warningColor = useThemeColor('warning')
 	const accentColor = useThemeColor('accent')
 
 	const handlePress = useCallback(() => {
-		onPress?.(entry)
-	}, [entry, onPress])
+		if (onPress) {
+			onPress(entry)
+		} else if (navigateOnPress) {
+			router.push(`/inbox/${entry.id}`)
+		}
+	}, [entry, onPress, navigateOnPress, router])
 
 	const title = entry.title || t('entryCard.untitled')
 	const preview = entry.contentText

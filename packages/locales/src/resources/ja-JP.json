@@ -1,6 +1,7 @@
 {
   "common": {
     "save": "保存",
+    "saving": "保存中...",
     "cancel": "キャンセル",
     "loading": "読み込み中...",
     "loadFailed": "読み込み失敗",
@@ -45,9 +46,22 @@
     "noAccount": "アカウントをお持ちではありませんか？",
     "hasAccount": "すでにアカウントをお持ちですか？",
     "welcome": "お帰りなさい",
+    "welcomeBack": "お帰りなさい！",
     "createAccount": "アカウントを作成",
     "signInSuccess": "サインイン成功",
-    "signUpSuccess": "アカウントが正常に作成されました"
+    "signUpSuccess": "アカウントが正常に作成されました",
+    "fillAllFields": "すべてのフィールドを入力してください",
+    "signInFailed": "サインイン失敗",
+    "signInSubtitle": "FolioNote を続けるにはサインインしてください",
+    "emailPlaceholder": "メールアドレスを入力",
+    "passwordPlaceholder": "パスワードを入力",
+    "getStarted": "始めましょう",
+    "signUpSubtitle": "FolioNote を使用するにはアカウントを作成してください",
+    "namePlaceholder": "お名前を入力",
+    "passwordHint": "パスワードは最低 8 文字以上にする必要があります",
+    "passwordTooShort": "パスワードは最低 8 文字以上にする必要があります",
+    "signUpFailed": "サインアップ失敗",
+    "haveAccount": "すでにアカウントをお持ちですか？"
   },
   "entry": {
     "title": "タイトル",
@@ -86,7 +100,11 @@
     "movedToLibrary": "ライブラリに移動されました",
     "movedToInbox": "受信箱に移動されました",
     "movedToTrash": "ごみ箱に移動されました",
-    "versionConflict": "内容が他のクライアントによって変更されました。ページを更新してください"
+    "versionConflict": "内容が他のクライアントによって変更されました。ページを更新してください",
+    "detail": "エントリ詳細",
+    "emptyContent": "まだ内容がありません",
+    "notFound": "エントリが見つかりません",
+    "startWriting": "書き始める"
   },
   "tag": {
     "tags": "タグ",
@@ -155,8 +173,10 @@
     "starredItems": "スター付き項目",
     "reviewedToday_one": "今日 {{count}} 件復習済み",
     "reviewedToday_other": "今日 {{count}} 件復習済み",
+    "dueCount": "{{count}} 件の復習待ち",
     "dueCount_one": "{{count}} 件の復習待ち",
     "dueCount_other": "{{count}} 件の復習待ち",
+    "streakDays": "{{count}} 日連続",
     "streakDays_one": "{{count}} 日連続",
     "streakDays_other": "{{count}} 日連続",
     "dueEntries": "復習待ち",
@@ -347,6 +367,15 @@
     "emailInvalid": "有効なメールアドレスを入力してください",
     "titleRequired": "タイトルを入力してください",
     "unknown": "不明なエラーが発生しました"
+  },
+  "onboarding": {
+    "tagline": "分散反復を備えたスマートなノート作成",
+    "feature1": "アイデアをキャプチャ",
+    "feature1Desc": "ノートを楽に書き、整理",
+    "feature2": "レビュー＆学習",
+    "feature2Desc": "分散反復を使って永久に記憶",
+    "feature3": "どこでも同期",
+    "feature3Desc": "いつでもどこでもノートにアクセス"
   },
   "home": {
     "systemReady": "システム準備完了",

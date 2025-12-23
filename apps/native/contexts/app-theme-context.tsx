@@ -1,4 +1,4 @@
-import type React from 'react'
+import type { ReactNode } from 'react'
 import { createContext, use, useCallback, useMemo } from 'react'
 import { Uniwind, useUniwind } from 'uniwind'
 
@@ -14,7 +14,7 @@ type AppThemeContextType = {
 
 const AppThemeContext = createContext<AppThemeContextType | undefined>(undefined)
 
-export const AppThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const AppThemeProvider = ({ children }: { children: ReactNode }) => {
 	const { theme } = useUniwind()
 
 	const isLight = useMemo(() => theme === 'light', [theme])

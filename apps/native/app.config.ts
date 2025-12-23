@@ -1,4 +1,5 @@
 import type { ExpoConfig } from 'expo/config'
+import pkg from './package.json'
 
 const config: ExpoConfig = {
 	scheme: 'folio-note',
@@ -9,6 +10,7 @@ const config: ExpoConfig = {
 	},
 	name: 'FolioNote',
 	slug: 'folio-note',
+	version: pkg.version,
 	plugins: [
 		'expo-font',
 		'expo-router',
