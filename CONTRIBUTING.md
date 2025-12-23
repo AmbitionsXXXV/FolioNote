@@ -4,8 +4,8 @@
 
 ## 前置要求
 
-- [Bun](https://bun.sh/) >= 1.3.5
-- [Node.js](https://nodejs.org/) >= 20 (用于某些工具)
+- [Node.js](https://nodejs.org/) >= 20
+- [pnpm](https://pnpm.io/) >= 10.26.0
 - [Docker](https://www.docker.com/) (用于本地数据库)
 - [PostgreSQL](https://www.postgresql.org/) 客户端 (可选，用于直接访问数据库)
 
@@ -21,7 +21,7 @@ cd folio
 ### 2. 安装依赖
 
 ```bash
-bun install
+pnpm install
 ```
 
 ### 3. 环境配置
@@ -37,20 +37,20 @@ cp .env.example .env
 使用 Docker 启动本地 PostgreSQL：
 
 ```bash
-bun run db:start:docker
+pnpm run db:start:docker
 ```
 
 或使用本地 PostgreSQL：
 
 ```bash
-bun run db:init:local
-bun run db:start:local
+pnpm run db:init:local
+pnpm run db:start:local
 ```
 
 ### 5. 推送数据库 Schema
 
 ```bash
-bun run db:push
+pnpm run db:push
 ```
 
 ### 6. 启动开发服务器
@@ -58,20 +58,20 @@ bun run db:push
 启动所有服务：
 
 ```bash
-bun run dev
+pnpm run dev
 ```
 
 或分别启动：
 
 ```bash
 # API 服务器
-bun run dev:server
+pnpm run dev:server
 
 # Web 应用
-bun run dev:web
+pnpm run dev:web
 
 # 移动应用
-bun run dev:native
+pnpm run dev:native
 ```
 
 ## 项目结构
@@ -98,32 +98,32 @@ folio/
 
 ```bash
 # 检查并自动修复
-bun run check
+pnpm run check
 
 # 或直接使用 ultracite
-bun x ultracite fix
+pnpm exec ultracite fix
 ```
 
 ### 数据库操作
 
 ```bash
 # 推送 Schema 变更到数据库
-bun run db:push
+pnpm run db:push
 
 # 生成迁移文件
-bun run db:generate
+pnpm run db:generate
 
 # 运行迁移
-bun run db:migrate
+pnpm run db:migrate
 
 # 打开 Drizzle Studio
-bun run db:studio
+pnpm run db:studio
 ```
 
 ### 类型检查
 
 ```bash
-bun run check-types
+pnpm run check-types
 ```
 
 ## 提交规范
@@ -162,7 +162,7 @@ docs(readme): update installation instructions
 ### 使用交互式提交
 
 ```bash
-bun run commit
+pnpm run commit
 ```
 
 ## Git Hooks

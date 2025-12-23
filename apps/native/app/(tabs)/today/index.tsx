@@ -10,10 +10,7 @@ import { Container } from '@/components/container'
 import { TodayContent } from '@/components/today-content'
 import { authClient } from '@/lib/auth-client'
 import { orpc } from '@/utils/orpc'
-
-function getTzOffset(): number {
-	return -new Date().getTimezoneOffset()
-}
+import { getTzOffset } from '@/utils/time'
 
 export default function TodayScreen() {
 	const { t } = useTranslation()

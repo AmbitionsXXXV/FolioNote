@@ -19,13 +19,14 @@
     "db:init:local": "./scripts/init-local-db.sh",
     "db:start:local": "./scripts/start-local-db.sh",
     "db:stop:local": "./scripts/stop-local-db.sh",
-    "test": "bun test",
-    "test:watch": "bun test --watch"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.8",
     "@types/pg": "^8.15.6",
     "typescript": "catalog:",
+    "vitest": "catalog:",
     "@folionote/config": "workspace:*"
   },
   "dependencies": {

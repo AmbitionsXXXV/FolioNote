@@ -120,7 +120,6 @@ function Calendar({
 				...classNames,
 			}}
 			components={{
-				// biome-ignore lint: Parameter names are required by react-day-picker API
 				Root: ({ className, rootRef, ...props }) => (
 					<div
 						className={cn(className)}
@@ -141,7 +140,6 @@ function Calendar({
 					return <HugeiconsIcon icon={ArrowDownIcon} strokeWidth={2} />
 				},
 				DayButton: CalendarDayButton,
-				// biome-ignore lint: Parameter names are required by react-day-picker API
 				WeekNumber: ({ children, ...props }) => (
 					<td {...props}>
 						<div className="flex size-(--cell-size) items-center justify-center text-center">

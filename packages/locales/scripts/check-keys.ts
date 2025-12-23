@@ -1,7 +1,7 @@
-#!/usr/bin/env bun
+#!/usr/bin/env tsx
 /**
  * CI script to check that all locale files have consistent keys.
- * Run with: bun run packages/locales/scripts/check-keys.ts
+ * Run with: pnpm run check-keys
  *
  * This script dynamically loads all locale files from the resources directory
  * and validates that all locales have consistent keys with the default locale (en-US).

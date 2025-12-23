@@ -242,7 +242,15 @@ export default function UserMenu({ collapsed = false }: UserMenuProps) {
 		)
 	}
 
-	const handleSignOut = () => {
+	const handleSignOut = async () => {
+		// 首先撤销所有其他session，确保彻底登出
+		try {
+			await authClient.revokeSessions()
+		} catch (error) {
+			console.warn('Failed to revoke sessions:', error)
+		}
+
+		// 然后执行标准的signOut
 		authClient.signOut({
 			fetchOptions: {
 				onSuccess: () => {

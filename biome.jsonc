@@ -21,7 +21,8 @@
       "!**/wrangler.jsonc",
       "!**/.source",
       "!**/convex/_generated",
-      "!**/*.lock"
+      "!**/*.lock",
+      "!tools/clean.js"
     ]
   },
   "formatter": {
@@ -51,7 +52,8 @@
       },
       "style": {
         "noExportedImports": "off",
-        "useBlockStatements": "off"
+        "useBlockStatements": "off",
+        "useConsistentTypeDefinitions": "off"
       },
       "correctness": {
         "useImageSize": "off",

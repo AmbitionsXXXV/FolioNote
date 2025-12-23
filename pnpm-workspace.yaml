@@ -1,0 +1,26 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+catalog:
+  "@better-auth/expo": "^1.4.7"
+  "@hugeicons/core-free-icons": "^3.0.0"
+  "@orpc/client": "^1.12.3"
+  "@orpc/openapi": "^1.12.3"
+  "@orpc/server": "^1.12.3"
+  "@orpc/tanstack-query": "^1.12.3"
+  "@orpc/zod": "^1.12.3"
+  "@tanstack/react-query": "^5.90.12"
+  "@types/node": "^22.0.0"
+  "@vitest/coverage-v8": "^4.0.16"
+  "@vitest/ui": "^4.0.16"
+  "better-auth": "^1.4.7"
+  "dotenv": "^17.2.3"
+  "hono": "^4.11.1"
+  "i18next": "^25.2.1"
+  "msw": "^2.12.4"
+  "react-i18next": "^16.4.1"
+  "typescript": "^5"
+  "vitest": "^4.0.16"
+  "zod": "^4.1.13"
+

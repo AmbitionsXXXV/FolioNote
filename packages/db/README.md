@@ -8,13 +8,13 @@ This package provides database management scripts for both Docker-based and loca
 
 ```bash
 # Start database
-bun run db:start:docker
+pnpm run db:start:docker
 
 # Push schema
-bun run db:push
+pnpm run db:push
 
 # Stop database
-bun run db:stop:docker
+pnpm run db:stop:docker
 ```
 
 ### Option 2: Local (Persistent Setup)
@@ -23,16 +23,16 @@ bun run db:stop:docker
 # Install PostgreSQL (see Prerequisites below)
 
 # Initialize database (create user and database)
-bun run db:init:local
+pnpm run db:init:local
 
 # Start database
-bun run db:start:local
+pnpm run db:start:local
 
 # Push schema
-bun run db:push
+pnpm run db:push
 
 # Stop database
-bun run db:stop:local
+pnpm run db:stop:local
 ```
 
 ## Database Configuration
@@ -55,17 +55,17 @@ Docker setup provides an isolated PostgreSQL instance with persistent data stora
 
 ```bash
 # From project root
-bun run db:start:docker
+pnpm run db:start:docker
 
 # Or from packages/db directory
 cd packages/db
-bun run db:start:docker
+pnpm run db:start:docker
 ```
 
 ### Stop Docker Database
 
 ```bash
-bun run db:stop:docker
+pnpm run db:stop:docker
 ```
 
 ### Database Details
@@ -139,17 +139,17 @@ sudo -u postgres createdb folio_note
 
 ```bash
 # From project root
-bun run db:start:local
+pnpm run db:start:local
 
 # Or from packages/db directory
 cd packages/db
-bun run db:start:local
+pnpm run db:start:local
 ```
 
 ### Stop Local Database
 
 ```bash
-bun run db:stop:local
+pnpm run db:stop:local
 ```
 
 ### Initialize Local Database
@@ -157,7 +157,7 @@ bun run db:stop:local
 Before using the local PostgreSQL setup, you need to initialize the database user and database:
 
 ```bash
-bun run db:init:local
+pnpm run db:init:local
 ```
 
 This script will:
@@ -172,25 +172,25 @@ This script will:
 ### Push Schema Changes
 
 ```bash
-bun run db:push
+pnpm run db:push
 ```
 
 ### Generate Migrations
 
 ```bash
-bun run db:generate
+pnpm run db:generate
 ```
 
 ### Run Migrations
 
 ```bash
-bun run db:migrate
+pnpm run db:migrate
 ```
 
 ### Open Database Studio
 
 ```bash
-bun run db:studio
+pnpm run db:studio
 ```
 
 ## Troubleshooting

@@ -23,11 +23,7 @@ import {
 import { Container } from '@/components/container'
 import { authClient } from '@/lib/auth-client'
 import { orpc } from '@/utils/orpc'
-
-// Get timezone offset in minutes
-function getTzOffset(): number {
-	return -new Date().getTimezoneOffset()
-}
+import { getTzOffset } from '@/utils/time'
 
 export default function HomeScreen() {
 	const { t } = useTranslation()

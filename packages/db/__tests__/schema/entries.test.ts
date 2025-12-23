@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it } from 'bun:test'
 import { eq } from 'drizzle-orm'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { user } from '../../src/schema/auth'
 import { entries, entryTags, tags } from '../../src/schema/entries'
 import {

@@ -19,7 +19,8 @@ This repository is a monorepo created with [Better-T-Stack](https://github.com/A
 * **TailwindCSS + shadcn/ui** — UI styling and components
 * **Hono** — lightweight backend framework
 * **oRPC** — end-to-end type-safe APIs (with OpenAPI integration)
-* **Bun** — runtime & package manager
+* **pnpm** — package manager
+* **Node.js** — runtime
 * **Drizzle + PostgreSQL** — database schema and queries
 * **Authentication** — Better Auth
 * **Biome** — formatting and linting
@@ -43,7 +44,8 @@ folio/
 
 ## Prerequisites
 
-* **Bun** installed
+* **Node.js** >= 20
+* **pnpm** >= 10.26.0
 * A running **PostgreSQL** instance
 * For mobile development: **Expo Go** (or iOS Simulator / Android Emulator)
 
@@ -52,7 +54,7 @@ folio/
 Install dependencies:
 
 ```bash
-bun install
+pnpm install
 ```
 
 ## Database Setup
@@ -75,7 +77,7 @@ AUTH_URL="http://localhost:3001"
 3. Push the schema to your database:
 
 ```bash
-bun run db:push
+pnpm run db:push
 ```
 
 ## Run in Development
@@ -83,7 +85,7 @@ bun run db:push
 Start everything:
 
 ```bash
-bun run dev
+pnpm run dev
 ```
 
 * Web: <http://localhost:3001>
@@ -92,15 +94,15 @@ bun run dev
 
 ## Available Scripts
 
-* `bun run dev` — start all applications in development mode
-* `bun run build` — build all applications
-* `bun run dev:web` — start only the web application
-* `bun run dev:server` — start only the server
-* `bun run dev:native` — start the React Native/Expo development server
-* `bun run check-types` — check TypeScript types across all apps
-* `bun run db:push` — push schema changes to database
-* `bun run db:studio` — open database studio UI
-* `bun run check` — run Biome formatting and linting
+* `pnpm run dev` — start all applications in development mode
+* `pnpm run build` — build all applications
+* `pnpm run dev:web` — start only the web application
+* `pnpm run dev:server` — start only the server
+* `pnpm run dev:native` — start the React Native/Expo development server
+* `pnpm run check-types` — check TypeScript types across all apps
+* `pnpm run db:push` — push schema changes to database
+* `pnpm run db:studio` — open database studio UI
+* `pnpm run check` — run Biome formatting and linting
 
 ## Roadmap (Learning-first)
 

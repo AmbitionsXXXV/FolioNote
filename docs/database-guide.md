@@ -892,10 +892,10 @@ sequenceDiagram
     participant DB as 数据库
 
     Dev->>Code: 1. 修改 schema/*.ts
-    Dev->>CLI: 2. bun run db:generate
+    Dev->>CLI: 2. pnpm run db:generate
     CLI->>CLI: 3. 生成 SQL 迁移文件
     Dev->>Dev: 4. Review SQL 文件
-    Dev->>CLI: 5. bun run db:migrate
+    Dev->>CLI: 5. pnpm run db:migrate
     CLI->>DB: 6. 执行迁移
     DB->>DB: 7. 记录迁移历史
 ```
@@ -928,16 +928,16 @@ ALTER TABLE "entries"
 
 ```bash
 # 开发环境：直接推送 schema 变更
-bun run db:push
+pnpm run db:push
 
 # 生产环境：生成迁移文件
-bun run db:generate
+pnpm run db:generate
 
 # 应用迁移
-bun run db:migrate
+pnpm run db:migrate
 
 # 查看数据库（可视化工具）
-bun run db:studio
+pnpm run db:studio
 ```
 
 ### 迁移最佳实践
@@ -1142,7 +1142,7 @@ flowchart TB
 
 ## 下一步学习
 
-1. **实践**：运行 `bun run db:studio` 打开 Drizzle Studio，可视化查看数据库
+1. **实践**：运行 `pnpm run db:studio` 打开 Drizzle Studio，可视化查看数据库
 2. **阅读**：[Drizzle ORM 官方文档](https://orm.drizzle.team)
 3. **深入**：
    - [PostgreSQL 官方文档 - 事务](https://www.postgresql.org/docs/current/tutorial-transactions.html)

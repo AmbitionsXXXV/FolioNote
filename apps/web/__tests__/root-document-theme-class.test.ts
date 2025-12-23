@@ -1,10 +1,10 @@
-import * as Bun from 'bun'
+import { readFile } from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 
 describe('RootDocument: theme class should not be overwritten by language changes', () => {
 	it('keeps langClass off <html> className to avoid wiping next-themes classes (e.g. dark)', async () => {
 		const fileUrl = new URL('../src/routes/__root.tsx', import.meta.url)
-		const source = await Bun.file(fileUrl).text()
+		const source = await readFile(fileUrl, 'utf-8')
 
 		expect(source).not.toContain(
 			"className={cn('no-scrollbar bg-background', langClass)}"

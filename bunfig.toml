@@ -1,8 +1,0 @@
-[install]
-linker = "isolated"
-
-[test]
-coverage = true
-coverageDir = "./coverage"
-coverageReporter = ["text", "lcov"]
-timeout = 30000

@@ -15,13 +15,14 @@
   },
   "scripts": {
     "check-types": "tsc --noEmit",
-    "check-keys": "bun run scripts/check-keys.ts"
+    "check-keys": "tsx scripts/check-keys.ts"
   },
   "dependencies": {
     "i18next": "catalog:"
   },
   "devDependencies": {
     "@folionote/config": "workspace:*",
+    "tsx": "^4.19.0",
     "typescript": "catalog:"
   }
 }

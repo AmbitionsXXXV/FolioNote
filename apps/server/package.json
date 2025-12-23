@@ -5,14 +5,15 @@
   "scripts": {
     "build": "tsdown",
     "check-types": "tsc -b",
-    "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
-    "dev": "bun run --hot src/index.ts",
-    "start": "bun run dist/index.js",
-    "test": "bun test",
-    "test:watch": "bun test --watch",
-    "test:coverage": "bun test --coverage"
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "deploy:cloudflare": "wrangler deploy"
   },
   "dependencies": {
+    "@hono/node-server": "^1.14.3",
     "hono": "catalog:",
     "@orpc/server": "catalog:",
     "@orpc/openapi": "catalog:",
@@ -27,10 +28,13 @@
     "@folionote/locales": "workspace:*"
   },
   "devDependencies": {
-    "@types/bun": "catalog:",
-    "typescript": "catalog:",
-    "tsdown": "^0.18.0",
     "@folionote/config": "workspace:*",
-    "msw": "catalog:"
+    "@types/node": "catalog:",
+    "msw": "catalog:",
+    "tsdown": "^0.18.0",
+    "tsx": "^4.19.0",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "wrangler": "^4.56.0"
   }
 }

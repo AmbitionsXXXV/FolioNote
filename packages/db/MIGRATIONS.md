@@ -7,7 +7,7 @@
 ### 开发环境（Development）：使用 `db:push`
 
 ```bash
-bun run db:push
+pnpm run db:push
 ```
 
 - 直接将 schema 变更推送到数据库
@@ -18,12 +18,12 @@ bun run db:push
 
 ```bash
 # 1. 生成迁移文件
-bun run db:generate
+pnpm run db:generate
 
 # 2. 检查生成的迁移文件（在 src/migrations 目录）
 
 # 3. 应用迁移
-bun run db:migrate
+pnpm run db:migrate
 ```
 
 ## 工作流程
@@ -31,37 +31,37 @@ bun run db:migrate
 ### 日常开发
 
 1. 修改 `src/schema/*.ts` 文件
-2. 运行 `bun run db:push` 同步到本地数据库
-3. 使用 `bun run db:studio` 查看数据
+2. 运行 `pnpm run db:push` 同步到本地数据库
+3. 使用 `pnpm run db:studio` 查看数据
 
 ### 准备发布
 
 1. 确保所有 schema 变更已完成
-2. 运行 `bun run db:generate` 生成迁移文件
+2. 运行 `pnpm run db:generate` 生成迁移文件
 3. Review 生成的 SQL 文件
 4. 提交迁移文件到 Git
-5. 在生产环境运行 `bun run db:migrate`
+5. 在生产环境运行 `pnpm run db:migrate`
 
 ## 命令参考
 
 | 命令 | 用途 |
 |------|------|
-| `bun run db:push` | 开发环境快速同步 schema |
-| `bun run db:generate` | 生成迁移文件 |
-| `bun run db:migrate` | 应用迁移文件 |
-| `bun run db:studio` | 打开 Drizzle Studio 可视化工具 |
+| `pnpm run db:push` | 开发环境快速同步 schema |
+| `pnpm run db:generate` | 生成迁移文件 |
+| `pnpm run db:migrate` | 应用迁移文件 |
+| `pnpm run db:studio` | 打开 Drizzle Studio 可视化工具 |
 
 ## 本地数据库管理
 
 ```bash
 # Docker 方式
-bun run db:start:docker   # 启动
-bun run db:stop:docker    # 停止
+pnpm run db:start:docker   # 启动
+pnpm run db:stop:docker    # 停止
 
 # 本地 PostgreSQL
-bun run db:init:local     # 初始化
-bun run db:start:local    # 启动
-bun run db:stop:local     # 停止
+pnpm run db:init:local     # 初始化
+pnpm run db:start:local    # 启动
+pnpm run db:stop:local     # 停止
 ```
 
 ## 最佳实践

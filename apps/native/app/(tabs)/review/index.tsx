@@ -22,11 +22,7 @@ import { ReviewRatingButtons } from '@/components/review-rating-buttons'
 import { ReviewRuleCard } from '@/components/review-rule-card'
 import { authClient } from '@/lib/auth-client'
 import { client, orpc, queryClient } from '@/utils/orpc'
-
-// Get timezone offset in minutes
-function getTzOffset(): number {
-	return -new Date().getTimezoneOffset()
-}
+import { getTzOffset } from '@/utils/time'
 
 type ReviewRule = 'due' | 'new' | 'starred' | 'unreviewed' | 'all'
 type Rating = 'again' | 'hard' | 'good' | 'easy'

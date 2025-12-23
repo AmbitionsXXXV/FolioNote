@@ -1,11 +1,15 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalPassThroughEnv": [
+    "BETTER_AUTH_SECRET",
+    "BETTER_AUTH_URL",
     "CORS_ORIGIN",
     "DATABASE_URL",
     "TEST_DATABASE_URL",
     "NODE_ENV",
-    "DEV"
+    "DEV",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET"
   ],
   "tasks": {
     "build": {

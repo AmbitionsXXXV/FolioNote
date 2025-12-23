@@ -1,8 +1,11 @@
+import { GoogleIcon } from '@hugeicons/core-free-icons'
+import { HugeiconsIcon } from '@hugeicons/react'
 import { useForm } from '@tanstack/react-form'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import z from 'zod'
+import { Separator } from '@/components/ui/separator'
 import { authClient } from '@/lib/auth-client'
 import Loader from './loader'
 import { Button } from './ui/button'
@@ -82,6 +85,7 @@ export default function SignInForm() {
 									name={field.name}
 									onBlur={field.handleBlur}
 									onChange={(e) => field.handleChange(e.target.value)}
+									placeholder="you@example.com"
 									type="email"
 									value={field.state.value}
 								/>
@@ -129,6 +133,20 @@ export default function SignInForm() {
 						</Button>
 					)}
 				</form.Subscribe>
+
+				<Separator />
+
+				<Button
+					className="w-full"
+					onClick={() =>
+						authClient.signIn.social({
+							provider: 'google',
+							callbackURL: `${import.meta.env.VITE_WEB_URL}/dashboard`,
+						})
+					}
+				>
+					<HugeiconsIcon className="size-6 fill-white" icon={GoogleIcon} />
+				</Button>
 			</form>
 
 			<div className="mt-4 text-center">

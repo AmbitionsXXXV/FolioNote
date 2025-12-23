@@ -1,8 +1,8 @@
-import { afterAll, afterEach, beforeAll } from 'bun:test'
 import {
 	cleanupDatabase,
 	setupTestDatabase,
 } from '@folionote/db/__tests__/utils/db-helper'
+import { afterAll, afterEach, beforeAll } from 'vitest'
 
 beforeAll(() => {
 	setupTestDatabase()

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'vitest'
 import app from '../../src/index'
 
 describe('RPC Handler Integration', () => {

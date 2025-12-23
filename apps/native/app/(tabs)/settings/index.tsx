@@ -69,6 +69,14 @@ export default function SettingsScreen() {
 		}
 		setIsSigningOut(true)
 		try {
+			// 首先撤销所有其他session，确保彻底登出
+			try {
+				await authClient.revokeSessions()
+			} catch (error) {
+				console.warn('Failed to revoke sessions:', error)
+			}
+
+			// 然后执行标准的signOut
 			await authClient.signOut()
 			router.replace('/(auth)/sign-in')
 		} catch {

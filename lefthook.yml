@@ -4,20 +4,20 @@ pre-commit:
   commands:
     format:
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: bun x ultracite fix {staged_files}
+      run: pnpm exec ultracite fix {staged_files}
       stage_fixed: true
     lint:
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: bun x ultracite check {staged_files}
+      run: pnpm exec ultracite check {staged_files}
       stage_fixed: true
 
 commit-msg:
   commands:
     "lint commit message":
-      run: bunx commitlint --edit {1}
+      run: pnpm exec commitlint --edit {1}
 
 pre-push:
   commands:
     check:
       glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
-      run: bun x ultracite check {push_files}
+      run: pnpm exec ultracite check {push_files}
