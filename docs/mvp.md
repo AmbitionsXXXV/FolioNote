@@ -1,9 +1,8 @@
-
 # FolioNote MVP v2 Scope（基于当前实现进度扩展）
 
 ## 概述
 
-FolioNote 是一个个人知识管理应用，帮助用户完成“捕获 → 组织 → 复习”的闭环。  
+FolioNote 是一个个人知识管理应用，帮助用户完成"捕获 → 组织 → 复习"的闭环。  
 在 MVP v1 已完成 Web 端核心功能（Entries/Tags/Sources/Search/Review 基础规则）的基础上，MVP v2 聚焦三件事：
 
 * 编辑体验升级：Tiptap 深度集成（尤其 `/` 命令）
@@ -57,8 +56,8 @@ Done: search API router（ILIKE 模糊搜索 + 游标分页）与 Web 搜索页�
 
 #### 6) 复习工作流（基础版）
 
-* [x] “今日复习”队列
-* [x] 标记条目为“已复习”
+* [x] "今日复习"队列
+* [x] 标记条目为"已复习"
 * [x] 简单复习规则（new/starred/unreviewed/all）
 
 Done: review API router（getQueue/markReviewed/history/todayStats/reviewCount），包含单元测试。Web 端复习页支持四种模式与统计。
@@ -93,7 +92,7 @@ Done: 实现了完整的 Tiptap Slash Command 扩展：
 验收标准：
 
 * Slash Menu 在连续输入、撤销/重做、快速切换光标时稳定可用
-* 执行命令后光标位置正确，不出现“命令文字残留”
+* 执行命令后光标位置正确，不出现"命令文字残留"
 * 异步命令（如 tag/source/ref）支持防抖搜索，结果展示与选择稳定
 
 #### A2. 富文本内容存储策略（跨端一致性）
@@ -118,7 +117,7 @@ Done - 实现说明：
 
 验收标准：
 
-* Web 端编辑、列表展示、搜索、复习均使用同一套“主存 + 派生字段”逻辑
+* Web 端编辑、列表展示、搜索、复习均使用同一套"主存 + 派生字段"逻辑
 * 任意条目内容不会因保存/重新打开发生结构丢失（回归用例覆盖粘贴、撤销、列表/引用等）
 
 #### A3. 粘贴与链接处理（编辑器可靠性）
@@ -255,6 +254,46 @@ Done - 实现说明：
 
 ---
 
+### D. 国际化（i18n）支持（Web + iOS + Server）
+
+目标：统一管理多语言资源，支持 Web、iOS（Expo）、以及 Server 接口返回的本地化 msg（同时保留稳定 error code）。
+
+#### D1. 共享 locales 子包
+
+* [x] 新增 `packages/locales` 统一管理语言资源（例如 `en-US`、`zh-CN`）
+* [x] 统一 key 命名规范（如 `auth.*` / `entry.*` / `review.*`）
+* [x] 插值与复数规则使用 ICU MessageFormat
+* [x] CI 校验：各语言 key 一致（缺失/多余 key 报错）
+
+Done: 创建了 `packages/locales` 子包，包含 `en-US.json` 和 `zh-CN.json` 语言资源文件，定义了 `common`、`auth`、`entry`、`tag`、`source`、`review`、`nav`、`search`、`editor`、`error` 等命名空间。支持 i18next v4 JSON 格式的复数规则（`_one`/`_other`）和插值（`{{count}}`）。添加了 `packages/locales/scripts/check-keys.ts` 脚本用于 CI 校验 key 一致性。
+
+#### D2. Web / Native 集成
+
+* [x] Web：提供 `t(key, params)`（或 Provider/hook）替换关键 UI 文案
+* [x] iOS：同样提供 `t(key, params)`，覆盖导航、按钮、空态、错误提示
+* [x] 支持语言切换与 fallback（默认 en-US，或按产品策略）
+
+Done: Web 端集成 react-i18next，在 `__root.tsx` 引入 I18nextProvider，所有页面和组件已使用 `useTranslation` hook；Native 端集成 i18next + expo-localization，自动检测设备语言，首页、登录、注册、导航等 UI 已国际化。
+
+#### D3. Server 接口 msg 国际化（双轨）
+
+* [x] Server 根据 `X-Locale` / `Accept-Language` / 用户设置解析 locale
+* [x] 错误返回结构包含：
+  * [x] `code`（稳定）
+  * [x] `message`（服务端按 locale 渲染）
+  * [x] `params`（可选）
+* [x] 设置 `Vary: Accept-Language, X-Locale`（若使用缓存）
+
+Done: 扩展 `packages/api/src/context.ts` 解析 `X-Locale` 和 `Accept-Language` 头，添加 `locale` 到 context；创建 `getLocalizedErrorMessage` 和 `createLocalizedError` 工具函数，支持 params 插值；Server 响应头已添加 `Vary: Accept-Language, X-Locale`。
+
+验收标准：
+
+* Web / iOS / Server 在相同 locale 下对关键错误与空态展示一致语义
+* 语言切换后无需改业务逻辑即可改变 UI 文案
+* Server 错误响应始终包含稳定 `code`，并提供对应语言 `message`
+
+---
+
 ## 数据模型（v2）
 
 ### 已有（v1）
@@ -312,44 +351,6 @@ Done: 实现完整的 Tiptap Slash Command 扩展，支持基础命令和 FolioN
 
 Done: 实现了 iOS 端完整功能闭环（C1 + C2 部分），包括认证、快速捕获、收件箱、今日视图、复习流程，以及富文本只读渲染和编辑功能。
 
-### D. 国际化（i18n）支持（Web + iOS + Server）
-
-目标：统一管理多语言资源，支持 Web、iOS（Expo）、以及 Server 接口返回的本地化 msg（同时保留稳定 error code）。
-
-#### D1. 共享 locales 子包
-
-* [x] 新增 `packages/locales` 统一管理语言资源（例如 `en-US`、`zh-CN`）
-* [x] 统一 key 命名规范（如 `auth.*` / `entry.*` / `review.*`）
-* [x] 插值与复数规则使用 ICU MessageFormat
-* [x] CI 校验：各语言 key 一致（缺失/多余 key 报错）
-
-Done: 创建了 `packages/locales` 子包，包含 `en-US.json` 和 `zh-CN.json` 语言资源文件，定义了 `common`、`auth`、`entry`、`tag`、`source`、`review`、`nav`、`search`、`editor`、`error` 等命名空间。支持 i18next v4 JSON 格式的复数规则（`_one`/`_other`）和插值（`{{count}}`）。添加了 `packages/locales/scripts/check-keys.ts` 脚本用于 CI 校验 key 一致性。
-
-#### D2. Web / Native 集成
-
-* [x] Web：提供 `t(key, params)`（或 Provider/hook）替换关键 UI 文案
-* [x] iOS：同样提供 `t(key, params)`，覆盖导航、按钮、空态、错误提示
-* [x] 支持语言切换与 fallback（默认 en-US，或按产品策略）
-
-Done: Web 端集成 react-i18next，在 `__root.tsx` 引入 I18nextProvider，所有页面和组件已使用 `useTranslation` hook；Native 端集成 i18next + expo-localization，自动检测设备语言，首页、登录、注册、导航等 UI 已国际化。
-
-#### D3. Server 接口 msg 国际化（双轨）
-
-* [x] Server 根据 `X-Locale` / `Accept-Language` / 用户设置解析 locale
-* [x] 错误返回结构包含：
-  * [x] `code`（稳定）
-  * [x] `message`（服务端按 locale 渲染）
-  * [x] `params`（可选）
-* [x] 设置 `Vary: Accept-Language, X-Locale`（若使用缓存）
-
-Done: 扩展 `packages/api/src/context.ts` 解析 `X-Locale` 和 `Accept-Language` 头，添加 `locale` 到 context；创建 `getLocalizedErrorMessage` 和 `createLocalizedError` 工具函数，支持 params 插值；Server 响应头已添加 `Vary: Accept-Language, X-Locale`。
-
-验收标准：
-
-* Web / iOS / Server 在相同 locale 下对关键错误与空态展示一致语义
-* 语言切换后无需改业务逻辑即可改变 UI 文案
-* Server 错误响应始终包含稳定 `code`，并提供对应语言 `message`
-
 ---
 
 ## MVP v2 范围外（Out of Scope）
@@ -368,16 +369,14 @@ Done: 扩展 `packages/api/src/context.ts` 解析 `X-Locale` 和 `Accept-Languag
 ### 移动端
 
 * ❌ Android 支持
-* ❌ 离线模式（移动端）
 * ❌ 推送通知
 * ❌ 原生富文本编辑器（Swift 原生实现）
 
 ### 技术与运营
 
 * ❌ 第三方登录（OAuth）:
-  * web - Google,Github
-  * mobile(ios) - Google,Apple
-* ❌ 多语言
+  * web - Google, Github
+  * mobile (ios) - Google, Apple
 * ❌ 自定义主题系统（先跟随系统）
 * ❌ 付费/订阅、用户分析、A/B 测试
 
@@ -386,30 +385,128 @@ Done: 扩展 `packages/api/src/context.ts` 解析 `X-Locale` 和 `Accept-Languag
 ## 成功标准（MVP v2 完成标志）
 
 1. Web 端编辑器支持 `/` 命令菜单，显著提升写作效率，并且内容存储方案稳定统一
-2. 复习系统支持到期队列与评分，用户可以用“每天固定量”稳定复习而不爆炸
-3. iOS 端实现“捕获 →（只读/可选编辑）→ 复习”的最小闭环，且与 Web 数据一致同步
+2. 复习系统支持到期队列与评分，用户可以用"每天固定量"稳定复习而不爆炸
+3. iOS 端实现"捕获 →（只读/可选编辑）→ 复习"的最小闭环，且与 Web 数据一致同步
 4. 关键流程具备基础回归用例清单（编辑器输入、粘贴、保存、复习队列生成）
 
 ---
 
 ## 里程碑建议（可并行）
 
-### Milestone A：编辑器升级（Web）
+### Milestone A：编辑器升级（Web）✅ 已完成
 
 * Slash Menu + 1 个 FolioNote 命令（tag/source/ref）
 * 内容主存 JSON + 派生 text
 * 粘贴处理 + 自动保存
 
-### Milestone B：Review v2
+### Milestone B：Review v2 ✅ 已完成
 
 * entry_review_state + rating
 * due 队列 + snooze
 * Web 复习页升级
 
-### Milestone C：iOS（Expo）
+### Milestone C：iOS（Expo）✅ 已完成
 
 * 认证 + Inbox + 今日 + 复习
 * WebView 只读渲染（优先），可编辑（次优先）
+
+### Milestone D：国际化（i18n）✅ 已完成
+
+* 共享 locales 子包
+* Web / Native 集成
+* Server 接口 msg 国际化
+
+---
+
+## 后续迭代规划（Post MVP v2）
+
+### 🔜 Iteration 1：iOS 离线模式 + Skip Login（优先级：高）
+
+目标：支持用户在未登录状态下使用 App，使用本地 SQLite 存储数据，后续可选择登录并同步到云端。
+
+#### E1. Skip Login 流程
+
+* [ ] 启动页/登录页增加「跳过登录」或「本地模式」入口
+* [ ] 跳过后进入完整 App 功能（Inbox、复习、条目编辑等）
+* [ ] 本地存储用户偏好（是否跳过登录、本地 userId 标识）
+
+#### E2. SQLite 本地存储
+
+* [ ] 集成 `expo-sqlite` 或 `@op-engineering/op-sqlite`
+* [ ] 本地 Schema 设计（与服务端 Schema 保持一致结构）
+  * [ ] entries（含 contentJson、contentText）
+  * [ ] tags + entry_tags
+  * [ ] sources + entry_sources
+  * [ ] entry_review_state + review_events
+* [ ] 本地 CRUD 操作封装（Repository 层）
+* [ ] 数据访问层抽象：根据登录状态切换 Remote API / Local SQLite
+
+#### E3. 数据同步策略（登录后）
+
+* [ ] 用户登录后触发本地数据上传
+* [ ] 冲突处理策略（最简：以本地为准 / 以服务端为准 / 提示用户选择）
+* [ ] 同步状态指示（同步中 / 已同步 / 冲突）
+* [ ] 增量同步（基于 updatedAt 或 version）
+
+#### E4. 离线优先体验
+
+* [ ] 网络不可用时自动切换为本地模式
+* [ ] 操作队列（Pending Operations）：离线时记录操作，联网后批量同步
+* [ ] 乐观更新：操作立即生效，后台同步
+
+验收标准：
+
+* 用户可以在不登录的情况下完成完整的「捕获 → 组织 → 复习」闭环
+* 登录后本地数据能正确同步到云端
+* 网络断开/恢复后数据不丢失
+
+---
+
+### 🔜 Iteration 2：iOS 分享扩展（优先级：中）
+
+* [ ] iOS Share Extension 接收文本/URL
+* [ ] 写入本地 SQLite（或调用 API）
+* [ ] 去重策略（URL 相同时提示或合并）
+
+---
+
+### 🔜 Iteration 3：第三方登录（优先级：中）
+
+* [ ] Web 端：Google、Github OAuth
+* [ ] iOS 端：Google、Apple Sign In
+* [ ] 账号关联（已有邮箱账号关联 OAuth）
+
+---
+
+### 🔮 Iteration 4：高级搜索（优先级：低）
+
+* [ ] Postgres 全文搜索（FTS）
+* [ ] 搜索过滤器（按标签、来源、时间范围）
+* [ ] 搜索历史与建议
+
+---
+
+### 🔮 Iteration 5：数据导入/导出（优先级：低）
+
+* [ ] 导出为 Markdown / JSON
+* [ ] 从其他工具导入（Notion、Roam、Obsidian）
+* [ ] 定期备份（可选）
+
+---
+
+### 🔮 Iteration 6：Android 支持（优先级：低）
+
+* [ ] Expo Android 构建配置
+* [ ] UI 适配（Material Design 风格可选）
+* [ ] 测试覆盖
+
+---
+
+### 🔮 Iteration 7：附件/图片上传（优先级：低）
+
+* [ ] 图片上传到 S3/R2
+* [ ] 编辑器内嵌图片节点
+* [ ] 图片压缩与懒加载
 
 ---
 
@@ -422,5 +519,6 @@ Done: 扩展 `packages/api/src/context.ts` 解析 `X-Locale` 和 `Accept-Languag
 | 富文本 | Tiptap (ProseMirror)；iOS 端通过 WebView 复用 |
 | API | Hono, oRPC |
 | 数据库 | PostgreSQL, Drizzle ORM |
+| 本地存储 | SQLite (expo-sqlite / op-sqlite) |
 | 认证 | Better Auth |
 | 部署 | 待定 |
