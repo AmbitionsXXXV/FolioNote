@@ -8,6 +8,7 @@ import { QuickCapture } from '@/components/quick-capture'
 import { orpc } from '@/utils/orpc'
 
 export const Route = createFileRoute('/_app/inbox')({
+	ssr: false,
 	component: InboxPage,
 })
 

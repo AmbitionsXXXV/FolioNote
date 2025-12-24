@@ -13,20 +13,71 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { getUser } from '@/functions/get-user'
 import { cn } from '@/lib/utils'
-import { orpc } from '@/utils/orpc'
+import { client, orpc } from '@/utils/orpc'
 
 export const Route = createFileRoute('/')({
-	component: HomeComponent,
-	beforeLoad: async () => {
-		const session = await getUser()
-		return { session }
+	// 启用 SSR，首页需要 SEO
+	ssr: true,
+
+	// 动态 SEO head 配置
+	head: ({ loaderData }) => ({
+		meta: [
+			{
+				title: loaderData?.session
+					? `FolioNote - Welcome back, ${loaderData.session.user.name?.split(' ')[0] || 'there'}`
+					: 'FolioNote - Personal Knowledge Management System',
+			},
+			{
+				name: 'description',
+				content:
+					'FolioNote is your personal learning system. Capture ideas, organize knowledge, and revisit with spaced repetition.',
+			},
+			{
+				name: 'keywords',
+				content:
+					'knowledge management, note-taking, spaced repetition, learning, productivity',
+			},
+			{
+				property: 'og:title',
+				content: 'FolioNote - Personal Knowledge Management System',
+			},
+			{
+				property: 'og:description',
+				content:
+					'Capture ideas, organize knowledge, and revisit with spaced repetition.',
+			},
+			{
+				property: 'og:type',
+				content: 'website',
+			},
+		],
+	}),
+
+	// SSR loader - 在服务端预加载数据
+	loader: async () => {
+		const [session, healthCheck] = await Promise.all([
+			getUser(),
+			client.healthCheck().catch(() => null),
+		])
+		return { session, healthCheck }
 	},
+
+	component: HomeComponent,
 })
 
 function HomeComponent() {
 	const { t } = useTranslation()
-	const { session } = Route.useRouteContext()
-	const healthCheck = useQuery(orpc.healthCheck.queryOptions())
+	// 使用 loader 预加载的数据
+	const { session, healthCheck: initialHealthCheck } = Route.useLoaderData()
+
+	// 客户端保持健康检查轮询（可选，用于实时状态更新）
+	const healthCheckQuery = useQuery({
+		...orpc.healthCheck.queryOptions(),
+		// 使用 loader 数据作为初始值
+		initialData: initialHealthCheck,
+		// 仅在客户端进行后续轮询
+		refetchInterval: 30_000,
+	})
 
 	const quickActions: Array<{
 		icon: IconSvgElement
@@ -78,14 +129,16 @@ function HomeComponent() {
 						<div
 							className={cn(
 								'size-1.5 rounded-full',
-								healthCheck.data ? 'bg-green-500' : 'bg-red-500',
-								healthCheck.data ? 'animate-pulse' : ''
+								healthCheckQuery.data ? 'bg-green-500' : 'bg-red-500',
+								healthCheckQuery.data ? 'animate-pulse' : ''
 							)}
 						/>
 						<span className="font-medium font-script text-muted-foreground text-xs">
 							{(() => {
-								if (healthCheck.isLoading) return t('home.connecting')
-								return healthCheck.data ? t('home.systemReady') : t('home.offline')
+								if (healthCheckQuery.isLoading) return t('home.connecting')
+								return healthCheckQuery.data
+									? t('home.systemReady')
+									: t('home.offline')
 							})()}
 						</span>
 					</div>

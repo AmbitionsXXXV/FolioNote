@@ -4,10 +4,14 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "build:cloudflare": "vite build",
     "serve": "vite preview",
     "dev": "vite dev",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "deploy": "pnpm build:cloudflare && wrangler deploy",
+    "deploy:preview": "pnpm build:cloudflare && wrangler pages deploy dist/client --project-name folio-web --branch preview",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
@@ -58,6 +62,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.19.0",
     "@folionote/config": "workspace:*",
     "@tanstack/react-query-devtools": "^5.91.1",
     "@tanstack/react-router-devtools": "^1.142.8",
@@ -70,6 +75,7 @@
     "typescript": "catalog:",
     "vite": "^7.3.0",
     "vitest": "catalog:",
-    "web-vitals": "^5.1.0"
+    "web-vitals": "^5.1.0",
+    "wrangler": "^4.56.0"
   }
 }

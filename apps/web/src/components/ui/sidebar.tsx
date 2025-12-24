@@ -1,3 +1,5 @@
+'use client'
+
 import { mergeProps } from '@base-ui/react/merge-props'
 import { useRender } from '@base-ui/react/use-render'
 import { SidebarLeftIcon } from '@hugeicons/core-free-icons'
@@ -39,7 +41,7 @@ type SidebarContextProps = {
 const SidebarContext = React.createContext<SidebarContextProps | null>(null)
 
 function useSidebar() {
-	const context = React.useContext(SidebarContext)
+	const context = React.use(SidebarContext)
 	if (!context) {
 		throw new Error('useSidebar must be used within a SidebarProvider.')
 	}
@@ -123,7 +125,7 @@ function SidebarProvider({
 	)
 
 	return (
-		<SidebarContext.Provider value={contextValue}>
+		<SidebarContext value={contextValue}>
 			<div
 				className={cn(
 					'group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar',
@@ -141,7 +143,7 @@ function SidebarProvider({
 			>
 				{children}
 			</div>
-		</SidebarContext.Provider>
+		</SidebarContext>
 	)
 }
 

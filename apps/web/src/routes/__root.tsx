@@ -63,16 +63,28 @@ function RootDocumentInner() {
 	}
 	const langClass = getLangClass(currentLang)
 
+	// 使用默认位置避免 hydration 不匹配（isMobile 在服务端为 undefined）
+	const getDevToolsPosition = () => {
+		if (isMobile === undefined) return 'top-right'
+		if (isMobile) return 'bottom-left'
+		return 'top-right'
+	}
+	const devToolsPosition = getDevToolsPosition()
+
 	return (
 		<html
 			className={cn('no-scrollbar bg-background')}
 			lang={currentLang}
 			suppressHydrationWarning
 		>
-			<head>
+			{/* suppressHydrationWarning 用于抑制开发模式下 Vite CSS 时间戳导致的 hydration 警告 */}
+			<head suppressHydrationWarning>
 				<HeadContent />
 			</head>
-			<body className={cn('min-h-svh bg-background', langClass)}>
+			<body
+				className={cn('min-h-svh bg-background', langClass)}
+				suppressHydrationWarning
+			>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="dark"
@@ -80,12 +92,13 @@ function RootDocumentInner() {
 					enableSystem
 				>
 					<CommandPaletteProvider>
+						{/* 页面过渡动画在 _app.tsx 布局中处理，根路由保持简单以避免 hydration 问题 */}
 						<Outlet />
 						<CommandPalette />
 					</CommandPaletteProvider>
 					<Toaster richColors />
 				</ThemeProvider>
-				<TanStackRouterDevtools position={isMobile ? 'bottom-left' : 'top-right'} />
+				<TanStackRouterDevtools position={devToolsPosition} />
 				<ReactQueryDevtools buttonPosition="bottom-right" position="bottom" />
 				<Scripts />
 			</body>

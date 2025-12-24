@@ -96,6 +96,8 @@ export default function SignUpForm() {
 										name={field.name}
 										onBlur={field.handleBlur}
 										onChange={(e) => field.handleChange(e.target.value)}
+										placeholder="John Doe"
+										type="text"
 										value={field.state.value}
 									/>
 									{isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -118,6 +120,7 @@ export default function SignUpForm() {
 										name={field.name}
 										onBlur={field.handleBlur}
 										onChange={(e) => field.handleChange(e.target.value)}
+										placeholder="you@example.com"
 										type="email"
 										value={field.state.value}
 									/>

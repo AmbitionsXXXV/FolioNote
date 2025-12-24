@@ -23,4 +23,3 @@ catalog:
   "typescript": "^5"
   "vitest": "^4.0.16"
   "zod": "^4.1.13"
-

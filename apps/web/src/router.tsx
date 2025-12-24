@@ -11,7 +11,13 @@ export const getRouter = () => {
 	const router = createTanStackRouter({
 		routeTree,
 		scrollRestoration: true,
+		// 预加载配置
+		defaultPreload: 'intent',
 		defaultPreloadStaleTime: 0,
+		// 设置最小加载延迟，避免快速加载时的闪烁
+		defaultPendingMinMs: 200,
+		// 设置加载超时后才显示 pending 组件
+		defaultPendingMs: 150,
 		context: { orpc, queryClient },
 		defaultPendingComponent: () => <Loader />,
 		defaultNotFoundComponent: () => <NotFound />,

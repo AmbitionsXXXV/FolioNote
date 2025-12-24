@@ -56,6 +56,8 @@ const PRESET_COLORS = [
 ]
 
 export const Route = createFileRoute('/_app/tags')({
+	// SPA 模式 - 标签管理页面无需 SSR
+	ssr: false,
 	component: TagsPage,
 })
 

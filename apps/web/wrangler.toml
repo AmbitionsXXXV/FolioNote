@@ -1,0 +1,27 @@
+# Cloudflare Pages configuration for Folio Web
+# Documentation: https://developers.cloudflare.com/pages/
+
+name = "folio-web"
+compatibility_date = "2025-12-17"
+compatibility_flags = ["nodejs_compat"]
+
+# Pages Functions configuration
+main = "@tanstack/react-start/server-entry"
+
+[observability]
+enabled = true
+
+# Environment variables (non-sensitive)
+# Sensitive variables should be set in Cloudflare Dashboard
+[vars]
+# VITE_SERVER_URL will be set in Cloudflare Dashboard for production
+VITE_SERVER_URL = "https://folio-server.yilonglei790.workers.dev"
+VITE_WEB_URL = "https://folio-web.yilonglei790.workers.dev"
+
+# Production environment
+[env.production]
+name = "folio-web"
+
+# Preview/Staging environment  
+[env.preview]
+name = "folio-web-preview"

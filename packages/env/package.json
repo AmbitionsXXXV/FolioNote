@@ -1,0 +1,14 @@
+{
+  "name": "@folionote/env",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
+  },
+  "type": "module",
+  "scripts": {},
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@folionote/config": "workspace:*"
+  }
+}

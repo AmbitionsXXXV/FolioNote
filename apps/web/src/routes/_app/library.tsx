@@ -12,6 +12,8 @@ import { orpc } from '@/utils/orpc'
 type FilterType = 'all' | 'starred' | 'pinned'
 
 export const Route = createFileRoute('/_app/library')({
+	// SPA 模式 - 库页面无需 SSR
+	ssr: false,
 	component: LibraryPage,
 })
 

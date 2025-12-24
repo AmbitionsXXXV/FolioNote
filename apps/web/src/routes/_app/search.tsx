@@ -11,6 +11,7 @@ import { orpc } from '@/utils/orpc'
 
 export const Route = createFileRoute('/_app/search')({
 	component: SearchPage,
+	ssr: false,
 	validateSearch: (search: Record<string, unknown>) => ({
 		q: typeof search.q === 'string' ? search.q : '',
 	}),

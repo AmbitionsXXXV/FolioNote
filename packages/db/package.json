@@ -23,16 +23,17 @@
     "test:watch": "vitest"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.31.8",
+    "@folionote/config": "workspace:*",
     "@types/pg": "^8.15.6",
+    "drizzle-kit": "^0.31.8",
     "typescript": "catalog:",
-    "vitest": "catalog:",
-    "@folionote/config": "workspace:*"
+    "vitest": "catalog:"
   },
   "dependencies": {
+    "dotenv": "catalog:",
     "drizzle-orm": "^0.45.1",
     "pg": "^8.16.3",
-    "dotenv": "catalog:",
+    "postgres": "^3.4.7",
     "zod": "catalog:"
   }
 }

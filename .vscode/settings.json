@@ -53,8 +53,13 @@
     "Maru",
     "Noninteractive",
     "Noto",
+    "pgsql",
+    "pooler",
+    "popperjs",
     "Qing",
     "springify",
+    "SUPABASE",
+    "vitest",
     "ZCOOL"
   ]
 }

@@ -1,28 +1,28 @@
 import { describe, expect, it } from 'vitest'
-import app from '../../src/index'
+import { createApp, type Env } from '../../src/app'
 
 describe('CORS Integration', () => {
-	it('adds CORS headers to responses', async () => {
-		const testOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000'
-		const req = new Request('http://localhost/', {
-			method: 'GET',
-			headers: {
-				Origin: testOrigin,
-			},
-		})
+	const configuredCorsOrigin = 'http://localhost:3000/'
+	const requestOrigin = 'http://localhost:3000'
 
-		const res = await app.fetch(req)
+	const env: Env = {
+		DATABASE_URL: 'postgresql://localhost:5432/folio_note',
+		BETTER_AUTH_SECRET: 'test-secret',
+		BETTER_AUTH_URL: 'http://localhost:3000',
+		CORS_ORIGIN: configuredCorsOrigin,
+		GITHUB_CLIENT_ID: 'test-github-client-id',
+		GITHUB_CLIENT_SECRET: 'test-github-client-secret',
+		GOOGLE_CLIENT_ID: 'test-google-client-id',
+		GOOGLE_CLIENT_SECRET: 'test-google-client-secret',
+	}
 
-		const allowOrigin = res.headers.get('Access-Control-Allow-Origin')
-		expect(allowOrigin).toBe(testOrigin)
-	})
+	const app = createApp(env)
 
-	it('handles preflight OPTIONS requests', async () => {
-		const testOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000'
+	it('handles preflight OPTIONS requests when CORS_ORIGIN has a trailing slash', async () => {
 		const req = new Request('http://localhost/rpc/healthCheck', {
 			method: 'OPTIONS',
 			headers: {
-				Origin: testOrigin,
+				Origin: requestOrigin,
 				'Access-Control-Request-Method': 'POST',
 				'Access-Control-Request-Headers': 'Content-Type',
 			},
@@ -30,23 +30,28 @@ describe('CORS Integration', () => {
 
 		const res = await app.fetch(req)
 
-		expect(res.status).toBeLessThan(300)
+		expect(res.status).toBe(204)
+		expect(res.headers.get('Access-Control-Allow-Origin')).toBe(requestOrigin)
+		expect(res.headers.get('Access-Control-Allow-Credentials')).toBe('true')
+
 		const allowMethods = res.headers.get('Access-Control-Allow-Methods')
 		expect(allowMethods).toContain('POST')
 	})
 
-	it('includes credentials support', async () => {
-		const testOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000'
-		const req = new Request('http://localhost/', {
-			method: 'GET',
+	it('does not set Access-Control-Allow-Origin for untrusted origins', async () => {
+		const req = new Request('http://localhost/rpc/healthCheck', {
+			method: 'OPTIONS',
 			headers: {
-				Origin: testOrigin,
+				Origin: 'http://evil.example.com',
+				'Access-Control-Request-Method': 'POST',
+				'Access-Control-Request-Headers': 'Content-Type',
 			},
 		})
 
 		const res = await app.fetch(req)
 
-		const allowCredentials = res.headers.get('Access-Control-Allow-Credentials')
-		expect(allowCredentials).toBe('true')
+		expect(res.status).toBe(204)
+		expect(res.headers.get('Access-Control-Allow-Origin')).toBeNull()
+		expect(res.headers.get('Access-Control-Allow-Credentials')).toBe('true')
 	})
 })

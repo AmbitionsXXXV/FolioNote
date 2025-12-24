@@ -1,0 +1,29 @@
+# Cloudflare Workers configuration for Folio Server API
+# Documentation: https://developers.cloudflare.com/workers/wrangler/configuration/
+
+name = "folio-server"
+main = "src/worker.ts"
+compatibility_date = "2025-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# No custom build command - wrangler handles TypeScript compilation
+# The tsdown build is only for Node.js local development (src/index.ts)
+
+[observability]
+enabled = true
+
+# Environment variables (non-sensitive)
+# Sensitive variables should be set via `wrangler secret put <KEY>`
+[vars]
+# Add non-sensitive environment variables here
+# Example: LOG_LEVEL = "info"
+
+# Production environment
+[env.production]
+name = "folio-server"
+# Routes and custom domains can be configured here
+# routes = [{ pattern = "api.example.com/*", zone_name = "example.com" }]
+
+# Preview/Staging environment
+[env.preview]
+name = "folio-server-preview"

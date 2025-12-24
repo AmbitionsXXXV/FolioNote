@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import { orpc } from '@/utils/orpc'
 
 export const Route = createFileRoute('/_app/dashboard')({
+	// SPA 模式 - 仅客户端渲染
+	ssr: false,
 	component: RouteComponent,
 })
 

@@ -2,6 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import SignInForm from '@/components/sign-in-form'
 
 export const Route = createFileRoute('/login')({
+	// SPA 模式 - 登录页面无需 SSR
+	ssr: false,
 	component: RouteComponent,
 })
 

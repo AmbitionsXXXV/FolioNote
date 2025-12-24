@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import app from '../../src/index'
+import { createApp } from '../../src/app'
+
+const app = createApp()
 
 describe('RPC Handler Integration', () => {
 	it('handles health check RPC call', async () => {

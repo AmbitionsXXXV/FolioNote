@@ -36,6 +36,8 @@ import { orpc } from '@/utils/orpc'
 const getUserTimezoneOffset = (): number => -new Date().getTimezoneOffset()
 
 export const Route = createFileRoute('/_app/review')({
+	// SPA 模式 - 复习页面无需 SSR
+	ssr: false,
 	component: ReviewPage,
 })
 

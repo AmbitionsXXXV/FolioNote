@@ -9,7 +9,11 @@
     "NODE_ENV",
     "DEV",
     "GITHUB_CLIENT_ID",
-    "GITHUB_CLIENT_SECRET"
+    "GITHUB_CLIENT_SECRET",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "CLOUDFLARE_API_TOKEN",
+    "CLOUDFLARE_ACCOUNT_ID"
   ],
   "tasks": {
     "build": {
@@ -73,6 +77,14 @@
       "cache": false
     },
     "db:stop:local": {
+      "cache": false
+    },
+    "deploy": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "deploy:preview": {
+      "dependsOn": ["build"],
       "cache": false
     }
   }

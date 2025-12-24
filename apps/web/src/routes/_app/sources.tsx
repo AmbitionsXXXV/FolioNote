@@ -39,6 +39,8 @@ const SOURCE_TYPE_CONFIG: Record<
 }
 
 export const Route = createFileRoute('/_app/sources')({
+	// SPA 模式 - 来源管理页面无需 SSR
+	ssr: false,
 	component: SourcesPage,
 })
 

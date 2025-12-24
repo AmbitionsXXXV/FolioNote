@@ -10,22 +10,24 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "deploy:cloudflare": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "deploy:preview": "wrangler deploy --env preview"
   },
   "dependencies": {
-    "@hono/node-server": "^1.14.3",
-    "hono": "catalog:",
-    "@orpc/server": "catalog:",
-    "@orpc/openapi": "catalog:",
-    "@orpc/zod": "catalog:",
-    "better-auth": "catalog:",
-    "dotenv": "catalog:",
-    "i18next": "catalog:",
-    "zod": "catalog:",
     "@folionote/api": "workspace:*",
     "@folionote/auth": "workspace:*",
     "@folionote/db": "workspace:*",
-    "@folionote/locales": "workspace:*"
+    "@folionote/locales": "workspace:*",
+    "@hono/node-server": "^1.14.3",
+    "@orpc/openapi": "catalog:",
+    "@orpc/server": "catalog:",
+    "@orpc/zod": "catalog:",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "hono": "catalog:",
+    "i18next": "catalog:",
+    "postgres": "^3.4.7",
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@folionote/config": "workspace:*",

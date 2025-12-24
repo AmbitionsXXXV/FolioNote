@@ -11,6 +11,8 @@ import { Input } from '@/components/ui/input'
 import { orpc } from '@/utils/orpc'
 
 export const Route = createFileRoute('/_app/entries/new')({
+	// SPA 模式 - 新建条目页面无需 SSR
+	ssr: false,
 	component: NewEntryPage,
 })
 
