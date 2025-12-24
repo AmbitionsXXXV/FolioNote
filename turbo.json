@@ -23,6 +23,10 @@
     "check-types": {
       "dependsOn": ["^check-types"]
     },
+    "check-keys": {
+      "cache": true,
+      "inputs": ["src/resources/*.json", "scripts/check-keys.ts"]
+    },
     "test": {
       "dependsOn": ["^build"],
       "inputs": ["src/**", "__tests__/**", "*.test.ts", "*.spec.ts"],

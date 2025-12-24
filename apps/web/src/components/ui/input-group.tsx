@@ -48,11 +48,18 @@ function InputGroupAddon({
 			className={cn(inputGroupAddonVariants({ align }), className)}
 			data-align={align}
 			data-slot="input-group-addon"
-			onClick={(e) => {
-				if ((e.target as HTMLElement).closest('button')) {
-					return
+			onMouseDown={(e) => {
+				const target = e.target as HTMLElement
+				const isInteractive = target.closest('button, a')
+				if (isInteractive) return
+				e.preventDefault()
+				const parent = e.currentTarget.parentElement
+				const input = parent?.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+					'input, textarea'
+				)
+				if (input && !parent?.querySelector('input:focus, textarea:focus')) {
+					input.focus()
 				}
-				e.currentTarget.parentElement?.querySelector('input')?.focus()
 			}}
 			role="group"
 			{...props}
