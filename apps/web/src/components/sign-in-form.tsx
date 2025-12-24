@@ -5,12 +5,22 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import z from 'zod'
-import { Separator } from '@/components/ui/separator'
+import {
+	Field,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+	FieldSeparator,
+} from '@/components/ui/field'
 import { authClient } from '@/lib/auth-client'
 import Loader from './loader'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { Label } from './ui/label'
+
+const signInSchema = z.object({
+	email: z.email('Invalid email address'),
+	password: z.string().min(8, 'Password must be at least 8 characters'),
+})
 
 /**
  * Renders the sign-in form and handles user authentication.
@@ -32,6 +42,9 @@ export default function SignInForm() {
 			email: '',
 			password: '',
 		},
+		validators: {
+			onSubmit: signInSchema,
+		},
 		onSubmit: async ({ value }) => {
 			await authClient.signIn.email(
 				{
@@ -51,12 +64,6 @@ export default function SignInForm() {
 				}
 			)
 		},
-		validators: {
-			onSubmit: z.object({
-				email: z.email('Invalid email address'),
-				password: z.string().min(8, 'Password must be at least 8 characters'),
-			}),
-		},
 	})
 
 	if (isPending) {
@@ -68,85 +75,90 @@ export default function SignInForm() {
 			<h1 className="mb-6 text-center font-bold text-3xl">{t('auth.welcome')}</h1>
 
 			<form
-				className="space-y-4"
+				id="sign-in-form"
 				onSubmit={(e) => {
 					e.preventDefault()
 					e.stopPropagation()
 					form.handleSubmit()
 				}}
 			>
-				<div>
+				<FieldGroup className="gap-4">
 					<form.Field name="email">
-						{(field) => (
-							<div className="space-y-2">
-								<Label htmlFor={field.name}>{t('auth.email')}</Label>
-								<Input
-									id={field.name}
-									name={field.name}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									placeholder="you@example.com"
-									type="email"
-									value={field.state.value}
-								/>
-								{field.state.meta.errors.map((error) => (
-									<p className="text-red-500" key={error?.message}>
-										{error?.message}
-									</p>
-								))}
-							</div>
-						)}
+						{(field) => {
+							const isInvalid =
+								field.state.meta.isTouched && !field.state.meta.isValid
+							return (
+								<Field data-invalid={isInvalid || undefined}>
+									<FieldLabel htmlFor={field.name}>{t('auth.email')}</FieldLabel>
+									<Input
+										aria-invalid={isInvalid}
+										autoComplete="email"
+										id={field.name}
+										name={field.name}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										placeholder="you@example.com"
+										type="email"
+										value={field.state.value}
+									/>
+									{isInvalid && <FieldError errors={field.state.meta.errors} />}
+								</Field>
+							)
+						}}
 					</form.Field>
-				</div>
 
-				<div>
 					<form.Field name="password">
-						{(field) => (
-							<div className="space-y-2">
-								<Label htmlFor={field.name}>{t('auth.password')}</Label>
-								<Input
-									id={field.name}
-									name={field.name}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									type="password"
-									value={field.state.value}
-								/>
-								{field.state.meta.errors.map((error) => (
-									<p className="text-red-500" key={error?.message}>
-										{error?.message}
-									</p>
-								))}
-							</div>
-						)}
+						{(field) => {
+							const isInvalid =
+								field.state.meta.isTouched && !field.state.meta.isValid
+							return (
+								<Field data-invalid={isInvalid || undefined}>
+									<FieldLabel htmlFor={field.name}>{t('auth.password')}</FieldLabel>
+									<Input
+										aria-invalid={isInvalid}
+										autoComplete="current-password"
+										id={field.name}
+										name={field.name}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										type="password"
+										value={field.state.value}
+									/>
+									{isInvalid && <FieldError errors={field.state.meta.errors} />}
+								</Field>
+							)
+						}}
 					</form.Field>
-				</div>
 
-				<form.Subscribe>
-					{(state) => (
-						<Button
-							className="w-full"
-							disabled={!state.canSubmit || state.isSubmitting}
-							type="submit"
-						>
-							{state.isSubmitting ? t('common.loading') : t('auth.signIn')}
-						</Button>
-					)}
-				</form.Subscribe>
+					<form.Subscribe
+						selector={(state) => [state.canSubmit, state.isSubmitting]}
+					>
+						{([canSubmit, isSubmitting]) => (
+							<Button
+								className="w-full"
+								disabled={!canSubmit || isSubmitting}
+								type="submit"
+							>
+								{isSubmitting ? t('common.loading') : t('auth.signIn')}
+							</Button>
+						)}
+					</form.Subscribe>
 
-				<Separator />
+					<FieldSeparator />
 
-				<Button
-					className="w-full"
-					onClick={() =>
-						authClient.signIn.social({
-							provider: 'google',
-							callbackURL: `${import.meta.env.VITE_WEB_URL}/dashboard`,
-						})
-					}
-				>
-					<HugeiconsIcon className="size-6 fill-white" icon={GoogleIcon} />
-				</Button>
+					<Button
+						className="w-full"
+						onClick={() =>
+							authClient.signIn.social({
+								provider: 'google',
+								callbackURL: `${import.meta.env.VITE_WEB_URL}/dashboard`,
+							})
+						}
+						type="button"
+					>
+						<HugeiconsIcon className="size-6 fill-white" icon={GoogleIcon} />
+					</Button>
+				</FieldGroup>
 			</form>
 
 			<div className="mt-4 text-center">

@@ -3,11 +3,17 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import z from 'zod'
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { authClient } from '@/lib/auth-client'
 import Loader from './loader'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
-import { Label } from './ui/label'
+
+const signUpSchema = z.object({
+	name: z.string().min(2, 'Name must be at least 2 characters'),
+	email: z.email('Invalid email address'),
+	password: z.string().min(8, 'Password must be at least 8 characters'),
+})
 
 /**
  * Render a sign-up form UI and handle user registration flow.
@@ -32,6 +38,9 @@ export default function SignUpForm() {
 			password: '',
 			name: '',
 		},
+		validators: {
+			onSubmit: signUpSchema,
+		},
 		onSubmit: async ({ value }) => {
 			await authClient.signUp.email(
 				{
@@ -52,13 +61,6 @@ export default function SignUpForm() {
 				}
 			)
 		},
-		validators: {
-			onSubmit: z.object({
-				name: z.string().min(2, 'Name must be at least 2 characters'),
-				email: z.email('Invalid email address'),
-				password: z.string().min(8, 'Password must be at least 8 characters'),
-			}),
-		},
 	})
 
 	if (isPending) {
@@ -72,92 +74,96 @@ export default function SignUpForm() {
 			</h1>
 
 			<form
-				className="space-y-4"
+				id="sign-up-form"
 				onSubmit={(e) => {
 					e.preventDefault()
 					e.stopPropagation()
 					form.handleSubmit()
 				}}
 			>
-				<div>
+				<FieldGroup className="gap-4">
 					<form.Field name="name">
-						{(field) => (
-							<div className="space-y-2">
-								<Label htmlFor={field.name}>{t('auth.name')}</Label>
-								<Input
-									id={field.name}
-									name={field.name}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									value={field.state.value}
-								/>
-								{field.state.meta.errors.map((error) => (
-									<p className="text-red-500" key={error?.message}>
-										{error?.message}
-									</p>
-								))}
-							</div>
-						)}
+						{(field) => {
+							const isInvalid =
+								field.state.meta.isTouched && !field.state.meta.isValid
+							return (
+								<Field data-invalid={isInvalid || undefined}>
+									<FieldLabel htmlFor={field.name}>{t('auth.name')}</FieldLabel>
+									<Input
+										aria-invalid={isInvalid}
+										autoComplete="name"
+										id={field.name}
+										name={field.name}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										value={field.state.value}
+									/>
+									{isInvalid && <FieldError errors={field.state.meta.errors} />}
+								</Field>
+							)
+						}}
 					</form.Field>
-				</div>
 
-				<div>
 					<form.Field name="email">
-						{(field) => (
-							<div className="space-y-2">
-								<Label htmlFor={field.name}>{t('auth.email')}</Label>
-								<Input
-									id={field.name}
-									name={field.name}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									type="email"
-									value={field.state.value}
-								/>
-								{field.state.meta.errors.map((error) => (
-									<p className="text-red-500" key={error?.message}>
-										{error?.message}
-									</p>
-								))}
-							</div>
-						)}
+						{(field) => {
+							const isInvalid =
+								field.state.meta.isTouched && !field.state.meta.isValid
+							return (
+								<Field data-invalid={isInvalid || undefined}>
+									<FieldLabel htmlFor={field.name}>{t('auth.email')}</FieldLabel>
+									<Input
+										aria-invalid={isInvalid}
+										autoComplete="email"
+										id={field.name}
+										name={field.name}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										type="email"
+										value={field.state.value}
+									/>
+									{isInvalid && <FieldError errors={field.state.meta.errors} />}
+								</Field>
+							)
+						}}
 					</form.Field>
-				</div>
 
-				<div>
 					<form.Field name="password">
-						{(field) => (
-							<div className="space-y-2">
-								<Label htmlFor={field.name}>{t('auth.password')}</Label>
-								<Input
-									id={field.name}
-									name={field.name}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									type="password"
-									value={field.state.value}
-								/>
-								{field.state.meta.errors.map((error) => (
-									<p className="text-red-500" key={error?.message}>
-										{error?.message}
-									</p>
-								))}
-							</div>
-						)}
+						{(field) => {
+							const isInvalid =
+								field.state.meta.isTouched && !field.state.meta.isValid
+							return (
+								<Field data-invalid={isInvalid || undefined}>
+									<FieldLabel htmlFor={field.name}>{t('auth.password')}</FieldLabel>
+									<Input
+										aria-invalid={isInvalid}
+										autoComplete="new-password"
+										id={field.name}
+										name={field.name}
+										onBlur={field.handleBlur}
+										onChange={(e) => field.handleChange(e.target.value)}
+										type="password"
+										value={field.state.value}
+									/>
+									{isInvalid && <FieldError errors={field.state.meta.errors} />}
+								</Field>
+							)
+						}}
 					</form.Field>
-				</div>
 
-				<form.Subscribe>
-					{(state) => (
-						<Button
-							className="w-full"
-							disabled={!state.canSubmit || state.isSubmitting}
-							type="submit"
-						>
-							{state.isSubmitting ? t('common.loading') : t('auth.signUp')}
-						</Button>
-					)}
-				</form.Subscribe>
+					<form.Subscribe
+						selector={(state) => [state.canSubmit, state.isSubmitting]}
+					>
+						{([canSubmit, isSubmitting]) => (
+							<Button
+								className="w-full"
+								disabled={!canSubmit || isSubmitting}
+								type="submit"
+							>
+								{isSubmitting ? t('common.loading') : t('auth.signUp')}
+							</Button>
+						)}
+					</form.Subscribe>
+				</FieldGroup>
 			</form>
 
 			<div className="mt-4 text-center">
