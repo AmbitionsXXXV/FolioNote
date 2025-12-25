@@ -63,6 +63,9 @@
       "nursery": {
         "noLeakedRender": "off"
       },
+      "complexity": {
+        "noUselessLoneBlockStatements": "off"
+      },
       "performance": {
         "noNamespaceImport": "off",
         "noReExportAll": "off",

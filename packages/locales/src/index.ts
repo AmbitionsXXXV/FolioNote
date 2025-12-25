@@ -1,21 +1,7 @@
 import type { InitOptions } from 'i18next'
-import enUS from './resources/en-US.json'
-assert
-{
-	type: 'json'
-}
-
-import jaJP from './resources/ja-JP.json'
-assert
-{
-	type: 'json'
-}
-
-import zhCN from './resources/zh-CN.json'
-assert
-{
-	type: 'json'
-}
+import enUS from './resources/en-US.json' with { type: 'json' }
+import jaJP from './resources/ja-JP.json' with { type: 'json' }
+import zhCN from './resources/zh-CN.json' with { type: 'json' }
 
 // ============================================
 // Language configuration
