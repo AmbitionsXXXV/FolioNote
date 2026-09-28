@@ -38,7 +38,7 @@ jobs:
         uses: pnpm/action-setup@v6
 
       - name: Setup Vite+
-        uses: voidzero-dev/setup-vp@v1
+        uses: voidzero-dev/setup-vp@v1.21.1
         with:
           node-version-file: ".node-version"
           cache: true

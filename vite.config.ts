@@ -29,7 +29,8 @@ const sharedIgnores = [
 const incompatibleOxlintRules = [
   "prefer-named-capture-group",
   "jsdoc/require-yields-description",
-  "typescript/method-signature-style"
+  "typescript/method-signature-style",
+  "react/react-compiler"
 ]
 const incompatibleOxlintPlugins = ["github", "react-doctor", "sonarjs"]
 
@@ -66,6 +67,7 @@ const relaxedRules = [
   "eslint/no-inline-comments",
   "eslint/no-loop-func",
   "eslint/no-negated-condition",
+  "eslint/no-redeclare",
   "eslint/no-param-reassign",
   "eslint/no-plusplus",
   "eslint/no-promise-executor-return",
@@ -131,7 +133,20 @@ const relaxedRules = [
   "react/jsx-handler-names",
   "react/no-danger",
   "react/no-unescaped-entities",
-  "react/react-compiler",
+  // Oxlint 1.85 adds React rules that flag existing component patterns.
+  // Keep the Vite+ upgrade scoped to the toolchain.
+  "react/capitalized-calls",
+  "react/exhaustive-effect-dependencies",
+  "react/function-component-definition",
+  "react/immutability",
+  "react/memo-dependencies",
+  "react/preserve-manual-memoization",
+  "react/purity",
+  "react/refs",
+  "react/rule-suppression",
+  "react/set-state-in-effect",
+  "react/static-components",
+  "react/todo",
   "react-hooks/exhaustive-deps",
   "unicorn/prefer-export-from",
   "unicorn/prefer-number-coercion",
@@ -186,6 +201,16 @@ export default defineConfig({
     "*.{css,js,jsx,json,jsonc,ts,tsx,cjs,mjs}": "vp check --fix"
   },
   test: {
+    // Vitest v4 compatibility: preserve mock call history.
+    // Remove after tests no longer rely on calls from setup or earlier tests.
+    // https://viteplus.dev/guide/vitest-v5#remove-unneeded-compatibility-settings
+    // https://vitest.dev/guide/migration/#clearmocks-is-enabled-by-default
+    clearMocks: false,
+    // Vitest v4 compatibility: keep separate Vite servers for inline projects.
+    // Remove when plugins and config hooks can run once for shared projects.
+    // https://viteplus.dev/guide/vitest-v5#remove-unneeded-compatibility-settings
+    // https://vitest.dev/guide/migration/#inline-projects-share-the-vite-server-by-default
+    sharedViteServer: false,
     coverage: {
       exclude: [
         "**/node_modules/**",
@@ -207,10 +232,20 @@ export default defineConfig({
       }
     },
     projects: [
-      "./apps/web/vitest.config.ts",
-      "./apps/server/vitest.config.ts",
+      "./apps/web/vite.config.ts",
+      "./apps/server/vite.config.ts",
       {
+        // Vitest v4 compatibility: keep this inline project independent of the root config.
+        // Remove to inherit root options, including plugins and setup files.
+        // https://viteplus.dev/guide/vitest-v5#remove-unneeded-compatibility-settings
+        // https://vitest.dev/guide/migration/#inline-projects-inherit-the-root-config-by-default
+        extends: false,
         test: {
+          // Vitest v4 compatibility: preserve mock call history.
+          // Remove after tests no longer rely on calls from setup or earlier tests.
+          // https://viteplus.dev/guide/vitest-v5#remove-unneeded-compatibility-settings
+          // https://vitest.dev/guide/migration/#clearmocks-is-enabled-by-default
+          clearMocks: false,
           environment: "node",
           globals: true,
           include: ["**/__tests__/**/*.test.tsx", "**/*.spec.tsx"],
@@ -219,7 +254,17 @@ export default defineConfig({
         }
       },
       {
+        // Vitest v4 compatibility: keep this inline project independent of the root config.
+        // Remove to inherit root options, including plugins and setup files.
+        // https://viteplus.dev/guide/vitest-v5#remove-unneeded-compatibility-settings
+        // https://vitest.dev/guide/migration/#inline-projects-inherit-the-root-config-by-default
+        extends: false,
         test: {
+          // Vitest v4 compatibility: preserve mock call history.
+          // Remove after tests no longer rely on calls from setup or earlier tests.
+          // https://viteplus.dev/guide/vitest-v5#remove-unneeded-compatibility-settings
+          // https://vitest.dev/guide/migration/#clearmocks-is-enabled-by-default
+          clearMocks: false,
           environment: "node",
           exclude: ["**/node_modules/**", "**/dist/**", "**/.react-email/**"],
           globals: true,

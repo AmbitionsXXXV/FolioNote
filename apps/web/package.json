@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build",
-    "serve": "vite preview",
-    "dev": "vite dev",
+    "build": "vp build",
+    "serve": "vp preview",
+    "dev": "vp dev",
     "start": "node .output/server/index.mjs",
     "check-types": "tsc --noEmit"
   },
@@ -115,7 +115,7 @@
     "@vitejs/plugin-react": "^6.0.2",
     "jsdom": "^29.1.1",
     "typescript": "catalog:",
-    "vite": "^8.0.16",
+    "vite": "catalog:",
     "vite-plus": "catalog:"
   }
 }

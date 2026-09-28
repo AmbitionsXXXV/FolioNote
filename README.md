@@ -116,5 +116,4 @@ MIT License
 
 ## Brand assets
 
-The current FolioNote icon source, Icon Composer project, and platform previews
-live in [design/brand](./design/brand).
+The current FolioNote icon source, Icon Composer project, and platform previews live in [design/brand](./design/brand).
