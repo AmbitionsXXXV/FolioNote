@@ -66,5 +66,5 @@
     "ultracite": "^7.10.7",
     "vite-plus": "catalog:"
   },
-  "packageManager": "pnpm@11.24.0"
+  "packageManager": "pnpm@12.13.0"
 }
