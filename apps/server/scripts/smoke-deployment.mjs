@@ -42,8 +42,11 @@ try {
         await new Promise((resolve) => reservation.close(resolve))
 
         const child = fork(resolve(directory, app.script), [], {
-          cwd: directory,
-          execArgv: app.node_args.split(/\s+/),
+          // PM2 cluster workers initially inherit the daemon's working directory.
+          cwd: app.exec_mode === "cluster" ? tmpdir() : directory,
+          execArgv: app.node_args
+            .split(/\s+/)
+            .map((argument) => argument.replace(app.cwd, directory)),
           // Critical settings must come from .env, never the CI runner's environment.
           env: {
             NODE_ENV: "production",

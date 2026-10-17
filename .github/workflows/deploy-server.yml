@@ -152,6 +152,7 @@ jobs:
           "
 
       - name: Restart application with PM2
+        timeout-minutes: 3
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} << 'ENDSSH'
             set -e

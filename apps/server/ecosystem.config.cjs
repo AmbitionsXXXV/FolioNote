@@ -56,8 +56,9 @@ module.exports = {
       // Auto-restart on file changes (only for development)
       autorestart: true,
 
-      // Load configuration before shared ESM chunks validate process.env.
-      node_args: "--env-file=.env --enable-source-maps"
+      // Cluster workers parse Node flags before PM2 changes to this app's cwd.
+      node_args:
+        "--env-file=/opt/folio/server/current/.env --enable-source-maps"
     },
     {
       name: "folio-collab",
@@ -105,7 +106,8 @@ module.exports = {
 
       source_map_support: true,
       autorestart: true,
-      node_args: "--env-file=.env --enable-source-maps"
+      node_args:
+        "--env-file=/opt/folio/server/current/.env --enable-source-maps"
     }
   ]
 }
