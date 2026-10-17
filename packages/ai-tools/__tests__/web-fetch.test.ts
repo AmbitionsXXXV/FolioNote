@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test"
 
-const { mockLookup, agents } = vi.hoisted(() => ({
+const { mockLookup, mockFetch, agents } = vi.hoisted(() => ({
   mockLookup: vi.fn(),
+  mockFetch: vi.fn(),
   agents: [] as import("undici").Agent.Options[]
 }))
 vi.mock("undici", () => ({
+  fetch: mockFetch,
   Agent: class {
     constructor(options: import("undici").Agent.Options) {
       agents.push(options)
@@ -22,6 +24,7 @@ import { fetchUrlContent, fetchUrlBytes } from "../src/web-fetch/api/fetch-url"
 beforeEach(() => {
   agents.length = 0
   vi.clearAllMocks()
+  mockFetch.mockReset()
   vi.unstubAllGlobals()
   mockLookup.mockResolvedValue([{ address: "93.184.216.34", family: 4 }])
 })
@@ -29,7 +32,7 @@ beforeEach(() => {
 describe("fetchUrlContent", () => {
   it("rejects loopback IP addresses before issuing a request", async () => {
     const fetchMock = vi.fn()
-    vi.stubGlobal("fetch", fetchMock)
+    mockFetch.mockImplementation(fetchMock)
 
     await expect(fetchUrlContent("http://127.0.0.1/private")).rejects.toThrow(
       "URL resolves to a private, loopback, or otherwise non-public address"
@@ -40,7 +43,7 @@ describe("fetchUrlContent", () => {
 
   it("rejects single-label internal hostnames", async () => {
     const fetchMock = vi.fn()
-    vi.stubGlobal("fetch", fetchMock)
+    mockFetch.mockImplementation(fetchMock)
 
     await expect(fetchUrlContent("http://redis/admin")).rejects.toThrow(
       "URL resolves to a private, loopback, or otherwise non-public address"
@@ -52,7 +55,7 @@ describe("fetchUrlContent", () => {
   it("rejects hostnames that resolve to private IP space", async () => {
     mockLookup.mockResolvedValue([{ address: "10.0.12.8", family: 4 }])
     const fetchMock = vi.fn()
-    vi.stubGlobal("fetch", fetchMock)
+    mockFetch.mockImplementation(fetchMock)
 
     await expect(
       fetchUrlContent("https://internal.example.com")
@@ -70,7 +73,7 @@ describe("fetchUrlContent", () => {
         Response.redirect("http://169.254.169.254/latest/meta-data", 302)
       )
 
-    vi.stubGlobal("fetch", fetchMock)
+    mockFetch.mockImplementation(fetchMock)
 
     await expect(
       fetchUrlContent("https://example.com/redirect")
@@ -97,7 +100,7 @@ describe("fetchUrlContent", () => {
         })
       )
 
-    vi.stubGlobal("fetch", fetchMock)
+    mockFetch.mockImplementation(fetchMock)
 
     const result = await fetchUrlContent("https://example.com/start", "text")
 
@@ -111,7 +114,7 @@ describe("fetchUrlContent", () => {
 
   it("rejects URLs with embedded credentials", async () => {
     const fetchMock = vi.fn()
-    vi.stubGlobal("fetch", fetchMock)
+    mockFetch.mockImplementation(fetchMock)
 
     await expect(
       fetchUrlContent("https://user:pass@example.com")
@@ -146,8 +149,7 @@ describe("connect-time DNS validation", () => {
     mockLookup
       .mockResolvedValueOnce([{ address: "93.184.216.34", family: 4 }])
       .mockResolvedValueOnce([{ address: "127.0.0.1", family: 4 }])
-    vi.stubGlobal(
-      "fetch",
+    mockFetch.mockImplementation(
       vi.fn(async () => {
         await connectLookup()
         return new Response("unsafe")
@@ -161,8 +163,7 @@ describe("connect-time DNS validation", () => {
     "returns only vetted public addresses (all=%s)",
     async (all) => {
       mockLookup.mockResolvedValue([{ address: "93.184.216.34", family: 4 }])
-      vi.stubGlobal(
-        "fetch",
+      mockFetch.mockImplementation(
         vi.fn(async (url, options) => {
           expect(String(url)).toBe("https://example.com/")
           expect(options.dispatcher).toBeDefined()
@@ -189,7 +190,7 @@ describe("connect-time DNS validation", () => {
     "2002:c0a8:101::"
   ])("rejects embedded private IPv4 in %s", async (address) => {
     mockLookup.mockResolvedValue([{ address, family: 6 }])
-    vi.stubGlobal("fetch", vi.fn())
+    mockFetch.mockImplementation(vi.fn())
     await expect(fetchUrlContent("https://example.com")).rejects.toThrow(
       "non-public"
     )
@@ -209,8 +210,7 @@ it.each(["redirect", "challenge"])(
     if (kind === "redirect") mockLookup.mockResolvedValueOnce(publicAddress)
     mockLookup.mockResolvedValueOnce([{ address: "10.0.0.1", family: 4 }])
     let requests = 0
-    vi.stubGlobal(
-      "fetch",
+    mockFetch.mockImplementation(
       vi.fn(async (_url, options) => {
         expect(options.dispatcher).toBeDefined()
         await connectLookup()
@@ -236,8 +236,7 @@ it.each(["redirect", "challenge"])(
 
 it("returns undecoded bytes and the original content type to byte callers", async () => {
   const bytes = new Uint8Array([0x93, 0xfa, 0x96, 0x7b])
-  vi.stubGlobal(
-    "fetch",
+  mockFetch.mockImplementation(
     vi.fn(
       async () =>
         new Response(bytes, {

@@ -5,6 +5,7 @@ import { aiRouter } from "./ai"
 import { entriesRouter } from "./entries"
 import { entryCollaboratorsRouter } from "./entry-collaborators"
 import { graphRouter } from "./graph"
+import { importsRouter } from "./imports"
 import { japaneseRouter } from "./japanese"
 import { reviewRouter } from "./review"
 import { searchRouter } from "./search"
@@ -29,7 +30,8 @@ export const appRouter = {
   review: reviewRouter,
   shares: sharesRouter,
   storage: storageRouter,
-  japanese: japaneseRouter
+  japanese: japaneseRouter,
+  imports: importsRouter
 }
 export type AppRouter = typeof appRouter
 export type AppRouterClient = RouterClient<typeof appRouter>

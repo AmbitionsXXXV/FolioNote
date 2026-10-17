@@ -784,7 +784,8 @@
     "settings": "Settings",
     "profile": "Profile",
     "knowledge": "Knowledge",
-    "graph": "Graph"
+    "graph": "Graph",
+    "import": "Import"
   },
   "search": {
     "placeholder": "Search entries...",
@@ -859,7 +860,9 @@
       "table": "Table",
       "tableDesc": "Insert a table",
       "image": "Image",
-      "imageDesc": "Upload and insert an image"
+      "imageDesc": "Upload and insert an image",
+      "japaneseSentence": "Japanese sentence",
+      "japaneseSentenceDesc": "Furigana, part of speech and romaji per word"
     },
     "imageUpload": {
       "fileTooLarge": "File too large. Maximum size is {{maxMB}}MB",
@@ -982,6 +985,16 @@
         "codeBlock": "Code block",
         "quote": "Quote"
       }
+    },
+    "japaneseSentence": {
+      "title": "Analyzed sentence",
+      "textLabel": "Japanese sentence",
+      "translationLabel": "Translation (optional)",
+      "translationPlaceholder": "What it means",
+      "analyze": "Analyze",
+      "edit": "Edit sentence",
+      "pasteOffer": "Japanese text pasted",
+      "pasteConvert": "Turn into analyzed sentences"
     }
   },
   "error": {
@@ -1066,7 +1079,9 @@
       "general": "General",
       "generalDesc": "Profile, appearance & preferences",
       "models": "AI Models",
-      "modelsDesc": "Configure your AI providers"
+      "modelsDesc": "Configure your AI providers",
+      "connections": "Connections",
+      "connectionsDesc": "Notion, Google Docs and other sources"
     },
     "tip": {
       "title": "Pro Tip",
@@ -1563,6 +1578,186 @@
       "manual": "Manual link",
       "sharedTag": "Shared tag",
       "sharedSource": "Shared source"
+    }
+  },
+  "imports": {
+    "loading": "Loading…",
+    "failed": "Something went wrong",
+    "title": "Import",
+    "subtitle": "Bring in a Japanese article or a page you already wrote elsewhere. It becomes an entry; you choose whether it keeps following its source.",
+    "manageConnections": "Manage connections →",
+    "sourceLabel": "Source",
+    "notConnected": "Not connected",
+    "sources": {
+      "notion": "Notion",
+      "google_docs": "Google Docs",
+      "claude_page": "Claude page",
+      "web": "Web link"
+    },
+    "providers": {
+      "notion": "Notion",
+      "google_docs": "Google Docs",
+      "claude_page": "Claude page",
+      "web": "Web link",
+      "markdown": "Markdown"
+    },
+    "notion": {
+      "notConfigured": "Notion isn't set up on this server yet.",
+      "connectHint": "Connect once and pick the pages FolioNote may read. You stay connected.",
+      "connect": "Connect Notion",
+      "searchLabel": "Pages shared with FolioNote",
+      "searchPlaceholder": "Search pages",
+      "pagesLabel": "Notion pages",
+      "noPages": "No shared pages match.",
+      "linkLabel": "Or paste a page link",
+      "notListed": "Page not listed?",
+      "editAccess": "Edit page access",
+      "connected": "Notion connected",
+      "result": {
+        "denied": "Notion access was cancelled",
+        "failed": "Couldn't connect Notion",
+        "unauthorized": "Sign in again, then connect Notion"
+      },
+      "cardDescription": "Connected once and stays connected. FolioNote only sees the pages you picked in Notion, plus their sub-pages.",
+      "disconnect": "Disconnect {{name}}"
+    },
+    "google": {
+      "notConfigured": "Google sign-in isn't set up on this server.",
+      "linkHint": "Sign in with Google to import your docs.",
+      "scopeHint": "You're signed in with Google. Allow Docs access once, then pick the docs to import.",
+      "allow": "Allow Docs access",
+      "pick": "Choose from Google Drive",
+      "linkLabel": "Or paste a doc link",
+      "pickedOnly": "FolioNote can only open docs you picked in Google Drive at least once.",
+      "cardDescription": "Uses your Google sign-in. One extra consent, then FolioNote opens only the docs you pick.",
+      "ready": "Docs access allowed",
+      "signedIn": "Signed in with Google"
+    },
+    "claude": {
+      "hint": "Copy the page as Markdown in Claude (or download its .md export) and paste it here. The link is kept as the source.",
+      "linkLabel": "Page link (optional)",
+      "markdownLabel": "Markdown",
+      "file": "Open .md file",
+      "cardDescription": "Paste a page's Markdown export. Kept as a snapshot; no write-back.",
+      "subtitle": "Markdown export · no account",
+      "import": "Import a page"
+    },
+    "web": {
+      "urlLabel": "Article URL",
+      "fetch": "Fetch",
+      "hint": "Japanese pages in Shift_JIS or EUC-JP are decoded automatically. Navigation and ads are dropped.",
+      "cardDescription": "Reader extraction for articles. Private-network URLs are refused.",
+      "subtitle": "Always available"
+    },
+    "preview": {
+      "title": "Preview",
+      "entries_one": "{{count}} entry",
+      "entries_other": "{{count}} entries",
+      "empty": "Choose a source to see what will be imported.",
+      "loading": "Reading the source…",
+      "blocks_one": "{{count}} block",
+      "blocks_other": "{{count}} blocks",
+      "changes": "Changed on the way in"
+    },
+    "mode": {
+      "label": "After import",
+      "snapshot": "Snapshot",
+      "snapshotDesc": "Copy once. The entry is yours to edit.",
+      "watch": "Snapshot + watch",
+      "watchDesc": "Flag the entry when the source changes; re-import when you want.",
+      "watchUnavailable": "This source can't report changes.",
+      "pull": "Keep in sync",
+      "two_way": "Two-way",
+      "pullDesc": "Notion changes flow in. Your notes and Mirra sentences stay where you put them; blocks you edited are kept."
+    },
+    "toInbox": "Put in Inbox",
+    "submit": "Import entry",
+    "done_one": "Imported {{count}} entry",
+    "done_other": "Imported {{count}} entries",
+    "connections": {
+      "title": "Connections",
+      "description": "Accounts FolioNote can read from, and every entry that still follows a source.",
+      "sources": "Sources"
+    },
+    "synced": {
+      "title": "Imported entries",
+      "entry": "Entry",
+      "source": "Source",
+      "mode": "Mode",
+      "status": "Status",
+      "actions": "Actions",
+      "check": "Check now",
+      "empty": "Nothing imported yet."
+    },
+    "status": {
+      "up_to_date": "Up to date",
+      "source_changed": "Source changed",
+      "conflict": "Conflict",
+      "error": "Check failed",
+      "not_tracked": "Not tracked"
+    },
+    "reimport": "Re-import",
+    "reimportTitle": "Replace with the source's current version?",
+    "reimportConfirm": "The entry's content is replaced by the source. Edits you made here since the last import are lost.",
+    "reimported": "Re-imported from source",
+    "warnings": {
+      "child_page": {
+        "from": "Sub-page",
+        "to": "Link (import separately)"
+      },
+      "columns": {
+        "from": "Columns",
+        "to": "Stacked"
+      },
+      "database": {
+        "from": "Database view",
+        "to": "Link to source"
+      },
+      "embed": {
+        "from": "Embeds & files",
+        "to": "Link"
+      },
+      "html": {
+        "from": "HTML",
+        "to": "Plain text"
+      },
+      "synced_block": {
+        "from": "Synced block",
+        "to": "Inlined copy"
+      },
+      "table_of_contents": {
+        "from": "Table of contents",
+        "to": "Omitted"
+      },
+      "to_do": {
+        "from": "Checklist",
+        "to": "Checklist as list"
+      },
+      "toggle": {
+        "from": "Toggle",
+        "to": "Expanded text"
+      },
+      "unsupported": {
+        "from": "Unsupported blocks",
+        "to": "Omitted"
+      },
+      "web": {
+        "from": "Ads, navigation, comments",
+        "to": "Dropped"
+      }
+    },
+    "syncNow": "Sync now",
+    "pulled": "Synced the latest from Notion",
+    "conflicts": {
+      "title_one": "{{count}} block changed on both sides",
+      "title_other": "{{count}} blocks changed on both sides",
+      "description": "You edited this block and it also changed in Notion. Pick which version the entry keeps.",
+      "mine": "In FolioNote",
+      "source": "In Notion",
+      "keepMine": "Keep mine",
+      "useSource": "Use Notion's",
+      "review_one": "Review {{count}} conflict",
+      "review_other": "Review {{count}} conflicts"
     }
   }
 }

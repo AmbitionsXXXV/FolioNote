@@ -23,6 +23,11 @@ export function setContentChangeListener(listener: ContentChangeListener) {
   onContentChange = listener
 }
 
+/** For content written outside this router (imports), so it gets indexed too. */
+export function notifyEntryContentChanged(entryId: string, userId: string) {
+  onContentChange?.(entryId, userId)
+}
+
 /**
  * Entry filter types for list queries
  */

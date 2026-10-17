@@ -3,7 +3,8 @@ import { isIP } from "node:net"
 import type { LookupFunction } from "node:net"
 
 import TurndownService from "turndown"
-import { Agent } from "undici"
+import { Agent, fetch } from "undici"
+import type { RequestInit, Response } from "undici"
 
 import type { FetchFormat, WebFetchToolOutput } from "../types"
 import {
@@ -292,8 +293,7 @@ async function fetchWithRedirectValidation(
   dispatcher: Agent
 ): Promise<Response> {
   let currentUrl = initialUrl
-  // Node fetch accepts a dispatcher in addition to the standard DOM options.
-  const requestOptions: RequestInit & { dispatcher: Agent } = {
+  const requestOptions: RequestInit = {
     signal,
     dispatcher,
     headers,

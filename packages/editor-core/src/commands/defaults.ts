@@ -131,6 +131,29 @@ export const defaultSlashCommands: SlashCommandDefinition[] = [
         .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
         .run()
     }
+  },
+  {
+    id: "japaneseSentence",
+    titleKey: "editor.slashCommand.japaneseSentence",
+    descriptionKey: "editor.slashCommand.japaneseSentenceDesc",
+    iconId: "japanese",
+    keywords: [
+      "japanese",
+      "furigana",
+      "mirra",
+      "日语",
+      "分词",
+      "例句",
+      "ふりがな"
+    ],
+    groupKey: "editor.slashCommand.basicBlocks",
+    execute: ({ editor, range }) => {
+      // Only editors that register JapaneseSentence expose the command.
+      // biome-ignore lint/suspicious/noExplicitAny: extension commands are dynamically typed
+      ;(editor.chain().focus().deleteRange(range) as any)
+        .insertJapaneseSentence()
+        .run()
+    }
   }
 ]
 

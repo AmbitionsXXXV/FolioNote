@@ -20,6 +20,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AppActivityRouteImport } from './routes/_app/activity'
 import { Route as AppGraphRouteImport } from './routes/_app/graph'
+import { Route as AppImportRouteImport } from './routes/_app/import'
 import { Route as AppInboxRouteImport } from './routes/_app/inbox'
 import { Route as AppJapaneseRouteImport } from './routes/_app/japanese'
 import { Route as AppKnowledgeRouteImport } from './routes/_app/knowledge'
@@ -36,6 +37,7 @@ import { Route as AppEntriesNewRouteImport } from './routes/_app/entries/new'
 import { Route as AppJapaneseIndexRouteImport } from './routes/_app/japanese/index'
 import { Route as AppJapaneseImportRouteImport } from './routes/_app/japanese/import'
 import { Route as AppJapaneseLibraryRouteImport } from './routes/_app/japanese/library'
+import { Route as AppSettingsConnectionsRouteImport } from './routes/_app/settings/connections'
 import { Route as AppSettingsGeneralRouteImport } from './routes/_app/settings/general'
 import { Route as AppSettingsModelsRouteImport } from './routes/_app/settings/models'
 import { Route as AppJapaneseListsLexiconIdRouteImport } from './routes/_app/japanese/lists/$lexiconId'
@@ -97,6 +99,11 @@ const AppActivityRoute = AppActivityRouteImport.update({
 const AppGraphRoute = AppGraphRouteImport.update({
   id: '/graph',
   path: '/graph',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppImportRoute = AppImportRouteImport.update({
+  id: '/import',
+  path: '/import',
   getParentRoute: () => AppRoute,
 } as any)
 const AppInboxRoute = AppInboxRouteImport.update({
@@ -179,6 +186,11 @@ const AppJapaneseLibraryRoute = AppJapaneseLibraryRouteImport.update({
   path: '/library',
   getParentRoute: () => AppJapaneseRoute,
 } as any)
+const AppSettingsConnectionsRoute = AppSettingsConnectionsRouteImport.update({
+  id: '/connections',
+  path: '/connections',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
 const AppSettingsGeneralRoute = AppSettingsGeneralRouteImport.update({
   id: '/general',
   path: '/general',
@@ -234,6 +246,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/activity': typeof AppActivityRoute
   '/graph': typeof AppGraphRoute
+  '/import': typeof AppImportRoute
   '/inbox': typeof AppInboxRoute
   '/japanese': typeof AppJapaneseRouteWithChildren
   '/knowledge': typeof AppKnowledgeRoute
@@ -249,6 +262,7 @@ export interface FileRoutesByFullPath {
   '/entries/new': typeof AppEntriesNewRoute
   '/japanese/import': typeof AppJapaneseImportRoute
   '/japanese/library': typeof AppJapaneseLibraryRoute
+  '/settings/connections': typeof AppSettingsConnectionsRoute
   '/settings/general': typeof AppSettingsGeneralRoute
   '/settings/models': typeof AppSettingsModelsRoute
   '/japanese/': typeof AppJapaneseIndexRoute
@@ -270,6 +284,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/activity': typeof AppActivityRoute
   '/graph': typeof AppGraphRoute
+  '/import': typeof AppImportRoute
   '/inbox': typeof AppInboxRoute
   '/knowledge': typeof AppKnowledgeRoute
   '/library': typeof AppLibraryRoute
@@ -284,6 +299,7 @@ export interface FileRoutesByTo {
   '/entries/new': typeof AppEntriesNewRoute
   '/japanese/import': typeof AppJapaneseImportRoute
   '/japanese/library': typeof AppJapaneseLibraryRoute
+  '/settings/connections': typeof AppSettingsConnectionsRoute
   '/settings/general': typeof AppSettingsGeneralRoute
   '/settings/models': typeof AppSettingsModelsRoute
   '/japanese': typeof AppJapaneseIndexRoute
@@ -307,6 +323,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_app/activity': typeof AppActivityRoute
   '/_app/graph': typeof AppGraphRoute
+  '/_app/import': typeof AppImportRoute
   '/_app/inbox': typeof AppInboxRoute
   '/_app/japanese': typeof AppJapaneseRouteWithChildren
   '/_app/knowledge': typeof AppKnowledgeRoute
@@ -322,6 +339,7 @@ export interface FileRoutesById {
   '/_app/entries/new': typeof AppEntriesNewRoute
   '/_app/japanese/import': typeof AppJapaneseImportRoute
   '/_app/japanese/library': typeof AppJapaneseLibraryRoute
+  '/_app/settings/connections': typeof AppSettingsConnectionsRoute
   '/_app/settings/general': typeof AppSettingsGeneralRoute
   '/_app/settings/models': typeof AppSettingsModelsRoute
   '/_app/japanese/': typeof AppJapaneseIndexRoute
@@ -345,6 +363,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/activity'
     | '/graph'
+    | '/import'
     | '/inbox'
     | '/japanese'
     | '/knowledge'
@@ -360,6 +379,7 @@ export interface FileRouteTypes {
     | '/entries/new'
     | '/japanese/import'
     | '/japanese/library'
+    | '/settings/connections'
     | '/settings/general'
     | '/settings/models'
     | '/japanese/'
@@ -381,6 +401,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/activity'
     | '/graph'
+    | '/import'
     | '/inbox'
     | '/knowledge'
     | '/library'
@@ -395,6 +416,7 @@ export interface FileRouteTypes {
     | '/entries/new'
     | '/japanese/import'
     | '/japanese/library'
+    | '/settings/connections'
     | '/settings/general'
     | '/settings/models'
     | '/japanese'
@@ -417,6 +439,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_app/activity'
     | '/_app/graph'
+    | '/_app/import'
     | '/_app/inbox'
     | '/_app/japanese'
     | '/_app/knowledge'
@@ -432,6 +455,7 @@ export interface FileRouteTypes {
     | '/_app/entries/new'
     | '/_app/japanese/import'
     | '/_app/japanese/library'
+    | '/_app/settings/connections'
     | '/_app/settings/general'
     | '/_app/settings/models'
     | '/_app/japanese/'
@@ -533,6 +557,13 @@ declare module '@tanstack/react-router' {
       path: '/graph'
       fullPath: '/graph'
       preLoaderRoute: typeof AppGraphRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/import': {
+      id: '/_app/import'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof AppImportRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/inbox': {
@@ -647,6 +678,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppJapaneseLibraryRouteImport
       parentRoute: typeof AppJapaneseRoute
     }
+    '/_app/settings/connections': {
+      id: '/_app/settings/connections'
+      path: '/connections'
+      fullPath: '/settings/connections'
+      preLoaderRoute: typeof AppSettingsConnectionsRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
     '/_app/settings/general': {
       id: '/_app/settings/general'
       path: '/general'
@@ -735,11 +773,13 @@ const AppJapaneseRouteWithChildren = AppJapaneseRoute._addFileChildren(
 )
 
 interface AppSettingsRouteChildren {
+  AppSettingsConnectionsRoute: typeof AppSettingsConnectionsRoute
   AppSettingsGeneralRoute: typeof AppSettingsGeneralRoute
   AppSettingsModelsRoute: typeof AppSettingsModelsRoute
 }
 
 const AppSettingsRouteChildren: AppSettingsRouteChildren = {
+  AppSettingsConnectionsRoute: AppSettingsConnectionsRoute,
   AppSettingsGeneralRoute: AppSettingsGeneralRoute,
   AppSettingsModelsRoute: AppSettingsModelsRoute,
 }
@@ -751,6 +791,7 @@ const AppSettingsRouteWithChildren = AppSettingsRoute._addFileChildren(
 interface AppRouteChildren {
   AppActivityRoute: typeof AppActivityRoute
   AppGraphRoute: typeof AppGraphRoute
+  AppImportRoute: typeof AppImportRoute
   AppInboxRoute: typeof AppInboxRoute
   AppJapaneseRoute: typeof AppJapaneseRouteWithChildren
   AppKnowledgeRoute: typeof AppKnowledgeRoute
@@ -768,6 +809,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppActivityRoute: AppActivityRoute,
   AppGraphRoute: AppGraphRoute,
+  AppImportRoute: AppImportRoute,
   AppInboxRoute: AppInboxRoute,
   AppJapaneseRoute: AppJapaneseRouteWithChildren,
   AppKnowledgeRoute: AppKnowledgeRoute,

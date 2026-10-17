@@ -1,5 +1,6 @@
 import type { App } from "../types"
 import { registerAiStreamRoute } from "./ai"
+import { registerConnectionRoutes } from "./connections"
 import { registerHealthRoutes } from "./health"
 import { registerJapaneseDictRoutes } from "./japanese-dict"
 import { registerReindexRoute } from "./reindex"
@@ -12,4 +13,5 @@ export function registerRoutes(app: App) {
   registerAiStreamRoute(app)
   registerReindexRoute(app)
   registerJapaneseDictRoutes(app)
+  registerConnectionRoutes(app)
 }

@@ -24,6 +24,12 @@ import {
   verification
 } from "./schema/auth"
 import {
+  entryExternalLinks,
+  entryExternalLinksRelations,
+  externalConnections,
+  externalConnectionsRelations
+} from "./schema/connections"
+import {
   attachments,
   attachmentsRelations,
   dailyLogs,
@@ -73,6 +79,12 @@ import {
   jpLexiconEntriesRelations
 } from "./schema/japanese-library"
 
+export {
+  entryExternalLinks,
+  entryExternalLinksRelations,
+  externalConnections,
+  externalConnectionsRelations
+} from "./schema/connections"
 export {
   jpArticles,
   jpArticlesRelations,
@@ -133,6 +145,11 @@ const schema = {
   entrySyncStateRelations,
   searchHistory,
   searchHistoryRelations,
+  // External import / sync
+  externalConnections,
+  externalConnectionsRelations,
+  entryExternalLinks,
+  entryExternalLinksRelations,
   // Graph
   entryLinks,
   entryLinksRelations,

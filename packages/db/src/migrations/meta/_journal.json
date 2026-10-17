@@ -113,6 +113,20 @@
       "when": 1792225040338,
       "tag": "0015_elite_lilandra",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1792259880971,
+      "tag": "0016_reflective_valeria_richards",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1792264420730,
+      "tag": "0017_brown_wraith",
+      "breakpoints": true
     }
   ]
 }

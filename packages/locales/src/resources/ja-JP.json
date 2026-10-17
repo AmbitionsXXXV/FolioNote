@@ -734,7 +734,8 @@
     "settings": "設定",
     "profile": "プロフィール",
     "knowledge": "ナレッジ",
-    "graph": "グラフ"
+    "graph": "グラフ",
+    "import": "インポート"
   },
   "search": {
     "placeholder": "エントリを検索...",
@@ -809,7 +810,9 @@
       "table": "テーブル",
       "tableDesc": "テーブルを挿入",
       "image": "画像",
-      "imageDesc": "画像をアップロードして挿入"
+      "imageDesc": "画像をアップロードして挿入",
+      "japaneseSentence": "日本語の例文",
+      "japaneseSentenceDesc": "単語ごとにふりがな・品詞・ローマ字を表示"
     },
     "imageUpload": {
       "fileTooLarge": "ファイルが大きすぎます。最大サイズは {{maxMB}}MB です",
@@ -932,6 +935,16 @@
         "codeBlock": "コードブロック",
         "quote": "引用"
       }
+    },
+    "japaneseSentence": {
+      "title": "解析した例文",
+      "textLabel": "日本語の文",
+      "translationLabel": "訳（任意）",
+      "translationPlaceholder": "文の意味",
+      "analyze": "解析",
+      "edit": "例文を編集",
+      "pasteOffer": "日本語のテキストを貼り付けました",
+      "pasteConvert": "解析した例文にする"
     }
   },
   "entryCard": {
@@ -1066,7 +1079,9 @@
       "general": "一般設定",
       "generalDesc": "プロフィール、外観、設定",
       "models": "AI モデル",
-      "modelsDesc": "AI プロバイダーを設定"
+      "modelsDesc": "AI プロバイダーを設定",
+      "connections": "連携",
+      "connectionsDesc": "Notion、Google ドキュメントなど"
     },
     "tip": {
       "title": "プロのヒント",
@@ -1563,6 +1578,186 @@
       "manual": "手動リンク",
       "sharedTag": "共通タグ",
       "sharedSource": "共通ソース"
+    }
+  },
+  "imports": {
+    "loading": "読み込み中…",
+    "failed": "問題が発生しました",
+    "title": "インポート",
+    "subtitle": "日本語の記事や、ほかで書いたページを取り込みます。エントリーとして保存し、元の場所を追い続けるかを選べます。",
+    "manageConnections": "連携を管理 →",
+    "sourceLabel": "取り込み元",
+    "notConnected": "未連携",
+    "sources": {
+      "notion": "Notion",
+      "google_docs": "Google ドキュメント",
+      "claude_page": "Claude ページ",
+      "web": "Web リンク"
+    },
+    "providers": {
+      "notion": "Notion",
+      "google_docs": "Google ドキュメント",
+      "claude_page": "Claude ページ",
+      "web": "Web リンク",
+      "markdown": "Markdown"
+    },
+    "notion": {
+      "notConfigured": "このサーバーでは Notion がまだ設定されていません。",
+      "connectHint": "一度連携して、FolioNote が読めるページを選んでください。連携はそのまま続きます。",
+      "connect": "Notion と連携",
+      "searchLabel": "FolioNote と共有中のページ",
+      "searchPlaceholder": "ページを検索",
+      "pagesLabel": "Notion のページ",
+      "noPages": "一致する共有ページはありません。",
+      "linkLabel": "またはページのリンクを貼り付け",
+      "notListed": "ページが見つからない場合は",
+      "editAccess": "ページのアクセス権を変更",
+      "connected": "Notion と連携しました",
+      "result": {
+        "denied": "Notion の連携がキャンセルされました",
+        "failed": "Notion と連携できませんでした",
+        "unauthorized": "もう一度ログインしてから連携してください"
+      },
+      "cardDescription": "一度連携すれば続きます。FolioNote が見られるのは Notion で選んだページとその子ページだけです。",
+      "disconnect": "{{name}} の連携を解除"
+    },
+    "google": {
+      "notConfigured": "このサーバーでは Google ログインが設定されていません。",
+      "linkHint": "Google でログインするとドキュメントを取り込めます。",
+      "scopeHint": "Google でログイン済みです。ドキュメントへのアクセスを一度許可し、取り込むものを選んでください。",
+      "allow": "ドキュメントへのアクセスを許可",
+      "pick": "Google ドライブから選ぶ",
+      "linkLabel": "またはドキュメントのリンクを貼り付け",
+      "pickedOnly": "FolioNote が開けるのは、Google ドライブで一度選んだドキュメントだけです。",
+      "cardDescription": "Google ログインをそのまま使います。一度許可すれば、選んだドキュメントだけを開きます。",
+      "ready": "ドキュメントへのアクセスを許可済み",
+      "signedIn": "Google でログイン中"
+    },
+    "claude": {
+      "hint": "Claude でページを Markdown としてコピー（または .md をダウンロード）し、ここに貼り付けてください。リンクは取り込み元として残ります。",
+      "linkLabel": "ページのリンク（任意）",
+      "markdownLabel": "Markdown",
+      "file": ".md ファイルを開く",
+      "cardDescription": "ページの Markdown を貼り付けます。スナップショットとして保存し、書き戻しはしません。",
+      "subtitle": "Markdown エクスポート · アカウント不要",
+      "import": "ページを取り込む"
+    },
+    "web": {
+      "urlLabel": "記事の URL",
+      "fetch": "取得",
+      "hint": "Shift_JIS や EUC-JP のページも自動でデコードし、ナビゲーションや広告は除きます。",
+      "cardDescription": "記事の本文を抽出します。社内ネットワークの URL は拒否します。",
+      "subtitle": "いつでも利用可能"
+    },
+    "preview": {
+      "title": "プレビュー",
+      "entries_one": "{{count}} 件のエントリー",
+      "entries_other": "{{count}} 件のエントリー",
+      "empty": "取り込み元を選ぶと、ここに内容が表示されます。",
+      "loading": "取り込み元を読み込み中…",
+      "blocks_one": "{{count}} ブロック",
+      "blocks_other": "{{count}} ブロック",
+      "changes": "取り込み時の変換"
+    },
+    "mode": {
+      "label": "取り込み後",
+      "snapshot": "スナップショット",
+      "snapshotDesc": "一度だけコピーします。あとは自由に編集できます。",
+      "watch": "スナップショット + 監視",
+      "watchDesc": "元が変わったら知らせます。好きなときに再インポートできます。",
+      "watchUnavailable": "この取り込み元は変更を通知できません。",
+      "pull": "同期を保つ",
+      "two_way": "双方向",
+      "pullDesc": "Notion の変更が反映されます。書き足したメモや例文はそのまま残り、編集したブロックも保たれます。"
+    },
+    "toInbox": "受信箱に入れる",
+    "submit": "インポート",
+    "done_one": "{{count}} 件を取り込みました",
+    "done_other": "{{count}} 件を取り込みました",
+    "connections": {
+      "title": "連携",
+      "description": "FolioNote が読めるアカウントと、取り込み元を追い続けているエントリー。",
+      "sources": "取り込み元"
+    },
+    "synced": {
+      "title": "取り込んだエントリー",
+      "entry": "エントリー",
+      "source": "取り込み元",
+      "mode": "モード",
+      "status": "状態",
+      "actions": "操作",
+      "check": "今すぐ確認",
+      "empty": "まだ何も取り込んでいません。"
+    },
+    "status": {
+      "up_to_date": "最新",
+      "source_changed": "元が更新済み",
+      "conflict": "競合あり",
+      "error": "確認に失敗",
+      "not_tracked": "追跡なし"
+    },
+    "reimport": "再インポート",
+    "reimportTitle": "取り込み元の最新版に置き換えますか？",
+    "reimportConfirm": "エントリーの内容が取り込み元で置き換わります。前回の取り込み以降にここで加えた変更は失われます。",
+    "reimported": "取り込み元から再インポートしました",
+    "warnings": {
+      "child_page": {
+        "from": "サブページ",
+        "to": "リンク（個別に取り込み）"
+      },
+      "columns": {
+        "from": "段組み",
+        "to": "縦に並べる"
+      },
+      "database": {
+        "from": "データベースビュー",
+        "to": "元へのリンク"
+      },
+      "embed": {
+        "from": "埋め込み・ファイル",
+        "to": "リンク"
+      },
+      "html": {
+        "from": "HTML",
+        "to": "プレーンテキスト"
+      },
+      "synced_block": {
+        "from": "同期ブロック",
+        "to": "インラインのコピー"
+      },
+      "table_of_contents": {
+        "from": "目次",
+        "to": "省略"
+      },
+      "to_do": {
+        "from": "ToDo リスト",
+        "to": "リストに変換"
+      },
+      "toggle": {
+        "from": "トグル",
+        "to": "本文として展開"
+      },
+      "unsupported": {
+        "from": "未対応のブロック",
+        "to": "省略"
+      },
+      "web": {
+        "from": "広告・ナビ・コメント",
+        "to": "除外"
+      }
+    },
+    "syncNow": "今すぐ同期",
+    "pulled": "Notion の最新内容を同期しました",
+    "conflicts": {
+      "title_one": "{{count}} 個のブロックが両方で変更されています",
+      "title_other": "{{count}} 個のブロックが両方で変更されています",
+      "description": "このブロックはこちらでも Notion でも変更されています。残す方を選んでください。",
+      "mine": "FolioNote 側",
+      "source": "Notion 側",
+      "keepMine": "自分の版を残す",
+      "useSource": "Notion の版にする",
+      "review_one": "{{count}} 件の競合を確認",
+      "review_other": "{{count}} 件の競合を確認"
     }
   }
 }

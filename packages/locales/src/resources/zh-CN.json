@@ -839,7 +839,8 @@
     "settings": "设置",
     "profile": "个人资料",
     "knowledge": "知识库",
-    "graph": "图谱"
+    "graph": "图谱",
+    "import": "导入"
   },
   "search": {
     "placeholder": "搜索条目...",
@@ -914,7 +915,9 @@
       "table": "表格",
       "tableDesc": "插入表格",
       "image": "图片",
-      "imageDesc": "上传并插入图片"
+      "imageDesc": "上传并插入图片",
+      "japaneseSentence": "日语分词例句",
+      "japaneseSentenceDesc": "逐词标注读音、词性和罗马音"
     },
     "imageUpload": {
       "fileTooLarge": "文件过大，最大允许 {{maxMB}}MB",
@@ -1037,6 +1040,16 @@
         "codeBlock": "代码块",
         "quote": "引用"
       }
+    },
+    "japaneseSentence": {
+      "title": "分词例句",
+      "textLabel": "日语句子",
+      "translationLabel": "译文（可选）",
+      "translationPlaceholder": "这句话的意思",
+      "analyze": "分词",
+      "edit": "编辑句子",
+      "pasteOffer": "已粘贴日语文本",
+      "pasteConvert": "转成分词例句"
     }
   },
   "error": {
@@ -1066,7 +1079,9 @@
       "general": "通用设置",
       "generalDesc": "个人资料、外观与偏好",
       "models": "AI 模型",
-      "modelsDesc": "配置您的 AI 提供商"
+      "modelsDesc": "配置您的 AI 提供商",
+      "connections": "连接",
+      "connectionsDesc": "Notion、Google Docs 等来源"
     },
     "tip": {
       "title": "专业提示",
@@ -1563,6 +1578,186 @@
       "manual": "手动关联",
       "sharedTag": "共享标签",
       "sharedSource": "共享来源"
+    }
+  },
+  "imports": {
+    "loading": "加载中…",
+    "failed": "出了点问题",
+    "title": "导入",
+    "subtitle": "导入日语文章，或你在别处写好的页面。导入后成为一个条目，可以选择是否继续跟随来源。",
+    "manageConnections": "管理连接 →",
+    "sourceLabel": "来源",
+    "notConnected": "未连接",
+    "sources": {
+      "notion": "Notion",
+      "google_docs": "Google Docs",
+      "claude_page": "Claude 页面",
+      "web": "网页链接"
+    },
+    "providers": {
+      "notion": "Notion",
+      "google_docs": "Google Docs",
+      "claude_page": "Claude 页面",
+      "web": "网页链接",
+      "markdown": "Markdown"
+    },
+    "notion": {
+      "notConfigured": "服务器还没有配置 Notion。",
+      "connectHint": "连接一次，选好 FolioNote 可以读取的页面，之后保持连接。",
+      "connect": "连接 Notion",
+      "searchLabel": "已共享给 FolioNote 的页面",
+      "searchPlaceholder": "搜索页面",
+      "pagesLabel": "Notion 页面",
+      "noPages": "没有匹配的共享页面。",
+      "linkLabel": "或粘贴页面链接",
+      "notListed": "找不到页面？",
+      "editAccess": "修改页面权限",
+      "connected": "Notion 已连接",
+      "result": {
+        "denied": "已取消 Notion 授权",
+        "failed": "Notion 连接失败",
+        "unauthorized": "请重新登录后再连接 Notion"
+      },
+      "cardDescription": "连接一次即可。FolioNote 只能看到你在 Notion 里选中的页面及其子页面。",
+      "disconnect": "断开 {{name}}"
+    },
+    "google": {
+      "notConfigured": "服务器还没有配置 Google 登录。",
+      "linkHint": "用 Google 登录后即可导入文档。",
+      "scopeHint": "你已用 Google 登录。授权一次文档访问，然后选择要导入的文档。",
+      "allow": "授权文档访问",
+      "pick": "从 Google 云端硬盘选择",
+      "linkLabel": "或粘贴文档链接",
+      "pickedOnly": "FolioNote 只能打开你在 Google 云端硬盘里选过的文档。",
+      "cardDescription": "沿用你的 Google 登录，多授权一次，之后只打开你选中的文档。",
+      "ready": "已授权文档访问",
+      "signedIn": "已用 Google 登录"
+    },
+    "claude": {
+      "hint": "在 Claude 里把页面复制为 Markdown（或下载 .md 导出文件），粘贴到这里。链接会作为来源保留。",
+      "linkLabel": "页面链接（可选）",
+      "markdownLabel": "Markdown",
+      "file": "打开 .md 文件",
+      "cardDescription": "粘贴页面的 Markdown 导出，按快照保存，不会回写。",
+      "subtitle": "Markdown 导出 · 无需账号",
+      "import": "导入页面"
+    },
+    "web": {
+      "urlLabel": "文章链接",
+      "fetch": "抓取",
+      "hint": "Shift_JIS、EUC-JP 编码的日语网页会自动解码，导航和广告会被去掉。",
+      "cardDescription": "提取文章正文，拒绝内网地址。",
+      "subtitle": "随时可用"
+    },
+    "preview": {
+      "title": "预览",
+      "entries_one": "{{count}} 个条目",
+      "entries_other": "{{count}} 个条目",
+      "empty": "选择来源后在这里预览导入内容。",
+      "loading": "正在读取来源…",
+      "blocks_one": "{{count}} 个块",
+      "blocks_other": "{{count}} 个块",
+      "changes": "导入时的转换"
+    },
+    "mode": {
+      "label": "导入之后",
+      "snapshot": "快照",
+      "snapshotDesc": "复制一次，之后随便改。",
+      "watch": "快照 + 监视",
+      "watchDesc": "来源有变化时标记出来，想更新时再重新导入。",
+      "watchUnavailable": "这个来源无法报告变化。",
+      "pull": "保持同步",
+      "two_way": "双向同步",
+      "pullDesc": "Notion 的改动会同步过来。你写的笔记和分词例句留在原位，你改过的块会保留。"
+    },
+    "toInbox": "放进收件箱",
+    "submit": "导入",
+    "done_one": "已导入 {{count}} 个条目",
+    "done_other": "已导入 {{count}} 个条目",
+    "connections": {
+      "title": "连接",
+      "description": "FolioNote 可以读取的账号，以及仍在跟随来源的条目。",
+      "sources": "来源"
+    },
+    "synced": {
+      "title": "导入的条目",
+      "entry": "条目",
+      "source": "来源",
+      "mode": "模式",
+      "status": "状态",
+      "actions": "操作",
+      "check": "立即检查",
+      "empty": "还没有导入任何内容。"
+    },
+    "status": {
+      "up_to_date": "已是最新",
+      "source_changed": "来源有更新",
+      "conflict": "有冲突",
+      "error": "检查失败",
+      "not_tracked": "未跟踪"
+    },
+    "reimport": "重新导入",
+    "reimportTitle": "用来源的最新版本替换？",
+    "reimportConfirm": "条目内容会被来源替换，上次导入后在这里做的修改会丢失。",
+    "reimported": "已从来源重新导入",
+    "warnings": {
+      "child_page": {
+        "from": "子页面",
+        "to": "链接（需单独导入）"
+      },
+      "columns": {
+        "from": "分栏",
+        "to": "改为上下排列"
+      },
+      "database": {
+        "from": "数据库视图",
+        "to": "来源链接"
+      },
+      "embed": {
+        "from": "嵌入与文件",
+        "to": "链接"
+      },
+      "html": {
+        "from": "HTML",
+        "to": "纯文本"
+      },
+      "synced_block": {
+        "from": "同步块",
+        "to": "内联副本"
+      },
+      "table_of_contents": {
+        "from": "目录",
+        "to": "省略"
+      },
+      "to_do": {
+        "from": "待办清单",
+        "to": "转为列表"
+      },
+      "toggle": {
+        "from": "折叠块",
+        "to": "展开为正文"
+      },
+      "unsupported": {
+        "from": "不支持的块",
+        "to": "省略"
+      },
+      "web": {
+        "from": "广告、导航、评论",
+        "to": "已去除"
+      }
+    },
+    "syncNow": "立即同步",
+    "pulled": "已同步 Notion 的最新内容",
+    "conflicts": {
+      "title_one": "{{count}} 个块两边都改了",
+      "title_other": "{{count}} 个块两边都改了",
+      "description": "这个块你改过，Notion 里也改了。选一个版本留在条目里。",
+      "mine": "FolioNote 里",
+      "source": "Notion 里",
+      "keepMine": "保留我的",
+      "useSource": "用 Notion 的",
+      "review_one": "处理 {{count}} 处冲突",
+      "review_other": "处理 {{count}} 处冲突"
     }
   }
 }
