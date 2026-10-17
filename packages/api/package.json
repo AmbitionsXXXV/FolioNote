@@ -18,6 +18,7 @@
     "@folionote/auth": "workspace:*",
     "@folionote/constants": "workspace:*",
     "@folionote/db": "workspace:*",
+    "@folionote/japanese": "workspace:*",
     "@folionote/locales": "workspace:*",
     "@folionote/log": "workspace:*",
     "@folionote/model-list": "workspace:*",
