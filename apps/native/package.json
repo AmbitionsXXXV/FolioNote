@@ -23,6 +23,7 @@
     "@folionote/api": "workspace:*",
     "@folionote/constants": "workspace:*",
     "@folionote/editor-core": "workspace:*",
+    "@folionote/japanese": "workspace:*",
     "@folionote/locales": "workspace:*",
     "@folionote/utils": "workspace:*",
     "@gorhom/bottom-sheet": "^5.2.6",
