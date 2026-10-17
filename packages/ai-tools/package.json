@@ -100,6 +100,7 @@
     "drizzle-orm": "catalog:",
     "nanoid": "catalog:",
     "turndown": "^7.2.2",
+    "undici": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
