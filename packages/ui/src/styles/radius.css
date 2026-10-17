@@ -1,0 +1,51 @@
+/* ===========================================================================
+   Radius roles for HeroUI components
+   ---------------------------------------------------------------------------
+   HeroUI rounds most controls with its 2xl/3xl steps (buttons, tabs and
+   toggle buttons are pills by design). FolioNote reads denser: controls sit
+   on --radius-sm, surfaces on --radius-lg, and only switches, avatars and
+   count badges stay round.
+
+   In @layer components — the layer HeroUI (OSS + Pro) ships in — and
+   imported after it, so these win on source order at equal specificity,
+   while HeroUI's more specific rules (button-group seams, first/last child
+   corners) still apply. Unlayered here would flatten those seams.
+   =========================================================================== */
+
+@layer components {
+  .button,
+  .toggle-button,
+  .pagination__link,
+  .tabs__tab,
+  .menu-item,
+  .list-box-item {
+    border-radius: var(--radius-sm);
+  }
+
+  .button--lg,
+  .tabs__indicator,
+  .toolbar--attached {
+    border-radius: var(--radius-md);
+  }
+
+  .chip,
+  .tag,
+  .tag--lg {
+    border-radius: var(--radius-xs);
+  }
+
+  .card,
+  .popover,
+  .dropdown__popover,
+  .select__popover,
+  .combo-box__popover,
+  .toast {
+    border-radius: var(--radius-lg);
+  }
+
+  .avatar,
+  .avatar--sm,
+  .avatar--lg {
+    border-radius: 9999px;
+  }
+}

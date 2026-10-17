@@ -9,6 +9,7 @@
 @import "tw-animate-css";
 
 @import "./component.css";
+@import "./radius.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -206,7 +207,8 @@ textarea::-webkit-resizer {
   --font-mono: IBM Plex Mono, monospace;
   --font-display: Fraunces, Georgia, serif;
   --font-script: Story Script, cursive;
-  --radius: 1.5rem;
+  --radius: 0.5rem;
+  --field-radius: calc(var(--radius) - 2px);
   --shadow-x: 0px;
   --shadow-y: 8px;
   --shadow-blur: 16px;
@@ -314,7 +316,8 @@ textarea::-webkit-resizer {
   --font-mono: IBM Plex Mono, monospace;
   --font-display: Fraunces, Georgia, serif;
   --font-script: Story Script, cursive;
-  --radius: 1.5rem;
+  --radius: 0.5rem;
+  --field-radius: calc(var(--radius) - 2px);
   --shadow-x: 0px;
   --shadow-y: 8px;
   --shadow-blur: 16px;
@@ -382,10 +385,16 @@ textarea::-webkit-resizer {
   --font-script-ja: var(--font-script-ja);
   --font-script-zh: var(--font-script-zh);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* One monotonic scale for Tailwind utilities AND HeroUI (whose components
+     read --radius-2xl/3xl directly). xs chips · sm controls · md blocks ·
+     lg cards/popovers · xl dialogs; 2xl/3xl fold into xl. */
+  --radius-xs: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
+  --radius-2xl: var(--radius-xl);
+  --radius-3xl: var(--radius-xl);
 
   --shadow-2xs: var(--shadow-2xs);
   --shadow-xs: var(--shadow-xs);
