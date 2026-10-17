@@ -6,9 +6,13 @@ import { serve } from "@hono/node-server"
 
 import { app } from "./app"
 import { initI18n } from "./i18n"
+import { initJapaneseAnalyzer } from "./services/japanese-analyzer"
 import { indexQueue } from "./services/rag"
 
 await initI18n()
+// Not awaited: the dictionary takes a few seconds to load and must not delay
+// readiness; japanese.analyze answers SERVICE_UNAVAILABLE until it is ready.
+void initJapaneseAnalyzer()
 
 setContentChangeListener((entryId, userId) => {
   indexQueue.enqueue(entryId, userId)
