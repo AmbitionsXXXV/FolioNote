@@ -55,9 +55,47 @@ import {
 } from "./schema/entries"
 // Business schema
 import { entryLinks, entryLinksRelations } from "./schema/graph"
-
+import {
+  jpGrammar,
+  jpKanji,
+  jpVocab,
+  jpVocabExamples,
+  jpVocabExamplesRelations,
+  jpVocabRelations
+} from "./schema/japanese"
 // Schema configuration for drizzle
+import {
+  jpArticles,
+  jpArticlesRelations,
+  jpLexicons,
+  jpLexiconsRelations,
+  jpLexiconEntries,
+  jpLexiconEntriesRelations
+} from "./schema/japanese-library"
+
+export {
+  jpArticles,
+  jpArticlesRelations,
+  jpLexicons,
+  jpLexiconsRelations,
+  jpLexiconEntries,
+  jpLexiconEntriesRelations
+} from "./schema/japanese-library"
+
 const schema = {
+  jpArticles,
+  jpArticlesRelations,
+  jpLexicons,
+  jpLexiconsRelations,
+  jpLexiconEntries,
+  jpLexiconEntriesRelations,
+  // Japanese word bank
+  jpGrammar,
+  jpKanji,
+  jpVocab,
+  jpVocabExamples,
+  jpVocabExamplesRelations,
+  jpVocabRelations,
   // Auth
   user,
   userRelations,
@@ -177,3 +215,11 @@ export {
   tagsRelations
 } from "./schema/entries"
 export { entryLinks, entryLinksRelations } from "./schema/graph"
+export {
+  jpGrammar,
+  jpKanji,
+  jpVocab,
+  jpVocabExamples,
+  jpVocabExamplesRelations,
+  jpVocabRelations
+} from "./schema/japanese"
