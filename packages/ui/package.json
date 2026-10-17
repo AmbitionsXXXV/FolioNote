@@ -1,6 +1,6 @@
 {
   "name": "@folionote/ui",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "description": "FolioNote Core UI components based on Base UI and Tailwind CSS",
   "type": "module",
   "exports": {
