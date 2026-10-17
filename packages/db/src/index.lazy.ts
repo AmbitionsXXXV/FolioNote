@@ -1,5 +1,11 @@
 // Browser-safe stub: db is server-only, accessing any property throws at runtime.
 export {
+  entryExternalLinks,
+  entryExternalLinksRelations,
+  externalConnections,
+  externalConnectionsRelations
+} from "./schema/connections"
+export {
   jpArticles,
   jpArticlesRelations,
   jpLexicons,

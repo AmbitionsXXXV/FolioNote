@@ -90,7 +90,15 @@ const googleCredentials = readSocialCredentials(
 const socialProviders = {
   ...(githubCredentials ? { github: githubCredentials } : {}),
   ...(googleCredentials
-    ? { google: { ...googleCredentials, prompt: "select_account" as const } }
+    ? {
+        google: {
+          ...googleCredentials,
+          prompt: "select_account" as const,
+          // Google only issues a refresh token for offline access; without
+          // it Docs import (drive.file, linked later) dies after ~1 hour.
+          accessType: "offline" as const
+        }
+      }
     : {})
 }
 

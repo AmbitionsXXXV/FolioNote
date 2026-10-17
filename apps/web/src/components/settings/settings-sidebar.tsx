@@ -4,6 +4,7 @@ import {
   AiBeautifyIcon,
   ArrowLeft02Icon,
   ArrowRight02Icon,
+  PlugSocketIcon,
   Settings02Icon
 } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -35,6 +36,13 @@ export const SETTINGS_NAV_ITEMS: SettingsNavItem[] = [
     descriptionKey: "settings.nav.modelsDesc",
     icon: AiBeautifyIcon,
     to: "/settings/models"
+  },
+  {
+    id: "connections",
+    labelKey: "settings.nav.connections",
+    descriptionKey: "settings.nav.connectionsDesc",
+    icon: PlugSocketIcon,
+    to: "/settings/connections"
   }
 ]
 
