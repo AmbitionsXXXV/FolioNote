@@ -93,7 +93,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@ai-sdk/provider": "^4.0.0",
+    "@ai-sdk/provider": "catalog:",
     "@folionote/db": "workspace:*",
     "@mastra/core": "catalog:",
     "ai": "catalog:",

@@ -46,7 +46,7 @@
     "changeset": "changeset",
     "changeset:status": "changeset status",
     "version": "changeset version",
-    "version:tag": "changeset version && changeset tag",
+    "version:tag": "changeset version && changeset git-tag",
     "prepare": "vp config"
   },
   "dependencies": {
