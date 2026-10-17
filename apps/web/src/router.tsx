@@ -4,8 +4,6 @@ import { createRouter as createTanStackRouter } from "@tanstack/react-router"
 import { DefaultErrorBoundary } from "./components/error-boundary"
 import { NotFound } from "./components/not-found"
 import { RoutePageSkeleton } from "./components/route-page-skeleton"
-
-import "./index.css"
 import { routeTree } from "./routeTree.gen"
 import { orpc, queryClient } from "./utils/orpc"
 

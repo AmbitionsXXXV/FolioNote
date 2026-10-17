@@ -21,6 +21,9 @@ import type { orpc } from "@/utils/orpc"
 
 import appCss from "../index.css?url"
 
+const GOOGLE_FONTS_URL =
+  "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Story+Script&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Outfit:wght@100..900&family=Spline+Sans:wght@300..700&family=Zen+Maru+Gothic&family=ZCOOL+QingKe+HuangYou&family=Leckerli+One&display=swap"
+
 // Map language codes to CSS class names for font switching
 function getLangClass(lang: string) {
   if (lang.startsWith("zh")) {
@@ -71,6 +74,15 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
       { name: "twitter:site", content: siteConfig.twitter }
     ],
     links: [
+      // Fonts load from <head> in parallel with the app CSS; an @import inside
+      // that CSS was only discovered after the 1.1 MB stylesheet downloaded.
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      {
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossOrigin: "anonymous"
+      },
+      { rel: "stylesheet", href: GOOGLE_FONTS_URL },
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/site.webmanifest" },
       { rel: "icon", href: "/favicon.ico" },
