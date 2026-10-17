@@ -275,6 +275,9 @@ catalogs:
     hono:
       specifier: ^4.12.25
       version: 4.12.25
+    htmlparser2:
+      specifier: 8.0.2
+      version: 8.0.2
     i18next:
       specifier: ^26.3.1
       version: 26.3.1
@@ -320,6 +323,9 @@ catalogs:
     typescript:
       specifier: 7.0.1-rc
       version: 7.0.1-rc
+    undici:
+      specifier: 7.28.0
+      version: 7.28.0
     vite:
       specifier: npm:@voidzero-dev/vite-plus-core@1.0.0
       version: 1.0.0
@@ -401,6 +407,9 @@ importers:
       '@folionote/editor-core':
         specifier: workspace:*
         version: link:../../packages/editor-core
+      '@folionote/japanese':
+        specifier: workspace:*
+        version: link:../../packages/japanese
       '@folionote/locales':
         specifier: workspace:*
         version: link:../../packages/locales
@@ -648,6 +657,9 @@ importers:
       '@folionote/editor-core':
         specifier: workspace:*
         version: link:../../packages/editor-core
+      '@folionote/japanese':
+        specifier: workspace:*
+        version: link:../../packages/japanese
       '@folionote/locales':
         specifier: workspace:*
         version: link:../../packages/locales
@@ -760,6 +772,9 @@ importers:
       '@folionote/editor-react':
         specifier: workspace:*
         version: link:../../packages/editor-react
+      '@folionote/japanese':
+        specifier: workspace:*
+        version: link:../../packages/japanese
       '@folionote/locales':
         specifier: workspace:*
         version: link:../../packages/locales
@@ -1131,6 +1146,9 @@ importers:
       turndown:
         specifier: ^7.2.2
         version: 7.2.4
+      undici:
+        specifier: 'catalog:'
+        version: 7.28.0
       zod:
         specifier: 'catalog:'
         version: 4.4.3
@@ -1162,6 +1180,9 @@ importers:
       '@folionote/db':
         specifier: workspace:*
         version: link:../db
+      '@folionote/japanese':
+        specifier: workspace:*
+        version: link:../japanese
       '@folionote/locales':
         specifier: workspace:*
         version: link:../locales
@@ -1275,6 +1296,9 @@ importers:
 
   packages/db:
     dependencies:
+      '@folionote/japanese':
+        specifier: workspace:*
+        version: link:../japanese
       dotenv:
         specifier: 'catalog:'
         version: 17.4.2
@@ -1284,6 +1308,9 @@ importers:
       pg:
         specifier: ^8.21.0
         version: 8.21.0
+      zod:
+        specifier: 'catalog:'
+        version: 4.4.3
     devDependencies:
       '@folionote/config':
         specifier: workspace:*
@@ -1416,6 +1443,28 @@ importers:
       '@types/react-dom':
         specifier: 'catalog:'
         version: 19.2.3(@types/react@19.3.0)
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.1-rc
+
+  packages/japanese:
+    dependencies:
+      '@patdx/kuromoji':
+        specifier: 1.0.4
+        version: 1.0.4
+      htmlparser2:
+        specifier: 'catalog:'
+        version: 8.0.2
+      wanakana:
+        specifier: 5.3.1
+        version: 5.3.1
+    devDependencies:
+      '@folionote/config':
+        specifier: workspace:*
+        version: link:../config
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.0.1
       typescript:
         specifier: 'catalog:'
         version: 7.0.1-rc
@@ -4453,6 +4502,9 @@ packages:
   '@oxlint/plugins@1.79.0':
     resolution: {integrity: sha512-S0uyoxakDINJ4DPgqxGlEEvrdSMeQb7Z2lKVjxoY2gwsbZbfg2Xr8Klfeo5ZeraHmmdBCELFUHkSe6KEmBpMvg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@patdx/kuromoji@1.0.4':
+    resolution: {integrity: sha512-RyDyFh33XLxbsANNnai2h9LyR8AS1NCkqbO8Ts836g8cCb9XPBHQgzFjkja6PSGH8SKMaPUISIft7l9NUkm2PQ==}
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
@@ -12402,6 +12454,10 @@ packages:
   walker@1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
 
+  wanakana@5.3.1:
+    resolution: {integrity: sha512-OSDqupzTlzl2LGyqTdhcXcl6ezMiFhcUwLBP8YKaBIbMYW1wAwDvupw2T9G9oVaKT9RmaSpyTXjxddFPUcFFIw==}
+    engines: {node: '>=12'}
+
   warn-once@0.1.1:
     resolution: {integrity: sha512-VkQZJbO8zVImzYFteBXvBOZEl1qL175WH8VmZcxF2fZAoudNhNDvHi+doCaAEdU2l2vtcIwa2zn0QK5+I1HQ3Q==}
 
@@ -15868,6 +15924,8 @@ snapshots:
     optional: true
 
   '@oxlint/plugins@1.79.0': {}
+
+  '@patdx/kuromoji@1.0.4': {}
 
   '@polka/url@1.0.0-next.29': {}
 
@@ -24712,6 +24770,8 @@ snapshots:
   walker@1.0.8:
     dependencies:
       makeerror: 1.0.12
+
+  wanakana@5.3.1: {}
 
   warn-once@0.1.1: {}
 

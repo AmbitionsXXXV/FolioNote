@@ -66,6 +66,8 @@ catalog:
   dotenv: ^17.4.2
   drizzle-kit: ^0.31.10
   drizzle-orm: ^0.45.2
+  htmlparser2: 8.0.2
+  undici: 7.28.0
   hono: ^4.12.25
   i18next: ^26.3.1
   msw: ^2.14.6

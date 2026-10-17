@@ -1,0 +1,15 @@
+{
+  "text": "田中さんは二〇二六年に東京へ引っ越します。",
+  "words": [
+    "田中さん",
+    "は",
+    "二〇二六年",
+    "に",
+    "東京",
+    "へ",
+    "引っ越します",
+    "。"
+  ],
+  "phrases": ["田中さんは", "二〇二六年に", "東京へ", "引っ越します。"],
+  "notes": "Consecutive 名詞,数 join with 年. IPADIC reads kanji numerals digit by digit (にれいにろくねん), not as a year (にせんにじゅうろくねん)."
+}

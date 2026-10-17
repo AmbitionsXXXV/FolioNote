@@ -1,0 +1,6 @@
+{
+  "text": "iPhoneを2台買った。",
+  "words": ["iPhone", "を", "2台", "買った", "。"],
+  "phrases": ["iPhoneを", "2台", "買った。"],
+  "notes": "Unknown Latin/digit tokens have no reading, so iPhone and 2台 get reading/romaji null; 2 (名詞,数) + 台 (助数詞) still join."
+}

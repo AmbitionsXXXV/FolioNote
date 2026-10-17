@@ -1,0 +1,41 @@
+{
+  "name": "@folionote/japanese",
+  "version": "0.2.24",
+  "description": "FolioNote engine-agnostic Japanese segmentation core",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./kuromoji": {
+      "types": "./src/kuromoji.ts",
+      "default": "./src/kuromoji.ts"
+    },
+    "./kuromoji-dict": {
+      "types": "./src/kuromoji-dict.ts",
+      "default": "./src/kuromoji-dict.ts"
+    },
+    "./loaders/node": {
+      "types": "./src/loaders/node.ts",
+      "default": "./src/loaders/node.ts"
+    },
+    "./loaders/web": {
+      "types": "./src/loaders/web.ts",
+      "default": "./src/loaders/web.ts"
+    }
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@patdx/kuromoji": "1.0.4",
+    "htmlparser2": "catalog:",
+    "wanakana": "5.3.1"
+  },
+  "devDependencies": {
+    "@folionote/config": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
