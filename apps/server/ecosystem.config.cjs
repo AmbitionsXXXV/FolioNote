@@ -56,8 +56,8 @@ module.exports = {
       // Auto-restart on file changes (only for development)
       autorestart: true,
 
-      // Node.js arguments
-      node_args: "--enable-source-maps"
+      // Load configuration before shared ESM chunks validate process.env.
+      node_args: "--env-file=.env --enable-source-maps"
     },
     {
       name: "folio-collab",
@@ -105,7 +105,7 @@ module.exports = {
 
       source_map_support: true,
       autorestart: true,
-      node_args: "--enable-source-maps"
+      node_args: "--env-file=.env --enable-source-maps"
     }
   ]
 }
