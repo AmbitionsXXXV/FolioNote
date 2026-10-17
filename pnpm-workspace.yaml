@@ -14,6 +14,20 @@ overrides:
   vite@*: "catalog:"
   vitest@*: 5.0.5
 
+# @heroui-pro/react's registry stub declares no peers (its postinstall swaps in
+# the licensed build), so pnpm resolved React for it from the hoisted copy —
+# native's react@19.3.0 — while web renders with 19.3.1: two Reacts, and every
+# Pro hook crashed with "Cannot read properties of null (reading 'useMemo')".
+# Declaring the context-bearing peers links Pro to the consumer's copies.
+packageExtensions:
+  "@heroui-pro/react":
+    peerDependencies:
+      "@heroui/react": ">=3.2.0"
+      "@heroui/styles": ">=3.2.0"
+      react: ">=19.0.0"
+      react-aria-components: ">=1.18.0"
+      react-dom: ">=19.0.0"
+
 allowBuilds:
   "@heroui-pro/react": true
   "@prisma/engines": true

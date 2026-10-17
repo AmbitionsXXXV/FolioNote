@@ -369,6 +369,8 @@ overrides:
   vite@*: npm:@voidzero-dev/vite-plus-core@1.3.0
   vitest@*: 5.0.5
 
+packageExtensionsChecksum: sha256-51A+O2lpev8Fha8Puw2PEC/PpMTWGQIUuWVDZ2H8Mls=
+
 importers:
 
   .:
@@ -409,10 +411,10 @@ importers:
         version: 7.0.2
       ultracite:
         specifier: ^8.0.1
-        version: 8.0.1(oxfmt@0.73.0(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(oxlint@1.88.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(prettier@3.9.10)
+        version: 8.0.1(oxfmt@0.73.0(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(oxlint@1.88.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(prettier@3.9.10)
       vite-plus:
         specifier: 'catalog:'
-        version: 1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
+        version: 1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
 
   apps/native:
     dependencies:
@@ -819,7 +821,7 @@ importers:
         version: 2.1.2(gsap@3.15.0)(react@19.3.1)
       '@heroui-pro/react':
         specifier: 1.0.0-beta.6
-        version: 1.0.0-beta.6
+        version: 1.0.0-beta.6(@heroui/react@3.2.0(@react-spectrum/provider@3.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.3.3))(@heroui/styles@3.2.0(tailwind-merge@3.7.0)(tailwindcss@4.3.3))(react-aria-components@1.18.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@heroui/react':
         specifier: ^3.2.0
         version: 3.2.0(@react-spectrum/provider@3.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.3.3)
@@ -1603,7 +1605,7 @@ importers:
         version: 1.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@heroui-pro/react':
         specifier: 1.0.0-beta.6
-        version: 1.0.0-beta.6
+        version: 1.0.0-beta.6(@heroui/react@3.2.0(@react-spectrum/provider@3.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.3.3))(@heroui/styles@3.2.0(tailwind-merge@3.7.0)(tailwindcss@4.3.3))(react-aria-components@1.19.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@heroui/styles':
         specifier: ^3.2.0
         version: 3.2.0(tailwind-merge@3.7.0)(tailwindcss@4.3.3)
@@ -3541,6 +3543,12 @@ packages:
 
   '@heroui-pro/react@1.0.0-beta.6':
     resolution: {integrity: sha512-wejAgZdTvccsCLgIpRJNE9ovbkC5qo9rX97e5Leb7nlaHU6Bg+0b2Sx9dbhkUQQqLLhsppBjrWDAlnItauZkdQ==}
+    peerDependencies:
+      '@heroui/react': '>=3.2.0'
+      '@heroui/styles': '>=3.2.0'
+      react: '>=19.0.0'
+      react-aria-components: '>=1.18.0'
+      react-dom: '>=19.0.0'
 
   '@heroui/react@3.2.0':
     resolution: {integrity: sha512-L1KobFqy03TWJt16E4nf5euQHciTdw5MEmjIySREvdIssvFZsA7QDjq9S1nKYaHx/pZt2aUyNdVlhC5vpACrPw==}
@@ -15453,10 +15461,25 @@ snapshots:
       gsap: 3.15.0
       react: 19.3.1
 
-  '@heroui-pro/react@1.0.0-beta.6':
+  '@heroui-pro/react@1.0.0-beta.6(@heroui/react@3.2.0(@react-spectrum/provider@3.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.3.3))(@heroui/styles@3.2.0(tailwind-merge@3.7.0)(tailwindcss@4.3.3))(react-aria-components@1.18.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
     dependencies:
+      '@heroui/react': 3.2.0(@react-spectrum/provider@3.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.3.3)
+      '@heroui/styles': 3.2.0(tailwind-merge@3.7.0)(tailwindcss@4.3.3)
       chalk: 5.6.2
       heroui-pro: 1.0.0-beta.11
+      react: 19.3.1
+      react-aria-components: 1.18.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      react-dom: 19.3.1(react@19.3.1)
+
+  '@heroui-pro/react@1.0.0-beta.6(@heroui/react@3.2.0(@react-spectrum/provider@3.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.3.3))(@heroui/styles@3.2.0(tailwind-merge@3.7.0)(tailwindcss@4.3.3))(react-aria-components@1.19.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)':
+    dependencies:
+      '@heroui/react': 3.2.0(@react-spectrum/provider@3.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.3.3)
+      '@heroui/styles': 3.2.0(tailwind-merge@3.7.0)(tailwindcss@4.3.3)
+      chalk: 5.6.2
+      heroui-pro: 1.0.0-beta.11
+      react: 19.3.1
+      react-aria-components: 1.19.0(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      react-dom: 19.3.1(react@19.3.1)
 
   '@heroui/react@3.2.0(@react-spectrum/provider@3.11.1(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.3.3)':
     dependencies:
@@ -19246,7 +19269,7 @@ snapshots:
       pathe: 2.0.3
       sirv: 3.0.2
       tinyrainbow: 3.2.0
-      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
+      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
 
   '@vitest/utils@5.0.5':
     dependencies:
@@ -19674,7 +19697,7 @@ snapshots:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
       solid-js: 1.9.17
-      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
+      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
     transitivePeerDependencies:
       - '@opentelemetry/api'
 
@@ -19704,7 +19727,7 @@ snapshots:
       react: 19.3.1
       react-dom: 19.3.0(react@19.3.1)
       solid-js: 1.9.17
-      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
+      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
     transitivePeerDependencies:
       - '@opentelemetry/api'
 
@@ -25513,7 +25536,7 @@ snapshots:
 
   uint8array-extras@1.5.0: {}
 
-  ultracite@8.0.1(oxfmt@0.73.0(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(oxlint@1.88.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(prettier@3.9.10):
+  ultracite@8.0.1(oxfmt@0.73.0(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(oxlint@1.88.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(prettier@3.9.10):
     dependencies:
       '@clack/prompts': 1.8.1
       cli-truncate: 6.1.1
@@ -25535,8 +25558,8 @@ snapshots:
       yaml: 2.9.1
       zod: 4.6.7
     optionalDependencies:
-      oxfmt: 0.73.0(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))
-      oxlint: 1.88.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))
+      oxfmt: 0.73.0(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))
+      oxlint: 1.88.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.3.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.3.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))
       prettier: 3.9.10
 
   uncrypto@0.1.3: {}
