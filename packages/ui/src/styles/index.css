@@ -208,7 +208,7 @@ textarea::-webkit-resizer {
   --font-display: Fraunces, Georgia, serif;
   --font-script: Story Script, cursive;
   --radius: 0.5rem;
-  --field-radius: calc(var(--radius) - 2px);
+  --field-radius: var(--radius);
   --shadow-x: 0px;
   --shadow-y: 8px;
   --shadow-blur: 16px;
@@ -317,7 +317,7 @@ textarea::-webkit-resizer {
   --font-display: Fraunces, Georgia, serif;
   --font-script: Story Script, cursive;
   --radius: 0.5rem;
-  --field-radius: calc(var(--radius) - 2px);
+  --field-radius: var(--radius);
   --shadow-x: 0px;
   --shadow-y: 8px;
   --shadow-blur: 16px;
@@ -385,16 +385,17 @@ textarea::-webkit-resizer {
   --font-script-ja: var(--font-script-ja);
   --font-script-zh: var(--font-script-zh);
 
-  /* One monotonic scale for Tailwind utilities AND HeroUI (whose components
-     read --radius-2xl/3xl directly). xs chips · sm controls · md blocks ·
-     lg cards/popovers · xl dialogs; 2xl/3xl fold into xl. */
-  --radius-xs: calc(var(--radius) - 4px);
-  --radius-sm: calc(var(--radius) - 2px);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 4px);
-  --radius-xl: calc(var(--radius) + 8px);
-  --radius-2xl: var(--radius-xl);
-  --radius-3xl: var(--radius-xl);
+  /* CDS precision scale (AGENTS.md), base 8px = lg. HeroUI reads the same
+     names, so its pills and surfaces get role overrides in radius.css.
+     xs hairline · sm chips · md menu items · lg buttons/inputs ·
+     xl cards/code · 2xl dialogs · 3xl hero surfaces. */
+  --radius-xs: calc(var(--radius) - 6px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 16px);
 
   --shadow-2xs: var(--shadow-2xs);
   --shadow-xs: var(--shadow-xs);

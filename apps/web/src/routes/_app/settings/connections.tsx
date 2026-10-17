@@ -36,11 +36,11 @@ function SourceCard({
   children?: React.ReactNode
 }) {
   return (
-    <div className="flex flex-col gap-3 rounded-lg border border-border bg-surface/40 p-4">
+    <div className="flex flex-col gap-3 rounded-xl border border-border bg-surface/40 p-4">
       <div className="flex items-center gap-2.5">
         <span
           aria-hidden="true"
-          className="grid size-7 place-items-center rounded-sm bg-foreground text-[13px] font-bold text-background"
+          className="grid size-7 place-items-center rounded-md bg-foreground text-[13px] font-bold text-background"
         >
           {mark}
         </span>
@@ -68,7 +68,7 @@ function ConnectLink({
 }) {
   return (
     <a
-      className="inline-flex h-8 items-center rounded-sm border border-border px-3 text-sm hover:bg-surface-secondary"
+      className="inline-flex h-8 items-center rounded-lg bg-surface-secondary px-3 text-sm hover:bg-surface-tertiary"
       href={href}
     >
       {children}
@@ -106,7 +106,7 @@ function SyncedEntries() {
       <h2 className="text-[15px] font-semibold" id="synced-heading">
         {t("imports.synced.title")}
       </h2>
-      <div className="overflow-x-auto rounded-md border border-border">
+      <div className="overflow-x-auto rounded-lg border border-border">
         <table className="w-full min-w-[640px] border-collapse text-sm">
           <thead>
             <tr className="bg-surface-secondary/60 text-left text-xs text-muted-foreground">
@@ -303,7 +303,7 @@ function ConnectionsPage() {
               title={t("imports.providers.claude_page")}
             >
               <Link
-                className="inline-flex h-8 items-center rounded-sm border border-border px-3 text-sm hover:bg-surface-secondary"
+                className="inline-flex h-8 items-center rounded-lg bg-surface-secondary px-3 text-sm hover:bg-surface-tertiary"
                 search={{ source: "claude_page" }}
                 to="/import"
               >

@@ -91,7 +91,7 @@ export function EntrySourceStatus({ entryId }: { entryId: string }) {
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
       {url ? (
         <a
-          className="inline-flex items-center gap-1.5 rounded-sm border border-border bg-surface/40 px-2 py-0.5 hover:bg-surface-secondary"
+          className="inline-flex items-center gap-1.5 rounded-md bg-surface-secondary px-2 py-0.5 hover:bg-surface-tertiary"
           href={url}
           rel="noopener noreferrer"
           target="_blank"

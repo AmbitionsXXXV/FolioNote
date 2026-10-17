@@ -40,7 +40,7 @@ function currentUrl(): string {
 
 function Notice({ children }: { children: React.ReactNode }) {
   return (
-    <p className="rounded-md bg-surface-secondary px-3 py-2.5 text-sm text-muted-foreground">
+    <p className="rounded-[10px] bg-surface-secondary px-3 py-2.5 text-sm text-muted-foreground">
       {children}
     </p>
   )
@@ -75,7 +75,7 @@ export function NotionSourcePanel({ onSourceChange }: PanelProps) {
           {t("imports.notion.connectHint")}
         </p>
         <a
-          className="inline-flex h-8 items-center rounded-sm bg-accent px-3 text-sm font-semibold text-accent-foreground"
+          className="inline-flex h-8 items-center rounded-lg bg-accent px-3 text-sm font-semibold text-accent-foreground"
           href={notionConnectUrl(currentUrl())}
         >
           {t("imports.notion.connect")}
@@ -99,14 +99,14 @@ export function NotionSourcePanel({ onSourceChange }: PanelProps) {
 
       <ul
         aria-label={t("imports.notion.pagesLabel")}
-        className="flex max-h-72 flex-col overflow-y-auto rounded-md border border-border"
+        className="flex max-h-72 flex-col gap-0.5 overflow-y-auto rounded-[10px] bg-surface-secondary p-1"
       >
         {pages.data?.map((page) => (
-          <li className="border-b border-border last:border-b-0" key={page.id}>
+          <li key={page.id}>
             <button
               aria-pressed={selectedId === page.id}
               className={cn(
-                "flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm transition-colors hover:bg-surface-secondary",
+                "flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-surface-tertiary",
                 selectedId === page.id && "bg-accent/12 hover:bg-accent/16"
               )}
               onClick={() => {
