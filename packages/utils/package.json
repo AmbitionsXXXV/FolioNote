@@ -1,6 +1,6 @@
 {
   "name": "@folionote/utils",
-  "version": "0.2.24",
+  "version": "0.2.25",
   "description": "FolioNote shared utility functions",
   "type": "module",
   "exports": {
