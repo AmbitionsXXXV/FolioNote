@@ -1,7 +1,7 @@
 /**
- * View-model for the JLPT exam-practice surface (`/jp-exam`). Mirrors the
- * frontend-first approach of `japanese-analysis.ts`: authentic-style multiple
- * choice questions are authored as mock data today and can later be backed by
+ * View-model for the JLPT exam-practice surface (`/japanese/practice/exam`).
+ * Frontend-first: exam-style multiple choice questions are authored as mock
+ * data today and can later be backed by
  * the seeded JLPT tables described in docs/research/japanese-nlp-jlpt.md.
  *
  * Levels (N5–N1) are an UNOFFICIAL study-grouping heuristic — JEES/Japan

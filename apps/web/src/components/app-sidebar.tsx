@@ -5,6 +5,7 @@ import {
   Atom02Icon,
   BookOpen01Icon,
   InboxIcon,
+  LanguageSquareIcon,
   Link01Icon,
   Rocket01Icon,
   Search01Icon,
@@ -37,6 +38,7 @@ const secondaryNavItems: NavItem[] = [
   { to: "/sources", labelKey: "nav.sources", icon: Link01Icon },
   { to: "/graph", labelKey: "nav.graph", icon: Atom02Icon },
   { to: "/review", labelKey: "nav.review", icon: Rocket01Icon },
+  { to: "/japanese", labelKey: "nav.japanese", icon: LanguageSquareIcon },
   { to: "/knowledge", labelKey: "nav.knowledge", icon: AiBrain01Icon }
 ]
 

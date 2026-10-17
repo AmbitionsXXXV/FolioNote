@@ -11,7 +11,6 @@ import { getUserTimezoneOffset, REVIEW_RULES } from "@/constants"
 import type { ReviewDashboardProps } from "@/types/review"
 import { orpc } from "@/utils/orpc"
 
-import { JapanesePracticeLauncher } from "./japanese-practice-launcher"
 import { StatsContent } from "./stats-content"
 
 /**
@@ -117,10 +116,6 @@ export function ReviewDashboard({ onStartReview }: ReviewDashboardProps) {
           )}
         </div>
       </Reveal>
-
-      <div className="mt-10">
-        <JapanesePracticeLauncher />
-      </div>
     </PageContainer>
   )
 }

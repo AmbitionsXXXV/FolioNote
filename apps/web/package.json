@@ -19,6 +19,7 @@
     "@folionote/constants": "workspace:*",
     "@folionote/editor-core": "workspace:*",
     "@folionote/editor-react": "workspace:*",
+    "@folionote/japanese": "workspace:*",
     "@folionote/locales": "workspace:*",
     "@folionote/model-list": "workspace:*",
     "@folionote/ui": "workspace:*",
