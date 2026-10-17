@@ -860,7 +860,9 @@
       "table": "Table",
       "tableDesc": "Insert a table",
       "image": "Image",
-      "imageDesc": "Upload and insert an image"
+      "imageDesc": "Upload and insert an image",
+      "japaneseSentence": "Japanese sentence",
+      "japaneseSentenceDesc": "Furigana, part of speech and romaji per word"
     },
     "imageUpload": {
       "fileTooLarge": "File too large. Maximum size is {{maxMB}}MB",
@@ -983,6 +985,14 @@
         "codeBlock": "Code block",
         "quote": "Quote"
       }
+    },
+    "japaneseSentence": {
+      "title": "Analyzed sentence",
+      "textLabel": "Japanese sentence",
+      "translationLabel": "Translation (optional)",
+      "translationPlaceholder": "What it means",
+      "analyze": "Analyze",
+      "edit": "Edit sentence"
     }
   },
   "error": {
@@ -1686,6 +1696,52 @@
     "reimport": "Re-import",
     "reimportTitle": "Replace with the source's current version?",
     "reimportConfirm": "The entry's content is replaced by the source. Edits you made here since the last import are lost.",
-    "reimported": "Re-imported from source"
+    "reimported": "Re-imported from source",
+    "warnings": {
+      "child_page": {
+        "from": "Sub-page",
+        "to": "Link (import separately)"
+      },
+      "columns": {
+        "from": "Columns",
+        "to": "Stacked"
+      },
+      "database": {
+        "from": "Database view",
+        "to": "Link to source"
+      },
+      "embed": {
+        "from": "Embeds & files",
+        "to": "Link"
+      },
+      "html": {
+        "from": "HTML",
+        "to": "Plain text"
+      },
+      "synced_block": {
+        "from": "Synced block",
+        "to": "Inlined copy"
+      },
+      "table_of_contents": {
+        "from": "Table of contents",
+        "to": "Omitted"
+      },
+      "to_do": {
+        "from": "Checklist",
+        "to": "Checklist as list"
+      },
+      "toggle": {
+        "from": "Toggle",
+        "to": "Expanded text"
+      },
+      "unsupported": {
+        "from": "Unsupported blocks",
+        "to": "Omitted"
+      },
+      "web": {
+        "from": "Ads, navigation, comments",
+        "to": "Dropped"
+      }
+    }
   }
 }

@@ -1,6 +1,7 @@
 "use dom"
 
 import { CustomLink, PasteHandler } from "@folionote/editor-core"
+import { JapaneseSentence } from "@folionote/editor-core/extensions"
 import type { JSONContent } from "@tiptap/core"
 import Placeholder from "@tiptap/extension-placeholder"
 import { EditorContent, useEditor } from "@tiptap/react"
@@ -54,6 +55,9 @@ export default function RichTextEditor({
       }),
       // Use shared Link extension from editor-core
       CustomLink,
+      // Schema only: keeps analyzed-sentence blocks from being stripped when
+      // an entry is edited on native.
+      JapaneseSentence,
       // Use shared PasteHandler from editor-core
       PasteHandler.configure({
         strategy: "preserve"

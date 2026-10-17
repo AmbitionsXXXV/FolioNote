@@ -915,7 +915,9 @@
       "table": "表格",
       "tableDesc": "插入表格",
       "image": "图片",
-      "imageDesc": "上传并插入图片"
+      "imageDesc": "上传并插入图片",
+      "japaneseSentence": "日语分词例句",
+      "japaneseSentenceDesc": "逐词标注读音、词性和罗马音"
     },
     "imageUpload": {
       "fileTooLarge": "文件过大，最大允许 {{maxMB}}MB",
@@ -1038,6 +1040,14 @@
         "codeBlock": "代码块",
         "quote": "引用"
       }
+    },
+    "japaneseSentence": {
+      "title": "分词例句",
+      "textLabel": "日语句子",
+      "translationLabel": "译文（可选）",
+      "translationPlaceholder": "这句话的意思",
+      "analyze": "分词",
+      "edit": "编辑句子"
     }
   },
   "error": {
@@ -1686,6 +1696,52 @@
     "reimport": "重新导入",
     "reimportTitle": "用来源的最新版本替换？",
     "reimportConfirm": "条目内容会被来源替换，上次导入后在这里做的修改会丢失。",
-    "reimported": "已从来源重新导入"
+    "reimported": "已从来源重新导入",
+    "warnings": {
+      "child_page": {
+        "from": "子页面",
+        "to": "链接（需单独导入）"
+      },
+      "columns": {
+        "from": "分栏",
+        "to": "改为上下排列"
+      },
+      "database": {
+        "from": "数据库视图",
+        "to": "来源链接"
+      },
+      "embed": {
+        "from": "嵌入与文件",
+        "to": "链接"
+      },
+      "html": {
+        "from": "HTML",
+        "to": "纯文本"
+      },
+      "synced_block": {
+        "from": "同步块",
+        "to": "内联副本"
+      },
+      "table_of_contents": {
+        "from": "目录",
+        "to": "省略"
+      },
+      "to_do": {
+        "from": "待办清单",
+        "to": "转为列表"
+      },
+      "toggle": {
+        "from": "折叠块",
+        "to": "展开为正文"
+      },
+      "unsupported": {
+        "from": "不支持的块",
+        "to": "省略"
+      },
+      "web": {
+        "from": "广告、导航、评论",
+        "to": "已去除"
+      }
+    }
   }
 }

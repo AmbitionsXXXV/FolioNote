@@ -281,6 +281,23 @@ function buildRenderDoc(styles: Styles) {
         </View>
       ),
       horizontalRule: () => <View style={styles.hr} />,
+      // Analysis needs the server/engine, so native shows the sentence and
+      // its translation as text rather than dropping the block.
+      japaneseSentence: ({ node }: NodeProps) => {
+        const text = node?.attrs?.text as string | undefined
+        if (!text) {
+          return null
+        }
+        const translation = node?.attrs?.translation as string | null
+        return (
+          <View style={styles.blockquote}>
+            <Text style={styles.paragraph}>{text}</Text>
+            {translation ? (
+              <Text style={styles.paragraph}>{translation}</Text>
+            ) : null}
+          </View>
+        )
+      },
       image: ({ node }: NodeProps) => {
         const src = node?.attrs?.src as string | undefined
         if (!src) {

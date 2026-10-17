@@ -810,7 +810,9 @@
       "table": "テーブル",
       "tableDesc": "テーブルを挿入",
       "image": "画像",
-      "imageDesc": "画像をアップロードして挿入"
+      "imageDesc": "画像をアップロードして挿入",
+      "japaneseSentence": "日本語の例文",
+      "japaneseSentenceDesc": "単語ごとにふりがな・品詞・ローマ字を表示"
     },
     "imageUpload": {
       "fileTooLarge": "ファイルが大きすぎます。最大サイズは {{maxMB}}MB です",
@@ -933,6 +935,14 @@
         "codeBlock": "コードブロック",
         "quote": "引用"
       }
+    },
+    "japaneseSentence": {
+      "title": "解析した例文",
+      "textLabel": "日本語の文",
+      "translationLabel": "訳（任意）",
+      "translationPlaceholder": "文の意味",
+      "analyze": "解析",
+      "edit": "例文を編集"
     }
   },
   "entryCard": {
@@ -1686,6 +1696,52 @@
     "reimport": "再インポート",
     "reimportTitle": "取り込み元の最新版に置き換えますか？",
     "reimportConfirm": "エントリーの内容が取り込み元で置き換わります。前回の取り込み以降にここで加えた変更は失われます。",
-    "reimported": "取り込み元から再インポートしました"
+    "reimported": "取り込み元から再インポートしました",
+    "warnings": {
+      "child_page": {
+        "from": "サブページ",
+        "to": "リンク（個別に取り込み）"
+      },
+      "columns": {
+        "from": "段組み",
+        "to": "縦に並べる"
+      },
+      "database": {
+        "from": "データベースビュー",
+        "to": "元へのリンク"
+      },
+      "embed": {
+        "from": "埋め込み・ファイル",
+        "to": "リンク"
+      },
+      "html": {
+        "from": "HTML",
+        "to": "プレーンテキスト"
+      },
+      "synced_block": {
+        "from": "同期ブロック",
+        "to": "インラインのコピー"
+      },
+      "table_of_contents": {
+        "from": "目次",
+        "to": "省略"
+      },
+      "to_do": {
+        "from": "ToDo リスト",
+        "to": "リストに変換"
+      },
+      "toggle": {
+        "from": "トグル",
+        "to": "本文として展開"
+      },
+      "unsupported": {
+        "from": "未対応のブロック",
+        "to": "省略"
+      },
+      "web": {
+        "from": "広告・ナビ・コメント",
+        "to": "除外"
+      }
+    }
   }
 }

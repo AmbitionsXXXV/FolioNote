@@ -44,6 +44,14 @@ function extractTextFromNode(node: ProseMirrorNode): string {
     return node.text
   }
 
+  // 日语分词例句是 atom 节点，文本存在 attrs 里
+  if (node.type === "japaneseSentence") {
+    const parts = [node.attrs?.text, node.attrs?.translation].filter(
+      (part): part is string => typeof part === "string" && part.length > 0
+    )
+    return `${parts.join("\n")}\n`
+  }
+
   // 没有子节点
   if (!node.content || node.content.length === 0) {
     // 某些节点类型需要添加换行

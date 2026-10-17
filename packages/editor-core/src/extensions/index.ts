@@ -9,3 +9,7 @@ export {
   type PasteHandlerOptions,
   type PasteStrategy
 } from "./paste-handler"
+export {
+  JapaneseSentence,
+  type JapaneseSentenceAttributes
+} from "./japanese-sentence"

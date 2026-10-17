@@ -27,6 +27,7 @@ import { toast } from "sonner"
 import { BlockHandle } from "@/components/editor/block-handle"
 import { EditorBubbleMenu } from "@/components/editor/editor-bubble-menu"
 import { EditorCharacterCount } from "@/components/editor/editor-character-count"
+import { JapaneseSentenceBlock } from "@/components/editor/japanese-sentence-block"
 import { ResizableImage } from "@/components/editor/resizable-image"
 import { HeadingIds } from "@/lib/heading-id-extension"
 
@@ -264,6 +265,8 @@ export function EntryEditor({
           loading: "lazy"
         }
       }),
+      // Mirra-style analyzed sentence (/japanese in the slash menu)
+      JapaneseSentenceBlock,
       ...(onUploadImage ? [createImageUploadExtension(onUploadImage, t)] : []),
       createSlashCommandExtension({
         commands,

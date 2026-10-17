@@ -18,6 +18,7 @@ export type IconId =
   | "source"
   | "table"
   | "image"
+  | "japanese"
 
 /**
  * Context passed to command execution

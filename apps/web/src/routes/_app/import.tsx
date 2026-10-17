@@ -77,7 +77,7 @@ function PreviewPanel({ source }: { source: ImportSourceInput | null }) {
   return (
     <aside
       aria-label={t("imports.preview.title")}
-      className="min-w-0 flex-[1_1_340px] overflow-hidden rounded-lg border border-border"
+      className="min-w-0 flex-[1_1_340px] overflow-hidden rounded-xl border border-border"
     >
       <div className="flex items-center justify-between border-b border-border px-4 py-3 text-xs text-muted-foreground">
         <span className="text-sm font-semibold text-foreground">
@@ -121,17 +121,23 @@ function PreviewPanel({ source }: { source: ImportSourceInput | null }) {
                 <div className="mb-1.5 text-xs font-semibold text-muted-foreground">
                   {t("imports.preview.changes")}
                 </div>
-                <ul className="rounded-md border border-border text-sm">
+                <ul className="rounded-[10px] bg-surface-secondary py-1 text-sm">
                   {item.warnings.map((warning) => (
                     <li
-                      className="flex justify-between gap-3 border-b border-border px-2.5 py-1.5 last:border-b-0"
+                      className="flex justify-between gap-3 px-3 py-1.5"
                       key={warning.kind}
                     >
                       <span>
-                        {warning.from}
+                        {t(`imports.warnings.${warning.kind}.from`, {
+                          defaultValue: warning.from
+                        })}
                         {warning.count > 1 ? ` ×${warning.count}` : ""}
                       </span>
-                      <span className="text-accent">{warning.to}</span>
+                      <span className="text-accent">
+                        {t(`imports.warnings.${warning.kind}.to`, {
+                          defaultValue: warning.to
+                        })}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -198,7 +204,7 @@ function ImportPage() {
       <div className="flex flex-wrap items-start gap-5">
         <section
           aria-label={t("imports.sourceLabel")}
-          className="min-w-0 flex-[999_1_520px] rounded-lg border border-border bg-surface/40"
+          className="min-w-0 flex-[999_1_520px] rounded-xl border border-border bg-surface/40"
         >
           <Tabs
             onSelectionChange={(key) => selectKind(key as ImportSourceKind)}

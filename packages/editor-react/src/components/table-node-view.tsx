@@ -689,31 +689,34 @@ export function TableNodeView({
         type="column"
       />
 
-      {/* Table Content */}
-      <table
-        ref={(element) => {
-          if (element) {
-            setTableElement(element)
-          }
-        }}
-      >
-        {/* Colgroup drives column widths and enables column resizing */}
-        <colgroup>
-          {colWidths.map((width, index) => (
-            <col
-              // biome-ignore lint/suspicious/noArrayIndexKey: columns are positional
-              key={`col-${index}`}
-              style={width ? { width: `${width}px` } : undefined}
-            />
-          ))}
-        </colgroup>
-        {/*
+      {/* Table Content — wide tables scroll inside the block instead of
+          pushing the page sideways; controls stay outside the scroller. */}
+      <div className="table-scroll">
+        <table
+          ref={(element) => {
+            if (element) {
+              setTableElement(element)
+            }
+          }}
+        >
+          {/* Colgroup drives column widths and enables column resizing */}
+          <colgroup>
+            {colWidths.map((width, index) => (
+              <col
+                // biome-ignore lint/suspicious/noArrayIndexKey: columns are positional
+                key={`col-${index}`}
+                style={width ? { width: `${width}px` } : undefined}
+              />
+            ))}
+          </colgroup>
+          {/*
 					Render the content (rows) into the tbody
 					Tiptap/ProseMirror expects the content to be the rows
 				*/}
-        {/* @ts-expect-error - tbody is a valid HTML tag but not typed in NodeViewContent props */}
-        <NodeViewContent as="tbody" ref={contentRef} />
-      </table>
+          {/* @ts-expect-error - tbody is a valid HTML tag but not typed in NodeViewContent props */}
+          <NodeViewContent as="tbody" ref={contentRef} />
+        </table>
+      </div>
 
       {/* Row/Column Context Menu */}
       <TableSectionMenu

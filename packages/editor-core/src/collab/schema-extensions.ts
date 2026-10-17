@@ -8,6 +8,8 @@ import { TableHeader } from "@tiptap/extension-table-header"
 import { TableRow } from "@tiptap/extension-table-row"
 import StarterKit from "@tiptap/starter-kit"
 
+import { JapaneseSentence } from "../extensions/japanese-sentence"
+
 /**
  * DOM-free mirror of the web editor's schema (apps/web/src/components/
  * entry-editor.tsx), for server-side use with Hocuspocus's
@@ -179,5 +181,7 @@ export const COLLAB_SCHEMA_EXTENSIONS = [
   TableHeaderSchema,
   TableRow,
   Link,
-  ImageSchema
+  ImageSchema,
+  // Already DOM-free; the web editor only adds a React NodeView on top.
+  JapaneseSentence
 ]
