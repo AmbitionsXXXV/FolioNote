@@ -942,7 +942,9 @@
       "translationLabel": "訳（任意）",
       "translationPlaceholder": "文の意味",
       "analyze": "解析",
-      "edit": "例文を編集"
+      "edit": "例文を編集",
+      "pasteOffer": "日本語のテキストを貼り付けました",
+      "pasteConvert": "解析した例文にする"
     }
   },
   "entryCard": {
@@ -1665,7 +1667,8 @@
       "watchDesc": "元が変わったら知らせます。好きなときに再インポートできます。",
       "watchUnavailable": "この取り込み元は変更を通知できません。",
       "pull": "同期を保つ",
-      "two_way": "双方向"
+      "two_way": "双方向",
+      "pullDesc": "Notion の変更が反映されます。書き足したメモや例文はそのまま残り、編集したブロックも保たれます。"
     },
     "toInbox": "受信箱に入れる",
     "submit": "インポート",
@@ -1742,6 +1745,19 @@
         "from": "広告・ナビ・コメント",
         "to": "除外"
       }
+    },
+    "syncNow": "今すぐ同期",
+    "pulled": "Notion の最新内容を同期しました",
+    "conflicts": {
+      "title_one": "{{count}} 個のブロックが両方で変更されています",
+      "title_other": "{{count}} 個のブロックが両方で変更されています",
+      "description": "このブロックはこちらでも Notion でも変更されています。残す方を選んでください。",
+      "mine": "FolioNote 側",
+      "source": "Notion 側",
+      "keepMine": "自分の版を残す",
+      "useSource": "Notion の版にする",
+      "review_one": "{{count}} 件の競合を確認",
+      "review_other": "{{count}} 件の競合を確認"
     }
   }
 }

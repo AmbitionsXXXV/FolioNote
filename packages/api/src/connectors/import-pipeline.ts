@@ -28,13 +28,17 @@ import {
   getNotionBlockTree,
   getNotionPage,
   notionPageTitleOf,
-  parseNotionPageId
+  parseNotionPageId,
+  subtreeRevisions
 } from "./notion"
+import type { NotionBlockObject, NotionPageObject } from "./notion"
 import {
   getNotionConnection,
   listNotionConnections,
   withNotionToken
 } from "./notion-store"
+import { canonicalNode, keyOf } from "./pull-merge"
+import type { IncomingBlock } from "./pull-merge"
 
 type ConnectionRow = typeof externalConnections.$inferSelect
 
@@ -64,6 +68,8 @@ export interface ResolvedImport {
   /** Source-side version for watch mode; null when the source has none. */
   sourceRevision: string | null
   docs: ImportedDoc[]
+  /** Notion only: top-level node key → newest edit time of its source blocks. */
+  blockRevisions?: Record<string, string>
 }
 
 export class ImportSourceError extends Error {
@@ -207,8 +213,111 @@ async function resolveNotion(
     url: page.url,
     connectionId: connection.id,
     sourceRevision: page.last_edited_time,
-    docs
+    docs,
+    blockRevisions: keyRevisions(blocks, docs[0]?.sources ?? {})
   }
+}
+
+/** Revision of each top-level node = newest edit among the blocks it came from. */
+function keyRevisions(
+  blocks: NotionBlockObject[],
+  sources: Record<string, string[]>
+): Record<string, string> {
+  const revisions = subtreeRevisions(blocks)
+  return Object.fromEntries(
+    Object.entries(sources).map(([key, ids]) => [
+      key,
+      ids.reduce((newest, id) => {
+        const rev = revisions.get(id) ?? ""
+        return rev > newest ? rev : newest
+      }, "")
+    ])
+  )
+}
+
+export interface NotionSourceState {
+  page: NotionPageObject
+  incoming: IncomingBlock[]
+  /** Expiring Notion-hosted image URLs inside `incoming`. */
+  assetUrls: Set<string>
+}
+
+/**
+ * The source side of a pull: the page's current top-level blocks, keyed and
+ * revisioned, with images NOT re-hosted yet — only blocks the merge actually
+ * takes get uploaded (see rehostImagesInNodes).
+ */
+export async function readNotionSource(
+  userId: string,
+  link: { externalId: string; connectionId: string | null }
+): Promise<NotionSourceState> {
+  const connection = link.connectionId
+    ? await getNotionConnection(userId, link.connectionId)
+    : null
+  if (!connection) {
+    throw new ImportSourceError("not_connected", "Notion connection removed")
+  }
+  const page = await withNotionToken(connection, (token) =>
+    getNotionPage(token, link.externalId)
+  )
+  const blocks = await withNotionToken(connection, (token) =>
+    getNotionBlockTree(token, link.externalId)
+  )
+  const converted = notionBlocksToDoc({
+    title: notionPageTitleOf(page),
+    blocks: blocks as unknown as NotionBlock[]
+  })
+  const revisions = keyRevisions(blocks, converted.sources ?? {})
+  const incoming: IncomingBlock[] = []
+  for (const node of converted.doc.content) {
+    const key = keyOf(node)
+    if (key) {
+      incoming.push({
+        key,
+        rev: revisions[key] ?? "",
+        node: canonicalNode(node)
+      })
+    }
+  }
+  return { page, incoming, assetUrls: new Set(converted.assetUrls) }
+}
+
+function mapImages(node: PMNode, mapping: Map<string, string>): PMNode {
+  const src = node.attrs?.src
+  const mapped =
+    node.type === "image" && typeof src === "string"
+      ? mapping.get(src)
+      : undefined
+  return {
+    ...node,
+    ...(mapped ? { attrs: { ...node.attrs, src: mapped } } : {}),
+    ...(node.content
+      ? { content: node.content.map((child) => mapImages(child, mapping)) }
+      : {})
+  }
+}
+
+function collectImageSources(node: PMNode, into: Set<string>): void {
+  const src = node.attrs?.src
+  if (node.type === "image" && typeof src === "string") into.add(src)
+  for (const child of node.content ?? []) collectImageSources(child, into)
+}
+
+/** Re-host the expiring images inside `nodes`; returns a src rewrite map. */
+export async function rehostImagesInNodes(
+  userId: string,
+  nodes: PMNode[],
+  expiring: Set<string>
+): Promise<(node: PMNode) => PMNode> {
+  const sources = new Set<string>()
+  for (const node of nodes) collectImageSources(node, sources)
+  const mapping = new Map<string, string>()
+  for (const src of sources) {
+    if (!expiring.has(src)) continue
+    const rehosted = await rehostImage(userId, src)
+    if (rehosted) mapping.set(src, rehosted)
+  }
+  return (node) => (mapping.size > 0 ? mapImages(node, mapping) : node)
 }
 
 async function resolveGoogleDoc(

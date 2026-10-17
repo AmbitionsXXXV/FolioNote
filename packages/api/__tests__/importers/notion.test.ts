@@ -356,4 +356,49 @@ describe("Notion import", () => {
     ).toBe("日本語ノート")
     expect(notionPageTitle({ properties: {} })).toBe("Untitled")
   })
+
+  it("tags top-level nodes with their source block for pull sync", () => {
+    const { doc, sources } = notionBlocksToDoc({
+      title: "Sync",
+      blocks: [
+        { id: "h1", type: "heading_2", heading_2: { rich_text: text("動詞") } },
+        {
+          id: "l1",
+          type: "bulleted_list_item",
+          bulleted_list_item: { rich_text: text("迷う") }
+        },
+        {
+          id: "l2",
+          type: "bulleted_list_item",
+          bulleted_list_item: { rich_text: text("稼ぐ") }
+        },
+        {
+          id: "t1",
+          type: "toggle",
+          toggle: { rich_text: text("答え") },
+          children: [
+            {
+              id: "p1",
+              type: "paragraph",
+              paragraph: { rich_text: text("迷わない") }
+            }
+          ]
+        }
+      ]
+    })
+    assertValidDoc(doc)
+    expect(doc.content.map((node) => node.attrs?.sourceBlockId)).toEqual([
+      "h1",
+      "l1",
+      "t1",
+      "t1#1"
+    ])
+    // the grouped list covers both items, so either one changing is a change
+    expect(sources).toEqual({
+      h1: ["h1"],
+      l1: ["l1", "l2"],
+      t1: ["t1"],
+      "t1#1": ["t1"]
+    })
+  })
 })

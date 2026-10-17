@@ -992,7 +992,9 @@
       "translationLabel": "Translation (optional)",
       "translationPlaceholder": "What it means",
       "analyze": "Analyze",
-      "edit": "Edit sentence"
+      "edit": "Edit sentence",
+      "pasteOffer": "Japanese text pasted",
+      "pasteConvert": "Turn into analyzed sentences"
     }
   },
   "error": {
@@ -1665,7 +1667,8 @@
       "watchDesc": "Flag the entry when the source changes; re-import when you want.",
       "watchUnavailable": "This source can't report changes.",
       "pull": "Keep in sync",
-      "two_way": "Two-way"
+      "two_way": "Two-way",
+      "pullDesc": "Notion changes flow in. Your notes and Mirra sentences stay where you put them; blocks you edited are kept."
     },
     "toInbox": "Put in Inbox",
     "submit": "Import entry",
@@ -1742,6 +1745,19 @@
         "from": "Ads, navigation, comments",
         "to": "Dropped"
       }
+    },
+    "syncNow": "Sync now",
+    "pulled": "Synced the latest from Notion",
+    "conflicts": {
+      "title_one": "{{count}} block changed on both sides",
+      "title_other": "{{count}} blocks changed on both sides",
+      "description": "You edited this block and it also changed in Notion. Pick which version the entry keeps.",
+      "mine": "In FolioNote",
+      "source": "In Notion",
+      "keepMine": "Keep mine",
+      "useSource": "Use Notion's",
+      "review_one": "Review {{count}} conflict",
+      "review_other": "Review {{count}} conflicts"
     }
   }
 }

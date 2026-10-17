@@ -1047,7 +1047,9 @@
       "translationLabel": "译文（可选）",
       "translationPlaceholder": "这句话的意思",
       "analyze": "分词",
-      "edit": "编辑句子"
+      "edit": "编辑句子",
+      "pasteOffer": "已粘贴日语文本",
+      "pasteConvert": "转成分词例句"
     }
   },
   "error": {
@@ -1665,7 +1667,8 @@
       "watchDesc": "来源有变化时标记出来，想更新时再重新导入。",
       "watchUnavailable": "这个来源无法报告变化。",
       "pull": "保持同步",
-      "two_way": "双向同步"
+      "two_way": "双向同步",
+      "pullDesc": "Notion 的改动会同步过来。你写的笔记和分词例句留在原位，你改过的块会保留。"
     },
     "toInbox": "放进收件箱",
     "submit": "导入",
@@ -1742,6 +1745,19 @@
         "from": "广告、导航、评论",
         "to": "已去除"
       }
+    },
+    "syncNow": "立即同步",
+    "pulled": "已同步 Notion 的最新内容",
+    "conflicts": {
+      "title_one": "{{count}} 个块两边都改了",
+      "title_other": "{{count}} 个块两边都改了",
+      "description": "这个块你改过，Notion 里也改了。选一个版本留在条目里。",
+      "mine": "FolioNote 里",
+      "source": "Notion 里",
+      "keepMine": "保留我的",
+      "useSource": "用 Notion 的",
+      "review_one": "处理 {{count}} 处冲突",
+      "review_other": "处理 {{count}} 处冲突"
     }
   }
 }

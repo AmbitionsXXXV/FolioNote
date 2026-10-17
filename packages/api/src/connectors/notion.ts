@@ -209,6 +209,7 @@ export interface NotionBlockObject {
   id: string
   type: string
   has_children: boolean
+  last_edited_time?: string
   children?: NotionBlockObject[]
   [key: string]: unknown
 }
@@ -306,4 +307,26 @@ export async function getNotionBlockTree(
   }
 
   return walk(blockId, 0)
+}
+
+/**
+ * Newest edit time in each block's subtree, by block id. Editing a nested
+ * child doesn't reliably bump its parent's own last_edited_time, so pull
+ * sync compares subtree revisions. ISO-8601 strings compare correctly as text.
+ */
+export function subtreeRevisions(
+  blocks: NotionBlockObject[]
+): Map<string, string> {
+  const revisions = new Map<string, string>()
+  const visit = (block: NotionBlockObject): string => {
+    let newest = block.last_edited_time ?? ""
+    for (const child of block.children ?? []) {
+      const childRev = visit(child)
+      if (childRev > newest) newest = childRev
+    }
+    revisions.set(block.id, newest)
+    return newest
+  }
+  for (const block of blocks) visit(block)
+  return revisions
 }

@@ -15,7 +15,7 @@ import {
 } from "@folionote/db"
 import { createLogger } from "@folionote/log"
 import { ORPCError } from "@orpc/server"
-import { and, desc, eq, isNull } from "drizzle-orm"
+import { and, desc, eq, isNull, sql } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 
@@ -48,6 +48,12 @@ import type { ImportedDoc } from "../importers/types"
 import { protectedProcedure } from "../index"
 import { processContentUpdate } from "../utils/content"
 import { notifyEntryContentChanged } from "./entries"
+import {
+  isPullable,
+  performPull,
+  pullBaseFromImport,
+  resolvePullConflict
+} from "./imports-pull"
 
 const log = createLogger({ prefix: "imports" })
 
@@ -75,7 +81,7 @@ const ImportSourceSchema = z.discriminatedUnion("provider", [
   })
 ])
 
-const ImportModeSchema = z.enum(["snapshot", "watch"])
+const ImportModeSchema = z.enum(["snapshot", "watch", "pull"])
 
 const SOURCE_ERROR_CODES = {
   not_found: "NOT_FOUND",
@@ -266,7 +272,12 @@ const commit = protectedProcedure
         input.source as ImportSource
       )
       const watchable = resolved.sourceRevision !== null
-      const mode = input.mode === "watch" && watchable ? "watch" : "snapshot"
+      const mode = (() => {
+        // Pull needs stable block ids, which only Notion provides.
+        if (input.mode === "pull" && isPullable(resolved)) return "pull"
+        if (input.mode !== "snapshot" && watchable) return "watch"
+        return "snapshot"
+      })()
       const multi = resolved.docs.length > 1
       const created: { id: string; title: string }[] = []
 
@@ -293,9 +304,13 @@ const commit = protectedProcedure
             : resolved.externalId,
           url: resolved.url,
           mode,
-          status: mode === "watch" ? "up_to_date" : "not_tracked",
+          status: mode === "snapshot" ? "not_tracked" : "up_to_date",
           sourceRevision: resolved.sourceRevision,
           sourceContentHash: await sha256(processed.contentJson ?? ""),
+          baseSnapshot:
+            mode === "pull"
+              ? pullBaseFromImport(doc.doc, resolved.blockRevisions ?? {})
+              : null,
           lastSyncedAt: new Date(),
           lastCheckedAt: new Date()
         })
@@ -362,8 +377,12 @@ const checkLink = protectedProcedure
     if (!link) {
       throw new ORPCError("NOT_FOUND", { message: "Entry has no source link" })
     }
+    if (link.mode === "pull") {
+      const outcome = await performPull(userId, link)
+      return { ...outcome.link, contentChanged: outcome.contentChanged }
+    }
     if (link.mode !== "watch") {
-      return link
+      return { ...link, contentChanged: false }
     }
     // Multi-tab Google entries share the doc's revision
     const externalId = link.externalId.split("#")[0] ?? link.externalId
@@ -379,7 +398,7 @@ const checkLink = protectedProcedure
         })
         .where(eq(entryExternalLinks.id, link.id))
         .returning()
-      return updated ?? link
+      return { ...(updated ?? link), contentChanged: false }
     } catch (error) {
       const message = error instanceof Error ? error.message : "Check failed"
       const [updated] = await db
@@ -387,9 +406,53 @@ const checkLink = protectedProcedure
         .set({ status: "error", lastCheckedAt: new Date(), lastError: message })
         .where(eq(entryExternalLinks.id, link.id))
         .returning()
-      return updated ?? link
+      return { ...(updated ?? link), contentChanged: false }
     }
   })
+
+/** Pull mode: fetch and merge now, even if the page revision looks unchanged. */
+const syncNow = protectedProcedure
+  .input(z.object({ entryId: z.string() }))
+  .handler(({ context, input }) =>
+    guarded(async () => {
+      const userId = context.session.user.id
+      const link = await ownedLink(userId, input.entryId)
+      if (link?.mode !== "pull") {
+        throw new ORPCError("BAD_REQUEST", {
+          message: "Only entries that keep in sync can sync now"
+        })
+      }
+      const outcome = await performPull(userId, link, { force: true })
+      return { ...outcome.link, contentChanged: outcome.contentChanged }
+    })
+  )
+
+const resolveConflict = protectedProcedure
+  .input(
+    z.object({
+      entryId: z.string(),
+      key: z.string(),
+      choice: z.enum(["mine", "source"])
+    })
+  )
+  .handler(({ context, input }) =>
+    guarded(async () => {
+      const userId = context.session.user.id
+      const link = await ownedLink(userId, input.entryId)
+      if (!link) {
+        throw new ORPCError("NOT_FOUND", {
+          message: "Entry has no source link"
+        })
+      }
+      const outcome = await resolvePullConflict(
+        userId,
+        link,
+        input.key,
+        input.choice
+      )
+      return { ...outcome.link, contentChanged: outcome.contentChanged }
+    })
+  )
 
 /** Markdown / Claude page imports have nothing to re-fetch. */
 function reimportSourceOf(
@@ -455,7 +518,9 @@ const reimport = protectedProcedure
         .update(entries)
         .set({
           contentJson: processed.contentJson,
-          contentText: processed.contentText
+          contentText: processed.contentText,
+          // An editor holding the old content must not autosave over this.
+          version: sql`(${entries.version}::int + 1)::text`
         })
         .where(
           and(
@@ -471,9 +536,18 @@ const reimport = protectedProcedure
       await db
         .update(entryExternalLinks)
         .set({
-          status: link.mode === "watch" ? "up_to_date" : "not_tracked",
+          status: link.mode === "snapshot" ? "not_tracked" : "up_to_date",
           sourceRevision: resolved.sourceRevision,
           sourceContentHash: await sha256(processed.contentJson ?? ""),
+          ...(link.mode === "pull"
+            ? {
+                baseSnapshot: pullBaseFromImport(
+                  doc.doc,
+                  resolved.blockRevisions ?? {}
+                ),
+                conflicts: []
+              }
+            : {}),
           lastSyncedAt: new Date(),
           lastCheckedAt: new Date(),
           lastError: null
@@ -494,5 +568,7 @@ export const importsRouter = {
   linkForEntry,
   listLinks,
   checkLink,
+  syncNow,
+  resolveConflict,
   reimport
 }

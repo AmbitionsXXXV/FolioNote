@@ -149,16 +149,18 @@ function SyncedEntries() {
                   <SyncStatusLabel status={link.status} />
                 </td>
                 <td className="px-3 py-2.5 text-right">
-                  {link.mode === "watch" ? (
+                  {link.mode === "snapshot" ? null : (
                     <Button
                       isDisabled={check.isPending}
                       onPress={() => check.mutate({ entryId: link.entryId })}
                       size="sm"
                       variant="ghost"
                     >
-                      {t("imports.synced.check")}
+                      {link.mode === "pull"
+                        ? t("imports.syncNow")
+                        : t("imports.synced.check")}
                     </Button>
-                  ) : null}
+                  )}
                 </td>
               </tr>
             ))}

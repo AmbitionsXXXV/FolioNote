@@ -138,6 +138,12 @@ function sourceLink(id: string | undefined): string | undefined {
   return id ? `https://www.notion.so/${id.replaceAll("-", "")}` : undefined
 }
 
+const LIST_BLOCK_TYPES = new Set([
+  "bulleted_list_item",
+  "numbered_list_item",
+  "to_do"
+])
+
 export function notionBlocksToDoc(
   input: { title: string; blocks: NotionBlock[] },
   options: ConvertOptions = {}
@@ -358,5 +364,36 @@ export function notionBlocksToDoc(
     return content
   }
 
-  return finish(input.title, convert(input.blocks), warnings, assetUrls)
+  // Top level, one block at a time, so every produced node can be tagged
+  // with the block it came from. Consecutive list items are re-merged
+  // exactly as convert() groups them.
+  const content: PMNode[] = []
+  const sources: Record<string, string[]> = {}
+  let previous: { type: string; key: string | null } | null = null
+  for (const block of input.blocks) {
+    const nodes = convert([block])
+    const [first] = nodes
+    const last = content.at(-1)
+    const continuesList =
+      LIST_BLOCK_TYPES.has(block.type) &&
+      previous?.type === block.type &&
+      first !== undefined &&
+      last?.type === first.type
+    if (continuesList && last && first) {
+      last.content?.push(...(first.content ?? []))
+      if (previous?.key && block.id) sources[previous.key]?.push(block.id)
+      continue
+    }
+    let key: string | null = null
+    for (const [index, node] of nodes.entries()) {
+      if (!block.id) break
+      const nodeKey = index === 0 ? block.id : `${block.id}#${index}`
+      node.attrs = { ...node.attrs, sourceBlockId: nodeKey }
+      sources[nodeKey] = [block.id]
+      key = nodeKey
+    }
+    content.push(...nodes)
+    previous = { type: block.type, key: nodes.length > 0 ? key : null }
+  }
+  return { ...finish(input.title, content, warnings, assetUrls), sources }
 }

@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm"
-import { index, pgTable, text, timestamp, unique } from "drizzle-orm/pg-core"
+import {
+  index,
+  jsonb,
+  pgTable,
+  text,
+  timestamp,
+  unique
+} from "drizzle-orm/pg-core"
 
 import { user } from "./auth"
 import { entries } from "./entries"
@@ -60,6 +67,26 @@ export const externalConnectionsRelations = relations(
   })
 )
 
+/** A ProseMirror node as stored JSON (the editor schema validates it). */
+export interface PullNodeJson {
+  type: string
+  attrs?: Record<string, unknown>
+  content?: PullNodeJson[]
+  marks?: { type: string; attrs?: Record<string, unknown> }[]
+  text?: string
+}
+
+export interface PullBaseSnapshot {
+  blocks: Record<string, { rev: string; node: PullNodeJson }>
+}
+
+export interface PullConflictRecord {
+  key: string
+  local: PullNodeJson
+  incoming: PullNodeJson
+  incomingRev: string
+}
+
 /**
  * entry_external_links - entry 与外部来源文档的同步关系（一个 entry 最多一个）
  *
@@ -103,6 +130,14 @@ export const entryExternalLinks = pgTable(
     lastSyncedAt: timestamp("last_synced_at", { withTimezone: true }),
     lastCheckedAt: timestamp("last_checked_at", { withTimezone: true }),
     lastError: text("last_error"),
+    /**
+     * Pull mode only: each imported block as last pulled (key = Notion block
+     * id) plus its source revision — the "base" of the block-level three-way
+     * merge between the entry and the source.
+     */
+    baseSnapshot: jsonb("base_snapshot").$type<PullBaseSnapshot>(),
+    /** Pull mode: blocks changed on both sides, awaiting the user's choice. */
+    conflicts: jsonb("conflicts").$type<PullConflictRecord[]>(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),

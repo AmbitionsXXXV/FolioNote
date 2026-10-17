@@ -36,7 +36,22 @@ export const Route = createFileRoute("/_app/import")({
   validateSearch: importSearchSchema
 })
 
-type ImportMode = "snapshot" | "watch"
+type ImportMode = "snapshot" | "watch" | "pull"
+
+function defaultModeFor(kind: ImportSourceKind): ImportMode {
+  return kind === "notion" ? "pull" : "watch"
+}
+
+/** Fall back when the chosen mode isn't available for this source. */
+function effectiveModeOf(
+  mode: ImportMode,
+  canPull: boolean,
+  canWatch: boolean
+): ImportMode {
+  if (mode === "pull" && canPull) return "pull"
+  if (mode !== "snapshot" && canWatch) return "watch"
+  return "snapshot"
+}
 
 /** Sources with a revision the server can poll (Notion, Google Docs). */
 const WATCHABLE: ReadonlySet<ImportSourceInput["provider"]> = new Set([
@@ -156,14 +171,17 @@ function ImportPage() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [source, setSource] = useState<ImportSourceInput | null>(null)
-  const [mode, setMode] = useState<ImportMode>("watch")
+  const [mode, setMode] = useState<ImportMode>(defaultModeFor(kind))
   const [toInbox, setToInbox] = useState(false)
   const canWatch = source !== null && WATCHABLE.has(source.provider)
+  // Pull needs Notion's stable block ids.
+  const canPull = kind === "notion"
+  const effectiveMode = effectiveModeOf(mode, canPull, canWatch)
 
   const commit = useMutation(
     orpc.imports.commit.mutationOptions({
       onSuccess: async (result) => {
-        await queryClient.invalidateQueries({ queryKey: orpc.entries.key() })
+        await queryClient.invalidateQueries({ queryKey: ["entries"] })
         await queryClient.invalidateQueries({ queryKey: orpc.imports.key() })
         toast.success(t("imports.done", { count: result.entries.length }))
         const [first] = result.entries
@@ -179,6 +197,7 @@ function ImportPage() {
 
   const selectKind = (next: ImportSourceKind) => {
     setSource(null)
+    setMode(defaultModeFor(next))
     void navigate({ to: "/import", search: { source: next }, replace: true })
   }
 
@@ -237,9 +256,20 @@ function ImportPage() {
               name="import-mode"
               onChange={(value) => setMode(value as ImportMode)}
               orientation="horizontal"
-              value={canWatch ? mode : "snapshot"}
+              value={effectiveMode}
             >
               <Label>{t("imports.mode.label")}</Label>
+              {canPull ? (
+                <Radio value="pull">
+                  <Radio.Content>
+                    <Radio.Control>
+                      <Radio.Indicator />
+                    </Radio.Control>
+                    {t("imports.mode.pull")}
+                  </Radio.Content>
+                  <Description>{t("imports.mode.pullDesc")}</Description>
+                </Radio>
+              ) : null}
               <Radio value="snapshot">
                 <Radio.Content>
                   <Radio.Control>
@@ -285,7 +315,7 @@ function ImportPage() {
                   if (!source) return
                   commit.mutate({
                     source,
-                    mode: canWatch ? mode : "snapshot",
+                    mode: effectiveMode,
                     isInbox: toInbox
                   })
                 }}

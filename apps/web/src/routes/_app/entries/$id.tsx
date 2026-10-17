@@ -948,7 +948,12 @@ function EntryEditPage() {
               <EntrySources entryId={id} ref={entrySourcesRef} />
             </div>
             <div className="mb-4 empty:hidden">
-              <EntrySourceStatus entryId={id} />
+              <EntrySourceStatus
+                entryId={id}
+                // A pull / re-import rewrote the content: drop the local copy
+                // so the editor takes the refetched entry.
+                onContentReplaced={() => setLocalContent(null)}
+              />
             </div>
           </>
         )}

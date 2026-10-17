@@ -13,3 +13,4 @@ export {
   JapaneseSentence,
   type JapaneseSentenceAttributes
 } from "./japanese-sentence"
+export { SOURCE_BLOCK_TYPES, SourceBlockId } from "./source-block-id"
