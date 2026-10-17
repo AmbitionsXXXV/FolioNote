@@ -12,6 +12,9 @@ import { useTranslation } from "react-i18next"
 export function DefaultErrorBoundary({ error, reset }: ErrorComponentProps) {
   const { t } = useTranslation()
   const router = useRouter()
+  // Router 1.170 types route errors as unknown; anything can be thrown.
+  const errorMessage = error instanceof Error ? error.message : ""
+  const errorStack = error instanceof Error ? error.stack : undefined
 
   const handleRetry = () => {
     reset()
@@ -34,18 +37,18 @@ export function DefaultErrorBoundary({ error, reset }: ErrorComponentProps) {
         <div className="space-y-2">
           <h2 className="text-xl font-semibold">{t("error.serverError")}</h2>
           <p className="text-sm text-muted-foreground">
-            {error.message || t("error.unknown")}
+            {errorMessage || t("error.unknown")}
           </p>
         </div>
 
         {/* Dev Mode: Show Error Details */}
-        {import.meta.env.DEV && error.stack && (
+        {import.meta.env.DEV && errorStack && (
           <details className="w-full rounded-md bg-surface-secondary/50 p-4 text-left">
             <summary className="cursor-pointer text-sm font-medium">
               Error Details
             </summary>
             <pre className="mt-2 overflow-auto font-mono text-xs whitespace-pre-wrap text-muted-foreground">
-              {error.stack}
+              {errorStack}
             </pre>
           </details>
         )}
