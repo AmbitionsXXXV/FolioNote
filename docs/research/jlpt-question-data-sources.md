@@ -1,4 +1,4 @@
-# JLPT 真题/题库数据源调研 — FolioNote `/jp-exam` 后端选型
+# JLPT 真题/题库数据源调研 — FolioNote `/jp-exam`（现为 `/japanese/practice/exam`）后端选型
 
 > 调研日期 2026-07-06。三路并行调研(官方渠道、开源数据集、中文/商业生态)+ 关键结论当日 live 核实(jlpt.jp、GitHub/Gitee/HuggingFace API 直连)。与 `japanese-nlp-jlpt.md`(词表/汉字/语法点数据源)互补——本文只覆盖**考试题目本身**的数据源。
 
