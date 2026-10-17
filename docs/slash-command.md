@@ -148,8 +148,8 @@ function MyEditor() {
 ### 带自定义命令
 
 ```tsx
-import { EntryEditor } from "@/components/entry-editor"
 import type { SlashCommandItem } from "@/components/editor/slash-command"
+import { EntryEditor } from "@/components/entry-editor"
 
 const customCommand: SlashCommandItem = {
   title: "自定义命令",

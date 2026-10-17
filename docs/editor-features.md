@@ -273,6 +273,7 @@ TOC 样式参考 fumadocs UI（`packages/ui/src/components/toc/index.tsx`、`pac
 
 ```tsx
 import { useEffect, useMemo, useRef, useState } from "react"
+
 import { TableOfContents } from "@/components/table-of-contents"
 import { useTocPosition } from "@/hooks/use-toc-position"
 import { parseTocFromContent, assignHeadingIds } from "@/lib/toc"

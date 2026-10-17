@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 All architectural guidelines, design tokens, spring presets, component directories, and invariant rules are defined in **[`AGENTS.md`](AGENTS.md)**. Always refer to `AGENTS.md` before implementing or modifying UI components or motion behaviors.
 
 ## Key Principles
+
 1. **Design Tokens**: Use semantic tokens from `code-examples/cds-theme.css` (`bg-surface-0`, `clay-500`, `text-primary`, etc.). Avoid hardcoded arbitrary HEX colors.
 2. **Physics**: Always use the 4 canonical spring presets from `code-examples/ClaudeMotionPresets.ts` (`SPRING_BOUNCY`, `SPRING_SNAPPY`, `SPRING_GENTLE`, `SPRING_HEAVY_SNAP`).
 3. **No Binary Assets**: Use system fallback font stacks and procedural Web Audio API synthesis. Never add `.ttf`, `.otf`, `.mp3`, or `.wav` files.
