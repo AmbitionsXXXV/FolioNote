@@ -1,6 +1,6 @@
 {
   "name": "@folionote/japanese",
-  "version": "0.2.26",
+  "version": "0.2.27",
   "description": "FolioNote engine-agnostic Japanese segmentation core",
   "type": "module",
   "exports": {

@@ -1,6 +1,6 @@
 {
   "name": "@folionote/constants",
-  "version": "0.2.26",
+  "version": "0.2.27",
   "description": "FolioNote 国际化常量定义",
   "type": "module",
   "exports": {

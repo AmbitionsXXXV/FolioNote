@@ -1,6 +1,6 @@
 {
   "name": "@folionote/editor-react",
-  "version": "0.2.26",
+  "version": "0.2.27",
   "description": "FolioNote React editor bindings - React components and extensions",
   "type": "module",
   "exports": {
