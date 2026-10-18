@@ -10,6 +10,7 @@ import {
   japaneseLexiconsRouter
 } from "./japanese-library"
 import { analyzeJapaneseText } from "./japanese-runtime"
+import { japaneseStudyRouter } from "./japanese-study"
 
 export { setJapaneseAnalyzer, setJapaneseUrlFetcher } from "./japanese-runtime"
 
@@ -28,7 +29,8 @@ const SearchInputSchema = z.object({
 })
 
 const WordInputSchema = z.object({
-  id: z.string().regex(/^[0-9a-f]{10}$/)
+  // OpenJLPT words use a 10-hex id; words added from MOJi lists use moji:<id>.
+  id: z.string().regex(/^(?:[0-9a-f]{10}|moji:[A-Za-z0-9]{1,32})$/)
 })
 
 // Same limit the analyzer enforces, so the published schema never accepts
@@ -174,6 +176,7 @@ export const getJapaneseWord = protectedProcedure
           ja: jpVocabExamples.ja,
           furigana: jpVocabExamples.furigana,
           en: jpVocabExamples.en,
+          zh: jpVocabExamples.zh,
           tatoebaId: jpVocabExamples.tatoebaId
         })
         .from(jpVocabExamples)
@@ -238,6 +241,7 @@ export const analyzeJapanese = protectedProcedure
 export const japaneseRouter = {
   articles: japaneseArticlesRouter,
   lexicons: japaneseLexiconsRouter,
+  study: japaneseStudyRouter,
   search: searchJapanese,
   word: getJapaneseWord,
   levels: getJapaneseLevels,

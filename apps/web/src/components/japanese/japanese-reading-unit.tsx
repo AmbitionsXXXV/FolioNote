@@ -1,8 +1,8 @@
 import type { Morpheme, RubySegment, Word } from "@folionote/japanese"
 
 import { splitRubyAt } from "@/lib/japanese-furigana"
-import type { JapanesePartOfSpeech } from "@/lib/japanese-typing"
-import { JAPANESE_POS_SWATCH_COLOR_MAP } from "@/lib/japanese-typing"
+import type { JapanesePartOfSpeech } from "@/lib/japanese-pos"
+import { JAPANESE_POS_SWATCH_COLOR_MAP } from "@/lib/japanese-pos"
 import { cn } from "@/lib/utils"
 
 import { JapaneseRuby } from "./japanese-ruby"

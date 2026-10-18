@@ -11,7 +11,8 @@ export {
   jpLexicons,
   jpLexiconsRelations,
   jpLexiconEntries,
-  jpLexiconEntriesRelations
+  jpLexiconEntriesRelations,
+  jpStudyState
 } from "./schema/japanese-library"
 // The type import below is erased at compile time and produces no runtime code.
 type DbType = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>

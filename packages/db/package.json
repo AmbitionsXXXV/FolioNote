@@ -22,6 +22,7 @@
     "db:push:prod": "DOTENV_CONFIG_PATH=../../apps/server/.env.production drizzle-kit push",
     "db:generate": "DOTENV_CONFIG_PATH=../../apps/server/.env drizzle-kit generate",
     "db:seed:openjlpt": "DOTENV_CONFIG_PATH=../../apps/server/.env bun scripts/seed-openjlpt.ts",
+    "db:import:moji": "node --import tsx scripts/import-moji.ts",
     "db:generate:prod": "DOTENV_CONFIG_PATH=../../apps/server/.env.production drizzle-kit generate",
     "db:studio": "DOTENV_CONFIG_PATH=../../apps/server/.env drizzle-kit studio",
     "db:studio:prod": "DOTENV_CONFIG_PATH=../../apps/server/.env.production drizzle-kit studio",
@@ -49,6 +50,7 @@
     "@types/pg": "^8.20.0",
     "drizzle-kit": "catalog:",
     "supabase": "^2.105.0",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   }

@@ -127,6 +127,27 @@
       "when": 1792264420730,
       "tag": "0017_brown_wraith",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1792266736172,
+      "tag": "0018_moji_vocab_metadata",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1792301881643,
+      "tag": "0019_moji_example_details",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792306786006,
+      "tag": "0020_jp_study_state",
+      "breakpoints": true
     }
   ]
 }

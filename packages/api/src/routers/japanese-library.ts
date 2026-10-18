@@ -78,7 +78,7 @@ async function ownedArticle(id: string, userId: string) {
   return article
 }
 
-async function ownedLexicon(id: string, userId: string) {
+export async function ownedLexicon(id: string, userId: string) {
   const [lexicon] = await db
     .select()
     .from(jpLexicons)

@@ -1,6 +1,6 @@
 import type { EngineId, RawMorpheme } from "./engine"
 
-/** Must stay equal to `JapanesePartOfSpeech` in apps/web/src/lib/japanese-typing.ts. */
+/** Must stay equal to `JapanesePartOfSpeech` in apps/web/src/lib/japanese-pos.ts. */
 export type LearnerPos =
   | "noun"
   | "pronoun"

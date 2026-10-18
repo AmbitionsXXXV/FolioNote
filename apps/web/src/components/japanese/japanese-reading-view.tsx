@@ -6,8 +6,8 @@ import { useTranslation } from "react-i18next"
 import { useBrowserJapanese } from "@/hooks/use-browser-japanese"
 import { useJapaneseLexiconLookup } from "@/hooks/use-japanese-lexicon-lookup"
 import { contentBaseForms } from "@/lib/japanese-article"
-import type { JapanesePartOfSpeech } from "@/lib/japanese-typing"
-import { ALL_JAPANESE_POS_CATEGORIES } from "@/lib/japanese-typing"
+import type { JapanesePartOfSpeech } from "@/lib/japanese-pos"
+import { ALL_JAPANESE_POS_CATEGORIES } from "@/lib/japanese-pos"
 import {
   analyzeSentence,
   isServerUnavailable

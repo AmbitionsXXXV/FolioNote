@@ -1362,6 +1362,9 @@ importers:
       supabase:
         specifier: ^2.105.0
         version: 2.106.0
+      tsx:
+        specifier: 'catalog:'
+        version: 4.22.4
       typescript:
         specifier: 'catalog:'
         version: 7.0.2

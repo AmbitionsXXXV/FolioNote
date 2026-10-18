@@ -117,7 +117,10 @@ function JapaneseWordPage() {
   const { word, examples, kanji } = data
   const headword = alignRuby(word.word, word.reading) ?? [{ text: word.word }]
   const wantsChinese = (i18n.resolvedLanguage ?? i18n.language).startsWith("zh")
-  const meanings = word.meaningsZh ?? word.meaningsEn
+  const preferred = word.meaningsZh ?? word.meaningsEn
+  // Some MOJi words only carry Japanese definitions.
+  const meanings =
+    preferred.length > 0 ? preferred : (word.meaningsJa ?? preferred)
   const showChineseNote = wantsChinese && word.meaningsZh === null
 
   return (
@@ -183,7 +186,9 @@ function JapaneseWordPage() {
                   )}
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {example.en}
+                  {wantsChinese
+                    ? (example.zh ?? example.en)
+                    : (example.en ?? example.zh)}
                 </p>
                 {example.tatoebaId !== null ? (
                   <a

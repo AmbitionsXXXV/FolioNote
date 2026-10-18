@@ -14,7 +14,6 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as JpExamRouteImport } from './routes/jp-exam'
 import { Route as JpReadingRouteImport } from './routes/jp-reading'
-import { Route as JpTypingRouteImport } from './routes/jp-typing'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -42,7 +41,7 @@ import { Route as AppSettingsGeneralRouteImport } from './routes/_app/settings/g
 import { Route as AppSettingsModelsRouteImport } from './routes/_app/settings/models'
 import { Route as AppJapaneseListsLexiconIdRouteImport } from './routes/_app/japanese/lists/$lexiconId'
 import { Route as AppJapanesePracticeExamRouteImport } from './routes/_app/japanese/practice/exam'
-import { Route as AppJapanesePracticeTypingRouteImport } from './routes/_app/japanese/practice/typing'
+import { Route as AppJapanesePracticeVocabRouteImport } from './routes/_app/japanese/practice/vocab'
 import { Route as AppJapaneseReadIndexRouteImport } from './routes/_app/japanese/read/index'
 import { Route as AppJapaneseReadArticleIdRouteImport } from './routes/_app/japanese/read/$articleId'
 import { Route as AppJapaneseWordIdRouteImport } from './routes/_app/japanese/word/$id'
@@ -69,11 +68,6 @@ const JpExamRoute = JpExamRouteImport.update({
 const JpReadingRoute = JpReadingRouteImport.update({
   id: '/jp-reading',
   path: '/jp-reading',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JpTypingRoute = JpTypingRouteImport.update({
-  id: '/jp-typing',
-  path: '/jp-typing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -212,10 +206,10 @@ const AppJapanesePracticeExamRoute = AppJapanesePracticeExamRouteImport.update({
   path: '/practice/exam',
   getParentRoute: () => AppJapaneseRoute,
 } as any)
-const AppJapanesePracticeTypingRoute =
-  AppJapanesePracticeTypingRouteImport.update({
-    id: '/practice/typing',
-    path: '/practice/typing',
+const AppJapanesePracticeVocabRoute =
+  AppJapanesePracticeVocabRouteImport.update({
+    id: '/practice/vocab',
+    path: '/practice/vocab',
     getParentRoute: () => AppJapaneseRoute,
   } as any)
 const AppJapaneseReadIndexRoute = AppJapaneseReadIndexRouteImport.update({
@@ -240,7 +234,6 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/jp-exam': typeof JpExamRoute
   '/jp-reading': typeof JpReadingRoute
-  '/jp-typing': typeof JpTypingRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -268,7 +261,7 @@ export interface FileRoutesByFullPath {
   '/japanese/': typeof AppJapaneseIndexRoute
   '/japanese/lists/$lexiconId': typeof AppJapaneseListsLexiconIdRoute
   '/japanese/practice/exam': typeof AppJapanesePracticeExamRoute
-  '/japanese/practice/typing': typeof AppJapanesePracticeTypingRoute
+  '/japanese/practice/vocab': typeof AppJapanesePracticeVocabRoute
   '/japanese/read/$articleId': typeof AppJapaneseReadArticleIdRoute
   '/japanese/word/$id': typeof AppJapaneseWordIdRoute
   '/japanese/read/': typeof AppJapaneseReadIndexRoute
@@ -278,7 +271,6 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/jp-exam': typeof JpExamRoute
   '/jp-reading': typeof JpReadingRoute
-  '/jp-typing': typeof JpTypingRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -305,7 +297,7 @@ export interface FileRoutesByTo {
   '/japanese': typeof AppJapaneseIndexRoute
   '/japanese/lists/$lexiconId': typeof AppJapaneseListsLexiconIdRoute
   '/japanese/practice/exam': typeof AppJapanesePracticeExamRoute
-  '/japanese/practice/typing': typeof AppJapanesePracticeTypingRoute
+  '/japanese/practice/vocab': typeof AppJapanesePracticeVocabRoute
   '/japanese/read/$articleId': typeof AppJapaneseReadArticleIdRoute
   '/japanese/word/$id': typeof AppJapaneseWordIdRoute
   '/japanese/read': typeof AppJapaneseReadIndexRoute
@@ -317,7 +309,6 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/jp-exam': typeof JpExamRoute
   '/jp-reading': typeof JpReadingRoute
-  '/jp-typing': typeof JpTypingRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -345,7 +336,7 @@ export interface FileRoutesById {
   '/_app/japanese/': typeof AppJapaneseIndexRoute
   '/_app/japanese/lists/$lexiconId': typeof AppJapaneseListsLexiconIdRoute
   '/_app/japanese/practice/exam': typeof AppJapanesePracticeExamRoute
-  '/_app/japanese/practice/typing': typeof AppJapanesePracticeTypingRoute
+  '/_app/japanese/practice/vocab': typeof AppJapanesePracticeVocabRoute
   '/_app/japanese/read/$articleId': typeof AppJapaneseReadArticleIdRoute
   '/_app/japanese/word/$id': typeof AppJapaneseWordIdRoute
   '/_app/japanese/read/': typeof AppJapaneseReadIndexRoute
@@ -357,7 +348,6 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/jp-exam'
     | '/jp-reading'
-    | '/jp-typing'
     | '/login'
     | '/register'
     | '/reset-password'
@@ -385,7 +375,7 @@ export interface FileRouteTypes {
     | '/japanese/'
     | '/japanese/lists/$lexiconId'
     | '/japanese/practice/exam'
-    | '/japanese/practice/typing'
+    | '/japanese/practice/vocab'
     | '/japanese/read/$articleId'
     | '/japanese/word/$id'
     | '/japanese/read/'
@@ -395,7 +385,6 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/jp-exam'
     | '/jp-reading'
-    | '/jp-typing'
     | '/login'
     | '/register'
     | '/reset-password'
@@ -422,7 +411,7 @@ export interface FileRouteTypes {
     | '/japanese'
     | '/japanese/lists/$lexiconId'
     | '/japanese/practice/exam'
-    | '/japanese/practice/typing'
+    | '/japanese/practice/vocab'
     | '/japanese/read/$articleId'
     | '/japanese/word/$id'
     | '/japanese/read'
@@ -433,7 +422,6 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/jp-exam'
     | '/jp-reading'
-    | '/jp-typing'
     | '/login'
     | '/register'
     | '/reset-password'
@@ -461,7 +449,7 @@ export interface FileRouteTypes {
     | '/_app/japanese/'
     | '/_app/japanese/lists/$lexiconId'
     | '/_app/japanese/practice/exam'
-    | '/_app/japanese/practice/typing'
+    | '/_app/japanese/practice/vocab'
     | '/_app/japanese/read/$articleId'
     | '/_app/japanese/word/$id'
     | '/_app/japanese/read/'
@@ -473,7 +461,6 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   JpExamRoute: typeof JpExamRoute
   JpReadingRoute: typeof JpReadingRoute
-  JpTypingRoute: typeof JpTypingRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -515,13 +502,6 @@ declare module '@tanstack/react-router' {
       path: '/jp-reading'
       fullPath: '/jp-reading'
       preLoaderRoute: typeof JpReadingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/jp-typing': {
-      id: '/jp-typing'
-      path: '/jp-typing'
-      fullPath: '/jp-typing'
-      preLoaderRoute: typeof JpTypingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -713,11 +693,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppJapanesePracticeExamRouteImport
       parentRoute: typeof AppJapaneseRoute
     }
-    '/_app/japanese/practice/typing': {
-      id: '/_app/japanese/practice/typing'
-      path: '/practice/typing'
-      fullPath: '/japanese/practice/typing'
-      preLoaderRoute: typeof AppJapanesePracticeTypingRouteImport
+    '/_app/japanese/practice/vocab': {
+      id: '/_app/japanese/practice/vocab'
+      path: '/practice/vocab'
+      fullPath: '/japanese/practice/vocab'
+      preLoaderRoute: typeof AppJapanesePracticeVocabRouteImport
       parentRoute: typeof AppJapaneseRoute
     }
     '/_app/japanese/read/': {
@@ -750,7 +730,7 @@ interface AppJapaneseRouteChildren {
   AppJapaneseIndexRoute: typeof AppJapaneseIndexRoute
   AppJapaneseListsLexiconIdRoute: typeof AppJapaneseListsLexiconIdRoute
   AppJapanesePracticeExamRoute: typeof AppJapanesePracticeExamRoute
-  AppJapanesePracticeTypingRoute: typeof AppJapanesePracticeTypingRoute
+  AppJapanesePracticeVocabRoute: typeof AppJapanesePracticeVocabRoute
   AppJapaneseReadArticleIdRoute: typeof AppJapaneseReadArticleIdRoute
   AppJapaneseWordIdRoute: typeof AppJapaneseWordIdRoute
   AppJapaneseReadIndexRoute: typeof AppJapaneseReadIndexRoute
@@ -762,7 +742,7 @@ const AppJapaneseRouteChildren: AppJapaneseRouteChildren = {
   AppJapaneseIndexRoute: AppJapaneseIndexRoute,
   AppJapaneseListsLexiconIdRoute: AppJapaneseListsLexiconIdRoute,
   AppJapanesePracticeExamRoute: AppJapanesePracticeExamRoute,
-  AppJapanesePracticeTypingRoute: AppJapanesePracticeTypingRoute,
+  AppJapanesePracticeVocabRoute: AppJapanesePracticeVocabRoute,
   AppJapaneseReadArticleIdRoute: AppJapaneseReadArticleIdRoute,
   AppJapaneseWordIdRoute: AppJapaneseWordIdRoute,
   AppJapaneseReadIndexRoute: AppJapaneseReadIndexRoute,
@@ -832,7 +812,6 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   JpExamRoute: JpExamRoute,
   JpReadingRoute: JpReadingRoute,
-  JpTypingRoute: JpTypingRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,

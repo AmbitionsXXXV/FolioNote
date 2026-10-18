@@ -19,7 +19,7 @@ export function JapaneseSectionNav() {
   const { t } = useTranslation()
   const matchRoute = useMatchRoute()
   const isPractice = Boolean(
-    matchRoute({ to: "/japanese/practice/typing", fuzzy: true })
+    matchRoute({ to: "/japanese/practice/vocab", fuzzy: true })
   )
   const isWordPage = Boolean(matchRoute({ to: "/japanese/word/$id" }))
   // Importing and browsing a word list both belong to the library.

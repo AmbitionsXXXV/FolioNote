@@ -1,7 +1,7 @@
 import type { AnalyzedText, Phrase, Word } from "@folionote/japanese"
 import type { ReactNode } from "react"
 
-import type { JapanesePartOfSpeech } from "@/lib/japanese-typing"
+import type { JapanesePartOfSpeech } from "@/lib/japanese-pos"
 
 import { JapaneseMorphemeUnit, JapaneseWordUnit } from "./japanese-reading-unit"
 

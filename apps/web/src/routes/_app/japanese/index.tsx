@@ -281,9 +281,9 @@ function HubHome({
               </Link>
               <Link
                 className="rounded-full px-3 py-1 text-xs font-medium text-muted-foreground ring-1 ring-border transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
-                to="/japanese/practice/typing"
+                to="/japanese/practice/vocab"
               >
-                {t("japanese.search.practiceTyping")}
+                {t("japanese.search.practiceVocab")}
               </Link>
             </span>
           </span>

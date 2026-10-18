@@ -1,5 +1,4 @@
 export { JapaneseExamView } from "./jlpt-exam-view"
-export { JapaneseTypingPractice } from "./japanese-typing-practice"
 export { RatingButtons } from "./rating-buttons"
 export { ReviewCard } from "./review-card"
 export { ReviewDashboard } from "./review-dashboard"

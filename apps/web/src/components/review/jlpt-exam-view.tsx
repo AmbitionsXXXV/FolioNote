@@ -15,6 +15,10 @@ import { useHotkey } from "@tanstack/react-hotkeys"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
+import {
+  JapanesePracticeTabs,
+  PRACTICE_VIEW_MIN_HEIGHT
+} from "@/components/japanese/japanese-practice-tabs"
 import type {
   JlptLevel,
   JlptLevelFilter,
@@ -347,7 +351,7 @@ function JlptExamBottomBar({
 }) {
   const { t } = useTranslation()
   return (
-    <div className="flex shrink-0 items-center justify-between gap-2 border-t border-border/50 px-4 py-3 sm:px-6">
+    <div className="sticky bottom-0 z-10 flex shrink-0 items-center justify-between gap-2 border-t border-border/50 bg-background px-4 py-3 sm:px-6">
       <Tooltip>
         <TooltipTrigger
           aria-label={t("common.back")}
@@ -536,13 +540,14 @@ export function JapaneseExamView() {
   }
 
   return (
-    <div className="flex min-h-svh flex-col bg-background text-foreground">
+    <div
+      className={`flex flex-col bg-background text-foreground ${PRACTICE_VIEW_MIN_HEIGHT}`}
+    >
       {/* Top bar */}
       <div className="animate-fade-in flex shrink-0 items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <div className="flex items-center gap-3">
-          <h1 className="text-sm font-semibold">
-            {t("review.jlptExam.title")}
-          </h1>
+          <JapanesePracticeTabs />
+          <h1 className="sr-only">{t("review.jlptExam.title")}</h1>
           {deck.length > 0 && (
             <span className="text-xs text-muted-foreground tabular-nums">
               ({currentIndex + 1}/{deck.length})

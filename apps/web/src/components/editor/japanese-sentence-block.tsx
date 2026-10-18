@@ -19,7 +19,7 @@ import {
 } from "@/components/japanese/japanese-reading-controls"
 import { SelectedWordPanel } from "@/components/japanese/japanese-selected-word-panel"
 import { useBrowserJapanese } from "@/hooks/use-browser-japanese"
-import { ALL_JAPANESE_POS_CATEGORIES } from "@/lib/japanese-typing"
+import { ALL_JAPANESE_POS_CATEGORIES } from "@/lib/japanese-pos"
 import {
   analyzeSentence,
   isServerUnavailable

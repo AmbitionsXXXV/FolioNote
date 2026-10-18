@@ -6,6 +6,7 @@ import {
   integer,
   jsonb,
   pgTable,
+  real,
   text,
   timestamp,
   unique
@@ -132,6 +133,54 @@ export const jpLexiconEntries = pgTable(
     ),
     index("jp_lexicon_entries_base_form_idx").on(table.baseForm),
     index("jp_lexicon_entries_vocab_id_idx").on(table.vocabId)
+  ]
+)
+
+/**
+ * Per-user spaced-repetition state for one study card, created on the first
+ * rating. A card is a built-in word, or an imported list entry the word bank
+ * could not match (matched entries study as their word, so progress is shared
+ * across decks).
+ */
+export const jpStudyState = pgTable(
+  "jp_study_state",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    vocabId: text("vocab_id").references(() => jpVocab.id, {
+      onDelete: "cascade"
+    }),
+    lexiconEntryId: integer("lexicon_entry_id").references(
+      () => jpLexiconEntries.id,
+      { onDelete: "cascade" }
+    ),
+    dueAt: timestamp("due_at", { withTimezone: true }).notNull(),
+    lastReviewedAt: timestamp("last_reviewed_at", { withTimezone: true }),
+    intervalDays: integer("interval_days").notNull().default(0),
+    ease: real("ease").notNull().default(2.5),
+    reps: integer("reps").notNull().default(0),
+    lapses: integer("lapses").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull()
+  },
+  (table) => [
+    check(
+      "jp_study_state_one_card_check",
+      sql`(${table.vocabId} is null) <> (${table.lexiconEntryId} is null)`
+    ),
+    unique("jp_study_state_user_vocab_unique").on(table.userId, table.vocabId),
+    unique("jp_study_state_user_entry_unique").on(
+      table.userId,
+      table.lexiconEntryId
+    ),
+    index("jp_study_state_user_due_idx").on(table.userId, table.dueAt)
   ]
 )
 

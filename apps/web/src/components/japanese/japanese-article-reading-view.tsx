@@ -17,8 +17,8 @@ import { useBrowserJapanese } from "@/hooks/use-browser-japanese"
 import { useJapaneseLexiconLookup } from "@/hooks/use-japanese-lexicon-lookup"
 import { articleParagraphs, contentBaseForms } from "@/lib/japanese-article"
 import type { ArticleParagraph } from "@/lib/japanese-article"
-import type { JapanesePartOfSpeech } from "@/lib/japanese-typing"
-import { ALL_JAPANESE_POS_CATEGORIES } from "@/lib/japanese-typing"
+import type { JapanesePartOfSpeech } from "@/lib/japanese-pos"
+import { ALL_JAPANESE_POS_CATEGORIES } from "@/lib/japanese-pos"
 import { isServerUnavailable } from "@/lib/japanese/analyze-sentence"
 import {
   analyzeInBrowser,

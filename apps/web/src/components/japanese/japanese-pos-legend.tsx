@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next"
 
-import type { JapanesePartOfSpeech } from "@/lib/japanese-typing"
+import type { JapanesePartOfSpeech } from "@/lib/japanese-pos"
 import {
   ALL_JAPANESE_POS_CATEGORIES,
   JAPANESE_POS_SWATCH_COLOR_MAP
-} from "@/lib/japanese-typing"
+} from "@/lib/japanese-pos"
 
 interface JapanesePosLegendProps {
   enabledPosCategories: Set<JapanesePartOfSpeech>

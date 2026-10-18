@@ -11,6 +11,43 @@ import {
   uniqueIndex
 } from "drizzle-orm/pg-core"
 
+/** Dictionary evidence only; never store the account envelope from an export. */
+export interface MojiVocabDetail {
+  sourceVersion: string
+  senses: {
+    sourceId: string
+    detailId: string
+    meaningsJa: string[]
+    meaningsZh: string[]
+    sourceRows: { id: string; lang: string }[]
+  }[]
+  posGroups: {
+    objectId: string
+    wordId: string
+    partOfSpeech?: number[] | null
+    jita?: number | null
+    katuyou?: number | null
+  }[]
+}
+
+export interface VocabSourceDetails {
+  moji?: {
+    entryId: string
+    updatedAt: string
+    collectionId: string
+    collectionTitle: string
+    page: number
+    position: number
+    tags: string[]
+    partOfSpeech: string
+    excerpt: string
+    reading: string
+    romaji: string
+    accent: string
+    detail?: MojiVocabDetail
+  }
+}
+
 export const jpVocab = pgTable(
   "jp_vocab",
   {
@@ -20,6 +57,12 @@ export const jpVocab = pgTable(
     romaji: text("romaji").notNull(),
     meaningsEn: jsonb("meanings_en").$type<string[]>().notNull(),
     meaningsZh: jsonb("meanings_zh").$type<string[]>(),
+    meaningsJa: jsonb("meanings_ja").$type<string[]>(),
+    pitchAccents: jsonb("pitch_accents")
+      .$type<number[]>()
+      .notNull()
+      .default([]),
+    sourceDetails: jsonb("source_details").$type<VocabSourceDetails>(),
     level: text("level", { enum: ["N5", "N4", "N3", "N2", "N1"] }).notNull(),
     jmdictPos: jsonb("jmdict_pos").$type<string[]>().notNull().default([]),
     jmdictId: integer("jmdict_id"),
@@ -61,13 +104,30 @@ export const jpVocabExamples = pgTable(
     position: integer("position").notNull(),
     ja: text("ja").notNull(),
     furigana: text("furigana"),
-    en: text("en").notNull(),
+    en: text("en"),
+    zh: text("zh"),
+    source: text("source").notNull().default("openjlpt"),
+    sourceId: text("source_id"),
+    sourceDetails: jsonb("source_details").$type<{
+      moji: {
+        wordId: string
+        senseId: string
+        sourceIndex: number | null
+        sourceRows: { id: string; lang: string }[]
+        sourceVersion: string
+      }
+    }>(),
     tatoebaId: integer("tatoeba_id")
   },
   (table) => [
     uniqueIndex("jp_vocab_examples_vocab_id_position_idx").on(
       table.vocabId,
       table.position
+    ),
+    uniqueIndex("jp_vocab_examples_vocab_source_idx").on(
+      table.vocabId,
+      table.source,
+      table.sourceId
     )
   ]
 )

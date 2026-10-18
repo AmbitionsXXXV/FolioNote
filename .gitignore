@@ -67,3 +67,6 @@ __pycache__
 /playwright/.cache/
 /playwright/.auth/
 .vitest/
+
+# Raw vocabulary exports contain account/session metadata; keep cleaned data only.
+/data/N5/*.json
