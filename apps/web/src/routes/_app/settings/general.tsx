@@ -3,7 +3,6 @@ import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
-import { PageContainer } from "@/components/page-container"
 import { PageHeader } from "@/components/page-header"
 import {
   ApiEnvironmentSettings,
@@ -34,7 +33,7 @@ function GeneralSettingsPage() {
   }
 
   return (
-    <PageContainer width="narrow">
+    <div className="max-w-3xl">
       <PageHeader
         description={t("settings.general.description")}
         icon={AccountSetting01Icon}
@@ -60,6 +59,6 @@ function GeneralSettingsPage() {
           <DangerZone onSignOut={handleSignOut} />
         </Reveal>
       </div>
-    </PageContainer>
+    </div>
   )
 }

@@ -174,7 +174,7 @@ function ModelsSettingsPage() {
   const totalCount = catalogModels.length
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8 md:px-8 md:py-10">
+    <div className="max-w-2xl">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-xl font-bold md:text-2xl">
