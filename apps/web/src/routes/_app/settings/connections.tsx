@@ -8,7 +8,6 @@ import { toast } from "sonner"
 import { z } from "zod"
 
 import { SyncStatusLabel } from "@/components/imports/entry-source-status"
-import { PageContainer } from "@/components/page-container"
 import { PageHeader } from "@/components/page-header"
 import { notionConnectUrl, requestGoogleDocsAccess } from "@/lib/imports"
 import { orpc } from "@/utils/orpc"
@@ -219,7 +218,7 @@ function ConnectionsPage() {
   }
 
   return (
-    <PageContainer width="default">
+    <div>
       <PageHeader
         description={t("imports.connections.description")}
         icon={PlugSocketIcon}
@@ -324,6 +323,6 @@ function ConnectionsPage() {
 
         <SyncedEntries />
       </div>
-    </PageContainer>
+    </div>
   )
 }
