@@ -7,6 +7,7 @@ import {
   Image,
   Linking,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
   useWindowDimensions,
@@ -56,6 +57,19 @@ const URL_SCHEME_REGEX = /^([a-z][a-z0-9+.-]*):/i
 /** Horizontal padding of the viewer container (matches styles.container). */
 const CONTAINER_PADDING = 16
 const IMAGE_RADIUS = 12
+/**
+ * RN has no table layout, so every cell in a column needs the same width to
+ * line up across rows: the column's saved width when it was resized on the
+ * web, else this default.
+ */
+const TABLE_COLUMN_WIDTH = 140
+const TABLE_CELL_TYPES = new Set(["tableCell", "tableHeader"])
+
+function cellWidth(attrs: Record<string, unknown> | undefined): number {
+  const colwidth = attrs?.colwidth
+  const saved = Array.isArray(colwidth) ? Number(colwidth[0]) : Number.NaN
+  return Number.isFinite(saved) && saved > 0 ? saved : TABLE_COLUMN_WIDTH
+}
 
 function openLink(href?: string): void {
   if (!href) {
@@ -143,6 +157,29 @@ function createStyles(c: Palette) {
       paddingHorizontal: 4
     },
     hr: { backgroundColor: c.border, height: 1, marginVertical: 24 },
+    tableScroll: { marginBottom: 12 },
+    table: {
+      borderColor: c.border,
+      borderRadius: 8,
+      borderWidth: StyleSheet.hairlineWidth,
+      overflow: "hidden"
+    },
+    tableRow: { flexDirection: "row" },
+    tableCell: {
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderColor: c.border,
+      borderRightWidth: StyleSheet.hairlineWidth,
+      paddingHorizontal: 10,
+      paddingVertical: 6
+    },
+    tableHeaderCell: { backgroundColor: c.codeBackground },
+    tableHeaderText: {
+      color: c.foreground,
+      fontSize: 15,
+      fontWeight: "600",
+      lineHeight: 22
+    },
+    tableText: { color: c.foreground, fontSize: 15, lineHeight: 22 },
     bold: { fontWeight: "700" },
     italic: { fontStyle: "italic" },
     strike: { textDecorationLine: "line-through" },
@@ -151,6 +188,16 @@ function createStyles(c: Palette) {
 }
 
 type Styles = ReturnType<typeof createStyles>
+
+function paragraphStyle(styles: Styles, parentType: string | undefined) {
+  if (parentType === "tableHeader") {
+    return styles.tableHeaderText
+  }
+  if (parentType && TABLE_CELL_TYPES.has(parentType)) {
+    return styles.tableText
+  }
+  return parentType === "listItem" ? styles.paragraphTight : styles.paragraph
+}
 
 function headingStyle(styles: Styles, level: number) {
   if (level === 1) {
@@ -231,15 +278,7 @@ function buildRenderDoc(styles: Styles) {
     nodeMapping: {
       doc: ({ children }: NodeProps) => <>{children}</>,
       paragraph: ({ parent, children }: NodeProps) => (
-        <Text
-          style={
-            parent?.type === "listItem"
-              ? styles.paragraphTight
-              : styles.paragraph
-          }
-        >
-          {children}
-        </Text>
+        <Text style={paragraphStyle(styles, parent?.type)}>{children}</Text>
       ),
       heading: ({ node, children }: NodeProps) => (
         <Text style={headingStyle(styles, Number(node?.attrs?.level) || 1)}>
@@ -281,6 +320,35 @@ function buildRenderDoc(styles: Styles) {
         </View>
       ),
       horizontalRule: () => <View style={styles.hr} />,
+      // Wide tables scroll sideways inside the block, like the web editor.
+      table: ({ children }: NodeProps) => (
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.tableScroll}
+        >
+          <View style={styles.table}>{children}</View>
+        </ScrollView>
+      ),
+      tableRow: ({ children }: NodeProps) => (
+        <View style={styles.tableRow}>{children}</View>
+      ),
+      tableHeader: ({ node, children }: NodeProps) => (
+        <View
+          style={[
+            styles.tableCell,
+            styles.tableHeaderCell,
+            { width: cellWidth(node?.attrs) }
+          ]}
+        >
+          {children}
+        </View>
+      ),
+      tableCell: ({ node, children }: NodeProps) => (
+        <View style={[styles.tableCell, { width: cellWidth(node?.attrs) }]}>
+          {children}
+        </View>
+      ),
       // Analysis needs the server/engine, so native shows the sentence and
       // its translation as text rather than dropping the block.
       japaneseSentence: ({ node }: NodeProps) => {

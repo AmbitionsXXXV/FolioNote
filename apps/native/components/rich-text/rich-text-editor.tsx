@@ -1,16 +1,13 @@
 "use dom"
 
-import { CustomLink, PasteHandler } from "@folionote/editor-core"
-import {
-  JapaneseSentence,
-  SourceBlockId
-} from "@folionote/editor-core/extensions"
+import { PasteHandler } from "@folionote/editor-core"
 import type { JSONContent } from "@tiptap/core"
 import Placeholder from "@tiptap/extension-placeholder"
 import { EditorContent, useEditor } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
 import { cn } from "heroui-native"
 import { useEffect, useRef } from "react"
+
+import { RICH_TEXT_SCHEMA_EXTENSIONS } from "./editor-schema"
 
 interface RichTextEditorProps {
   dom?: import("expo/dom").DOMProps
@@ -35,7 +32,7 @@ interface RichTextEditorProps {
  * Embedded in a WebView via Expo DOM Components.
  * Implements RN ↔ WebView message bridging.
  *
- * Uses @folionote/editor-core for shared extensions (Link, PasteHandler).
+ * Uses @folionote/editor-core for the shared schema and PasteHandler.
  */
 export default function RichTextEditor({
   content,
@@ -51,17 +48,8 @@ export default function RichTextEditor({
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3]
-        }
-      }),
-      // Use shared Link extension from editor-core
-      CustomLink,
-      // Schema only: keeps analyzed-sentence blocks from being stripped when
-      // an entry is edited on native.
-      JapaneseSentence,
-      SourceBlockId,
+      // Same document schema as the web editor (see editor-schema.ts)
+      ...RICH_TEXT_SCHEMA_EXTENSIONS,
       // Use shared PasteHandler from editor-core
       PasteHandler.configure({
         strategy: "preserve"
@@ -337,6 +325,59 @@ function getStyles(isDark: boolean): string {
 
     .ProseMirror a:active {
       opacity: 0.7;
+    }
+
+    /* Tables scroll inside themselves instead of widening the page */
+    .ProseMirror table {
+      display: block;
+      max-width: 100%;
+      overflow-x: auto;
+      border-collapse: collapse;
+      margin-bottom: 0.75rem;
+    }
+
+    .ProseMirror th,
+    .ProseMirror td {
+      min-width: 4rem;
+      padding: 0.375rem 0.625rem;
+      border: 1px solid ${colors.border};
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .ProseMirror th {
+      font-weight: 600;
+      background-color: ${isDark ? "rgba(255, 255, 255, 0.06)" : colors.muted};
+    }
+
+    .ProseMirror th p,
+    .ProseMirror td p {
+      margin: 0;
+    }
+
+    .ProseMirror .selectedCell {
+      outline: 2px solid ${colors.primary};
+      outline-offset: -2px;
+    }
+
+    .ProseMirror img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 0.75rem;
+      border-radius: 0.75rem;
+    }
+
+    .ProseMirror img.ProseMirror-selectednode {
+      outline: 2px solid ${colors.primary};
+    }
+
+    /* Analyzed sentences are edited on the web; here they read as quotes */
+    .ProseMirror div[data-type="japanese-sentence"] {
+      margin-bottom: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      border-left: 3px solid ${colors.primary};
+      font-size: 1.125rem;
     }
 
     /* iOS-specific optimizations */
