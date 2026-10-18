@@ -58,27 +58,33 @@
   margin-bottom: 0.25rem;
 }
 
-/* Checklist (TaskList / TaskItem). TaskItem renders
-   <li data-checked><label><input type=checkbox><span></label><div>…</div></li>;
-   these override both the bullet rules above and the `prose` list styles. */
+/* Checklist (TaskList / TaskItem). The web TaskItem is a React node view
+   (components/editor/task-item.tsx):
+   <li data-checked><div.task-item><div.task-item-check>HeroUI Checkbox</div>
+   <div.task-item-content><div><p>…</p>[nested list]</div></div></div></li>.
+   These override both the bullet rules above and the `prose` list styles. */
 .tiptap ul[data-type="taskList"] {
-  padding-left: 0.125rem;
+  padding-left: 0;
   list-style: none;
 }
 
-.tiptap ul[data-type="taskList"] li {
-  display: flex;
-  gap: 0.5rem;
-  align-items: flex-start;
+.tiptap ul[data-type="taskList"] > li {
   padding-left: 0;
+  margin: 0.125rem 0;
 }
 
-.tiptap ul[data-type="taskList"] li::marker {
+.tiptap ul[data-type="taskList"] > li::marker {
   content: none;
 }
 
+.tiptap .task-item {
+  display: flex;
+  gap: 0.625rem;
+  align-items: flex-start;
+}
+
 /* One line tall, so the box centres on the item's first line at any size */
-.tiptap ul[data-type="taskList"] li > label {
+.tiptap .task-item-check {
   display: flex;
   flex: none;
   align-items: center;
@@ -86,32 +92,43 @@
   user-select: none;
 }
 
-.tiptap ul[data-type="taskList"] input[type="checkbox"] {
-  width: 1rem;
-  height: 1rem;
-  margin: 0;
-  cursor: pointer;
-  accent-color: var(--accent);
+/* HeroUI's box is a borderless --field-background fill (it leans on a light-mode
+   shadow), which all but vanishes on the dark page. Checklists want an outlined
+   square; the amber fill on select stays HeroUI's own. Unlayered, so these
+   beat the vendor rules — hence the explicit selected border. */
+.tiptap .task-item .checkbox__control {
+  background: transparent;
+  border: 1.5px solid color-mix(in oklch, var(--muted) 75%, transparent);
+  border-radius: 0.25rem;
+  box-shadow: none;
 }
 
-.tiptap ul[data-type="taskList"] li > div {
+.tiptap .task-item .checkbox[data-selected="true"] .checkbox__control {
+  border-color: var(--accent);
+}
+
+.tiptap .task-item .checkbox__control::before {
+  border-radius: 0;
+}
+
+.tiptap .task-item-content {
   flex: 1;
   min-width: 0;
 }
 
-.tiptap ul[data-type="taskList"] li > div > p {
+.tiptap .task-item-content > div > p {
   margin: 0;
 }
 
 /* Only the item's own text: nested sub-items keep their own state */
-.tiptap ul[data-type="taskList"] li[data-checked="true"] > div > p {
+.tiptap li[data-checked="true"] > .task-item > .task-item-content > div > p {
   color: var(--muted);
   text-decoration-line: line-through;
   text-decoration-color: color-mix(in oklch, var(--muted) 60%, transparent);
 }
 
-.tiptap ul[data-type="taskList"] ul[data-type="taskList"] {
-  margin-top: 0.25rem;
+.tiptap .task-item-content ul[data-type="taskList"] {
+  margin-top: 0.125rem;
   margin-bottom: 0;
 }
 
