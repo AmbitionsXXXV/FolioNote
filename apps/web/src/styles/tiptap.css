@@ -70,7 +70,8 @@
   padding: 0.125rem 0.25rem;
   font-family: var(--font-mono);
   font-size: 0.875em;
-  background-color: var(--muted);
+  /* --muted is secondary TEXT under the HeroUI theme, not a surface */
+  background-color: var(--surface-tertiary);
   border-radius: 0.25rem;
 }
 
@@ -94,7 +95,7 @@
   display: flex;
   justify-content: flex-end;
   padding: 0.25rem 0.5rem;
-  background: var(--muted);
+  background: var(--surface-secondary);
   border-radius: 0.5rem 0.5rem 0 0;
 }
 
@@ -215,7 +216,7 @@
   color: var(--muted-foreground);
   cursor: pointer;
   outline: none;
-  background: var(--muted);
+  background: var(--surface-secondary);
   border: 1px solid var(--border);
   border-radius: 0.375rem;
   transition:
@@ -227,7 +228,8 @@
 .code-block-expand-button:hover,
 .code-block-collapse-button:hover {
   color: var(--foreground);
-  background: var(--accent);
+  /* --accent is the solid amber fill; hover wants a quiet wash */
+  background: var(--surface-tertiary);
   border-color: var(--primary);
 }
 
