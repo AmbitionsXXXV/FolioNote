@@ -2,6 +2,7 @@ import { Extension } from "@tiptap/core"
 import CodeBlock from "@tiptap/extension-code-block"
 import Image from "@tiptap/extension-image"
 import Link from "@tiptap/extension-link"
+import { TaskItem, TaskList } from "@tiptap/extension-list"
 import { Table } from "@tiptap/extension-table"
 import { TableCell } from "@tiptap/extension-table-cell"
 import { TableHeader } from "@tiptap/extension-table-header"
@@ -183,6 +184,10 @@ export const COLLAB_SCHEMA_EXTENSIONS = [
   TableRow,
   Link,
   ImageSchema,
+  // Checklists. TaskItem's checkbox NodeView only runs in a mounted editor;
+  // `nested` changes TaskItem's content expression, so it must match the client.
+  TaskList,
+  TaskItem.configure({ nested: true }),
   // Already DOM-free; the web editor only adds a React NodeView on top.
   JapaneseSentence,
   // Pull-sync anchor on imported blocks (see source-block-id.ts)

@@ -856,6 +856,8 @@
       "bulletListDesc": "Bullet point list",
       "orderedList": "Ordered List",
       "orderedListDesc": "Numbered list",
+      "taskList": "Checklist",
+      "taskListDesc": "To-do list with checkboxes",
       "divider": "Divider",
       "dividerDesc": "Horizontal separator",
       "table": "Table",

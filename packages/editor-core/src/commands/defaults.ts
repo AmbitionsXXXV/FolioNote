@@ -104,6 +104,18 @@ export const defaultSlashCommands: SlashCommandDefinition[] = [
     }
   },
   {
+    id: "taskList",
+    titleKey: "editor.slashCommand.taskList",
+    descriptionKey: "editor.slashCommand.taskListDesc",
+    iconId: "taskList",
+    keywords: ["todo", "task", "checklist", "checkbox", "待办", "清单"],
+    groupKey: "editor.slashCommand.lists",
+    execute: ({ editor, range }) => {
+      // biome-ignore lint/suspicious/noExplicitAny: extension commands are dynamically typed
+      ;(editor.chain().focus().deleteRange(range) as any).toggleTaskList().run()
+    }
+  },
+  {
     id: "divider",
     titleKey: "editor.slashCommand.divider",
     descriptionKey: "editor.slashCommand.dividerDesc",

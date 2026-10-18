@@ -2,6 +2,9 @@
 
 @import "fumadocs-ui/css/shadcn.css";
 @import "fumadocs-ui/css/preset.css";
+/* Re-maps fumadocs' --color-fd-* tokens to HeroUI roles; must follow
+   fumadocs-ui/css/shadcn.css. */
+@import "./styles/fumadocs.css";
 
 @import "./styles/animate.css";
 /* @import "./styles/component.css"; */

@@ -911,6 +911,8 @@
       "bulletListDesc": "项目符号列表",
       "orderedList": "有序列表",
       "orderedListDesc": "编号列表",
+      "taskList": "待办清单",
+      "taskListDesc": "带复选框的任务列表",
       "divider": "分割线",
       "dividerDesc": "水平分隔线",
       "table": "表格",

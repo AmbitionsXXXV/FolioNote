@@ -6,6 +6,7 @@ export const SOURCE_BLOCK_TYPES = [
   "heading",
   "bulletList",
   "orderedList",
+  "taskList",
   "blockquote",
   "codeBlock",
   "table",

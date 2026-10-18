@@ -293,18 +293,25 @@ describe("Notion import", () => {
     })
     expect(() => assertValidDoc(result.doc)).not.toThrow()
     expect(result.doc.content.slice(0, 6).map((node) => node.type)).toEqual([
-      "bulletList",
+      "taskList",
       "paragraph",
       "horizontalRule",
       "bulletList",
       "paragraph",
       "paragraph"
     ])
-    expect(
-      result.doc.content[0].content?.map(
-        (item) => item.content?.[0].content?.[0].text
-      )
-    ).toEqual(["☐ ", "☑ "])
+    expect(result.doc.content[0].content).toMatchObject([
+      {
+        type: "taskItem",
+        attrs: { checked: false },
+        content: [{ type: "paragraph", content: [{ text: "読む" }] }]
+      },
+      {
+        type: "taskItem",
+        attrs: { checked: true },
+        content: [{ type: "paragraph", content: [{ text: "書く" }] }]
+      }
+    ])
     expect(result.doc.content[4].content?.[0].marks).toEqual([{ type: "bold" }])
     expect(result.doc.content[7].attrs?.level).toBe(3)
     expect(result.doc.content[8]).toMatchObject({
@@ -315,7 +322,6 @@ describe("Notion import", () => {
     expect(result.doc.content[9].attrs?.language).toBe("latex")
     expect(result.warnings).toEqual(
       expect.arrayContaining([
-        { kind: "to_do", from: "Checklist", to: "Checklist as list", count: 2 },
         { kind: "embed", from: "Embeds & files", to: "Link", count: 7 },
         {
           kind: "unsupported",

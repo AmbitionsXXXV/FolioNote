@@ -71,6 +71,7 @@ catalog:
   "@tiptap/extension-table-row": ^3.32.0
   "@tiptap/extension-code-block": ^3.32.0
   "@tiptap/extension-link": ^3.32.0
+  "@tiptap/extension-list": ^3.32.0
   "@tiptap/extension-placeholder": ^3.32.0
   "@tiptap/pm": ^3.32.0
   "@tiptap/react": ^3.32.0

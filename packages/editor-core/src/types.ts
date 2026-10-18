@@ -12,6 +12,7 @@ export type IconId =
   | "code"
   | "bulletList"
   | "orderedList"
+  | "taskList"
   | "divider"
   | "tag"
   | "ref"
