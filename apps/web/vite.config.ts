@@ -57,7 +57,7 @@ export default defineConfig(({ command, isSsrBuild, mode }) => ({
     name: "web",
     globals: true,
     environment: "jsdom",
-    include: ["**/__tests__/**/*.test.tsx", "**/*.spec.tsx"],
+    include: ["**/__tests__/**/*.test.{ts,tsx}", "**/*.spec.tsx"],
     exclude: ["**/node_modules/**", "**/dist/**"],
     setupFiles: ["./__tests__/setup.ts"],
     deps: {
