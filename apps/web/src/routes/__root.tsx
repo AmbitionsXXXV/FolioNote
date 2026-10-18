@@ -115,9 +115,17 @@ function RootDocument() {
   const { language } = Route.useRouteContext()
   // The server renders many requests at once, so each gets its own instance
   // in that request's language; the browser keeps the shared one.
-  const [instance] = useState(() =>
-    import.meta.env.SSR ? i18n.cloneInstance({ lng: language }) : i18n
-  )
+  const [instance] = useState(() => {
+    if (import.meta.env.SSR) {
+      return i18n.cloneInstance({ lng: language })
+    }
+    // Hydrate in the language the server rendered, even when the cookie it
+    // set is unreadable (blocked cookies). Inline resources switch at once.
+    if (i18n.language !== language) {
+      i18n.changeLanguage(language)
+    }
+    return i18n
+  })
 
   return (
     <I18nextProvider i18n={instance}>
