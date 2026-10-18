@@ -58,27 +58,33 @@
   margin-bottom: 0.25rem;
 }
 
-/* Checklist (TaskList / TaskItem). TaskItem renders
-   <li data-checked><label><input type=checkbox><span></label><div>…</div></li>;
-   these override both the bullet rules above and the `prose` list styles. */
+/* Checklist (TaskList / TaskItem). The web TaskItem is a React node view
+   (components/editor/task-item.tsx):
+   <li data-checked><div.task-item><div.task-item-check>HeroUI Checkbox</div>
+   <div.task-item-content><div><p>…</p>[nested list]</div></div></div></li>.
+   These override both the bullet rules above and the `prose` list styles. */
 .tiptap ul[data-type="taskList"] {
-  padding-left: 0.125rem;
+  padding-left: 0;
   list-style: none;
 }
 
-.tiptap ul[data-type="taskList"] li {
-  display: flex;
-  gap: 0.5rem;
-  align-items: flex-start;
+.tiptap ul[data-type="taskList"] > li {
   padding-left: 0;
+  margin: 0.125rem 0;
 }
 
-.tiptap ul[data-type="taskList"] li::marker {
+.tiptap ul[data-type="taskList"] > li::marker {
   content: none;
 }
 
+.tiptap .task-item {
+  display: flex;
+  gap: 0.625rem;
+  align-items: flex-start;
+}
+
 /* One line tall, so the box centres on the item's first line at any size */
-.tiptap ul[data-type="taskList"] li > label {
+.tiptap .task-item-check {
   display: flex;
   flex: none;
   align-items: center;
@@ -86,32 +92,43 @@
   user-select: none;
 }
 
-.tiptap ul[data-type="taskList"] input[type="checkbox"] {
-  width: 1rem;
-  height: 1rem;
-  margin: 0;
-  cursor: pointer;
-  accent-color: var(--accent);
+/* HeroUI's box is a borderless --field-background fill (it leans on a light-mode
+   shadow), which all but vanishes on the dark page. Checklists want an outlined
+   square; the amber fill on select stays HeroUI's own. Unlayered, so these
+   beat the vendor rules — hence the explicit selected border. */
+.tiptap .task-item .checkbox__control {
+  background: transparent;
+  border: 1.5px solid color-mix(in oklch, var(--muted) 75%, transparent);
+  border-radius: 0.25rem;
+  box-shadow: none;
 }
 
-.tiptap ul[data-type="taskList"] li > div {
+.tiptap .task-item .checkbox[data-selected="true"] .checkbox__control {
+  border-color: var(--accent);
+}
+
+.tiptap .task-item .checkbox__control::before {
+  border-radius: 0;
+}
+
+.tiptap .task-item-content {
   flex: 1;
   min-width: 0;
 }
 
-.tiptap ul[data-type="taskList"] li > div > p {
+.tiptap .task-item-content > div > p {
   margin: 0;
 }
 
 /* Only the item's own text: nested sub-items keep their own state */
-.tiptap ul[data-type="taskList"] li[data-checked="true"] > div > p {
+.tiptap li[data-checked="true"] > .task-item > .task-item-content > div > p {
   color: var(--muted);
   text-decoration-line: line-through;
   text-decoration-color: color-mix(in oklch, var(--muted) 60%, transparent);
 }
 
-.tiptap ul[data-type="taskList"] ul[data-type="taskList"] {
-  margin-top: 0.25rem;
+.tiptap .task-item-content ul[data-type="taskList"] {
+  margin-top: 0.125rem;
   margin-bottom: 0;
 }
 
@@ -581,26 +598,33 @@
   position: relative;
 }
 
+/* Fold toggle — sits in the gutter rail's fold lane (see Block Handle below),
+   flush against the heading text, centred on the heading's first line. Same
+   size, radius and hover wash as the handle buttons so the rail reads as one
+   control strip. It lives inside the heading, so hovering it keeps the handle. */
 .heading-fold-toggle {
   position: absolute;
-  /* Fixed offset (not em) so large headings don't push it onto the block handle */
-  left: -1.3rem;
-  top: 0.25em;
+  top: 0.5lh;
+  left: calc(-1 * var(--fold-lane, 1.375rem));
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.15rem;
-  height: 1.15rem;
+  width: var(--fold-lane, 1.375rem);
+  height: 1.4rem;
   padding: 0;
-  color: var(--color-blue-500);
+  /* `lh` above must be the heading's line, not a button default */
+  font: inherit;
+  color: var(--muted);
   cursor: pointer;
   background: transparent;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: 0.3rem;
   opacity: 0;
+  transform: translateY(-50%);
   transition:
     opacity 0.15s ease,
-    background-color 0.15s ease;
+    color 0.12s ease,
+    background-color 0.12s ease;
 }
 
 .heading-fold-toggle::before {
@@ -627,7 +651,8 @@
 }
 
 .heading-fold-toggle:hover {
-  background-color: color-mix(in oklab, var(--foreground) 8%, transparent);
+  color: var(--foreground);
+  background-color: color-mix(in oklab, var(--foreground) 9%, transparent);
 }
 
 .pm-folded-hidden {
@@ -638,27 +663,40 @@
 /* Block Handle (gutter)*/
 /* ==================== */
 
+/* Gutter rail, identical for every block so nothing jumps as the pointer moves
+   between a paragraph and a heading:
+
+     [type ▾][⋮⋮] gap [fold lane] | text
+
+   The fold lane is reserved on every block; headings fill it with their fold
+   toggle, other blocks leave it empty. JS sets `top` to the centre of the
+   block's first line, and the handle centres itself on it.
+
+   The gap and lane are padding on the handle, not empty space: the handle
+   lives outside the editor DOM, so a pointer crossing bare space would leave
+   the editor container and the handle would hide before it was reached. On
+   headings the toggle already covers the lane (and hovering it keeps the
+   handle), so the handle only pads the gap. */
+.entry-editor {
+  --fold-lane: 1.375rem;
+  --rail-gap: 0.125rem;
+}
+
 .block-handle {
   position: absolute;
-  /* Pin the handle's right edge a fixed gap to the LEFT of the content column
-     via translateX, so the type badge + drag button always clear the text no
-     matter how wide the badge is ("T" vs "H1" vs "1."). The old `left: -3rem`
-     anchored by a fixed offset, so the wider two-button handle poked ~0.2rem
-     into the first line. Text alignment stays untouched (no left padding added). */
   left: 0;
-  transform: translateX(calc(-100% - var(--block-handle-gap, 0.5rem)));
   z-index: 20;
   display: flex;
   gap: 2px;
   align-items: center;
-  /* Nudge toward the first line of the hovered block */
-  margin-top: 0.12em;
+  padding-right: calc(
+    var(--rail-gap) + var(--fold-lane) - var(--block-handle-inset, 0rem)
+  );
+  transform: translate(calc(-100% - var(--block-handle-inset, 0rem)), -50%);
 }
 
-/* Headings render a fold triangle at -1.3rem; widen the gap so the handle sits
-   just left of it rather than on top of it. */
 .block-handle.is-heading {
-  --block-handle-gap: 1.5rem;
+  --block-handle-inset: var(--fold-lane);
 }
 
 /* Type badge — shows the current block type and opens the "turn into" picker. */
