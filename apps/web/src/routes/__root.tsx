@@ -8,12 +8,13 @@ import {
 } from "@tanstack/react-router"
 import { RootProvider } from "fumadocs-ui/provider/tanstack"
 import { ThemeProvider } from "next-themes"
-import { lazy, Suspense } from "react"
+import { lazy, Suspense, useState } from "react"
 import { I18nextProvider, useTranslation } from "react-i18next"
 
 import { CommandPalette } from "@/components/command-palette"
 import { RouterPendingIndicator } from "@/components/router-pending-indicator"
 import { CommandPaletteProvider } from "@/contexts/command-palette-context"
+import { getLanguage } from "@/functions/get-language"
 import i18n from "@/lib/i18n"
 import { siteConfig } from "@/lib/site-config"
 import { cn } from "@/lib/utils"
@@ -48,6 +49,7 @@ export interface RouterAppContext {
 }
 
 export const Route = createRootRouteWithContext<RouterAppContext>()({
+  beforeLoad: () => ({ language: getLanguage() }),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -110,44 +112,57 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 })
 
 function RootDocument() {
+  const { language } = Route.useRouteContext()
+  // The server renders many requests at once, so each gets its own instance
+  // in that request's language; the browser keeps the shared one.
+  const [instance] = useState(() =>
+    import.meta.env.SSR ? i18n.cloneInstance({ lng: language }) : i18n
+  )
+
+  return (
+    <I18nextProvider i18n={instance}>
+      <AppDocument />
+    </I18nextProvider>
+  )
+}
+
+function AppDocument() {
   const { i18n: i18nInstance } = useTranslation()
   const currentLang = i18nInstance.language
   const langClass = getLangClass(currentLang)
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <html
-        className={cn("no-scrollbar bg-background")}
-        lang={currentLang}
-        suppressHydrationWarning
-      >
-        <head>
-          <HeadContent />
-        </head>
-        <body className={cn("min-h-svh bg-background", langClass)}>
-          <RootProvider search={{ enabled: false }}>
-            <ThemeProvider
-              attribute={["class", "data-theme"]}
-              defaultTheme="dark"
-              disableTransitionOnChange
-              enableSystem
-            >
-              <RouterPendingIndicator />
-              <CommandPaletteProvider>
-                <Outlet />
-                <CommandPalette />
-              </CommandPaletteProvider>
-              <Toaster richColors />
-            </ThemeProvider>
-          </RootProvider>
-          {import.meta.env.DEV && (
-            <Suspense fallback={null}>
-              <DevTools />
-            </Suspense>
-          )}
-          <Scripts />
-        </body>
-      </html>
-    </I18nextProvider>
+    <html
+      className={cn("no-scrollbar bg-background")}
+      lang={currentLang}
+      suppressHydrationWarning
+    >
+      <head>
+        <HeadContent />
+      </head>
+      <body className={cn("min-h-svh bg-background", langClass)}>
+        <RootProvider search={{ enabled: false }}>
+          <ThemeProvider
+            attribute={["class", "data-theme"]}
+            defaultTheme="dark"
+            disableTransitionOnChange
+            enableSystem
+          >
+            <RouterPendingIndicator />
+            <CommandPaletteProvider>
+              <Outlet />
+              <CommandPalette />
+            </CommandPaletteProvider>
+            <Toaster richColors />
+          </ThemeProvider>
+        </RootProvider>
+        {import.meta.env.DEV && (
+          <Suspense fallback={null}>
+            <DevTools />
+          </Suspense>
+        )}
+        <Scripts />
+      </body>
+    </html>
   )
 }
