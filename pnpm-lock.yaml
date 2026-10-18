@@ -236,6 +236,9 @@ catalogs:
     '@tiptap/extension-link':
       specifier: ^3.32.0
       version: 3.32.0
+    '@tiptap/extension-list':
+      specifier: ^3.32.0
+      version: 3.32.0
     '@tiptap/extension-placeholder':
       specifier: ^3.32.0
       version: 3.32.0
@@ -906,6 +909,9 @@ importers:
       '@tiptap/extension-link':
         specifier: 'catalog:'
         version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
+      '@tiptap/extension-list':
+        specifier: 'catalog:'
+        version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
       '@tiptap/extension-placeholder':
         specifier: 'catalog:'
         version: 3.32.0(@tiptap/extensions@3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0))
@@ -1384,6 +1390,9 @@ importers:
         specifier: 'catalog:'
         version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))
       '@tiptap/extension-link':
+        specifier: 'catalog:'
+        version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
+      '@tiptap/extension-list':
         specifier: 'catalog:'
         version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
       '@tiptap/extension-table':

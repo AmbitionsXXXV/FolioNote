@@ -17,6 +17,7 @@ import type { JSONContent } from "@tiptap/core"
 import { Extension } from "@tiptap/core"
 import Collaboration from "@tiptap/extension-collaboration"
 import CollaborationCaret from "@tiptap/extension-collaboration-caret"
+import { TaskItem, TaskList } from "@tiptap/extension-list"
 import Placeholder from "@tiptap/extension-placeholder"
 import { Plugin, PluginKey } from "@tiptap/pm/state"
 import { EditorContent, useEditor } from "@tiptap/react"
@@ -246,6 +247,10 @@ export function EntryEditor({
       HeadingIds,
       // Collapsible headings — fold content until the next same/higher heading
       FoldableHeadings,
+      // Checklists (/checklist or "[ ] " at line start). Keep `nested` in sync
+      // with COLLAB_SCHEMA_EXTENSIONS — it changes TaskItem's content model.
+      TaskList,
+      TaskItem.configure({ nested: true }),
       // Table extensions (+ position-based row/column/block commands)
       ...createTableKit({ t }),
       TableCommands,

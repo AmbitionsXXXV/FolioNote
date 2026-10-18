@@ -144,6 +144,12 @@ const LIST_BLOCK_TYPES = new Set([
   "to_do"
 ])
 
+/** Editor list node per Notion list block type (bullets are the default). */
+const LIST_TYPES: Record<string, string> = {
+  numbered_list_item: "orderedList",
+  to_do: "taskList"
+}
+
 export function notionBlocksToDoc(
   input: { title: string; blocks: NotionBlock[] },
   options: ConvertOptions = {}
@@ -159,8 +165,7 @@ export function notionBlocksToDoc(
     const content: PMNode[] = []
     let previousListType: string | undefined
     for (const block of blocks) {
-      const listType =
-        block.type === "numbered_list_item" ? "orderedList" : "bulletList"
+      const listType = LIST_TYPES[block.type] ?? "bulletList"
       if (
         ["bulleted_list_item", "numbered_list_item", "to_do"].includes(
           block.type
@@ -168,14 +173,13 @@ export function notionBlocksToDoc(
       ) {
         const data =
           block.bulleted_list_item ?? block.numbered_list_item ?? block.to_do
-        const prefix =
-          block.type === "to_do" ? textNodes(data?.checked ? "☑ " : "☐ ") : []
-        if (block.type === "to_do")
-          warn(warnings, "to_do", "Checklist", "Checklist as list")
         const item: PMNode = {
-          type: "listItem",
+          type: block.type === "to_do" ? "taskItem" : "listItem",
+          ...(block.type === "to_do"
+            ? { attrs: { checked: data?.checked === true } }
+            : {}),
           content: [
-            paragraph([...prefix, ...richText(data?.rich_text)]),
+            paragraph(richText(data?.rich_text)),
             ...convert(block.children ?? [])
           ]
         }

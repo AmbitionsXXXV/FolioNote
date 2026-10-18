@@ -92,13 +92,26 @@ export function markdownToDoc(
     return content
   }
 
-  const listItem = (item: Tokens.ListItem): PMNode => {
+  // List items always open with a paragraph (the editor's content model)
+  const listItemContent = (item: Tokens.ListItem): [PMNode, ...PMNode[]] => {
     const content = blocks(item.tokens)
-    let firstParagraph = content[0]
-    if (firstParagraph?.type !== "paragraph") {
-      firstParagraph = paragraph()
-      content.unshift(firstParagraph)
-    }
+    const [first] = content
+    return first?.type === "paragraph"
+      ? [first, ...content.slice(1)]
+      : [paragraph(), ...content]
+  }
+
+  const taskItem = (item: Tokens.ListItem): PMNode => ({
+    type: "taskItem",
+    attrs: { checked: item.checked === true },
+    content: listItemContent(item)
+  })
+
+  // A task item only lands here when its list mixes task and plain items: a
+  // taskList can hold nothing but taskItems, so it keeps a text checkbox.
+  const listItem = (item: Tokens.ListItem): PMNode => {
+    const content = listItemContent(item)
+    const [firstParagraph] = content
     if (item.task) {
       warn(warnings, "to_do", "Checklist", "Checklist as list")
       firstParagraph.content = [
@@ -130,7 +143,12 @@ export function markdownToDoc(
           )
           break
         case "list":
-          if (token.items.length)
+          if (token.items.length && token.items.every((item) => item.task))
+            content.push({
+              type: "taskList",
+              content: token.items.map(taskItem)
+            })
+          else if (token.items.length)
             content.push({
               type: token.ordered ? "orderedList" : "bulletList",
               ...(token.ordered ? { attrs: { start: token.start || 1 } } : {}),

@@ -196,7 +196,9 @@ function paragraphStyle(styles: Styles, parentType: string | undefined) {
   if (parentType && TABLE_CELL_TYPES.has(parentType)) {
     return styles.tableText
   }
-  return parentType === "listItem" ? styles.paragraphTight : styles.paragraph
+  return parentType === "listItem" || parentType === "taskItem"
+    ? styles.paragraphTight
+    : styles.paragraph
 }
 
 function headingStyle(styles: Styles, level: number) {
@@ -310,6 +312,16 @@ function buildRenderDoc(styles: Styles) {
       },
       listItem: ({ children }: NodeProps) => (
         <View style={styles.listItemContent}>{children}</View>
+      ),
+      // Read-only: the viewer can't save, so the box is a glyph, not a control.
+      taskList: ({ children }: NodeProps) => (
+        <View style={styles.list}>{children}</View>
+      ),
+      taskItem: ({ node, children }: NodeProps) => (
+        <View style={styles.listRow}>
+          <Text style={styles.marker}>{node?.attrs?.checked ? "☑" : "☐"}</Text>
+          <View style={styles.listItemContent}>{children}</View>
+        </View>
       ),
       blockquote: ({ children }: NodeProps) => (
         <View style={styles.blockquote}>{children}</View>

@@ -41,7 +41,7 @@ describe("Markdown import", () => {
     expect(result.doc.content.map((node) => node.type)).toEqual([
       "heading",
       "table",
-      "bulletList",
+      "taskList",
       "codeBlock",
       "horizontalRule"
     ])
@@ -57,11 +57,21 @@ describe("Markdown import", () => {
       attrs: { textAlign: "left" },
       content: [{ type: "paragraph", content: [{ text: "迷う" }] }]
     })
-    expect(
-      result.doc.content[2].content?.map(
-        (item) => item.content?.[0].content?.[0].text
-      )
-    ).toEqual(["☐ ", "☑ "])
+    expect(result.doc.content[2].content).toMatchObject([
+      {
+        type: "taskItem",
+        attrs: { checked: false },
+        content: [{ type: "paragraph", content: [{ text: "読む" }] }]
+      },
+      {
+        type: "taskItem",
+        attrs: { checked: true },
+        content: [
+          { type: "paragraph", content: [{ text: "書く" }] },
+          { type: "orderedList" }
+        ]
+      }
+    ])
     expect(result.doc.content[2].content?.[1].content?.[1]).toMatchObject({
       type: "orderedList",
       attrs: { start: 1 },
@@ -71,10 +81,23 @@ describe("Markdown import", () => {
       attrs: { language: "typescript" },
       content: [{ text: 'const word = "来る"' }]
     })
-    expect(result.warnings).toEqual([
-      { kind: "to_do", from: "Checklist", to: "Checklist as list", count: 2 }
-    ])
+    expect(result.warnings).toEqual([])
     expect(result.assetUrls).toEqual([])
+  })
+
+  it("keeps a text checkbox for task items in a list mixed with plain items", () => {
+    const result = markdownToDoc("- [x] 来る\n- 迷う")
+    expect(() => assertValidDoc(result.doc)).not.toThrow()
+    expect(result.doc.content[0]).toMatchObject({
+      type: "bulletList",
+      content: [{ type: "listItem" }, { type: "listItem" }]
+    })
+    expect(
+      result.doc.content[0].content?.[0].content?.[0].content?.[0].text
+    ).toBe("☑ ")
+    expect(result.warnings).toEqual([
+      { kind: "to_do", from: "Checklist", to: "Checklist as list", count: 1 }
+    ])
   })
 
   it("preserves inline formatting, links, escapes, breaks and CJK text", () => {
@@ -170,12 +193,14 @@ describe("Markdown import", () => {
       type: "heading",
       attrs: { level: 1 }
     })
+    expect(result.doc.content[2]).toMatchObject({ type: "taskList" })
+    expect(result.doc.content[2].content?.[0].attrs).toEqual({ checked: true })
     expect(result.doc.content[2].content?.[0].content).toHaveLength(2)
     expect(
       result.doc.content[2].content?.[0].content?.[0].content
         ?.map((node) => node.text)
         .join("")
-    ).toBe("☑ 来る")
+    ).toBe("来る")
     expect(result.doc.content.at(-1)).toMatchObject({
       type: "blockquote",
       content: [{ type: "paragraph", content: [] }]

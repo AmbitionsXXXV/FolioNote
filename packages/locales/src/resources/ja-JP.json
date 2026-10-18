@@ -806,6 +806,8 @@
       "bulletListDesc": "箇点リスト",
       "orderedList": "番号付きリスト",
       "orderedListDesc": "番号付きリスト",
+      "taskList": "チェックリスト",
+      "taskListDesc": "チェックボックス付きのToDoリスト",
       "divider": "区切り線",
       "dividerDesc": "水平区切り線",
       "table": "テーブル",
