@@ -598,26 +598,33 @@
   position: relative;
 }
 
+/* Fold toggle — sits in the gutter rail's fold lane (see Block Handle below),
+   flush against the heading text, centred on the heading's first line. Same
+   size, radius and hover wash as the handle buttons so the rail reads as one
+   control strip. It lives inside the heading, so hovering it keeps the handle. */
 .heading-fold-toggle {
   position: absolute;
-  /* Fixed offset (not em) so large headings don't push it onto the block handle */
-  left: -1.3rem;
-  top: 0.25em;
+  top: 0.5lh;
+  left: calc(-1 * var(--fold-lane, 1.375rem));
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.15rem;
-  height: 1.15rem;
+  width: var(--fold-lane, 1.375rem);
+  height: 1.4rem;
   padding: 0;
-  color: var(--color-blue-500);
+  /* `lh` above must be the heading's line, not a button default */
+  font: inherit;
+  color: var(--muted);
   cursor: pointer;
   background: transparent;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: 0.3rem;
   opacity: 0;
+  transform: translateY(-50%);
   transition:
     opacity 0.15s ease,
-    background-color 0.15s ease;
+    color 0.12s ease,
+    background-color 0.12s ease;
 }
 
 .heading-fold-toggle::before {
@@ -644,7 +651,8 @@
 }
 
 .heading-fold-toggle:hover {
-  background-color: color-mix(in oklab, var(--foreground) 8%, transparent);
+  color: var(--foreground);
+  background-color: color-mix(in oklab, var(--foreground) 9%, transparent);
 }
 
 .pm-folded-hidden {
@@ -655,27 +663,40 @@
 /* Block Handle (gutter)*/
 /* ==================== */
 
+/* Gutter rail, identical for every block so nothing jumps as the pointer moves
+   between a paragraph and a heading:
+
+     [type ▾][⋮⋮] gap [fold lane] | text
+
+   The fold lane is reserved on every block; headings fill it with their fold
+   toggle, other blocks leave it empty. JS sets `top` to the centre of the
+   block's first line, and the handle centres itself on it.
+
+   The gap and lane are padding on the handle, not empty space: the handle
+   lives outside the editor DOM, so a pointer crossing bare space would leave
+   the editor container and the handle would hide before it was reached. On
+   headings the toggle already covers the lane (and hovering it keeps the
+   handle), so the handle only pads the gap. */
+.entry-editor {
+  --fold-lane: 1.375rem;
+  --rail-gap: 0.125rem;
+}
+
 .block-handle {
   position: absolute;
-  /* Pin the handle's right edge a fixed gap to the LEFT of the content column
-     via translateX, so the type badge + drag button always clear the text no
-     matter how wide the badge is ("T" vs "H1" vs "1."). The old `left: -3rem`
-     anchored by a fixed offset, so the wider two-button handle poked ~0.2rem
-     into the first line. Text alignment stays untouched (no left padding added). */
   left: 0;
-  transform: translateX(calc(-100% - var(--block-handle-gap, 0.5rem)));
   z-index: 20;
   display: flex;
   gap: 2px;
   align-items: center;
-  /* Nudge toward the first line of the hovered block */
-  margin-top: 0.12em;
+  padding-right: calc(
+    var(--rail-gap) + var(--fold-lane) - var(--block-handle-inset, 0rem)
+  );
+  transform: translate(calc(-100% - var(--block-handle-inset, 0rem)), -50%);
 }
 
-/* Headings render a fold triangle at -1.3rem; widen the gap so the handle sits
-   just left of it rather than on top of it. */
 .block-handle.is-heading {
-  --block-handle-gap: 1.5rem;
+  --block-handle-inset: var(--fold-lane);
 }
 
 /* Type badge — shows the current block type and opens the "turn into" picker. */
