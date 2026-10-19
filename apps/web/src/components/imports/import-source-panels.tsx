@@ -1,3 +1,4 @@
+import { getFaviconUrl, getHostname } from "@folionote/utils"
 import {
   Button,
   Input,
@@ -6,7 +7,7 @@ import {
   TextArea,
   TextField
 } from "@heroui/react"
-import { Upload01Icon } from "@hugeicons/core-free-icons"
+import { NotionIcon, Upload01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import type { ChangeEvent } from "react"
@@ -43,6 +44,54 @@ function Notice({ children }: { children: React.ReactNode }) {
     <p className="rounded-[10px] bg-surface-secondary px-3 py-2.5 text-sm text-muted-foreground">
       {children}
     </p>
+  )
+}
+
+type NotionPageIcon =
+  | { type: "emoji"; emoji: string }
+  | { type: "image"; url: string }
+
+/**
+ * A clipped page shows its source site's favicon; otherwise the page's own
+ * Notion icon, falling back to the Notion logo.
+ */
+function NotionPageGlyph({
+  icon,
+  sourceUrl
+}: {
+  icon: NotionPageIcon | null
+  sourceUrl: string | null
+}) {
+  let imageUrl: string | null = null
+  if (sourceUrl) {
+    imageUrl = getFaviconUrl(sourceUrl)
+  } else if (icon?.type === "image") {
+    imageUrl = icon.url
+  }
+  if (imageUrl) {
+    return (
+      <img
+        alt=""
+        className="size-4 shrink-0 rounded-sm object-contain"
+        loading="lazy"
+        referrerPolicy="no-referrer"
+        src={imageUrl}
+      />
+    )
+  }
+  if (icon?.type === "emoji") {
+    return (
+      <span aria-hidden="true" className="w-4 shrink-0 text-center leading-4">
+        {icon.emoji}
+      </span>
+    )
+  }
+  return (
+    <HugeiconsIcon
+      aria-hidden="true"
+      className="size-4 shrink-0 text-muted-foreground"
+      icon={NotionIcon}
+    />
   )
 }
 
@@ -120,12 +169,12 @@ export function NotionSourcePanel({ onSourceChange }: PanelProps) {
               }}
               type="button"
             >
-              <span aria-hidden="true" className="w-5 text-center">
-                {page.icon ?? "📄"}
-              </span>
+              <NotionPageGlyph icon={page.icon} sourceUrl={page.sourceUrl} />
               <span className="min-w-0 flex-1 truncate">{page.title}</span>
               <span className="shrink-0 text-xs text-muted-foreground">
-                {page.workspaceName}
+                {page.sourceUrl
+                  ? getHostname(page.sourceUrl)
+                  : page.workspaceName}
               </span>
             </button>
           </li>

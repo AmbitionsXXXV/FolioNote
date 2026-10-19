@@ -7,6 +7,14 @@ import {
   Switch,
   Tabs
 } from "@heroui/react"
+import {
+  ClaudeIcon,
+  GlobeIcon,
+  GoogleDocIcon,
+  NotionIcon
+} from "@hugeicons/core-free-icons"
+import type { IconSvgElement } from "@hugeicons/react"
+import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
@@ -35,6 +43,13 @@ export const Route = createFileRoute("/_app/import")({
   component: ImportPage,
   validateSearch: importSearchSchema
 })
+
+const SOURCE_LOGOS: Record<ImportSourceKind, IconSvgElement> = {
+  notion: NotionIcon,
+  google_docs: GoogleDocIcon,
+  claude_page: ClaudeIcon,
+  web: GlobeIcon
+}
 
 type ImportMode = "snapshot" | "watch" | "pull"
 
@@ -235,10 +250,15 @@ function ImportPage() {
                   // No Tabs.Indicator: its slide animation starts from the
                   // default tab on a deep link and can stick mid-translate.
                   <Tabs.Tab
-                    className="data-[selected=true]:bg-segment data-[selected=true]:shadow-surface"
+                    className="gap-1.5 data-[selected=true]:bg-segment data-[selected=true]:shadow-surface"
                     id={option}
                     key={option}
                   >
+                    <HugeiconsIcon
+                      aria-hidden="true"
+                      className="size-4"
+                      icon={SOURCE_LOGOS[option]}
+                    />
                     {t(`imports.sources.${option}`)}
                   </Tabs.Tab>
                 ))}
