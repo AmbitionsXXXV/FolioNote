@@ -9,60 +9,50 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as JpTypingRouteImport } from './routes/jp-typing'
-import { Route as JpReadingRouteImport } from './routes/jp-reading'
-import { Route as JpExamRouteImport } from './routes/jp-exam'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ShareTokenRouteImport } from './routes/share/$token'
-import { Route as AppTagsRouteImport } from './routes/_app/tags'
-import { Route as AppSourcesRouteImport } from './routes/_app/sources'
-import { Route as AppSettingsRouteImport } from './routes/_app/settings'
-import { Route as AppSearchRouteImport } from './routes/_app/search'
-import { Route as AppReviewRouteImport } from './routes/_app/review'
-import { Route as AppProfileRouteImport } from './routes/_app/profile'
-import { Route as AppLibraryRouteImport } from './routes/_app/library'
-import { Route as AppKnowledgeRouteImport } from './routes/_app/knowledge'
-import { Route as AppInboxRouteImport } from './routes/_app/inbox'
-import { Route as AppGraphRouteImport } from './routes/_app/graph'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as JpExamRouteImport } from './routes/jp-exam'
+import { Route as JpReadingRouteImport } from './routes/jp-reading'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AppActivityRouteImport } from './routes/_app/activity'
-import { Route as AppSettingsModelsRouteImport } from './routes/_app/settings/models'
-import { Route as AppSettingsGeneralRouteImport } from './routes/_app/settings/general'
-import { Route as AppEntriesNewRouteImport } from './routes/_app/entries/new'
+import { Route as AppGraphRouteImport } from './routes/_app/graph'
+import { Route as AppImportRouteImport } from './routes/_app/import'
+import { Route as AppInboxRouteImport } from './routes/_app/inbox'
+import { Route as AppJapaneseRouteImport } from './routes/_app/japanese'
+import { Route as AppKnowledgeRouteImport } from './routes/_app/knowledge'
+import { Route as AppLibraryRouteImport } from './routes/_app/library'
+import { Route as AppProfileRouteImport } from './routes/_app/profile'
+import { Route as AppReviewRouteImport } from './routes/_app/review'
+import { Route as AppSearchRouteImport } from './routes/_app/search'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppSourcesRouteImport } from './routes/_app/sources'
+import { Route as AppTagsRouteImport } from './routes/_app/tags'
+import { Route as ShareTokenRouteImport } from './routes/share/$token'
 import { Route as AppEntriesIdRouteImport } from './routes/_app/entries/$id'
+import { Route as AppEntriesNewRouteImport } from './routes/_app/entries/new'
+import { Route as AppJapaneseIndexRouteImport } from './routes/_app/japanese/index'
+import { Route as AppJapaneseImportRouteImport } from './routes/_app/japanese/import'
+import { Route as AppJapaneseLibraryRouteImport } from './routes/_app/japanese/library'
+import { Route as AppSettingsConnectionsRouteImport } from './routes/_app/settings/connections'
+import { Route as AppSettingsGeneralRouteImport } from './routes/_app/settings/general'
+import { Route as AppSettingsModelsRouteImport } from './routes/_app/settings/models'
+import { Route as AppJapaneseListsLexiconIdRouteImport } from './routes/_app/japanese/lists/$lexiconId'
+import { Route as AppJapanesePracticeExamRouteImport } from './routes/_app/japanese/practice/exam'
+import { Route as AppJapanesePracticeVocabRouteImport } from './routes/_app/japanese/practice/vocab'
+import { Route as AppJapaneseReadIndexRouteImport } from './routes/_app/japanese/read/index'
+import { Route as AppJapaneseReadArticleIdRouteImport } from './routes/_app/japanese/read/$articleId'
+import { Route as AppJapaneseWordIdRouteImport } from './routes/_app/japanese/word/$id'
 
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JpTypingRoute = JpTypingRouteImport.update({
-  id: '/jp-typing',
-  path: '/jp-typing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JpReadingRoute = JpReadingRouteImport.update({
-  id: '/jp-reading',
-  path: '/jp-reading',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JpExamRoute = JpExamRouteImport.update({
-  id: '/jp-exam',
-  path: '/jp-exam',
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -70,63 +60,34 @@ const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRoute = AppRouteImport.update({
-  id: '/_app',
+const JpExamRoute = JpExamRouteImport.update({
+  id: '/jp-exam',
+  path: '/jp-exam',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const JpReadingRoute = JpReadingRouteImport.update({
+  id: '/jp-reading',
+  path: '/jp-reading',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ShareTokenRoute = ShareTokenRouteImport.update({
-  id: '/share/$token',
-  path: '/share/$token',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppTagsRoute = AppTagsRouteImport.update({
-  id: '/tags',
-  path: '/tags',
-  getParentRoute: () => AppRoute,
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AppSourcesRoute = AppSourcesRouteImport.update({
-  id: '/sources',
-  path: '/sources',
-  getParentRoute: () => AppRoute,
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AppSettingsRoute = AppSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppSearchRoute = AppSearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppReviewRoute = AppReviewRouteImport.update({
-  id: '/review',
-  path: '/review',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppProfileRoute = AppProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppLibraryRoute = AppLibraryRouteImport.update({
-  id: '/library',
-  path: '/library',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppKnowledgeRoute = AppKnowledgeRouteImport.update({
-  id: '/knowledge',
-  path: '/knowledge',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppInboxRoute = AppInboxRouteImport.update({
-  id: '/inbox',
-  path: '/inbox',
+const AppActivityRoute = AppActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
   getParentRoute: () => AppRoute,
 } as any)
 const AppGraphRoute = AppGraphRouteImport.update({
@@ -134,14 +95,94 @@ const AppGraphRoute = AppGraphRouteImport.update({
   path: '/graph',
   getParentRoute: () => AppRoute,
 } as any)
-const AppActivityRoute = AppActivityRouteImport.update({
-  id: '/activity',
-  path: '/activity',
+const AppImportRoute = AppImportRouteImport.update({
+  id: '/import',
+  path: '/import',
   getParentRoute: () => AppRoute,
 } as any)
-const AppSettingsModelsRoute = AppSettingsModelsRouteImport.update({
-  id: '/models',
-  path: '/models',
+const AppInboxRoute = AppInboxRouteImport.update({
+  id: '/inbox',
+  path: '/inbox',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJapaneseRoute = AppJapaneseRouteImport.update({
+  id: '/japanese',
+  path: '/japanese',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppKnowledgeRoute = AppKnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppLibraryRoute = AppLibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppReviewRoute = AppReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSearchRoute = AppSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSourcesRoute = AppSourcesRouteImport.update({
+  id: '/sources',
+  path: '/sources',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTagsRoute = AppTagsRouteImport.update({
+  id: '/tags',
+  path: '/tags',
+  getParentRoute: () => AppRoute,
+} as any)
+const ShareTokenRoute = ShareTokenRouteImport.update({
+  id: '/share/$token',
+  path: '/share/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppEntriesIdRoute = AppEntriesIdRouteImport.update({
+  id: '/entries/$id',
+  path: '/entries/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppEntriesNewRoute = AppEntriesNewRouteImport.update({
+  id: '/entries/new',
+  path: '/entries/new',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppJapaneseIndexRoute = AppJapaneseIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppJapaneseRoute,
+} as any)
+const AppJapaneseImportRoute = AppJapaneseImportRouteImport.update({
+  id: '/import',
+  path: '/import',
+  getParentRoute: () => AppJapaneseRoute,
+} as any)
+const AppJapaneseLibraryRoute = AppJapaneseLibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => AppJapaneseRoute,
+} as any)
+const AppSettingsConnectionsRoute = AppSettingsConnectionsRouteImport.update({
+  id: '/connections',
+  path: '/connections',
   getParentRoute: () => AppSettingsRoute,
 } as any)
 const AppSettingsGeneralRoute = AppSettingsGeneralRouteImport.update({
@@ -149,15 +190,43 @@ const AppSettingsGeneralRoute = AppSettingsGeneralRouteImport.update({
   path: '/general',
   getParentRoute: () => AppSettingsRoute,
 } as any)
-const AppEntriesNewRoute = AppEntriesNewRouteImport.update({
-  id: '/entries/new',
-  path: '/entries/new',
-  getParentRoute: () => AppRoute,
+const AppSettingsModelsRoute = AppSettingsModelsRouteImport.update({
+  id: '/models',
+  path: '/models',
+  getParentRoute: () => AppSettingsRoute,
 } as any)
-const AppEntriesIdRoute = AppEntriesIdRouteImport.update({
-  id: '/entries/$id',
-  path: '/entries/$id',
-  getParentRoute: () => AppRoute,
+const AppJapaneseListsLexiconIdRoute =
+  AppJapaneseListsLexiconIdRouteImport.update({
+    id: '/lists/$lexiconId',
+    path: '/lists/$lexiconId',
+    getParentRoute: () => AppJapaneseRoute,
+  } as any)
+const AppJapanesePracticeExamRoute = AppJapanesePracticeExamRouteImport.update({
+  id: '/practice/exam',
+  path: '/practice/exam',
+  getParentRoute: () => AppJapaneseRoute,
+} as any)
+const AppJapanesePracticeVocabRoute =
+  AppJapanesePracticeVocabRouteImport.update({
+    id: '/practice/vocab',
+    path: '/practice/vocab',
+    getParentRoute: () => AppJapaneseRoute,
+  } as any)
+const AppJapaneseReadIndexRoute = AppJapaneseReadIndexRouteImport.update({
+  id: '/read/',
+  path: '/read/',
+  getParentRoute: () => AppJapaneseRoute,
+} as any)
+const AppJapaneseReadArticleIdRoute =
+  AppJapaneseReadArticleIdRouteImport.update({
+    id: '/read/$articleId',
+    path: '/read/$articleId',
+    getParentRoute: () => AppJapaneseRoute,
+  } as any)
+const AppJapaneseWordIdRoute = AppJapaneseWordIdRouteImport.update({
+  id: '/word/$id',
+  path: '/word/$id',
+  getParentRoute: () => AppJapaneseRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -165,13 +234,14 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/jp-exam': typeof JpExamRoute
   '/jp-reading': typeof JpReadingRoute
-  '/jp-typing': typeof JpTypingRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/activity': typeof AppActivityRoute
   '/graph': typeof AppGraphRoute
+  '/import': typeof AppImportRoute
   '/inbox': typeof AppInboxRoute
+  '/japanese': typeof AppJapaneseRouteWithChildren
   '/knowledge': typeof AppKnowledgeRoute
   '/library': typeof AppLibraryRoute
   '/profile': typeof AppProfileRoute
@@ -183,20 +253,30 @@ export interface FileRoutesByFullPath {
   '/share/$token': typeof ShareTokenRoute
   '/entries/$id': typeof AppEntriesIdRoute
   '/entries/new': typeof AppEntriesNewRoute
+  '/japanese/import': typeof AppJapaneseImportRoute
+  '/japanese/library': typeof AppJapaneseLibraryRoute
+  '/settings/connections': typeof AppSettingsConnectionsRoute
   '/settings/general': typeof AppSettingsGeneralRoute
   '/settings/models': typeof AppSettingsModelsRoute
+  '/japanese/': typeof AppJapaneseIndexRoute
+  '/japanese/lists/$lexiconId': typeof AppJapaneseListsLexiconIdRoute
+  '/japanese/practice/exam': typeof AppJapanesePracticeExamRoute
+  '/japanese/practice/vocab': typeof AppJapanesePracticeVocabRoute
+  '/japanese/read/$articleId': typeof AppJapaneseReadArticleIdRoute
+  '/japanese/word/$id': typeof AppJapaneseWordIdRoute
+  '/japanese/read/': typeof AppJapaneseReadIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/jp-exam': typeof JpExamRoute
   '/jp-reading': typeof JpReadingRoute
-  '/jp-typing': typeof JpTypingRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/activity': typeof AppActivityRoute
   '/graph': typeof AppGraphRoute
+  '/import': typeof AppImportRoute
   '/inbox': typeof AppInboxRoute
   '/knowledge': typeof AppKnowledgeRoute
   '/library': typeof AppLibraryRoute
@@ -209,8 +289,18 @@ export interface FileRoutesByTo {
   '/share/$token': typeof ShareTokenRoute
   '/entries/$id': typeof AppEntriesIdRoute
   '/entries/new': typeof AppEntriesNewRoute
+  '/japanese/import': typeof AppJapaneseImportRoute
+  '/japanese/library': typeof AppJapaneseLibraryRoute
+  '/settings/connections': typeof AppSettingsConnectionsRoute
   '/settings/general': typeof AppSettingsGeneralRoute
   '/settings/models': typeof AppSettingsModelsRoute
+  '/japanese': typeof AppJapaneseIndexRoute
+  '/japanese/lists/$lexiconId': typeof AppJapaneseListsLexiconIdRoute
+  '/japanese/practice/exam': typeof AppJapanesePracticeExamRoute
+  '/japanese/practice/vocab': typeof AppJapanesePracticeVocabRoute
+  '/japanese/read/$articleId': typeof AppJapaneseReadArticleIdRoute
+  '/japanese/word/$id': typeof AppJapaneseWordIdRoute
+  '/japanese/read': typeof AppJapaneseReadIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -219,13 +309,14 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/jp-exam': typeof JpExamRoute
   '/jp-reading': typeof JpReadingRoute
-  '/jp-typing': typeof JpTypingRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_app/activity': typeof AppActivityRoute
   '/_app/graph': typeof AppGraphRoute
+  '/_app/import': typeof AppImportRoute
   '/_app/inbox': typeof AppInboxRoute
+  '/_app/japanese': typeof AppJapaneseRouteWithChildren
   '/_app/knowledge': typeof AppKnowledgeRoute
   '/_app/library': typeof AppLibraryRoute
   '/_app/profile': typeof AppProfileRoute
@@ -237,8 +328,18 @@ export interface FileRoutesById {
   '/share/$token': typeof ShareTokenRoute
   '/_app/entries/$id': typeof AppEntriesIdRoute
   '/_app/entries/new': typeof AppEntriesNewRoute
+  '/_app/japanese/import': typeof AppJapaneseImportRoute
+  '/_app/japanese/library': typeof AppJapaneseLibraryRoute
+  '/_app/settings/connections': typeof AppSettingsConnectionsRoute
   '/_app/settings/general': typeof AppSettingsGeneralRoute
   '/_app/settings/models': typeof AppSettingsModelsRoute
+  '/_app/japanese/': typeof AppJapaneseIndexRoute
+  '/_app/japanese/lists/$lexiconId': typeof AppJapaneseListsLexiconIdRoute
+  '/_app/japanese/practice/exam': typeof AppJapanesePracticeExamRoute
+  '/_app/japanese/practice/vocab': typeof AppJapanesePracticeVocabRoute
+  '/_app/japanese/read/$articleId': typeof AppJapaneseReadArticleIdRoute
+  '/_app/japanese/word/$id': typeof AppJapaneseWordIdRoute
+  '/_app/japanese/read/': typeof AppJapaneseReadIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -247,13 +348,14 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/jp-exam'
     | '/jp-reading'
-    | '/jp-typing'
     | '/login'
     | '/register'
     | '/reset-password'
     | '/activity'
     | '/graph'
+    | '/import'
     | '/inbox'
+    | '/japanese'
     | '/knowledge'
     | '/library'
     | '/profile'
@@ -265,20 +367,30 @@ export interface FileRouteTypes {
     | '/share/$token'
     | '/entries/$id'
     | '/entries/new'
+    | '/japanese/import'
+    | '/japanese/library'
+    | '/settings/connections'
     | '/settings/general'
     | '/settings/models'
+    | '/japanese/'
+    | '/japanese/lists/$lexiconId'
+    | '/japanese/practice/exam'
+    | '/japanese/practice/vocab'
+    | '/japanese/read/$articleId'
+    | '/japanese/word/$id'
+    | '/japanese/read/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/forgot-password'
     | '/jp-exam'
     | '/jp-reading'
-    | '/jp-typing'
     | '/login'
     | '/register'
     | '/reset-password'
     | '/activity'
     | '/graph'
+    | '/import'
     | '/inbox'
     | '/knowledge'
     | '/library'
@@ -291,8 +403,18 @@ export interface FileRouteTypes {
     | '/share/$token'
     | '/entries/$id'
     | '/entries/new'
+    | '/japanese/import'
+    | '/japanese/library'
+    | '/settings/connections'
     | '/settings/general'
     | '/settings/models'
+    | '/japanese'
+    | '/japanese/lists/$lexiconId'
+    | '/japanese/practice/exam'
+    | '/japanese/practice/vocab'
+    | '/japanese/read/$articleId'
+    | '/japanese/word/$id'
+    | '/japanese/read'
   id:
     | '__root__'
     | '/'
@@ -300,13 +422,14 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/jp-exam'
     | '/jp-reading'
-    | '/jp-typing'
     | '/login'
     | '/register'
     | '/reset-password'
     | '/_app/activity'
     | '/_app/graph'
+    | '/_app/import'
     | '/_app/inbox'
+    | '/_app/japanese'
     | '/_app/knowledge'
     | '/_app/library'
     | '/_app/profile'
@@ -318,8 +441,18 @@ export interface FileRouteTypes {
     | '/share/$token'
     | '/_app/entries/$id'
     | '/_app/entries/new'
+    | '/_app/japanese/import'
+    | '/_app/japanese/library'
+    | '/_app/settings/connections'
     | '/_app/settings/general'
     | '/_app/settings/models'
+    | '/_app/japanese/'
+    | '/_app/japanese/lists/$lexiconId'
+    | '/_app/japanese/practice/exam'
+    | '/_app/japanese/practice/vocab'
+    | '/_app/japanese/read/$articleId'
+    | '/_app/japanese/word/$id'
+    | '/_app/japanese/read/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -328,7 +461,6 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   JpExamRoute: typeof JpExamRoute
   JpReadingRoute: typeof JpReadingRoute
-  JpTypingRoute: typeof JpTypingRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -337,53 +469,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/jp-typing': {
-      id: '/jp-typing'
-      path: '/jp-typing'
-      fullPath: '/jp-typing'
-      preLoaderRoute: typeof JpTypingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/jp-reading': {
-      id: '/jp-reading'
-      path: '/jp-reading'
-      fullPath: '/jp-reading'
-      preLoaderRoute: typeof JpReadingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/jp-exam': {
-      id: '/jp-exam'
-      path: '/jp-exam'
-      fullPath: '/jp-exam'
-      preLoaderRoute: typeof JpExamRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -393,81 +483,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/share/$token': {
-      id: '/share/$token'
-      path: '/share/$token'
-      fullPath: '/share/$token'
-      preLoaderRoute: typeof ShareTokenRouteImport
+    '/jp-exam': {
+      id: '/jp-exam'
+      path: '/jp-exam'
+      fullPath: '/jp-exam'
+      preLoaderRoute: typeof JpExamRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/tags': {
-      id: '/_app/tags'
-      path: '/tags'
-      fullPath: '/tags'
-      preLoaderRoute: typeof AppTagsRouteImport
-      parentRoute: typeof AppRoute
+    '/jp-reading': {
+      id: '/jp-reading'
+      path: '/jp-reading'
+      fullPath: '/jp-reading'
+      preLoaderRoute: typeof JpReadingRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_app/sources': {
-      id: '/_app/sources'
-      path: '/sources'
-      fullPath: '/sources'
-      preLoaderRoute: typeof AppSourcesRouteImport
-      parentRoute: typeof AppRoute
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_app/settings': {
-      id: '/_app/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AppSettingsRouteImport
-      parentRoute: typeof AppRoute
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_app/search': {
-      id: '/_app/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof AppSearchRouteImport
-      parentRoute: typeof AppRoute
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_app/review': {
-      id: '/_app/review'
-      path: '/review'
-      fullPath: '/review'
-      preLoaderRoute: typeof AppReviewRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/profile': {
-      id: '/_app/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AppProfileRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/library': {
-      id: '/_app/library'
-      path: '/library'
-      fullPath: '/library'
-      preLoaderRoute: typeof AppLibraryRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/knowledge': {
-      id: '/_app/knowledge'
-      path: '/knowledge'
-      fullPath: '/knowledge'
-      preLoaderRoute: typeof AppKnowledgeRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/inbox': {
-      id: '/_app/inbox'
-      path: '/inbox'
-      fullPath: '/inbox'
-      preLoaderRoute: typeof AppInboxRouteImport
+    '/_app/activity': {
+      id: '/_app/activity'
+      path: '/activity'
+      fullPath: '/activity'
+      preLoaderRoute: typeof AppActivityRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/graph': {
@@ -477,18 +539,130 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppGraphRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/activity': {
-      id: '/_app/activity'
-      path: '/activity'
-      fullPath: '/activity'
-      preLoaderRoute: typeof AppActivityRouteImport
+    '/_app/import': {
+      id: '/_app/import'
+      path: '/import'
+      fullPath: '/import'
+      preLoaderRoute: typeof AppImportRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/settings/models': {
-      id: '/_app/settings/models'
-      path: '/models'
-      fullPath: '/settings/models'
-      preLoaderRoute: typeof AppSettingsModelsRouteImport
+    '/_app/inbox': {
+      id: '/_app/inbox'
+      path: '/inbox'
+      fullPath: '/inbox'
+      preLoaderRoute: typeof AppInboxRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/japanese': {
+      id: '/_app/japanese'
+      path: '/japanese'
+      fullPath: '/japanese'
+      preLoaderRoute: typeof AppJapaneseRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/knowledge': {
+      id: '/_app/knowledge'
+      path: '/knowledge'
+      fullPath: '/knowledge'
+      preLoaderRoute: typeof AppKnowledgeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/library': {
+      id: '/_app/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof AppLibraryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/review': {
+      id: '/_app/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof AppReviewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/search': {
+      id: '/_app/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AppSearchRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/sources': {
+      id: '/_app/sources'
+      path: '/sources'
+      fullPath: '/sources'
+      preLoaderRoute: typeof AppSourcesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/tags': {
+      id: '/_app/tags'
+      path: '/tags'
+      fullPath: '/tags'
+      preLoaderRoute: typeof AppTagsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/share/$token': {
+      id: '/share/$token'
+      path: '/share/$token'
+      fullPath: '/share/$token'
+      preLoaderRoute: typeof ShareTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/entries/$id': {
+      id: '/_app/entries/$id'
+      path: '/entries/$id'
+      fullPath: '/entries/$id'
+      preLoaderRoute: typeof AppEntriesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/entries/new': {
+      id: '/_app/entries/new'
+      path: '/entries/new'
+      fullPath: '/entries/new'
+      preLoaderRoute: typeof AppEntriesNewRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/japanese/': {
+      id: '/_app/japanese/'
+      path: '/'
+      fullPath: '/japanese/'
+      preLoaderRoute: typeof AppJapaneseIndexRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
+    '/_app/japanese/import': {
+      id: '/_app/japanese/import'
+      path: '/import'
+      fullPath: '/japanese/import'
+      preLoaderRoute: typeof AppJapaneseImportRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
+    '/_app/japanese/library': {
+      id: '/_app/japanese/library'
+      path: '/library'
+      fullPath: '/japanese/library'
+      preLoaderRoute: typeof AppJapaneseLibraryRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
+    '/_app/settings/connections': {
+      id: '/_app/settings/connections'
+      path: '/connections'
+      fullPath: '/settings/connections'
+      preLoaderRoute: typeof AppSettingsConnectionsRouteImport
       parentRoute: typeof AppSettingsRoute
     }
     '/_app/settings/general': {
@@ -498,29 +672,94 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsGeneralRouteImport
       parentRoute: typeof AppSettingsRoute
     }
-    '/_app/entries/new': {
-      id: '/_app/entries/new'
-      path: '/entries/new'
-      fullPath: '/entries/new'
-      preLoaderRoute: typeof AppEntriesNewRouteImport
-      parentRoute: typeof AppRoute
+    '/_app/settings/models': {
+      id: '/_app/settings/models'
+      path: '/models'
+      fullPath: '/settings/models'
+      preLoaderRoute: typeof AppSettingsModelsRouteImport
+      parentRoute: typeof AppSettingsRoute
     }
-    '/_app/entries/$id': {
-      id: '/_app/entries/$id'
-      path: '/entries/$id'
-      fullPath: '/entries/$id'
-      preLoaderRoute: typeof AppEntriesIdRouteImport
-      parentRoute: typeof AppRoute
+    '/_app/japanese/lists/$lexiconId': {
+      id: '/_app/japanese/lists/$lexiconId'
+      path: '/lists/$lexiconId'
+      fullPath: '/japanese/lists/$lexiconId'
+      preLoaderRoute: typeof AppJapaneseListsLexiconIdRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
+    '/_app/japanese/practice/exam': {
+      id: '/_app/japanese/practice/exam'
+      path: '/practice/exam'
+      fullPath: '/japanese/practice/exam'
+      preLoaderRoute: typeof AppJapanesePracticeExamRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
+    '/_app/japanese/practice/vocab': {
+      id: '/_app/japanese/practice/vocab'
+      path: '/practice/vocab'
+      fullPath: '/japanese/practice/vocab'
+      preLoaderRoute: typeof AppJapanesePracticeVocabRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
+    '/_app/japanese/read/': {
+      id: '/_app/japanese/read/'
+      path: '/read'
+      fullPath: '/japanese/read/'
+      preLoaderRoute: typeof AppJapaneseReadIndexRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
+    '/_app/japanese/read/$articleId': {
+      id: '/_app/japanese/read/$articleId'
+      path: '/read/$articleId'
+      fullPath: '/japanese/read/$articleId'
+      preLoaderRoute: typeof AppJapaneseReadArticleIdRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
+    '/_app/japanese/word/$id': {
+      id: '/_app/japanese/word/$id'
+      path: '/word/$id'
+      fullPath: '/japanese/word/$id'
+      preLoaderRoute: typeof AppJapaneseWordIdRouteImport
+      parentRoute: typeof AppJapaneseRoute
     }
   }
 }
 
+interface AppJapaneseRouteChildren {
+  AppJapaneseImportRoute: typeof AppJapaneseImportRoute
+  AppJapaneseLibraryRoute: typeof AppJapaneseLibraryRoute
+  AppJapaneseIndexRoute: typeof AppJapaneseIndexRoute
+  AppJapaneseListsLexiconIdRoute: typeof AppJapaneseListsLexiconIdRoute
+  AppJapanesePracticeExamRoute: typeof AppJapanesePracticeExamRoute
+  AppJapanesePracticeVocabRoute: typeof AppJapanesePracticeVocabRoute
+  AppJapaneseReadArticleIdRoute: typeof AppJapaneseReadArticleIdRoute
+  AppJapaneseWordIdRoute: typeof AppJapaneseWordIdRoute
+  AppJapaneseReadIndexRoute: typeof AppJapaneseReadIndexRoute
+}
+
+const AppJapaneseRouteChildren: AppJapaneseRouteChildren = {
+  AppJapaneseImportRoute: AppJapaneseImportRoute,
+  AppJapaneseLibraryRoute: AppJapaneseLibraryRoute,
+  AppJapaneseIndexRoute: AppJapaneseIndexRoute,
+  AppJapaneseListsLexiconIdRoute: AppJapaneseListsLexiconIdRoute,
+  AppJapanesePracticeExamRoute: AppJapanesePracticeExamRoute,
+  AppJapanesePracticeVocabRoute: AppJapanesePracticeVocabRoute,
+  AppJapaneseReadArticleIdRoute: AppJapaneseReadArticleIdRoute,
+  AppJapaneseWordIdRoute: AppJapaneseWordIdRoute,
+  AppJapaneseReadIndexRoute: AppJapaneseReadIndexRoute,
+}
+
+const AppJapaneseRouteWithChildren = AppJapaneseRoute._addFileChildren(
+  AppJapaneseRouteChildren,
+)
+
 interface AppSettingsRouteChildren {
+  AppSettingsConnectionsRoute: typeof AppSettingsConnectionsRoute
   AppSettingsGeneralRoute: typeof AppSettingsGeneralRoute
   AppSettingsModelsRoute: typeof AppSettingsModelsRoute
 }
 
 const AppSettingsRouteChildren: AppSettingsRouteChildren = {
+  AppSettingsConnectionsRoute: AppSettingsConnectionsRoute,
   AppSettingsGeneralRoute: AppSettingsGeneralRoute,
   AppSettingsModelsRoute: AppSettingsModelsRoute,
 }
@@ -532,7 +771,9 @@ const AppSettingsRouteWithChildren = AppSettingsRoute._addFileChildren(
 interface AppRouteChildren {
   AppActivityRoute: typeof AppActivityRoute
   AppGraphRoute: typeof AppGraphRoute
+  AppImportRoute: typeof AppImportRoute
   AppInboxRoute: typeof AppInboxRoute
+  AppJapaneseRoute: typeof AppJapaneseRouteWithChildren
   AppKnowledgeRoute: typeof AppKnowledgeRoute
   AppLibraryRoute: typeof AppLibraryRoute
   AppProfileRoute: typeof AppProfileRoute
@@ -548,7 +789,9 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppActivityRoute: AppActivityRoute,
   AppGraphRoute: AppGraphRoute,
+  AppImportRoute: AppImportRoute,
   AppInboxRoute: AppInboxRoute,
+  AppJapaneseRoute: AppJapaneseRouteWithChildren,
   AppKnowledgeRoute: AppKnowledgeRoute,
   AppLibraryRoute: AppLibraryRoute,
   AppProfileRoute: AppProfileRoute,
@@ -569,7 +812,6 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   JpExamRoute: JpExamRoute,
   JpReadingRoute: JpReadingRoute,
-  JpTypingRoute: JpTypingRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,

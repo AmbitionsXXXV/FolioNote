@@ -1,0 +1,6 @@
+{
+  "text": "Hello world.",
+  "words": ["Hello", "world", "."],
+  "phrases": ["Hello", "world."],
+  "notes": "IPADIC tags Latin words as 名詞,固有名詞 and '.' as 名詞,サ変接続; '.' is still flagged as punctuation by surface."
+}

@@ -24,6 +24,12 @@ import {
   verification
 } from "./schema/auth"
 import {
+  entryExternalLinks,
+  entryExternalLinksRelations,
+  externalConnections,
+  externalConnectionsRelations
+} from "./schema/connections"
+import {
   attachments,
   attachmentsRelations,
   dailyLogs,
@@ -55,9 +61,56 @@ import {
 } from "./schema/entries"
 // Business schema
 import { entryLinks, entryLinksRelations } from "./schema/graph"
-
+import {
+  jpGrammar,
+  jpKanji,
+  jpVocab,
+  jpVocabExamples,
+  jpVocabExamplesRelations,
+  jpVocabRelations
+} from "./schema/japanese"
 // Schema configuration for drizzle
+import {
+  jpArticles,
+  jpArticlesRelations,
+  jpLexicons,
+  jpLexiconsRelations,
+  jpLexiconEntries,
+  jpLexiconEntriesRelations,
+  jpStudyState
+} from "./schema/japanese-library"
+
+export {
+  entryExternalLinks,
+  entryExternalLinksRelations,
+  externalConnections,
+  externalConnectionsRelations
+} from "./schema/connections"
+export {
+  jpArticles,
+  jpArticlesRelations,
+  jpLexicons,
+  jpLexiconsRelations,
+  jpLexiconEntries,
+  jpLexiconEntriesRelations,
+  jpStudyState
+} from "./schema/japanese-library"
+
 const schema = {
+  jpArticles,
+  jpArticlesRelations,
+  jpLexicons,
+  jpLexiconsRelations,
+  jpLexiconEntries,
+  jpLexiconEntriesRelations,
+  jpStudyState,
+  // Japanese word bank
+  jpGrammar,
+  jpKanji,
+  jpVocab,
+  jpVocabExamples,
+  jpVocabExamplesRelations,
+  jpVocabRelations,
   // Auth
   user,
   userRelations,
@@ -95,6 +148,11 @@ const schema = {
   entrySyncStateRelations,
   searchHistory,
   searchHistoryRelations,
+  // External import / sync
+  externalConnections,
+  externalConnectionsRelations,
+  entryExternalLinks,
+  entryExternalLinksRelations,
   // Graph
   entryLinks,
   entryLinksRelations,
@@ -177,3 +235,11 @@ export {
   tagsRelations
 } from "./schema/entries"
 export { entryLinks, entryLinksRelations } from "./schema/graph"
+export {
+  jpGrammar,
+  jpKanji,
+  jpVocab,
+  jpVocabExamples,
+  jpVocabExamplesRelations,
+  jpVocabRelations
+} from "./schema/japanese"

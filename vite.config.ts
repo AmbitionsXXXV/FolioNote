@@ -248,7 +248,7 @@ export default defineConfig({
           clearMocks: false,
           environment: "node",
           globals: true,
-          include: ["**/__tests__/**/*.test.tsx", "**/*.spec.tsx"],
+          include: ["**/__tests__/**/*.test.{ts,tsx}", "**/*.spec.tsx"],
           name: "native",
           root: "./apps/native"
         }

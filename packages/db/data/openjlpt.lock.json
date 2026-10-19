@@ -1,0 +1,24 @@
+{
+  "repo": "evanclan/OpenJLPT",
+  "commit": "0d1d3410bec90bd4098a7c72de820543cb4f707c",
+  "version": "0.3.0",
+  "license": "CC-BY-SA-4.0",
+  "files": {
+    "data/json/meta.json": "9d4cc0f17ed9ad6c3a1a10fdae19472f898f7b2a690c9962049657e49e2b64d2",
+    "data/json/grammar/n1.json": "b6df1691cf9441f044b18490e25eef02a5c93ad9c0d0d69d62eb889256e6708b",
+    "data/json/grammar/n2.json": "fc7a26fd991b80505480ca64f3fce03014a3f91f921045b9fb14bc63a31f3f95",
+    "data/json/grammar/n3.json": "a94fed69f213a0896a06e62d47c81b870c570ebc0ae5f01b971780f844a7b295",
+    "data/json/grammar/n4.json": "7b388b8636ab7d9eaed02484d7d6be1c2468885f2354e28c02a29c2dfeb8d70d",
+    "data/json/grammar/n5.json": "fb8151594263f5e98372adc51d4498578bc198e22259b161fba524eea2faa0bd",
+    "data/json/kanji/n1.json": "1814dd4fd4b363854fb861f091c2ca408bac01c96dddb6e9b3a5e2566069a79e",
+    "data/json/kanji/n2.json": "2e3bd6f9a26d8794aad2dd770b094836bc6c478950202d631e5fb9233e26cc85",
+    "data/json/kanji/n3.json": "c81669777f0ea37f848105babf8177ab36e968900307e5118b57e4156ed05fef",
+    "data/json/kanji/n4.json": "a034d51bea0ee6c9ee1cc48b1cc83d9602641b9f5d38d99a55f5136f447a58d8",
+    "data/json/kanji/n5.json": "c81458831e5e2e807ce0bb81a5af971d493ac8a9243701005eb57fe353990fce",
+    "data/json/vocab/n1.json": "09325eb676ec26044e9019afb5ddd460a394a0d8cb51b0b34d30d03124c131ff",
+    "data/json/vocab/n2.json": "4c7053d1b61f71ca4004252cafdf89439c65531900e7bab6c53078802acf3c5b",
+    "data/json/vocab/n3.json": "17ca6bcbba9d212c3c9d38c38cecc2adef0fd8718cb7157bb48dd9d3a1724948",
+    "data/json/vocab/n4.json": "b38512a6dc1e06a3615f377b3e58184c4a85b6f769c2e3f58f2a4ef0e1810927",
+    "data/json/vocab/n5.json": "cbb221c9a3a92108fcd02fb088d9afacc70bc8c96570d5730425de0a49dad5f3"
+  }
+}

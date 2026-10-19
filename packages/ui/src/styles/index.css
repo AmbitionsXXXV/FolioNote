@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Story+Script&display=swap,wght@400;700&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Outfit:wght@100..900&family=Spline+Sans:wght@300..700&family=Zen+Maru+Gothic&display=swap&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Outfit:wght@100..900&family=Spline+Sans:wght@300..700&family=ZCOOL+QingKe+HuangYou&family=Zen+Maru+Gothic&display=swap&family=Leckerli+One:wght@400");
-
 @import "tailwindcss";
 
 /* HeroUI v3 design system — must follow Tailwind. The obsidian+amber brand is
@@ -11,6 +9,7 @@
 @import "tw-animate-css";
 
 @import "./component.css";
+@import "./radius.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -208,7 +207,8 @@ textarea::-webkit-resizer {
   --font-mono: IBM Plex Mono, monospace;
   --font-display: Fraunces, Georgia, serif;
   --font-script: Story Script, cursive;
-  --radius: 1.5rem;
+  --radius: 0.5rem;
+  --field-radius: var(--radius);
   --shadow-x: 0px;
   --shadow-y: 8px;
   --shadow-blur: 16px;
@@ -316,7 +316,8 @@ textarea::-webkit-resizer {
   --font-mono: IBM Plex Mono, monospace;
   --font-display: Fraunces, Georgia, serif;
   --font-script: Story Script, cursive;
-  --radius: 1.5rem;
+  --radius: 0.5rem;
+  --field-radius: var(--radius);
   --shadow-x: 0px;
   --shadow-y: 8px;
   --shadow-blur: 16px;
@@ -384,10 +385,17 @@ textarea::-webkit-resizer {
   --font-script-ja: var(--font-script-ja);
   --font-script-zh: var(--font-script-zh);
 
+  /* CDS precision scale (AGENTS.md), base 8px = lg. HeroUI reads the same
+     names, so its pills and surfaces get role overrides in radius.css.
+     xs hairline · sm chips · md menu items · lg buttons/inputs ·
+     xl cards/code · 2xl dialogs · 3xl hero surfaces. */
+  --radius-xs: calc(var(--radius) - 6px);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 16px);
 
   --shadow-2xs: var(--shadow-2xs);
   --shadow-xs: var(--shadow-xs);

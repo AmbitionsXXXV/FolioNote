@@ -99,6 +99,55 @@
       "when": 1783070548759,
       "tag": "0013_fuzzy_spot",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1792172705408,
+      "tag": "0014_flat_anita_blake",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1792225040338,
+      "tag": "0015_elite_lilandra",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1792259880971,
+      "tag": "0016_reflective_valeria_richards",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1792264420730,
+      "tag": "0017_brown_wraith",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1792266736172,
+      "tag": "0018_moji_vocab_metadata",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1792301881643,
+      "tag": "0019_moji_example_details",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1792306786006,
+      "tag": "0020_jp_study_state",
+      "breakpoints": true
     }
   ]
 }

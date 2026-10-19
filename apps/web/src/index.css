@@ -2,6 +2,9 @@
 
 @import "fumadocs-ui/css/shadcn.css";
 @import "fumadocs-ui/css/preset.css";
+/* Re-maps fumadocs' --color-fd-* tokens to HeroUI roles; must follow
+   fumadocs-ui/css/shadcn.css. */
+@import "./styles/fumadocs.css";
 
 @import "./styles/animate.css";
 /* @import "./styles/component.css"; */
@@ -16,14 +19,6 @@
 @import "./styles/sidebar.css";
 @source "../node_modules/streamdown/dist/*.js";
 @source "../../../packages/ai-tools/src/**/*.{ts,tsx}";
-
-:root {
-  --radius: 1.5rem;
-}
-
-.dark {
-  --radius: 1.5rem;
-}
 
 /* globals.css */
 @keyframes rain {

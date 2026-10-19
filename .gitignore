@@ -67,3 +67,9 @@ __pycache__
 /playwright/.cache/
 /playwright/.auth/
 .vitest/
+
+# Raw vocabulary exports contain account/session metadata; keep cleaned data only.
+/data/N5/*.json
+# Cleaned MOJi word lists still carry MOJi's dictionary content (definitions,
+# pitch accents); the repo is public, so they stay local.
+/packages/db/data/moji-*.json

@@ -16,9 +16,9 @@ export const queryClient = new QueryClient({
 
 export const link = new RPCLink({
   url: `${process.env.EXPO_PUBLIC_SERVER_URL}/rpc`,
-  headers() {
+  async headers() {
     const headers = new Map<string, string>()
-    const cookies = authClient.getCookie()
+    const cookies = await authClient.getCookie()
     if (cookies) {
       headers.set("Cookie", cookies)
     }

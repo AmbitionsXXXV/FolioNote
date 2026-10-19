@@ -4,7 +4,9 @@ import {
   AiBrain01Icon,
   Atom02Icon,
   BookOpen01Icon,
+  FileImportIcon,
   InboxIcon,
+  LanguageSquareIcon,
   Link01Icon,
   Rocket01Icon,
   Search01Icon,
@@ -29,7 +31,8 @@ interface NavItem {
 const mainNavItems: NavItem[] = [
   { to: "/activity", labelKey: "nav.activity", icon: Activity01Icon },
   { to: "/inbox", labelKey: "nav.inbox", icon: InboxIcon },
-  { to: "/library", labelKey: "nav.library", icon: BookOpen01Icon }
+  { to: "/library", labelKey: "nav.library", icon: BookOpen01Icon },
+  { to: "/import", labelKey: "nav.import", icon: FileImportIcon }
 ]
 
 const secondaryNavItems: NavItem[] = [
@@ -37,6 +40,7 @@ const secondaryNavItems: NavItem[] = [
   { to: "/sources", labelKey: "nav.sources", icon: Link01Icon },
   { to: "/graph", labelKey: "nav.graph", icon: Atom02Icon },
   { to: "/review", labelKey: "nav.review", icon: Rocket01Icon },
+  { to: "/japanese", labelKey: "nav.japanese", icon: LanguageSquareIcon },
   { to: "/knowledge", labelKey: "nav.knowledge", icon: AiBrain01Icon }
 ]
 

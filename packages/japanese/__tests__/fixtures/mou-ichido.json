@@ -1,0 +1,6 @@
+{
+  "text": "もう一度行きたいと思っています。",
+  "words": ["もう一度", "行きたい", "と", "思っています", "。"],
+  "phrases": ["もう一度", "行きたいと", "思っています。"],
+  "notes": "IPADIC has もう一度 as a single 副詞 entry, so it stays one adverb word (no もう + 一度 split)."
+}

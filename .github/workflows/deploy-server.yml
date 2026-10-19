@@ -69,6 +69,9 @@ jobs:
           cp apps/server/package.json deploy-package/
           cp apps/server/ecosystem.config.cjs deploy-package/ 2>/dev/null || true
 
+      - name: Verify deployment package startup
+        run: vp node apps/server/scripts/smoke-deployment.mjs deploy-package
+
       - name: Upload deployment package
         uses: actions/upload-artifact@v7
         with:
@@ -149,6 +152,7 @@ jobs:
           "
 
       - name: Restart application with PM2
+        timeout-minutes: 3
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} << 'ENDSSH'
             set -e

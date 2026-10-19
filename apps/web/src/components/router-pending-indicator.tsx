@@ -2,8 +2,9 @@ import { useRouterState } from "@tanstack/react-router"
 import { AnimatePresence, motion } from "motion/react"
 
 export function RouterPendingIndicator() {
+  // Router 1.170 replaced `isTransitioning` with `status`.
   const isTransitioning = useRouterState({
-    select: (state) => state.isTransitioning
+    select: (state) => state.status === "pending"
   })
 
   return (

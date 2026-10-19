@@ -1,0 +1,6 @@
+{
+  "text": "彼は「ありがとう」と言った。",
+  "words": ["彼", "は", "「", "ありがとう", "」", "と", "言った", "。"],
+  "phrases": ["彼は", "「ありがとう」と", "言った。"],
+  "notes": "Opening bracket joins the FOLLOWING phrase; the closing bracket joins the phrase before it."
+}

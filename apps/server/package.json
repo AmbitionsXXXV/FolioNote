@@ -1,10 +1,10 @@
 {
   "name": "server",
-  "version": "0.2.24",
+  "version": "0.2.29",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "build": "vp pack",
+    "build": "vp pack && tsx scripts/prepare-japanese-dict.ts",
     "check-types": "tsc --noEmit",
     "dev": "tsx watch src/index.ts",
     "dev:collab": "tsx watch src/collab/index.ts",
@@ -20,6 +20,7 @@
     "@folionote/auth": "workspace:*",
     "@folionote/db": "workspace:*",
     "@folionote/editor-core": "workspace:*",
+    "@folionote/japanese": "workspace:*",
     "@folionote/locales": "workspace:*",
     "@folionote/log": "workspace:*",
     "@folionote/storage": "workspace:*",

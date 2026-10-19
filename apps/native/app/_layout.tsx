@@ -5,6 +5,7 @@ import { isLiquidGlassAvailable } from "expo-glass-effect"
 import { Stack } from "expo-router"
 import * as SplashScreen from "expo-splash-screen"
 import { HeroUINativeProvider, useThemeColor } from "heroui-native"
+import type { ComponentProps } from "react"
 import { useEffect } from "react"
 import { I18nextProvider, useTranslation } from "react-i18next"
 import { ActivityIndicator, Platform, View } from "react-native"
@@ -58,6 +59,34 @@ function StackLayout() {
     )
   }
 
+  // Shared look for screens pushed on top of the tabs (profile, Japanese).
+  const detailScreenOptions = {
+    headerTitleAlign: "center",
+    // iOS 26 Liquid Glass: headerTransparent 让内容可以延伸到 header 下方
+    headerTransparent: true,
+    // 非 Liquid Glass 环境使用模糊效果
+    headerBlurEffect: isLiquidGlass ? undefined : blurEffect,
+    headerTintColor: foregroundColor,
+    headerTitleStyle: {
+      fontFamily: "Inter_600SemiBold"
+    },
+    // 禁用 header 底部的阴影/分隔线
+    headerShadowVisible: false,
+    headerStyle: {
+      backgroundColor: Platform.select({
+        ios: undefined,
+        android: backgroundColor
+      })
+    },
+    headerBackButtonDisplayMode: "generic",
+    gestureEnabled: true,
+    gestureDirection: "horizontal",
+    fullScreenGestureEnabled: !isLiquidGlass,
+    contentStyle: {
+      backgroundColor
+    }
+  } satisfies ComponentProps<typeof Stack.Screen>["options"]
+
   return (
     <Stack screenOptions={{}}>
       {/* Protected routes for authenticated users or local mode */}
@@ -65,32 +94,26 @@ function StackLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="profile"
+          options={{ ...detailScreenOptions, title: t("nav.profile") }}
+        />
+        <Stack.Screen
+          name="japanese/index"
           options={{
-            title: t("nav.profile"),
-            headerTitleAlign: "center",
-            // iOS 26 Liquid Glass: headerTransparent 让内容可以延伸到 header 下方
-            headerTransparent: true,
-            // 非 Liquid Glass 环境使用模糊效果
-            headerBlurEffect: isLiquidGlass ? undefined : blurEffect,
-            headerTintColor: foregroundColor,
-            headerTitleStyle: {
-              fontFamily: "Inter_600SemiBold"
-            },
-            // 禁用 header 底部的阴影/分隔线
-            headerShadowVisible: false,
-            headerStyle: {
-              backgroundColor: Platform.select({
-                ios: undefined,
-                android: backgroundColor
-              })
-            },
-            headerBackButtonDisplayMode: "generic",
-            gestureEnabled: true,
-            gestureDirection: "horizontal",
-            fullScreenGestureEnabled: !isLiquidGlass,
-            contentStyle: {
-              backgroundColor
-            }
+            ...detailScreenOptions,
+            title: t("japanese.title"),
+            headerLargeTitle: true,
+            headerLargeTitleShadowVisible: false
+          }}
+        />
+        <Stack.Screen
+          name="japanese/word/[id]"
+          options={{ ...detailScreenOptions, title: "" }}
+        />
+        <Stack.Screen
+          name="japanese/read"
+          options={{
+            ...detailScreenOptions,
+            title: t("japanese.reading.title")
           }}
         />
       </Stack.Protected>

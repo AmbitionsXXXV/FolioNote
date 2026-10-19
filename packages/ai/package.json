@@ -1,6 +1,6 @@
 {
   "name": "@folionote/ai",
-  "version": "0.2.24",
+  "version": "0.2.29",
   "description": "FolioNote AI capabilities: BYOK providers, RAG, prompts, usage tracking",
   "type": "module",
   "exports": {
@@ -17,13 +17,13 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^4.0.0",
+    "@ai-sdk/anthropic": "^4.0.82",
     "@ai-sdk/devtools": "catalog:",
-    "@ai-sdk/google": "^4.0.1",
-    "@ai-sdk/openai": "^4.0.1",
-    "@ai-sdk/openai-compatible": "^3.0.0",
-    "@ai-sdk/provider": "^4.0.0",
-    "@ai-sdk/xai": "^4.0.1",
+    "@ai-sdk/google": "^4.0.99",
+    "@ai-sdk/openai": "^4.0.96",
+    "@ai-sdk/openai-compatible": "^3.0.71",
+    "@ai-sdk/provider": "catalog:",
+    "@ai-sdk/xai": "^4.0.59",
     "@folionote/constants": "workspace:*",
     "@mastra/core": "catalog:",
     "@mastra/rag": "catalog:",

@@ -5,4 +5,4 @@ export {
   MAX_RESPONSE_SIZE,
   MAX_TIMEOUT_MS
 } from "./constants"
-export { fetchUrlContent } from "./fetch-url"
+export { fetchUrlContent, fetchUrlBytes } from "./fetch-url"

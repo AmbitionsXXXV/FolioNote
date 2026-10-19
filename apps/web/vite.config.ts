@@ -31,23 +31,10 @@ const CHUNK_RULES: { test: (id: string) => boolean; chunk: string }[] = [
     test: (id) => id.includes("node_modules/@tanstack/react-query"),
     chunk: "tanstack-query"
   },
-  {
-    test: (id) =>
-      id.includes("node_modules/@tiptap/") ||
-      id.includes("node_modules/prosemirror-"),
-    chunk: "tiptap"
-  },
-  {
-    test: (id) =>
-      id.includes("node_modules/shiki") || id.includes("node_modules/@shikijs"),
-    chunk: "shiki"
-  },
-  {
-    test: (id) =>
-      id.includes("node_modules/tippy.js") ||
-      id.includes("node_modules/@popperjs"),
-    chunk: "tippy"
-  },
+  // No manual chunks for shiki, tiptap or tippy: forcing them into one chunk
+  // inlined shiki's lazy grammar imports (18.5 MB) and captured shared helpers
+  // (Vite's preload helper, floating-ui), which put those chunks on every
+  // page's critical path. Left alone, they load only where they're used.
   { test: (id) => id.includes("node_modules/motion"), chunk: "motion" }
 ]
 
@@ -70,7 +57,7 @@ export default defineConfig(({ command, isSsrBuild, mode }) => ({
     name: "web",
     globals: true,
     environment: "jsdom",
-    include: ["**/__tests__/**/*.test.tsx", "**/*.spec.tsx"],
+    include: ["**/__tests__/**/*.test.{ts,tsx}", "**/*.spec.tsx"],
     exclude: ["**/node_modules/**", "**/dist/**"],
     setupFiles: ["./__tests__/setup.ts"],
     deps: {

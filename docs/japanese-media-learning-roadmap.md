@@ -130,9 +130,9 @@ The learning session is a destination opened from Today or Library, not another 
 | Knowledge / AI chat | Move into contextual "Explain this segment" actions |
 | Graph | Remove from primary navigation; archive or keep experimental |
 | Generic entry editor | Retain as notes/annotations attached to a material |
-| `/jp-reading` | Merge into the unified learning session |
-| `/jp-typing` | Become a session practice mode |
-| `/jp-exam` | Archive until the media-learning loop proves demand |
+| `/jp-reading` (now `/japanese/read`; old URL redirects) | Merge into the unified learning session |
+| `/jp-typing` (now `/japanese/practice/typing`; old URL redirects) | Become a session practice mode |
+| `/jp-exam` (now `/japanese/practice/exam`; old URL redirects) | Archive until the media-learning loop proves demand |
 
 Do not delete old routes before saved data and deep links have a migration or redirect path.
 

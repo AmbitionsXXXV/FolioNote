@@ -1,6 +1,6 @@
 {
   "name": "@folionote/editor-core",
-  "version": "0.2.24",
+  "version": "0.2.29",
   "description": "FolioNote headless editor core - platform-agnostic editor logic",
   "type": "module",
   "exports": {
@@ -31,12 +31,13 @@
   "dependencies": {
     "@tiptap/core": "catalog:",
     "@tiptap/extension-code-block": "catalog:",
-    "@tiptap/extension-image": "^3.26.0",
+    "@tiptap/extension-image": "catalog:",
     "@tiptap/extension-link": "catalog:",
-    "@tiptap/extension-table": "^3.20.0",
-    "@tiptap/extension-table-cell": "^3.20.0",
-    "@tiptap/extension-table-header": "^3.20.0",
-    "@tiptap/extension-table-row": "^3.20.0",
+    "@tiptap/extension-list": "catalog:",
+    "@tiptap/extension-table": "catalog:",
+    "@tiptap/extension-table-cell": "catalog:",
+    "@tiptap/extension-table-header": "catalog:",
+    "@tiptap/extension-table-row": "catalog:",
     "@tiptap/pm": "catalog:",
     "@tiptap/starter-kit": "catalog:",
     "@tiptap/suggestion": "catalog:"

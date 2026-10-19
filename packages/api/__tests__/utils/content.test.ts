@@ -31,6 +31,25 @@ describe("extractTextFromProseMirrorJson", () => {
     expect(extractTextFromProseMirrorJson(doc)).toBe("Hello, World!\n")
   })
 
+  it("indexes a Japanese sentence block's text and translation", () => {
+    const doc = {
+      type: "doc",
+      content: [
+        {
+          type: "japaneseSentence",
+          attrs: {
+            text: "満員電車に揺られていた人",
+            translation: "曾在满员电车里被摇晃的人"
+          }
+        },
+        { type: "japaneseSentence", attrs: { text: "", translation: null } }
+      ]
+    }
+    expect(extractTextFromProseMirrorJson(doc)).toBe(
+      "満員電車に揺られていた人\n曾在满员电车里被摇晃的人\n\n"
+    )
+  })
+
   it("should extract text from JSON string", () => {
     const jsonString = JSON.stringify({
       type: "doc",

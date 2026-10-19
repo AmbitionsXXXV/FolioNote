@@ -1,10 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute, redirect } from "@tanstack/react-router"
 
-import { JapaneseReadingView } from "@/components/review"
-
+/** Legacy path kept so old links land in the Japanese hub. */
 export const Route = createFileRoute("/jp-reading")({
-  component: JpReadingPage
+  beforeLoad: () => {
+    throw redirect({ to: "/japanese/read" })
+  }
 })
-function JpReadingPage() {
-  return <JapaneseReadingView />
-}
