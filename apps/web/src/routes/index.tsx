@@ -29,6 +29,7 @@ import type { ReactNode } from "react"
 import { useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
 
+import { BrandLockup } from "@/components/brand-lockup"
 import { getUser } from "@/functions/get-user"
 import { cn } from "@/lib/utils"
 
@@ -241,15 +242,11 @@ function LandingNavbar() {
       className="fixed top-4 right-4 left-4 z-50 mx-auto flex max-w-6xl items-center justify-between rounded-full border border-transparent px-5 py-2.5 transition-all duration-300 data-[scrolled]:border-border/60 data-[scrolled]:bg-background/75 data-[scrolled]:shadow-lg data-[scrolled]:backdrop-blur-xl"
       ref={navRef}
     >
-      <Link className="flex cursor-pointer items-center gap-2.5" to="/">
-        <img
-          alt="FolioNote"
-          className="size-9 transition-transform duration-300 hover:scale-110 hover:-rotate-6"
-          src="/svg/icon.svg"
+      <Link className="group flex cursor-pointer items-center gap-2.5" to="/">
+        <BrandLockup
+          iconClassName="size-9 transition-transform duration-300 group-hover:scale-105"
+          wordmarkClassName="text-xl"
         />
-        <span className="font-display text-lg font-semibold tracking-tight">
-          FolioNote
-        </span>
       </Link>
 
       <div className="hidden items-center gap-8 md:flex">
@@ -1575,10 +1572,7 @@ function LandingFooter() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex items-center gap-2.5">
-            <img alt="FolioNote" className="size-6" src="/svg/icon.svg" />
-            <span className="font-display text-sm font-semibold">
-              FolioNote
-            </span>
+            <BrandLockup iconClassName="size-6" wordmarkClassName="text-base" />
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">

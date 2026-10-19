@@ -1,21 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router"
 
-import { JapaneseExamView } from "@/components/review"
-import { getUser } from "@/functions/get-user"
-
+/** Legacy path kept so old links land in the Japanese hub. */
 export const Route = createFileRoute("/jp-exam")({
-  beforeLoad: async ({ location }) => {
-    const session = await getUser()
-    if (!session) {
-      throw redirect({
-        to: "/login",
-        search: { redirect: location.href }
-      })
-    }
-    return { session }
-  },
-  component: JpExamPage
+  beforeLoad: () => {
+    throw redirect({ to: "/japanese/practice/exam" })
+  }
 })
-function JpExamPage() {
-  return <JapaneseExamView />
-}

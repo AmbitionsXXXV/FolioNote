@@ -229,7 +229,9 @@ export default function ReviewScreen() {
         contentInsetAdjustmentBehavior="automatic"
         refreshControl={
           <RefreshControl
-            onRefresh={refetch}
+            onRefresh={() => {
+              refetch()
+            }}
             refreshing={isRefetching}
             tintColor={accentColor}
           />

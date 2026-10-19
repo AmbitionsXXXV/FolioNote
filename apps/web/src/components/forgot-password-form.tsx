@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 import z from "zod"
 
+import { BrandLockup } from "@/components/brand-lockup"
 import { authClient } from "@/lib/auth-client"
 import { prettifyFormErrors } from "@/lib/form-error"
 
@@ -136,12 +137,11 @@ export default function ForgotPasswordForm() {
       <div className="w-full max-w-md">
         {/* Branding Section */}
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-primary shadow-lg">
-            <HugeiconsIcon
-              className="size-8 text-primary-foreground"
-              icon={Mail01Icon}
-            />
-          </div>
+          <BrandLockup
+            className="mb-5 justify-center"
+            iconClassName="size-14"
+            wordmarkClassName="text-3xl"
+          />
           <h1 className="mb-2 text-3xl font-bold">
             {t("auth.forgotPasswordTitle")}
           </h1>

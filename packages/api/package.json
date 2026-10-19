@@ -1,6 +1,6 @@
 {
   "name": "@folionote/api",
-  "version": "0.2.24",
+  "version": "0.2.29",
   "type": "module",
   "exports": {
     ".": {
@@ -18,6 +18,8 @@
     "@folionote/auth": "workspace:*",
     "@folionote/constants": "workspace:*",
     "@folionote/db": "workspace:*",
+    "@folionote/editor-core": "workspace:*",
+    "@folionote/japanese": "workspace:*",
     "@folionote/locales": "workspace:*",
     "@folionote/log": "workspace:*",
     "@folionote/model-list": "workspace:*",
@@ -27,11 +29,13 @@
     "@orpc/openapi": "catalog:",
     "@orpc/server": "catalog:",
     "@orpc/zod": "catalog:",
+    "@tiptap/core": "catalog:",
     "@upstash/redis": "^1.36.2",
     "bcryptjs": "^3.0.3",
     "dotenv": "catalog:",
     "drizzle-orm": "catalog:",
     "hono": "catalog:",
+    "marked": "^18.0.5",
     "nanoid": "catalog:",
     "zod": "catalog:"
   },

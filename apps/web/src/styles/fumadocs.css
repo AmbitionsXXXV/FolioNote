@@ -1,0 +1,50 @@
+/* ===========================================================================
+   fumadocs-ui token bridge — HeroUI semantics
+   ---------------------------------------------------------------------------
+   `fumadocs-ui/css/shadcn.css` maps every `--color-fd-*` token to the shadcn
+   variable of the same name. After the HeroUI migration two of those names
+   changed role, so the bridge points at the wrong colours:
+
+   - `--accent` is the solid amber FILL and `--accent-foreground` the dark ink
+     that sits ON it. shadcn means "subtle hover surface" + "text on that
+     surface". fumadocs' TOC hover uses `text-fd-accent-foreground`, which
+     resolved to near-black text on the obsidian page in dark mode.
+   - `--muted` is now secondary TEXT. fumadocs uses `fd-muted` as a surface
+     (the clerk TOC depth badge fills with it, then writes
+     `fd-muted-foreground` on top), so badge and label were the same colour.
+
+   Each token below is mapped by its fumadocs role, not by name. Same
+   selector as the vendor sheet and imported after it in `index.css`, so it
+   wins by source order. Keep it unlayered.
+   =========================================================================== */
+
+:root,
+.dark {
+  /* Page */
+  --color-fd-background: var(--background);
+  --color-fd-foreground: var(--foreground);
+
+  /* Recessed surface + the secondary text written on it */
+  --color-fd-muted: var(--surface-tertiary);
+  --color-fd-muted-foreground: var(--muted);
+
+  /* Raised surfaces */
+  --color-fd-card: var(--surface);
+  --color-fd-card-foreground: var(--surface-foreground);
+  --color-fd-popover: var(--overlay);
+  --color-fd-popover-foreground: var(--overlay-foreground);
+  --color-fd-secondary: var(--surface-tertiary);
+  --color-fd-secondary-foreground: var(--default-foreground);
+
+  /* Hover / highlight: a quiet wash with full-strength text, never the
+     brand fill */
+  --color-fd-accent: var(--surface-secondary);
+  --color-fd-accent-foreground: var(--foreground);
+
+  /* Brand: active TOC item, active-line indicator */
+  --color-fd-primary: var(--accent);
+  --color-fd-primary-foreground: var(--accent-foreground);
+
+  --color-fd-border: var(--border);
+  --color-fd-ring: var(--focus);
+}

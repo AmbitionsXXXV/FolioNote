@@ -38,7 +38,7 @@ jobs:
         uses: pnpm/action-setup@v6.0.9
 
       - name: Setup Vite+
-        uses: voidzero-dev/setup-vp@v1
+        uses: voidzero-dev/setup-vp@v1.21.1
         with:
           node-version-file: ".node-version"
           cache: true
@@ -68,6 +68,9 @@ jobs:
           cp -r apps/server/dist deploy-package/
           cp apps/server/package.json deploy-package/
           cp apps/server/ecosystem.config.cjs deploy-package/ 2>/dev/null || true
+
+      - name: Verify deployment package startup
+        run: vp node apps/server/scripts/smoke-deployment.mjs deploy-package
 
       - name: Upload deployment package
         uses: actions/upload-artifact@v7
@@ -149,6 +152,7 @@ jobs:
           "
 
       - name: Restart application with PM2
+        timeout-minutes: 3
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} << 'ENDSSH'
             set -e

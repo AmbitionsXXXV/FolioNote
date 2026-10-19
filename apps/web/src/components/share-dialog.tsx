@@ -279,10 +279,10 @@ function CreateShareForm({
           isSelected={usePassword}
           onChange={setUsePassword}
         >
-          <Checkbox.Control>
-            <Checkbox.Indicator />
-          </Checkbox.Control>
           <Checkbox.Content>
+            <Checkbox.Control>
+              <Checkbox.Indicator />
+            </Checkbox.Control>
             <Label className="cursor-pointer" htmlFor="use-password">
               {t("share.passwordProtection")}
             </Label>
@@ -339,10 +339,10 @@ function CreateShareForm({
         isSelected={showBranding}
         onChange={setShowBranding}
       >
-        <Checkbox.Control>
-          <Checkbox.Indicator />
-        </Checkbox.Control>
         <Checkbox.Content>
+          <Checkbox.Control>
+            <Checkbox.Indicator />
+          </Checkbox.Control>
           <Label className="cursor-pointer" htmlFor="show-branding">
             {t("share.showBranding")}
           </Label>

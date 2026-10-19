@@ -185,8 +185,9 @@ function NewEntryPage() {
         />
       )}
 
-      {/* Main content */}
-      <div className="min-w-0 flex-1 px-4 py-6">
+      {/* Main content. The left gutter fits the block handle, which sits
+          outside the text column and would be clipped by the scrolling <main>. */}
+      <div className="min-w-0 flex-1 px-4 py-6 md:pl-20">
         {/* Header toolbar */}
         <nav className="mb-6 flex items-center justify-between">
           <Button

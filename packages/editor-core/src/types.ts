@@ -12,12 +12,14 @@ export type IconId =
   | "code"
   | "bulletList"
   | "orderedList"
+  | "taskList"
   | "divider"
   | "tag"
   | "ref"
   | "source"
   | "table"
   | "image"
+  | "japanese"
 
 /**
  * Context passed to command execution

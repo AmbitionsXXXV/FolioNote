@@ -1,0 +1,90 @@
+/* ===========================================================================
+   Radius roles for HeroUI components (CDS rules, AGENTS.md)
+   ---------------------------------------------------------------------------
+   HeroUI rounds controls with its 2xl/3xl steps and every surface with
+   min(32px, --radius-3xl). CDS assigns radius by role instead:
+     buttons 8 (LG 12) · inputs 8 · menu items 6 · chips 4 ·
+     cards / popovers / code 12 · dialogs 16 · segmented tracks, switches,
+     avatars: pill.
+
+   In @layer components — the layer HeroUI (OSS + Pro) ships in — and
+   imported after it, so these win on source order at equal specificity,
+   while HeroUI's more specific rules (button-group seams, first/last child
+   corners) still apply. Unlayered here would flatten those seams.
+   =========================================================================== */
+
+@layer components {
+  .button,
+  .button--sm,
+  .button--md,
+  .toggle-button,
+  .pagination__link {
+    border-radius: var(--radius-lg);
+  }
+
+  .button--lg {
+    border-radius: var(--radius-xl);
+  }
+
+  .menu-item,
+  .list-box-item {
+    border-radius: var(--radius-md);
+  }
+
+  .chip,
+  .tag,
+  .tag--lg {
+    border-radius: var(--radius-sm);
+  }
+
+  /* Segmented control: pill track, pill thumb */
+  .tabs__list,
+  .tabs__tab,
+  .tabs__indicator {
+    border-radius: 9999px;
+  }
+
+  .card,
+  .popover,
+  .dropdown__popover,
+  .select__popover,
+  .combo-box__popover,
+  .toast,
+  .alert,
+  .accordion--surface {
+    border-radius: var(--radius-xl);
+  }
+
+  /* First/last trigger hover fills follow the container's corners */
+  .accordion--surface
+    .accordion__item:first-child
+    [data-slot="accordion-trigger"] {
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+  }
+
+  .accordion--surface
+    .accordion__item:last-child:not(
+      :has([data-slot="accordion-trigger"][aria-expanded="true"])
+    )
+    [data-slot="accordion-trigger"] {
+    border-bottom-left-radius: var(--radius-xl);
+    border-bottom-right-radius: var(--radius-xl);
+  }
+
+  .modal__dialog,
+  .alert-dialog__dialog {
+    border-radius: var(--radius-2xl);
+  }
+
+  .modal__icon,
+  .alert-dialog__icon {
+    border-radius: var(--radius-xl);
+  }
+
+  .avatar,
+  .avatar--sm,
+  .avatar--lg {
+    border-radius: 9999px;
+  }
+}

@@ -47,6 +47,7 @@ import { EntrySources } from "@/components/entry-sources"
 import type { EntrySourcesRef } from "@/components/entry-sources"
 import { EntryTags } from "@/components/entry-tags"
 import type { EntryTagsRef } from "@/components/entry-tags"
+import { EntrySourceStatus } from "@/components/imports/entry-source-status"
 import { SaveStatusIndicator } from "@/components/save-status-indicator"
 import { ShareDialog } from "@/components/share-dialog"
 import { TableOfContents } from "@/components/table-of-contents"
@@ -899,8 +900,9 @@ function EntryEditPage() {
         />
       )}
 
-      {/* Main content */}
-      <div className="min-w-0 flex-1 px-4 py-6">
+      {/* Main content. The left gutter fits the block handle, which sits
+          outside the text column and would be clipped by the scrolling <main>. */}
+      <div className="min-w-0 flex-1 px-4 py-6 md:pl-20">
         {/* Header toolbar */}
         <EntryToolbar
           connectionState={connectionState}
@@ -945,6 +947,14 @@ function EntryEditPage() {
             </div>
             <div className="mb-4">
               <EntrySources entryId={id} ref={entrySourcesRef} />
+            </div>
+            <div className="mb-4 empty:hidden">
+              <EntrySourceStatus
+                entryId={id}
+                // A pull / re-import rewrote the content: drop the local copy
+                // so the editor takes the refetched entry.
+                onContentReplaced={() => setLocalContent(null)}
+              />
             </div>
           </>
         )}

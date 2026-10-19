@@ -114,6 +114,6 @@ pnpm run dev
 
 MIT License
 
-## Thanks
+## Brand assets
 
-Icon Designer: [枯白啃设计](https://x.com/Kubai087)
+The current FolioNote icon source, Icon Composer project, and platform previews live in [design/brand](./design/brand).

@@ -104,6 +104,18 @@ export const defaultSlashCommands: SlashCommandDefinition[] = [
     }
   },
   {
+    id: "taskList",
+    titleKey: "editor.slashCommand.taskList",
+    descriptionKey: "editor.slashCommand.taskListDesc",
+    iconId: "taskList",
+    keywords: ["todo", "task", "checklist", "checkbox", "待办", "清单"],
+    groupKey: "editor.slashCommand.lists",
+    execute: ({ editor, range }) => {
+      // biome-ignore lint/suspicious/noExplicitAny: extension commands are dynamically typed
+      ;(editor.chain().focus().deleteRange(range) as any).toggleTaskList().run()
+    }
+  },
+  {
     id: "divider",
     titleKey: "editor.slashCommand.divider",
     descriptionKey: "editor.slashCommand.dividerDesc",
@@ -129,6 +141,29 @@ export const defaultSlashCommands: SlashCommandDefinition[] = [
       // biome-ignore lint/suspicious/noExplicitAny: extension commands are dynamically typed
       ;(editor.chain().focus().deleteRange(range) as any)
         .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+        .run()
+    }
+  },
+  {
+    id: "japaneseSentence",
+    titleKey: "editor.slashCommand.japaneseSentence",
+    descriptionKey: "editor.slashCommand.japaneseSentenceDesc",
+    iconId: "japanese",
+    keywords: [
+      "japanese",
+      "furigana",
+      "mirra",
+      "日语",
+      "分词",
+      "例句",
+      "ふりがな"
+    ],
+    groupKey: "editor.slashCommand.basicBlocks",
+    execute: ({ editor, range }) => {
+      // Only editors that register JapaneseSentence expose the command.
+      // biome-ignore lint/suspicious/noExplicitAny: extension commands are dynamically typed
+      ;(editor.chain().focus().deleteRange(range) as any)
+        .insertJapaneseSentence()
         .run()
     }
   }

@@ -1,7 +1,10 @@
 import { lookup } from "node:dns/promises"
 import { isIP } from "node:net"
+import type { LookupFunction } from "node:net"
 
 import TurndownService from "turndown"
+import { Agent, fetch } from "undici"
+import type { RequestInit, Response } from "undici"
 
 import type { FetchFormat, WebFetchToolOutput } from "../types"
 import {
@@ -44,6 +47,7 @@ function buildHeaders(format: FetchFormat, userAgent: string) {
 }
 
 function normalizeHostname(hostname: string): string {
+  hostname = hostname.replace(/^\[|\]$/g, "")
   return hostname.endsWith(".") ? hostname.slice(0, -1) : hostname
 }
 
@@ -107,14 +111,46 @@ function isBlockedIpv4Address(address: string): boolean {
 }
 
 function isBlockedIpv6Address(address: string): boolean {
-  const normalizedAddress = address.toLowerCase().split("%")[0]
+  const normalizedAddress = new URL(`http://[${address}]/`).hostname
+    .slice(1, -1)
+    .toLowerCase()
   if (!normalizedAddress) {
     return true
   }
 
-  if (normalizedAddress.startsWith("::ffff:")) {
-    return isBlockedIpAddress(normalizedAddress.slice("::ffff:".length))
+  const [left = "", right = ""] = normalizedAddress.split("::")
+  const head = left ? left.split(":") : []
+  const tail = right ? right.split(":") : []
+  const hextets = normalizedAddress.includes("::")
+    ? [
+        ...head,
+        ...Array.from({ length: 8 - head.length - tail.length }, () => "0"),
+        ...tail
+      ]
+    : head
+  const words = hextets.map((word) => Number.parseInt(word, 16))
+  const embeddedIpv4 = (offset: number): string => {
+    const high = words[offset] ?? 0
+    const low = words[offset + 1] ?? 0
+    return [
+      Math.floor(high / 256),
+      high % 256,
+      Math.floor(low / 256),
+      low % 256
+    ].join(".")
   }
+  if (words.slice(0, 5).every((word) => word === 0) && words[5] === 0xff_ff) {
+    return isBlockedIpv4Address(embeddedIpv4(6))
+  }
+  // Transition mechanisms can route an otherwise public IPv6 literal to IPv4.
+  if (
+    words[0] === 0x64 &&
+    words[1] === 0xff_9b &&
+    words.slice(2, 6).every((word) => word === 0)
+  ) {
+    return isBlockedIpv4Address(embeddedIpv4(6))
+  }
+  if (words[0] === 0x20_02) return isBlockedIpv4Address(embeddedIpv4(1))
 
   if (normalizedAddress === "::" || normalizedAddress === "::1") {
     return true
@@ -161,9 +197,16 @@ async function assertPublicInternetUrl(url: URL): Promise<void> {
     return
   }
 
+  await lookupPublicAddresses(normalizedHostname)
+}
+
+async function lookupPublicAddresses(
+  hostname: string
+): Promise<ResolvedLookupAddress[]> {
+  if (isBlockedHostname(hostname)) throw new Error(BLOCKED_URL_ERROR)
   let resolvedAddresses: ResolvedLookupAddress[]
   try {
-    resolvedAddresses = (await lookup(normalizedHostname, {
+    resolvedAddresses = (await lookup(hostname, {
       all: true,
       verbatim: true
     })) as ResolvedLookupAddress[]
@@ -180,6 +223,26 @@ async function assertPublicInternetUrl(url: URL): Promise<void> {
       throw new Error(BLOCKED_URL_ERROR)
     }
   }
+  return resolvedAddresses
+}
+
+// The connector uses these exact vetted addresses; the URL hostname remains intact
+// for HTTP Host and TLS SNI. This also covers new connections after redirects.
+const publicLookup: LookupFunction = (hostname, options, callback) => {
+  void (async () => {
+    try {
+      const addresses = await lookupPublicAddresses(hostname)
+      const candidates = options.family
+        ? addresses.filter((entry) => entry.family === options.family)
+        : addresses
+      const first = candidates[0]
+      if (!first) throw new Error("Unable to resolve URL hostname")
+      if (options.all) callback(null, candidates)
+      else callback(null, first.address, first.family)
+    } catch (error) {
+      callback(error instanceof Error ? error : new Error(String(error)), "", 0)
+    }
+  })()
 }
 
 function buildAbortSignal(
@@ -226,9 +289,16 @@ function resolveTimeoutMs(timeoutSeconds?: number): number {
 async function fetchWithRedirectValidation(
   initialUrl: URL,
   headers: ReturnType<typeof buildHeaders>,
-  signal: AbortSignal
+  signal: AbortSignal,
+  dispatcher: Agent
 ): Promise<Response> {
   let currentUrl = initialUrl
+  const requestOptions: RequestInit = {
+    signal,
+    dispatcher,
+    headers,
+    redirect: "manual"
+  }
 
   for (
     let redirectCount = 0;
@@ -237,18 +307,19 @@ async function fetchWithRedirectValidation(
   ) {
     await assertPublicInternetUrl(currentUrl)
 
-    const initialResponse = await fetch(currentUrl, {
-      signal,
-      headers,
-      redirect: "manual"
-    })
+    const initialResponse = await fetch(currentUrl, requestOptions)
 
+    if (
+      initialResponse.status === 403 &&
+      initialResponse.headers.get("cf-mitigated") === "challenge"
+    ) {
+      await initialResponse.body?.cancel()
+    }
     const response =
       initialResponse.status === 403 &&
       initialResponse.headers.get("cf-mitigated") === "challenge"
         ? await fetch(currentUrl, {
-            signal,
-            redirect: "manual",
+            ...requestOptions,
             headers: { ...headers, "User-Agent": HONEST_USER_AGENT }
           })
         : initialResponse
@@ -257,6 +328,7 @@ async function fetchWithRedirectValidation(
       return response
     }
 
+    await response.body?.cancel()
     if (redirectCount === MAX_REDIRECTS) {
       throw new Error("Too many redirects while fetching URL")
     }
@@ -295,22 +367,24 @@ function formatContent(
   }
 }
 
-export async function fetchUrlContent(
+async function fetchUrlBytesWithFormat(
   url: string,
   format: FetchFormat = "markdown",
   timeout?: number,
   abortSignal?: AbortSignal
-): Promise<WebFetchToolOutput> {
+): Promise<{ url: string; contentType: string; bytes: Uint8Array }> {
   const parsedUrl = parseValidatedUrl(url)
   const timeoutMs = resolveTimeoutMs(timeout)
   const signal = buildAbortSignal(timeoutMs, abortSignal)
   const headers = buildHeaders(format, BROWSER_USER_AGENT)
 
+  const dispatcher = new Agent({ connect: { lookup: publicLookup } })
   try {
     const response = await fetchWithRedirectValidation(
       parsedUrl,
       headers,
-      signal
+      signal,
+      dispatcher
     )
 
     if (!response.ok) {
@@ -331,14 +405,45 @@ export async function fetchUrlContent(
     }
 
     const contentType = response.headers.get("content-type") ?? ""
-    const rawContent = new TextDecoder().decode(arrayBuffer)
-    const content = formatContent(rawContent, contentType, format)
-
-    return { url: parsedUrl.toString(), contentType, content, format }
+    return {
+      url: parsedUrl.toString(),
+      contentType,
+      bytes: new Uint8Array(arrayBuffer)
+    }
   } catch (error) {
     if (error instanceof Error && error.name === "TimeoutError") {
       throw new Error("Web fetch request timed out", { cause: error })
     }
     throw error
+  } finally {
+    await dispatcher.destroy()
   }
+}
+
+export async function fetchUrlBytes(
+  url: string,
+  timeout?: number,
+  abortSignal?: AbortSignal
+) {
+  return await fetchUrlBytesWithFormat(url, "html", timeout, abortSignal)
+}
+
+export async function fetchUrlContent(
+  url: string,
+  format: FetchFormat = "markdown",
+  timeout?: number,
+  abortSignal?: AbortSignal
+): Promise<WebFetchToolOutput> {
+  const { bytes, ...response } = await fetchUrlBytesWithFormat(
+    url,
+    format,
+    timeout,
+    abortSignal
+  )
+  const content = formatContent(
+    new TextDecoder().decode(bytes),
+    response.contentType,
+    format
+  )
+  return { ...response, content, format }
 }

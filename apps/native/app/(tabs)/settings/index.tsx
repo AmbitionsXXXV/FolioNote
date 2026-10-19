@@ -39,6 +39,7 @@ import {
 } from "react-native"
 import Animated, { ZoomIn } from "react-native-reanimated"
 
+import { BrandLockup } from "@/components/brand-lockup"
 import { Container } from "@/components/container"
 import { useAppTheme } from "@/contexts/app-theme-context"
 import { useAvatarState } from "@/hooks"
@@ -451,16 +452,8 @@ function DangerZoneSection({
 function AppInfoFooter() {
   return (
     <View className="mt-auto items-center pt-8">
-      <Text
-        className="text-sm text-accent"
-        style={{ fontFamily: "LeckerliOne" }}
-      >
-        FolioNote
-      </Text>
-      <Text
-        className="text-xs text-muted"
-        style={{ fontFamily: "LeckerliOne" }}
-      >
+      <BrandLockup size={24} wordmarkClassName="text-lg text-accent" />
+      <Text className="mt-1 text-xs text-muted">
         v{Constants.expoConfig?.version}
       </Text>
     </View>

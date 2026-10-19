@@ -1,0 +1,21 @@
+{
+  "name": "FolioNote",
+  "short_name": "FolioNote",
+  "description": "Your personal learning system for capturing, organizing, and revisiting what you learn.",
+  "icons": [
+    {
+      "src": "/brand/folionote-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/brand/folionote-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#211E19",
+  "theme_color": "#211E19"
+}

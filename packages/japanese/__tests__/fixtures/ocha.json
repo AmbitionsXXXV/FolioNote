@@ -1,0 +1,6 @@
+{
+  "text": "お茶をもう一杯いかがですか。",
+  "words": ["お茶", "を", "もう", "一杯", "いかが", "です", "か", "。"],
+  "phrases": ["お茶を", "もう", "一杯", "いかがですか。"],
+  "notes": "お茶 is a single IPADIC entry. もう + 一杯 are two 副詞 tokens (no もう一杯 entry). いかが is 形容動詞語幹, so です stays a separate auxiliary word."
+}

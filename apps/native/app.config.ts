@@ -8,7 +8,8 @@ const config: ExpoConfig = {
   userInterfaceStyle: "automatic",
   orientation: "default",
   web: {
-    bundler: "metro"
+    bundler: "metro",
+    favicon: "./assets/images/favicon.png"
   },
   icon: "./assets/images/icon.png",
   name: "FolioNote",
@@ -30,7 +31,19 @@ const config: ExpoConfig = {
       }
     ],
     "expo-sharing",
-    "expo-splash-screen"
+    [
+      "expo-splash-screen",
+      {
+        backgroundColor: "#211E19",
+        dark: {
+          backgroundColor: "#211E19",
+          image: "./assets/images/splash-icon.png"
+        },
+        image: "./assets/images/splash-icon.png",
+        imageWidth: 180,
+        resizeMode: "contain"
+      }
+    ]
   ],
   experiments: {
     typedRoutes: true,
@@ -46,6 +59,12 @@ const config: ExpoConfig = {
     }
   },
   android: {
+    adaptiveIcon: {
+      backgroundColor: "#211E19",
+      foregroundImage: "./assets/images/android-icon-foreground.png",
+      monochromeImage: "./assets/images/android-icon-monochrome.png"
+    },
+    icon: "./assets/images/icon.png",
     package: "com.etcetera.folionote"
   },
   updates: {

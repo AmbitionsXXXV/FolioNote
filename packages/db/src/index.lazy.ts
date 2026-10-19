@@ -1,4 +1,19 @@
 // Browser-safe stub: db is server-only, accessing any property throws at runtime.
+export {
+  entryExternalLinks,
+  entryExternalLinksRelations,
+  externalConnections,
+  externalConnectionsRelations
+} from "./schema/connections"
+export {
+  jpArticles,
+  jpArticlesRelations,
+  jpLexicons,
+  jpLexiconsRelations,
+  jpLexiconEntries,
+  jpLexiconEntriesRelations,
+  jpStudyState
+} from "./schema/japanese-library"
 // The type import below is erased at compile time and produces no runtime code.
 type DbType = ReturnType<typeof import("drizzle-orm/node-postgres").drizzle>
 
@@ -60,3 +75,11 @@ export {
   tagsRelations
 } from "./schema/entries"
 export { entryLinks, entryLinksRelations } from "./schema/graph"
+export {
+  jpGrammar,
+  jpKanji,
+  jpVocab,
+  jpVocabExamples,
+  jpVocabExamplesRelations,
+  jpVocabRelations
+} from "./schema/japanese"

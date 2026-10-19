@@ -1,12 +1,14 @@
 import type { IconId } from "@folionote/editor-core"
 import {
   Book02Icon,
+  CheckListIcon,
   CodeIcon,
   DivideSignIcon,
   Heading01Icon,
   Heading02Icon,
   Heading03Icon,
   Image02Icon,
+  LanguageSquareIcon,
   LeftToRightListBulletIcon,
   LeftToRightListNumberIcon,
   Link04Icon,
@@ -33,12 +35,14 @@ export const defaultIconMap: Record<IconId, ReactNode> = {
   orderedList: (
     <HugeiconsIcon className="size-4" icon={LeftToRightListNumberIcon} />
   ),
+  taskList: <HugeiconsIcon className="size-4" icon={CheckListIcon} />,
   divider: <HugeiconsIcon className="size-4" icon={DivideSignIcon} />,
   tag: <HugeiconsIcon className="size-4" icon={Tag01Icon} />,
   ref: <HugeiconsIcon className="size-4" icon={Link04Icon} />,
   source: <HugeiconsIcon className="size-4" icon={Book02Icon} />,
   table: <HugeiconsIcon className="size-4" icon={Table01Icon} />,
-  image: <HugeiconsIcon className="size-4" icon={Image02Icon} />
+  image: <HugeiconsIcon className="size-4" icon={Image02Icon} />,
+  japanese: <HugeiconsIcon className="size-4" icon={LanguageSquareIcon} />
 }
 
 export type IconMapType = Record<IconId, ReactNode>

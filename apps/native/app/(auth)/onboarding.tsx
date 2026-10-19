@@ -1,6 +1,5 @@
 import { StorageKey } from "@folionote/constants"
 import {
-  Book02Icon,
   CloudIcon,
   NoteEditIcon,
   RefreshIcon
@@ -16,6 +15,7 @@ import { ActivityIndicator, Text, View } from "react-native"
 import Animated, { FadeInDown, ZoomIn } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
+import { BrandLockup } from "@/components/brand-lockup"
 import { Container } from "@/components/container"
 import { useLocalMode } from "@/contexts/local-mode-context"
 
@@ -86,17 +86,13 @@ export default function OnboardingScreen() {
         <View className="flex-1 items-center justify-center px-8">
           {/* Logo / Icon */}
           <Animated.View
-            className="mb-8 size-24 items-center justify-center rounded-3xl bg-accent/10"
+            className="mb-8"
             entering={getEntryAnimation(100, ZoomIn)}
           >
-            <HugeiconsIcon color={accentColor} icon={Book02Icon} size={48} />
-          </Animated.View>
-
-          {/* App Name */}
-          <Animated.View entering={getEntryAnimation(200)}>
-            <Text className="mb-3 text-center text-4xl font-bold text-foreground">
-              FolioNote
-            </Text>
+            <BrandLockup
+              size={64}
+              wordmarkClassName="text-4xl text-foreground"
+            />
           </Animated.View>
 
           {/* Tagline */}

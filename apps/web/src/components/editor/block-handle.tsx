@@ -27,6 +27,8 @@ import type { Editor } from "@tiptap/core"
 import { DOMSerializer } from "@tiptap/pm/model"
 import type { Node as ProseMirrorNode } from "@tiptap/pm/model"
 import { TextSelection } from "@tiptap/pm/state"
+import type { Transaction } from "@tiptap/pm/state"
+import type { EditorView } from "@tiptap/pm/view"
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { RefObject } from "react"
 import { useTranslation } from "react-i18next"
@@ -41,11 +43,21 @@ interface BlockHandleProps {
   containerRef: RefObject<HTMLDivElement | null>
 }
 
+/** Elements whose first line the handle centres on. */
+const TEXT_BLOCK_SELECTOR = "p, h1, h2, h3, pre"
+/** CSS `line-height: normal` resolves to roughly 1.2× the font size. */
+const NORMAL_LINE_HEIGHT = 1.2
+/** Half a body line, for atoms (images, rules) that have no text line. */
+const FALLBACK_HALF_LINE_PX = 12
+
 interface HandleState {
+  /** Centre of the block's first line, relative to the container. */
   top: number
-  /** The hovered block's DOM element; positions are derived fresh from it so a
-   *  doc mutation while the menu is open can't desync a cached offset. */
-  blockEl: HTMLElement
+  /** Doc position of the hovered top-level block, mapped through every
+   *  transaction. Not its DOM element: ProseMirror replaces a block's element
+   *  when its attributes change (folding a heading), which left the handle
+   *  pointing at a detached node — wrong badge, wrong block for the menu. */
+  pos: number
 }
 
 /** Block types the handle can convert the current block into. */
@@ -125,6 +137,42 @@ function topLevelBlock(root: HTMLElement, el: HTMLElement): HTMLElement | null {
     node = node.parentElement
   }
   return node && node.parentElement === root ? node : null
+}
+
+/** Doc position of a top-level block element, or null if it isn't one. */
+function blockPos(view: EditorView, blockEl: HTMLElement): number | null {
+  let pos = 0
+  for (const child of view.state.doc.children) {
+    if (view.nodeDOM(pos) === blockEl) {
+      return pos
+    }
+    pos += child.nodeSize
+  }
+  return null
+}
+
+/**
+ * Centre of a block's first line, so the handle sits on it whatever the font
+ * size (H1 vs body). Lists, quotes and code blocks measure their first text
+ * block; images and other atoms fall back to their top edge.
+ */
+function firstLineCenter(blockEl: HTMLElement): number {
+  const textBlock = blockEl.matches(TEXT_BLOCK_SELECTOR)
+    ? blockEl
+    : blockEl.querySelector<HTMLElement>(TEXT_BLOCK_SELECTOR)
+  if (!textBlock) {
+    return blockEl.getBoundingClientRect().top + FALLBACK_HALF_LINE_PX
+  }
+  const style = getComputedStyle(textBlock)
+  const lineHeight =
+    Number.parseFloat(style.lineHeight) ||
+    Number.parseFloat(style.fontSize) * NORMAL_LINE_HEIGHT
+  return (
+    textBlock.getBoundingClientRect().top +
+    Number.parseFloat(style.paddingTop) +
+    Number.parseFloat(style.borderTopWidth) +
+    lineHeight / 2
+  )
 }
 
 /** Map a node to the `BlockKind` it currently is (for the active highlight). */
@@ -445,11 +493,41 @@ function useBlockHover(
         setState(null)
         return
       }
-      const containerRect = container.getBoundingClientRect()
-      const blockRect = blockEl.getBoundingClientRect()
+      const pos = blockPos(editor.view, blockEl)
+      if (pos === null) {
+        return
+      }
       setState({
-        top: blockRect.top - containerRect.top,
-        blockEl
+        top: firstLineCenter(blockEl) - container.getBoundingClientRect().top,
+        pos
+      })
+    }
+
+    // Follow the block through edits (fold, retype, text above it changing),
+    // re-measuring from its current element.
+    const handleTransaction = ({
+      transaction
+    }: {
+      transaction: Transaction
+    }) => {
+      if (!transaction.docChanged) {
+        return
+      }
+      setState((prev) => {
+        if (!prev) {
+          return prev
+        }
+        const mapped = transaction.mapping.mapResult(prev.pos, 1)
+        const blockEl = mapped.deleted
+          ? null
+          : (editor.view.nodeDOM(mapped.pos) as HTMLElement | null)
+        if (!blockEl || blockEl.parentElement !== editorDom) {
+          return null
+        }
+        return {
+          top: firstLineCenter(blockEl) - container.getBoundingClientRect().top,
+          pos: mapped.pos
+        }
       })
     }
 
@@ -466,9 +544,11 @@ function useBlockHover(
 
     editorDom.addEventListener("mousemove", handleMove)
     container.addEventListener("mouseleave", handleLeave)
+    editor.on("transaction", handleTransaction)
     return () => {
       editorDom.removeEventListener("mousemove", handleMove)
       container.removeEventListener("mouseleave", handleLeave)
+      editor.off("transaction", handleTransaction)
     }
   }, [editor, containerRef, handleRef, menuOpenRef, typeOpenRef])
 
@@ -545,25 +625,13 @@ export function BlockHandle({ editor, containerRef }: BlockHandleProps) {
     if (!(editor && state)) {
       return null
     }
-    const { doc } = editor.state
-    // Derive the position fresh from the DOM element each call, so it stays
-    // correct even if the document mutated since the block was hovered.
-    let pos: number
-    try {
-      pos = editor.view.posAtDOM(state.blockEl, 0)
-    } catch {
+    const node = editor.state.doc.nodeAt(state.pos)
+    // Atoms (images, rules, sentence blocks) have no type to switch or text to
+    // copy as a block; the handle stays a hover affordance for them.
+    if (!node || node.isAtom) {
       return null
     }
-    if (pos < 0 || pos > doc.content.size) {
-      return null
-    }
-    const $pos = doc.resolve(pos)
-    if ($pos.depth < 1) {
-      return null
-    }
-    const start = $pos.before(1)
-    const node = $pos.node(1)
-    return { start, end: start + node.nodeSize, node }
+    return { start: state.pos, end: state.pos + node.nodeSize, node }
   }, [editor, state])
 
   /** Serialize a node to clipboard HTML + plain text. */

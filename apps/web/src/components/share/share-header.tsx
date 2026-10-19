@@ -2,6 +2,7 @@ import { Button } from "@folionote/ui/button"
 import { Link } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
+import { BrandLockup } from "@/components/brand-lockup"
 import { useScrollDirection } from "@/hooks/use-scroll-direction"
 import { cn } from "@/lib/utils"
 
@@ -28,11 +29,8 @@ export function ShareHeader({ showBranding }: ShareHeaderProps) {
     >
       <div className="container mx-auto flex items-center justify-between px-4 py-4">
         {showBranding ? (
-          <Link
-            className="font-script-en font-script text-2xl font-bold text-primary"
-            to="/"
-          >
-            FolioNote
+          <Link to="/">
+            <BrandLockup iconClassName="size-8" wordmarkClassName="text-2xl" />
           </Link>
         ) : (
           <div />

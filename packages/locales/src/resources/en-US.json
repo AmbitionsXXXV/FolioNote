@@ -297,12 +297,6 @@
       "emptyTitle": "No questions match this filter",
       "emptyDescription": "Try a different level or section."
     },
-    "japanesePractice": {
-      "title": "Japanese practice",
-      "readingDescription": "Tap any word to reveal its reading, romaji, and part of speech.",
-      "typingDescription": "Type each sentence's reading, then study its grammar and vocabulary.",
-      "examDescription": "Authentic N5–N1 questions with 红宝书 vocabulary and 蓝宝书 grammar analysis."
-    },
     "today": "Today's Review",
     "markReviewed": "Mark as Reviewed",
     "reviewQueue": "Review Queue",
@@ -390,41 +384,9 @@
     "skipLabel": "Skip this entry",
     "statsStreak": "Streak",
     "modes": {
-      "spaced": "Spaced Review",
-      "japaneseTyping": "Japanese Typing"
+      "spaced": "Spaced Review"
     },
     "japaneseTyping": {
-      "title": "Japanese Typing Practice",
-      "description": "Type the romaji, then review the sentence through grammar notes and vocabulary cards.",
-      "progressBadge": "Sentence {{current}} / {{total}}",
-      "accuracyBadge": "Accuracy {{value}}%",
-      "bankBadge": "{{count}} words unlocked",
-      "statsCompleted": "Completed",
-      "statsAccuracy": "Accuracy",
-      "statsMistakes": "Mistakes",
-      "statsUnlockedWords": "Unlocked Words",
-      "promptLabel": "Practice goal",
-      "translationLabel": "Meaning",
-      "answerLabel": "Type the matching romaji",
-      "answerPlaceholder": "For example: watashi wa mainichi nihongo o benkyou shimasu",
-      "answerHelp": "Spaces and letter case are ignored. Press Enter to submit.",
-      "submit": "Submit answer",
-      "next": "Next sentence",
-      "finish": "View summary",
-      "restart": "Restart",
-      "correct": "Correct input",
-      "incorrect": "Try once more",
-      "expectedAnswer": "Expected answer",
-      "autoCollected": "The sentence vocabulary has been added to your word bank.",
-      "grammarTitle": "Grammar Analysis",
-      "vocabularyTitle": "Sentence Vocabulary",
-      "bankTitle": "Unlocked Word Bank",
-      "bankDescription": "Core words are collected and deduplicated after each completed sentence.",
-      "bankEmpty": "Complete one sentence first and the word bank will start filling up automatically.",
-      "completedTitle": "Practice Complete",
-      "completedDescription": "You finished {{count}} sentences and unlocked {{vocabularyCount}} core words.",
-      "posTagging": "POS Tagging",
-      "posTaggingDescription": "Color-code each word in the sentence by its part of speech",
       "posCategories": {
         "noun": "Noun",
         "pronoun": "Pronoun",
@@ -435,17 +397,358 @@
         "auxiliary": "Auxiliary",
         "expression": "Expression"
       }
+    }
+  },
+  "japanese": {
+    "title": "Japanese",
+    "description": "Search the word bank, read real texts, and practice.",
+    "entry": {
+      "title": "Japanese · 日本語",
+      "subtitle": "Word search, reading, levels"
     },
-    "japaneseReading": {
-      "title": "Reading Analysis",
-      "subtitle": "Tap a word to see its reading and part of speech.",
+    "sections": {
+      "search": "Search",
+      "reading": "Reading",
+      "practice": "Practice"
+    },
+    "search": {
+      "label": "Search the Japanese word bank",
+      "placeholder": "Word, kanji, grammar, or romaji",
+      "tryLabel": "Try",
+      "levelsTitle": "Study by level",
+      "levelsNote": "Levels follow Jonathan Waller's community lists, not official JLPT specifications.",
+      "levelWords": "{{count}} words",
+      "levelKanji": "{{count}} kanji",
+      "levelGrammar": "{{count}} grammar",
+      "readingTitle": "Reading",
+      "readingDescription": "Aozora Bunko excerpts with furigana, romaji, and word-by-word breakdowns.",
+      "practiceTitle": "Practice",
+      "practiceDescription": "Exam-style N5–N1 questions and vocabulary flashcards.",
+      "practiceExam": "Exam questions",
+      "practiceVocab": "Vocabulary",
+      "resultsWords": "Words",
+      "resultsKanji": "Kanji",
+      "resultsGrammar": "Grammar",
+      "noResults": "No results for “{{query}}”",
+      "noResultsHint": "Try a kana reading, romaji, or a single English word.",
+      "strokes": "{{count}} strokes",
+      "formation": "Formation"
+    },
+    "level": {
+      "approx": "approx."
+    },
+    "word": {
+      "backToSearch": "Back to search",
+      "meanings": "Meanings",
+      "examples": "Examples",
+      "kanji": "Kanji in this word",
+      "zhUnavailable": "Chinese meanings aren't available for this word yet, so English is shown.",
+      "notFound": "Word not found",
+      "notFoundHint": "This entry is not in the word bank.",
+      "onyomi": "On",
+      "kunyomi": "Kun",
+      "grade": "Grade {{grade}}",
+      "strokes": "{{count}} strokes",
+      "kanjiWords": "Words",
+      "tatoeba": "View on Tatoeba",
+      "pos": {
+        "v1": "Ichidan verb",
+        "v5": "Godan verb",
+        "vs": "Suru verb",
+        "vk": "Kuru verb",
+        "vt": "Transitive",
+        "vi": "Intransitive",
+        "n": "Noun",
+        "adj-i": "I-adjective",
+        "adj-na": "Na-adjective",
+        "adj-no": "No-adjective",
+        "adv": "Adverb",
+        "adv-to": "To-adverb",
+        "exp": "Expression",
+        "pn": "Pronoun",
+        "prt": "Particle",
+        "conj": "Conjunction",
+        "int": "Interjection",
+        "aux-v": "Auxiliary verb",
+        "n-adv": "Adverbial noun",
+        "n-t": "Temporal noun",
+        "ctr": "Counter",
+        "num": "Numeral",
+        "pref": "Prefix",
+        "suf": "Suffix"
+      }
+    },
+    "reading": {
+      "title": "Reading",
+      "subtitle": "Choose an Aozora Bunko excerpt and tap any word to inspect its reading, part of speech, and dictionary form.",
+      "workPickerLabel": "Choose a work",
+      "excerptCount": "{{count}} original sentences",
+      "publicDomain": "Public domain",
+      "openOriginal": "Read the original at {{source}}",
       "translationLabel": "Translation",
+      "unitLabel": "Show as",
+      "unitWord": "Word",
+      "unitPhrase": "Phrase",
+      "unitMorpheme": "Morpheme",
+      "furigana": "Furigana",
+      "romaji": "Romaji",
       "fieldReading": "Reading",
       "fieldRomaji": "Romaji",
       "fieldPos": "Part of speech",
       "fieldBaseForm": "Dictionary form",
+      "morphemes": "Morphemes",
+      "lookUp": "Look up “{{word}}”",
       "selectHint": "Select a word to see its reading, romaji, and part of speech.",
-      "phraseNote": "Phrase grouping is approximate."
+      "loading": "Analyzing…",
+      "engineStarting": "The Japanese engine is starting, try again in a moment.",
+      "analyzeFailed": "Couldn't analyze this sentence.",
+      "retry": "Try again"
+    },
+    "attribution": {
+      "repo": "OpenJLPT on GitHub",
+      "license": "CC BY-SA 4.0"
+    },
+    "import": {
+      "title": "Import",
+      "subtitle": "Bring your own reading and vocabulary. Everything stays private to you.",
+      "typeLabel": "What to import",
+      "typeArticle": "Article",
+      "typeWordList": "Word list",
+      "article": {
+        "sourceLabel": "Source",
+        "sourcePaste": "Paste",
+        "sourceUrl": "Web URL",
+        "sourceFile": "File",
+        "titleLabel": "Title",
+        "titlePlaceholder": "Give this text a title",
+        "textLabel": "Japanese text",
+        "textPlaceholder": "Paste Japanese text here…",
+        "chars": "{{count}} / {{max}} characters",
+        "urlLabel": "Web page URL",
+        "urlPlaceholder": "https://…",
+        "fetch": "Fetch",
+        "fetching": "Fetching…",
+        "fetchFailed": "Couldn't fetch that page.",
+        "fetchTruncated": "Longer than {{max}} characters; the rest was cut.",
+        "fileLabel": "Text file",
+        "fileHint": ".txt, .md or .html — tags are stripped",
+        "fileRead": "Loaded {{name}}",
+        "previewTitle": "Preview",
+        "statusIdle": "Paste text to preview",
+        "statusAnalyzing": "Analyzing…",
+        "statusReady": "Preview ready",
+        "statusUnavailable": "Engine unavailable",
+        "statusFailed": "Preview failed",
+        "engineUnavailable": "Preview needs the Japanese engine; you can still save and it will be analyzed later.",
+        "previewFailed": "Couldn't analyze this text.",
+        "statSentences": "Sentences",
+        "statWords": "Words",
+        "statNotInLists": "Not in your lists",
+        "levelsTitle": "Level spread",
+        "levelsApprox": "approx.",
+        "levelUnlisted": "not listed",
+        "levelsSummary": "{{level}}: {{count}} words",
+        "firstSentence": "First sentence",
+        "newWordHint": "Shaded words are not in your lists yet. Tap a word for details.",
+        "newWordsTitle": "Not in your lists",
+        "newWordsMore": "+{{count}} more",
+        "newWordsNone": "Every word here is already in your lists.",
+        "cancel": "Cancel",
+        "submit": "Add to library",
+        "submitting": "Saving…",
+        "created": "Added to your library",
+        "createFailed": "Couldn't save the article."
+      },
+      "wordlist": {
+        "stepFile": "File",
+        "stepMap": "Map columns and check",
+        "stepSave": "Save",
+        "dropTitle": "Drop a word list here",
+        "dropHint": "CSV, TSV or an Anki export (.txt). Up to {{max}} rows; the file is read in your browser.",
+        "browse": "Choose file",
+        "detected": "{{format}} · {{rows}} rows",
+        "headerDetected": "Header row detected",
+        "noHeader": "No header row",
+        "parseIssues": "{{count}} lines looked odd and were kept as is",
+        "empty": "No rows found in this file.",
+        "formatCsv": "CSV",
+        "formatTsv": "TSV",
+        "formatAnki": "Anki export",
+        "previewTitle": "First {{count}} rows",
+        "roleLabel": "Role for column {{column}}",
+        "role": {
+          "headword": "Word",
+          "reading": "Reading",
+          "meaning": "Meaning",
+          "pos": "Part of speech",
+          "unit": "Unit",
+          "ignore": "Ignore"
+        },
+        "headwordRequired": "Choose exactly one Word column.",
+        "rowLimit": "Only the first {{max}} rows will be imported.",
+        "checkColumn": "Check",
+        "checking": "Checking…",
+        "statusReady": "Ready",
+        "statusReadingFilled": "Reading filled by engine",
+        "statusDuplicate": "Duplicate, merged",
+        "statusError": "Error",
+        "filterAll": "All",
+        "filterNeedsLook": "Needs a look ({{count}})",
+        "filterEmpty": "Nothing needs a look.",
+        "nameLabel": "List name",
+        "namePlaceholder": "e.g. 红宝书 N2",
+        "nameConflict": "You already have a list with this name.",
+        "kindLabel": "Kind",
+        "kindBook": "Book",
+        "kindBookHint": "Keeps unit order",
+        "kindDeck": "Deck",
+        "kindDeckHint": "Flat list",
+        "levelLabel": "Level tag",
+        "levelNone": "None",
+        "meaningLanguageLabel": "Meanings in",
+        "summaryRows": "Rows in file",
+        "summaryReady": "Will import",
+        "summaryFilled": "Readings filled",
+        "summaryDuplicates": "Duplicates merged",
+        "summaryErrors": "Errors",
+        "privacy": "Private to you. Imported lists are never shared, published or bundled with FolioNote.",
+        "back": "Back",
+        "submit": "Import {{count}} rows",
+        "submitting": "Importing…",
+        "imported": "Word list imported",
+        "importFailed": "Couldn't import the list."
+      }
+    },
+    "library": {
+      "title": "Library",
+      "subtitle": "Articles you imported and your own word lists. Private to you.",
+      "importAction": "Import",
+      "readingTitle": "Your reading",
+      "readingEmpty": "No articles yet. Paste a text or a web page to read it with word-by-word help.",
+      "importArticle": "Import an article",
+      "listsTitle": "Your word lists",
+      "listsEmpty": "No word lists yet. Import a CSV or Anki export and the reader will tag the words you already collect.",
+      "importList": "Import a word list",
+      "articleMeta": "{{sentences}} sentences · {{words}} words",
+      "notAnalyzed": "Not analyzed yet",
+      "entryCount": "{{count}} entries",
+      "deleted": "Deleted",
+      "deleteFailed": "Couldn't delete.",
+      "deleteArticle": "Delete article",
+      "deleteArticleDesc": "“{{title}}” and its analysis will be removed. This cannot be undone.",
+      "deleteList": "Delete word list",
+      "deleteListDesc": "“{{name}}” and its {{count}} entries will be removed. Reading tags from this list disappear.",
+      "source": {
+        "paste": "Pasted",
+        "url": "Web page",
+        "file": "File"
+      },
+      "kind": {
+        "book": "Book",
+        "deck": "Deck"
+      },
+      "meaningLanguage": {
+        "zh": "中文",
+        "en": "English",
+        "ja": "日本語"
+      },
+      "hub": {
+        "title": "Your library",
+        "counts": "{{articles}} · {{lists}}",
+        "articleCount_one": "{{count}} article",
+        "articleCount_other": "{{count}} articles",
+        "listCount_one": "{{count}} word list",
+        "listCount_other": "{{count}} word lists",
+        "empty": "Import an article or a word list to read with your own vocabulary.",
+        "import": "Import",
+        "open": "Open library"
+      },
+      "tags": {
+        "inYourLists": "In your lists"
+      },
+      "article": {
+        "back": "Back to library",
+        "source": "Open source",
+        "analyzeNow": "Analyze now",
+        "analyzing": "Analyzing…",
+        "pendingAnalysis": "This article hasn't been analyzed yet. The Japanese engine is starting; until then the text is shown as is.",
+        "reanalyze": "Reanalyze",
+        "notFound": "Article not found",
+        "notFoundHint": "It may have been deleted."
+      },
+      "list": {
+        "back": "Back to library",
+        "notFound": "Word list not found",
+        "notFoundHint": "It may have been deleted.",
+        "colHeadword": "Word",
+        "colReading": "Reading",
+        "colMeanings": "Meanings",
+        "colUnit": "Unit",
+        "unitFilter": "Unit",
+        "unitFilterPlaceholder": "All units",
+        "loadMore": "Load more",
+        "empty": "No entries match.",
+        "engineReading": "Reading filled by the engine",
+        "engineMarker": "auto",
+        "meaningsIn": "Meanings in {{language}}"
+      }
+    },
+    "engine": {
+      "offerTitle": "Analyze on this phone",
+      "offerDescription": "The server engine isn't available. Download the dictionary once (about {{size}} MB) and this phone analyzes the text itself, online or offline.",
+      "offerAction": "Download and analyze",
+      "downloading": "Downloading dictionary… {{percent}}%",
+      "verifying": "Checking the downloaded files…",
+      "building": "Starting the engine…",
+      "failed": "The on-device engine couldn't start.",
+      "retry": "Try again",
+      "onDeviceBadge": "Analyzed on this phone",
+      "statusTitle": "On-device dictionary",
+      "statusNotDownloaded": "Not downloaded. Reading uses the server; the download is offered when the server engine is unavailable.",
+      "statusDownloaded": "{{size}} MB on this phone · version {{version}}",
+      "remove": "Remove",
+      "web": {
+        "offerTitle": "Analyze in this browser",
+        "offerDescription": "The server engine isn't available. Download the dictionary once (about {{size}} MB) and this browser analyzes the text itself.",
+        "badge": "Analyzed in this browser",
+        "failed": "The browser engine couldn't start.",
+        "notSaved": "Shown from this browser's analysis; it isn't saved to your library.",
+        "statusTitle": "Browser dictionary",
+        "statusDownloaded": "{{size}} MB in this browser · version {{version}}"
+      }
+    },
+    "practice": {
+      "exam": "Exam questions",
+      "vocab": "Vocabulary"
+    },
+    "study": {
+      "deck": "Word list",
+      "groups": {
+        "moji": "MOJi lists",
+        "levels": "JLPT levels",
+        "lexicons": "My lists"
+      },
+      "levelDeck": "JLPT {{level}}",
+      "dueCount_one": "{{count}} due",
+      "dueCount_other": "{{count}} due",
+      "position": "{{current}} / {{total}}",
+      "new": "New",
+      "review": "Review",
+      "reveal": "Show reading and meaning",
+      "again": "Didn't know",
+      "hard": "Unsure",
+      "good": "Knew it",
+      "noMeaning": "No meaning recorded for this word yet.",
+      "openWord": "Open word",
+      "doneTitle": "Batch complete",
+      "doneDescription_one": "You studied {{count}} word. It comes back when it's due.",
+      "doneDescription_other": "You studied {{count}} words. They come back when they're due.",
+      "nextBatch": "Next batch",
+      "emptyTitle": "Nothing to study in this list right now",
+      "emptyDescription": "You've seen every new word. Words come back on their review day.",
+      "loadFailed": "Couldn't load",
+      "retry": "Try again",
+      "rateFailed": "Progress wasn't saved. Please try again."
     }
   },
   "activity": {
@@ -474,6 +777,7 @@
     "inbox": "Inbox",
     "library": "Library",
     "review": "Review",
+    "japanese": "Japanese",
     "today": "Today",
     "search": "Search",
     "sources": "Sources",
@@ -481,7 +785,8 @@
     "settings": "Settings",
     "profile": "Profile",
     "knowledge": "Knowledge",
-    "graph": "Graph"
+    "graph": "Graph",
+    "import": "Import"
   },
   "search": {
     "placeholder": "Search entries...",
@@ -551,12 +856,16 @@
       "bulletListDesc": "Bullet point list",
       "orderedList": "Ordered List",
       "orderedListDesc": "Numbered list",
+      "taskList": "Checklist",
+      "taskListDesc": "To-do list with checkboxes",
       "divider": "Divider",
       "dividerDesc": "Horizontal separator",
       "table": "Table",
       "tableDesc": "Insert a table",
       "image": "Image",
-      "imageDesc": "Upload and insert an image"
+      "imageDesc": "Upload and insert an image",
+      "japaneseSentence": "Japanese sentence",
+      "japaneseSentenceDesc": "Furigana, part of speech and romaji per word"
     },
     "imageUpload": {
       "fileTooLarge": "File too large. Maximum size is {{maxMB}}MB",
@@ -679,6 +988,16 @@
         "codeBlock": "Code block",
         "quote": "Quote"
       }
+    },
+    "japaneseSentence": {
+      "title": "Analyzed sentence",
+      "textLabel": "Japanese sentence",
+      "translationLabel": "Translation (optional)",
+      "translationPlaceholder": "What it means",
+      "analyze": "Analyze",
+      "edit": "Edit sentence",
+      "pasteOffer": "Japanese text pasted",
+      "pasteConvert": "Turn into analyzed sentences"
     }
   },
   "error": {
@@ -763,7 +1082,9 @@
       "general": "General",
       "generalDesc": "Profile, appearance & preferences",
       "models": "AI Models",
-      "modelsDesc": "Configure your AI providers"
+      "modelsDesc": "Configure your AI providers",
+      "connections": "Connections",
+      "connectionsDesc": "Notion, Google Docs and other sources"
     },
     "tip": {
       "title": "Pro Tip",
@@ -1260,6 +1581,186 @@
       "manual": "Manual link",
       "sharedTag": "Shared tag",
       "sharedSource": "Shared source"
+    }
+  },
+  "imports": {
+    "loading": "Loading…",
+    "failed": "Something went wrong",
+    "title": "Import",
+    "subtitle": "Bring in a Japanese article or a page you already wrote elsewhere. It becomes an entry; you choose whether it keeps following its source.",
+    "manageConnections": "Manage connections →",
+    "sourceLabel": "Source",
+    "notConnected": "Not connected",
+    "sources": {
+      "notion": "Notion",
+      "google_docs": "Google Docs",
+      "claude_page": "Claude page",
+      "web": "Web link"
+    },
+    "providers": {
+      "notion": "Notion",
+      "google_docs": "Google Docs",
+      "claude_page": "Claude page",
+      "web": "Web link",
+      "markdown": "Markdown"
+    },
+    "notion": {
+      "notConfigured": "Notion isn't set up on this server yet.",
+      "connectHint": "Connect once and pick the pages FolioNote may read. You stay connected.",
+      "connect": "Connect Notion",
+      "searchLabel": "Pages shared with FolioNote",
+      "searchPlaceholder": "Search pages",
+      "pagesLabel": "Notion pages",
+      "noPages": "No shared pages match.",
+      "linkLabel": "Or paste a page link",
+      "notListed": "Page not listed?",
+      "editAccess": "Edit page access",
+      "connected": "Notion connected",
+      "result": {
+        "denied": "Notion access was cancelled",
+        "failed": "Couldn't connect Notion",
+        "unauthorized": "Sign in again, then connect Notion"
+      },
+      "cardDescription": "Connected once and stays connected. FolioNote only sees the pages you picked in Notion, plus their sub-pages.",
+      "disconnect": "Disconnect {{name}}"
+    },
+    "google": {
+      "notConfigured": "Google sign-in isn't set up on this server.",
+      "linkHint": "Sign in with Google to import your docs.",
+      "scopeHint": "You're signed in with Google. Allow Docs access once, then pick the docs to import.",
+      "allow": "Allow Docs access",
+      "pick": "Choose from Google Drive",
+      "linkLabel": "Or paste a doc link",
+      "pickedOnly": "FolioNote can only open docs you picked in Google Drive at least once.",
+      "cardDescription": "Uses your Google sign-in. One extra consent, then FolioNote opens only the docs you pick.",
+      "ready": "Docs access allowed",
+      "signedIn": "Signed in with Google"
+    },
+    "claude": {
+      "hint": "Copy the page as Markdown in Claude (or download its .md export) and paste it here. The link is kept as the source.",
+      "linkLabel": "Page link (optional)",
+      "markdownLabel": "Markdown",
+      "file": "Open .md file",
+      "cardDescription": "Paste a page's Markdown export. Kept as a snapshot; no write-back.",
+      "subtitle": "Markdown export · no account",
+      "import": "Import a page"
+    },
+    "web": {
+      "urlLabel": "Article URL",
+      "fetch": "Fetch",
+      "hint": "Japanese pages in Shift_JIS or EUC-JP are decoded automatically. Navigation and ads are dropped.",
+      "cardDescription": "Reader extraction for articles. Private-network URLs are refused.",
+      "subtitle": "Always available"
+    },
+    "preview": {
+      "title": "Preview",
+      "entries_one": "{{count}} entry",
+      "entries_other": "{{count}} entries",
+      "empty": "Choose a source to see what will be imported.",
+      "loading": "Reading the source…",
+      "blocks_one": "{{count}} block",
+      "blocks_other": "{{count}} blocks",
+      "changes": "Changed on the way in"
+    },
+    "mode": {
+      "label": "After import",
+      "snapshot": "Snapshot",
+      "snapshotDesc": "Copy once. The entry is yours to edit.",
+      "watch": "Snapshot + watch",
+      "watchDesc": "Flag the entry when the source changes; re-import when you want.",
+      "watchUnavailable": "This source can't report changes.",
+      "pull": "Keep in sync",
+      "two_way": "Two-way",
+      "pullDesc": "Notion changes flow in. Your notes and Mirra sentences stay where you put them; blocks you edited are kept."
+    },
+    "toInbox": "Put in Inbox",
+    "submit": "Import entry",
+    "done_one": "Imported {{count}} entry",
+    "done_other": "Imported {{count}} entries",
+    "connections": {
+      "title": "Connections",
+      "description": "Accounts FolioNote can read from, and every entry that still follows a source.",
+      "sources": "Sources"
+    },
+    "synced": {
+      "title": "Imported entries",
+      "entry": "Entry",
+      "source": "Source",
+      "mode": "Mode",
+      "status": "Status",
+      "actions": "Actions",
+      "check": "Check now",
+      "empty": "Nothing imported yet."
+    },
+    "status": {
+      "up_to_date": "Up to date",
+      "source_changed": "Source changed",
+      "conflict": "Conflict",
+      "error": "Check failed",
+      "not_tracked": "Not tracked"
+    },
+    "reimport": "Re-import",
+    "reimportTitle": "Replace with the source's current version?",
+    "reimportConfirm": "The entry's content is replaced by the source. Edits you made here since the last import are lost.",
+    "reimported": "Re-imported from source",
+    "warnings": {
+      "child_page": {
+        "from": "Sub-page",
+        "to": "Link (import separately)"
+      },
+      "columns": {
+        "from": "Columns",
+        "to": "Stacked"
+      },
+      "database": {
+        "from": "Database view",
+        "to": "Link to source"
+      },
+      "embed": {
+        "from": "Embeds & files",
+        "to": "Link"
+      },
+      "html": {
+        "from": "HTML",
+        "to": "Plain text"
+      },
+      "synced_block": {
+        "from": "Synced block",
+        "to": "Inlined copy"
+      },
+      "table_of_contents": {
+        "from": "Table of contents",
+        "to": "Omitted"
+      },
+      "to_do": {
+        "from": "Checklist",
+        "to": "Checklist as list"
+      },
+      "toggle": {
+        "from": "Toggle",
+        "to": "Expanded text"
+      },
+      "unsupported": {
+        "from": "Unsupported blocks",
+        "to": "Omitted"
+      },
+      "web": {
+        "from": "Ads, navigation, comments",
+        "to": "Dropped"
+      }
+    },
+    "syncNow": "Sync now",
+    "pulled": "Synced the latest from Notion",
+    "conflicts": {
+      "title_one": "{{count}} block changed on both sides",
+      "title_other": "{{count}} blocks changed on both sides",
+      "description": "You edited this block and it also changed in Notion. Pick which version the entry keeps.",
+      "mine": "In FolioNote",
+      "source": "In Notion",
+      "keepMine": "Keep mine",
+      "useSource": "Use Notion's",
+      "review_one": "Review {{count}} conflict",
+      "review_other": "Review {{count}} conflicts"
     }
   }
 }

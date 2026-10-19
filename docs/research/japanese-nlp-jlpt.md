@@ -1,5 +1,7 @@
 # Japanese NLP & JLPT Data — Research & Recommendation for FolioNote
 
+> **Direction update (2026-07-29):** semantic structure is now part of the proposed core media-learning experience rather than a generic Phase-3 enhancement. Use [`../japanese-media-learning-roadmap.md`](../japanese-media-learning-roadmap.md) for current product sequencing, shared contracts, YouTube boundaries, and Web/Native delivery. This report remains the detailed source for tokenizer, dictionary, JLPT-data, licensing, and offline-fallback research.
+
 > Research brief generated 2026-06-12 via a multi-agent web-research + adversarial-verification workflow (5 dimensions, 13 agents). Every version/date string is deliberately left soft — **re-verify exact package versions, sizes, and license headers at integration time** (see §8). Grounded against this monorepo: Node/Hono server, TanStack Start web, Expo/React Native 0.85.3 (Hermes), oRPC routers in `packages/api/src/routers/*`, Drizzle schema in `packages/db/src/schema/*`.
 
 ## 1. Executive Summary

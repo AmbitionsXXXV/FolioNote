@@ -4,7 +4,9 @@ import {
   AiBrain01Icon,
   Atom02Icon,
   BookOpen01Icon,
+  FileImportIcon,
   InboxIcon,
+  LanguageSquareIcon,
   Link01Icon,
   Rocket01Icon,
   Search01Icon,
@@ -15,6 +17,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { Link, useMatchRoute } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
+import { BrandLockup } from "@/components/brand-lockup"
 import { useCommandPalette } from "@/contexts/command-palette-context"
 
 import UserMenu from "./user-menu"
@@ -28,7 +31,8 @@ interface NavItem {
 const mainNavItems: NavItem[] = [
   { to: "/activity", labelKey: "nav.activity", icon: Activity01Icon },
   { to: "/inbox", labelKey: "nav.inbox", icon: InboxIcon },
-  { to: "/library", labelKey: "nav.library", icon: BookOpen01Icon }
+  { to: "/library", labelKey: "nav.library", icon: BookOpen01Icon },
+  { to: "/import", labelKey: "nav.import", icon: FileImportIcon }
 ]
 
 const secondaryNavItems: NavItem[] = [
@@ -36,6 +40,7 @@ const secondaryNavItems: NavItem[] = [
   { to: "/sources", labelKey: "nav.sources", icon: Link01Icon },
   { to: "/graph", labelKey: "nav.graph", icon: Atom02Icon },
   { to: "/review", labelKey: "nav.review", icon: Rocket01Icon },
+  { to: "/japanese", labelKey: "nav.japanese", icon: LanguageSquareIcon },
   { to: "/knowledge", labelKey: "nav.knowledge", icon: AiBrain01Icon }
 ]
 
@@ -89,16 +94,12 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <Sidebar.Header className="p-4">
-        <Link
-          className="font-script-en flex items-center gap-3 font-script text-2xl font-bold text-accent"
-          to="/"
-        >
-          <img
-            alt="FolioNote"
-            className="size-8 rounded-full"
-            src="/svg/icon.svg"
+        <Link className="flex items-center gap-3" to="/">
+          <BrandLockup
+            iconClassName="size-8"
+            iconOnly={isCollapsed}
+            wordmarkClassName="text-2xl"
           />
-          {!isCollapsed && <span>FolioNote</span>}
         </Link>
       </Sidebar.Header>
 

@@ -53,6 +53,11 @@ export const queryClient = new QueryClient({
         })
       }
 
+      // Queries that render their own inline error state opt out of the toast.
+      if (query.meta?.silentError === true) {
+        return
+      }
+
       toast.error(`Error: ${error.message}`, {
         description: requestId ? `Request ID: ${requestId}` : undefined,
         action: {

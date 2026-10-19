@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
+import { BrandLockup } from "@/components/brand-lockup"
+
 interface ShareFooterProps {
   showBranding: boolean
 }
@@ -20,8 +22,8 @@ export function ShareFooter({ showBranding }: ShareFooterProps) {
       <div className="container mx-auto px-4 text-center">
         <p className="text-sm text-pretty text-muted-foreground">
           {t("share.poweredBy")}{" "}
-          <Link className="font-medium underline" to="/">
-            FolioNote
+          <Link className="inline-flex align-middle" to="/">
+            <BrandLockup iconClassName="size-4" wordmarkClassName="text-sm" />
           </Link>
         </p>
       </div>

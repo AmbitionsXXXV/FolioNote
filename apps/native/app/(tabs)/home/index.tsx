@@ -5,6 +5,7 @@ import {
   BookOpen01Icon,
   CloudIcon,
   InboxIcon,
+  LanguageSkillIcon,
   NoteIcon,
   Rocket01Icon
 } from "@hugeicons/core-free-icons"
@@ -23,6 +24,7 @@ import {
   View
 } from "react-native"
 
+import { BrandLockup } from "@/components/brand-lockup"
 import { Container } from "@/components/container"
 import { EntryCard } from "@/components/entry-card"
 import { useLocalMode } from "@/contexts/local-mode-context"
@@ -181,6 +183,10 @@ export default function HomeScreen() {
     router.push("/review" as never)
   }
 
+  const navigateToJapanese = () => {
+    router.push("/japanese")
+  }
+
   const totalDue = (dueStats?.overdue ?? 0) + (dueStats?.dueToday ?? 0)
   const recentEntries = recentData?.items?.filter((e) => !e.isInbox) ?? []
   const greetingKey = getGreetingKey()
@@ -236,6 +242,7 @@ export default function HomeScreen() {
           isLoadingTodayStats={isLoadingTodayStats}
           mutedColor={mutedColor}
           onInbox={navigateToInbox}
+          onJapanese={navigateToJapanese}
           onLibrary={navigateToLibrary}
           onReview={navigateToReview}
           successColor={successColor}
@@ -307,9 +314,11 @@ function HomeHeader({
         </>
       ) : (
         <>
-          <Text className="mb-1 text-3xl font-bold text-foreground">
-            FolioNote
-          </Text>
+          <BrandLockup
+            className="mb-2"
+            size={40}
+            wordmarkClassName="text-3xl text-foreground"
+          />
           <View className="flex-row items-center">
             <View
               className={`mr-2 h-2 w-2 rounded-full ${isConnected ? "bg-success" : "bg-danger"}`}
@@ -470,13 +479,14 @@ interface QuickAccessSectionProps {
   isLoadingStats: boolean
   totalDue: number
   onInbox: () => void
+  onJapanese: () => void
   onLibrary: () => void
   onReview: () => void
   t: TranslateFn
 }
 
 /**
- * Quick access shortcuts to inbox, library, and review.
+ * Quick access shortcuts to inbox, library, review, and Japanese study.
  */
 function QuickAccessSection({
   accentColor,
@@ -490,6 +500,7 @@ function QuickAccessSection({
   isLoadingStats,
   totalDue,
   onInbox,
+  onJapanese,
   onLibrary,
   onReview,
   t
@@ -548,6 +559,16 @@ function QuickAccessSection({
             isLoadingStats ? "..." : t("activity.dueCount", { count: totalDue })
           }
           title={t("nav.review")}
+        />
+
+        <QuickAccessCard
+          icon={LanguageSkillIcon}
+          iconColor={accentColor}
+          iconWrapperClassName="mr-3 size-12 items-center justify-center rounded-lg bg-accent/10"
+          mutedColor={mutedColor}
+          onPress={onJapanese}
+          subtitle={t("japanese.entry.subtitle")}
+          title={t("japanese.entry.title")}
         />
       </View>
     </View>

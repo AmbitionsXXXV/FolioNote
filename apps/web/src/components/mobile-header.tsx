@@ -5,6 +5,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import { Link } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
+import { BrandLockup } from "@/components/brand-lockup"
 import { useCommandPalette } from "@/contexts/command-palette-context"
 
 import { SettingsMenu } from "./settings-menu"
@@ -22,8 +23,8 @@ export function MobileHeader() {
     <header className="sticky top-0 z-50 flex h-14 items-center gap-2 border-b bg-background/95 px-3 backdrop-blur supports-backdrop-filter:bg-background/60 md:hidden">
       <Sidebar.Trigger />
 
-      <Link className="flex-1 font-script text-xl font-bold text-accent" to="/">
-        FolioNote
+      <Link className="flex-1" to="/">
+        <BrandLockup iconClassName="size-7" wordmarkClassName="text-xl" />
       </Link>
 
       <div className="flex items-center gap-1">

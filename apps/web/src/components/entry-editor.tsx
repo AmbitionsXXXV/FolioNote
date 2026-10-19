@@ -1,4 +1,8 @@
 import {
+  convertLegacyChecklists,
+  SourceBlockId
+} from "@folionote/editor-core/extensions"
+import {
   CustomCaret,
   CustomLink,
   createSlashCommandExtension,
@@ -16,6 +20,7 @@ import type { JSONContent } from "@tiptap/core"
 import { Extension } from "@tiptap/core"
 import Collaboration from "@tiptap/extension-collaboration"
 import CollaborationCaret from "@tiptap/extension-collaboration-caret"
+import { TaskList } from "@tiptap/extension-list"
 import Placeholder from "@tiptap/extension-placeholder"
 import { Plugin, PluginKey } from "@tiptap/pm/state"
 import { EditorContent, useEditor } from "@tiptap/react"
@@ -27,7 +32,10 @@ import { toast } from "sonner"
 import { BlockHandle } from "@/components/editor/block-handle"
 import { EditorBubbleMenu } from "@/components/editor/editor-bubble-menu"
 import { EditorCharacterCount } from "@/components/editor/editor-character-count"
+import { JapanesePasteOffer } from "@/components/editor/japanese-paste-offer"
+import { JapaneseSentenceBlock } from "@/components/editor/japanese-sentence-block"
 import { ResizableImage } from "@/components/editor/resizable-image"
+import { TaskItem } from "@/components/editor/task-item"
 import { HeadingIds } from "@/lib/heading-id-extension"
 
 const EMPTY_COMMANDS: SlashCommandItem[] = []
@@ -243,6 +251,10 @@ export function EntryEditor({
       HeadingIds,
       // Collapsible headings — fold content until the next same/higher heading
       FoldableHeadings,
+      // Checklists (/checklist or "[ ] " at line start). Keep `nested` in sync
+      // with COLLAB_SCHEMA_EXTENSIONS — it changes TaskItem's content model.
+      TaskList,
+      TaskItem.configure({ nested: true }),
       // Table extensions (+ position-based row/column/block commands)
       ...createTableKit({ t }),
       TableCommands,
@@ -264,6 +276,12 @@ export function EntryEditor({
           loading: "lazy"
         }
       }),
+      // Mirra-style analyzed sentence (/japanese in the slash menu), and the
+      // "turn pasted Japanese into sentences" toast
+      JapaneseSentenceBlock,
+      ...(editable ? [JapanesePasteOffer.configure({ t })] : []),
+      // Keeps imported blocks matchable for Notion pull sync
+      SourceBlockId,
       ...(onUploadImage ? [createImageUploadExtension(onUploadImage, t)] : []),
       createSlashCommandExtension({
         commands,
@@ -372,6 +390,32 @@ export function EntryEditor({
       editor.commands.setContent(content, { emitUpdate: false })
     }
   }, [content, contentFormat, editor, collab])
+
+  // Entries imported before checklists were a node type hold "☐ / ☑" bullet
+  // text; turn it into real checklists once the content is in the editor. It
+  // saves like any edit (autosave / Yjs) but stays out of undo history. Must
+  // stay below the content-sync effect: on mount that one may setContent the
+  // stored (legacy) JSON, which would undo a conversion that ran first.
+  useEffect(() => {
+    if (!(editor && editable)) {
+      return
+    }
+    const convert = () => {
+      const tr = convertLegacyChecklists(editor.state)
+      if (tr) {
+        editor.view.dispatch(tr.setMeta("addToHistory", false))
+      }
+    }
+    // Collab content arrives from the provider, not the `content` prop
+    if (!collab || collab.provider.synced) {
+      convert()
+      return
+    }
+    collab.provider.on("synced", convert)
+    return () => {
+      collab.provider.off("synced", convert)
+    }
+  }, [editor, editable, collab])
 
   // Cleanup debounce on unmount
   useEffect(

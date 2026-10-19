@@ -1,5 +1,7 @@
 # FolioNote - Roadmap
 
+> **Current strategic direction (2026-07-29):** the product and implementation route for the Japanese media-learning focus is recorded in [`docs/japanese-media-learning-roadmap.md`](docs/japanese-media-learning-roadmap.md). That document governs new Japanese-learning work and the planned contraction of the Web/Native information architecture. The learning-first MVP checklist below remains historical implementation context until its completed portions are reconciled with the new route.
+
 ## FolioNote — Feature Implementation TODO List (Learning-first MVP)
 
 ### 0) Repo & product baseline

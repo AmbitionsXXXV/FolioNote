@@ -1,0 +1,6 @@
+{
+  "text": "このカメラはあまり高くない。",
+  "words": ["この", "カメラ", "は", "あまり", "高くない", "。"],
+  "phrases": ["この", "カメラは", "あまり", "高くない。"],
+  "notes": "ない after an adjective's 連用テ接続 is 助動詞 in IPADIC, so it is absorbed. 連体詞 この maps to adjective."
+}
