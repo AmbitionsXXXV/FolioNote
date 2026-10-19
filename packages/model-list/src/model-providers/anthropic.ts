@@ -7,7 +7,6 @@ const Anthropic: ModelProviderCard = {
     "Anthropic builds advanced language models like Claude 3.5 Sonnet, Claude 3 Sonnet, Claude 3 Opus, and Claude 3 Haiku, balancing intelligence, speed, and cost for workloads from enterprise to rapid-response use cases.",
   enabled: true,
   id: "anthropic",
-  logo: "/svg/models/claude.svg",
   modelList: { showModelFetcher: true },
   modelsUrl:
     "https://docs.anthropic.com/en/docs/about-claude/models#model-names",

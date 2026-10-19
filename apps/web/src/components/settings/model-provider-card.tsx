@@ -46,6 +46,7 @@ import { useCallback, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
+import { ProviderLogo } from "@/components/brand-logo"
 import { cn } from "@/lib/utils"
 
 interface ProviderConfig {
@@ -121,18 +122,12 @@ export function ModelProviderCard({
               <div className="flex items-center gap-3">
                 {/* Provider Logo */}
                 <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full">
-                  {provider.logo ? (
-                    <img
-                      alt=""
-                      aria-hidden="true"
-                      className="size-8 object-cover"
-                      src={provider.logo}
-                    />
-                  ) : (
-                    <span className="text-sm font-bold">
-                      {provider.name.slice(0, 2).toUpperCase()}
-                    </span>
-                  )}
+                  <ProviderLogo
+                    className="size-8"
+                    id={provider.id}
+                    logo={provider.logo}
+                    name={provider.name}
+                  />
                 </div>
                 <div>
                   <CardTitle className="flex items-center gap-2 text-base">

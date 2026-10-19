@@ -8,7 +8,6 @@ const XAI: ModelProviderCard = {
     "xAI builds AI to accelerate scientific discovery, with a mission to deepen humanity's understanding of the universe.",
   enabled: true,
   id: "xai",
-  logo: "/svg/models/grok.svg",
   modelList: { showModelFetcher: true },
   modelsUrl: "https://docs.x.ai/docs#models",
   name: "xAI (Grok)",

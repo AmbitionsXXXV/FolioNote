@@ -7,13 +7,7 @@ import {
   Switch,
   Tabs
 } from "@heroui/react"
-import {
-  ClaudeIcon,
-  GlobeIcon,
-  GoogleDocIcon,
-  NotionIcon
-} from "@hugeicons/core-free-icons"
-import type { IconSvgElement } from "@hugeicons/react"
+import { GlobeIcon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
@@ -22,6 +16,7 @@ import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 import { z } from "zod"
 
+import { BrandLogo } from "@/components/brand-logo"
 import {
   ClaudePageSourcePanel,
   GoogleDocsSourcePanel,
@@ -44,11 +39,20 @@ export const Route = createFileRoute("/_app/import")({
   validateSearch: importSearchSchema
 })
 
-const SOURCE_LOGOS: Record<ImportSourceKind, IconSvgElement> = {
-  notion: NotionIcon,
-  google_docs: GoogleDocIcon,
-  claude_page: ClaudeIcon,
-  web: GlobeIcon
+function SourceLogo({ kind }: { kind: ImportSourceKind }) {
+  switch (kind) {
+    case "notion":
+      return <BrandLogo brand="notion" className="size-4" />
+    case "google_docs":
+      return <BrandLogo brand="google-docs" className="size-4" />
+    case "claude_page":
+      return <BrandLogo brand="claude" className="size-4" />
+    default:
+      // The open web has no brand mark.
+      return (
+        <HugeiconsIcon aria-hidden="true" className="size-4" icon={GlobeIcon} />
+      )
+  }
 }
 
 type ImportMode = "snapshot" | "watch" | "pull"
@@ -254,11 +258,7 @@ function ImportPage() {
                     id={option}
                     key={option}
                   >
-                    <HugeiconsIcon
-                      aria-hidden="true"
-                      className="size-4"
-                      icon={SOURCE_LOGOS[option]}
-                    />
+                    <SourceLogo kind={option} />
                     {t(`imports.sources.${option}`)}
                   </Tabs.Tab>
                 ))}

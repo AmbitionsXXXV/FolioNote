@@ -10,7 +10,6 @@ const Moonshot: ModelProviderCard = {
   modelList: { showModelFetcher: true },
   modelsUrl: "https://platform.moonshot.cn/docs/intro",
   name: "Moonshot",
-  logo: "/svg/models/moonshot.svg",
   settings: {
     disableBrowserRequest: true, // CORS error
     proxyUrl: {

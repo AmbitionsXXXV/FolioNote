@@ -9,7 +9,6 @@ const Qwen: ModelProviderCard = {
   enabled: true,
   // disableBrowserRequest: true,
   id: "qwen",
-  logo: "/svg/models/qwen.svg",
   modelList: { showModelFetcher: true },
   modelsUrl:
     "https://help.aliyun.com/zh/dashscope/developer-reference/api-details",

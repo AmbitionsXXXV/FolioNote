@@ -33,6 +33,7 @@ import { useCallback, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
+import { ProviderLogo } from "@/components/brand-logo"
 import { useAiProviderConfig } from "@/hooks/use-ai-provider-config"
 import { AI_PROVIDERS } from "@/lib/ai-provider-config"
 import type { AiProviderInfo } from "@/lib/ai-provider-config"
@@ -65,11 +66,10 @@ function ProviderItem({
       )}
     >
       <div className="flex items-center gap-3">
-        <img
-          alt=""
-          aria-hidden="true"
-          className="size-8 rounded"
-          src={provider.iconSrc}
+        <ProviderLogo
+          className="size-8"
+          id={provider.id}
+          name={provider.name}
         />
         <div>
           <div className="flex items-center gap-2">
@@ -191,11 +191,10 @@ function ConfigDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <img
-              alt=""
-              aria-hidden="true"
+            <ProviderLogo
               className="size-6"
-              src={provider.iconSrc}
+              id={provider.id}
+              name={provider.name}
             />
             {t("aiProvider.configureProvider", { provider: provider.name })}
           </DialogTitle>

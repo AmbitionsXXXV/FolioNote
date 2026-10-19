@@ -7,7 +7,7 @@ import {
   TextArea,
   TextField
 } from "@heroui/react"
-import { NotionIcon, Upload01Icon } from "@hugeicons/core-free-icons"
+import { Upload01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import type { ChangeEvent } from "react"
@@ -15,6 +15,7 @@ import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
+import { BrandLogo } from "@/components/brand-logo"
 import { useDebounce } from "@/hooks/use-debounce"
 import { pickGoogleDoc, readGooglePickerConfig } from "@/lib/google-picker"
 import { notionConnectUrl, requestGoogleDocsAccess } from "@/lib/imports"
@@ -86,13 +87,7 @@ function NotionPageGlyph({
       </span>
     )
   }
-  return (
-    <HugeiconsIcon
-      aria-hidden="true"
-      className="size-4 shrink-0 text-muted-foreground"
-      icon={NotionIcon}
-    />
-  )
+  return <BrandLogo brand="notion" className="size-4 shrink-0" />
 }
 
 export function NotionSourcePanel({ onSourceChange }: PanelProps) {

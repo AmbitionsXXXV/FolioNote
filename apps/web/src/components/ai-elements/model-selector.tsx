@@ -20,6 +20,7 @@ import { HugeiconsIcon } from "@hugeicons/react"
 import type { ComponentProps, ReactNode } from "react"
 import { memo, useMemo, useState } from "react"
 
+import { ProviderLogo } from "@/components/brand-logo"
 import type {
   CatalogModel,
   CatalogProvider
@@ -33,7 +34,7 @@ import { cn } from "@/lib/utils"
 export interface ModelSelectorOption {
   id: string
   name: string
-  iconSrc?: string
+  provider?: { id: string; name: string; logo?: string }
   type?: string
 }
 
@@ -121,51 +122,6 @@ export const ModelSelectorSeparator = (props: ModelSelectorSeparatorProps) => (
   <CommandSeparator {...props} />
 )
 
-// ============================================================================
-// Logo Components
-// ============================================================================
-
-export type ModelSelectorLogoProps = Omit<
-  ComponentProps<"img">,
-  "src" | "alt"
-> & {
-  provider: string
-  /** Custom logo URL, if not using models.dev */
-  logoUrl?: string
-}
-
-export const ModelSelectorLogo = memo(
-  ({ provider, logoUrl, className, ...props }: ModelSelectorLogoProps) => {
-    const src = logoUrl ?? `https://models.dev/logos/${provider}.svg`
-
-    return (
-      <img
-        {...props}
-        alt={`${provider} logo`}
-        className={cn("size-4 shrink-0 dark:invert", className)}
-        height={16}
-        src={src}
-        width={16}
-      />
-    )
-  }
-)
-
-export type ModelSelectorLogoGroupProps = ComponentProps<"div">
-
-export const ModelSelectorLogoGroup = ({
-  className,
-  ...props
-}: ModelSelectorLogoGroupProps) => (
-  <div
-    className={cn(
-      "flex shrink-0 items-center -space-x-1 [&>img]:rounded-full [&>img]:bg-background [&>img]:p-px [&>img]:ring-1 dark:[&>img]:bg-foreground",
-      className
-    )}
-    {...props}
-  />
-)
-
 export type ModelSelectorNameProps = ComponentProps<"span">
 
 export const ModelSelectorName = ({
@@ -208,7 +164,11 @@ export function createModelSelectorGroups(
         options: providerModels.map((model) => ({
           id: model.id,
           name: model.displayName || model.id,
-          iconSrc: provider.logo,
+          provider: {
+            id: provider.id,
+            name: provider.name,
+            logo: provider.logo
+          },
           type: model.type
         }))
       })
@@ -321,11 +281,12 @@ export function ModelSelector({
         }
       >
         <span className="inline-flex min-w-0 flex-1 items-center gap-2">
-          {selected?.option.iconSrc ? (
-            <ModelSelectorLogo
-              className="size-4"
-              logoUrl={selected.option.iconSrc}
-              provider=""
+          {selected?.option.provider ? (
+            <ProviderLogo
+              className="size-4 shrink-0"
+              id={selected.option.provider.id}
+              logo={selected.option.provider.logo}
+              name={selected.option.provider.name}
             />
           ) : null}
           <ModelSelectorName className="truncate">
@@ -425,11 +386,12 @@ const ModelSelectorOptionItem = memo(
         </span>
 
         {/* Logo */}
-        {option.iconSrc ? (
-          <ModelSelectorLogo
-            className="size-4"
-            logoUrl={option.iconSrc}
-            provider=""
+        {option.provider ? (
+          <ProviderLogo
+            className="size-4 shrink-0"
+            id={option.provider.id}
+            logo={option.provider.logo}
+            name={option.provider.name}
           />
         ) : null}
 

@@ -7,7 +7,6 @@ const DeepSeek: ModelProviderCard = {
     "DeepSeek focuses on AI research and applications; its latest DeepSeek-V3 benchmarks surpass open models like Qwen2.5-72B and Llama-3.1-405B, aligning with leading closed models such as GPT-4o and Claude-3.5-Sonnet.",
   enabled: true,
   id: "deepseek",
-  logo: "/svg/models/deepseek.svg",
   modelList: { showModelFetcher: true },
   modelsUrl: "https://platform.deepseek.com/api-docs/zh-cn/quick_start/pricing",
   name: "DeepSeek",

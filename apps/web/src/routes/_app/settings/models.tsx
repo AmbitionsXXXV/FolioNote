@@ -21,6 +21,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
+import { ProviderLogo } from "@/components/brand-logo"
 import { ModelProviderCard } from "@/components/settings/model-provider-card"
 import {
   useAiModelCatalog,
@@ -390,13 +391,12 @@ function ModelProviderGroup({
     <div>
       <div className="flex items-center justify-between bg-surface-secondary/20 px-4 py-2">
         <div className="flex items-center gap-2">
-          {provider.logo && (
-            <img
-              alt={provider.name}
-              className="size-4 rounded-sm object-contain dark:brightness-0 dark:invert"
-              src={provider.logo}
-            />
-          )}
+          <ProviderLogo
+            className="size-4"
+            id={provider.id}
+            logo={provider.logo}
+            name={provider.name}
+          />
           <span className="text-sm font-medium">{provider.name}</span>
           <span className="text-xs text-muted-foreground">
             ({models.length})

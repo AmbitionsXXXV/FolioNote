@@ -137,7 +137,7 @@ export interface ModelProviderCard {
   /** Whether this provider is enabled by default */
   enabled?: boolean
   id: string
-  /** Provider logo/icon path (relative to public folder, e.g., '/svg/models/openai.svg') */
+  /** Logo URL for a provider the web app has no built-in brand mark for */
   logo?: string
 
   /** Model list configuration */
