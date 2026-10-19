@@ -36,6 +36,8 @@ import type {
 import {
   NotionApiError,
   readNotionOAuthConfig,
+  notionPageIconOf,
+  notionPageSourceUrlOf,
   searchNotionPages,
   notionPageTitleOf
 } from "../connectors/notion"
@@ -199,8 +201,8 @@ const searchNotion = protectedProcedure
             id: page.id,
             title: notionPageTitleOf(page),
             url: page.url,
-            icon:
-              page.icon?.type === "emoji" ? (page.icon.emoji ?? null) : null,
+            icon: notionPageIconOf(page),
+            sourceUrl: notionPageSourceUrlOf(page),
             lastEditedTime: page.last_edited_time,
             connectionId: connection.id,
             workspaceName: connection.workspaceName

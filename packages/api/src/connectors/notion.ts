@@ -197,10 +197,16 @@ export interface NotionPageObject {
   url: string
   last_edited_time: string
   in_trash?: boolean
-  icon?: { type: string; emoji?: string } | null
+  icon?: {
+    type: string
+    emoji?: string
+    external?: { url: string }
+    file?: { url: string }
+    custom_emoji?: { url: string }
+  } | null
   properties: Record<
     string,
-    { type: string; title?: NotionRichText[] } | undefined
+    { type: string; title?: NotionRichText[]; url?: string | null } | undefined
   >
 }
 
@@ -227,6 +233,34 @@ export function notionPageTitleOf(page: NotionPageObject): string {
     }
   }
   return "Untitled"
+}
+
+export type NotionPageIcon =
+  | { type: "emoji"; emoji: string }
+  | { type: "image"; url: string }
+
+/** Emoji, uploaded image, external image and custom emoji collapse to two kinds. */
+export function notionPageIconOf(
+  page: NotionPageObject
+): NotionPageIcon | null {
+  const { icon } = page
+  if (!icon) return null
+  if (icon.type === "emoji" && icon.emoji) {
+    return { type: "emoji", emoji: icon.emoji }
+  }
+  const url = icon.external?.url ?? icon.file?.url ?? icon.custom_emoji?.url
+  return url ? { type: "image", url } : null
+}
+
+/**
+ * The page's first URL property, e.g. the "URL" column the Notion Web Clipper
+ * fills in. It identifies where a clipped page originally came from.
+ */
+export function notionPageSourceUrlOf(page: NotionPageObject): string | null {
+  for (const property of Object.values(page.properties)) {
+    if (property?.type === "url" && property.url) return property.url
+  }
+  return null
 }
 
 export async function searchNotionPages(

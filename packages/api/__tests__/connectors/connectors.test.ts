@@ -1,6 +1,11 @@
 import { describe, expect, it, vi } from "vite-plus/test"
 
-import { parseNotionPageId } from "../../src/connectors/notion"
+import {
+  notionPageIconOf,
+  notionPageSourceUrlOf,
+  parseNotionPageId
+} from "../../src/connectors/notion"
+import type { NotionPageObject } from "../../src/connectors/notion"
 import { decryptToken, encryptToken } from "../../src/connectors/token-crypto"
 
 vi.mock("@folionote/auth", () => ({ auth: { api: {} } }))
@@ -71,6 +76,57 @@ describe("parseGoogleDocId", () => {
   it("rejects other URLs", () => {
     expect(
       parseGoogleDocId("https://docs.google.com/spreadsheets/x")
+    ).toBeNull()
+  })
+})
+
+describe("notion page identity", () => {
+  const page = (overrides: Partial<NotionPageObject>): NotionPageObject => ({
+    object: "page",
+    id: "p1",
+    url: "https://www.notion.so/p1",
+    last_edited_time: "2026-10-19T00:00:00.000Z",
+    properties: {},
+    ...overrides
+  })
+
+  it("keeps emoji icons and collapses image icons to their url", () => {
+    expect(
+      notionPageIconOf(page({ icon: { type: "emoji", emoji: "📚" } }))
+    ).toEqual({
+      type: "emoji",
+      emoji: "📚"
+    })
+    expect(
+      notionPageIconOf(
+        page({
+          icon: { type: "external", external: { url: "https://a.test/i.png" } }
+        })
+      )
+    ).toEqual({ type: "image", url: "https://a.test/i.png" })
+    expect(
+      notionPageIconOf(
+        page({ icon: { type: "file", file: { url: "https://s3.test/f.png" } } })
+      )
+    ).toEqual({ type: "image", url: "https://s3.test/f.png" })
+    expect(notionPageIconOf(page({ icon: null }))).toBeNull()
+  })
+
+  it("reads a clipped page's source from its url property", () => {
+    expect(
+      notionPageSourceUrlOf(
+        page({
+          properties: {
+            Name: { type: "title", title: [] },
+            URL: { type: "url", url: "https://www3.nhk.or.jp/news/easy/" }
+          }
+        })
+      )
+    ).toBe("https://www3.nhk.or.jp/news/easy/")
+    expect(
+      notionPageSourceUrlOf(
+        page({ properties: { URL: { type: "url", url: null } } })
+      )
     ).toBeNull()
   })
 })
