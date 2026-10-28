@@ -24,6 +24,7 @@
   --font-serif: "Zen Maru Gothic", serif;
   --font-number: "Leckerli One", cursive;
   --font-geist: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-jetbrains: "JetBrains Mono", ui-monospace, monospace;
 }
 
 html,
