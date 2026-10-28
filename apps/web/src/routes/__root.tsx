@@ -23,7 +23,7 @@ import type { orpc } from "@/utils/orpc"
 import appCss from "../index.css?url"
 
 const GOOGLE_FONTS_URL =
-  "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Story+Script&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Outfit:wght@100..900&family=Spline+Sans:wght@300..700&family=Zen+Maru+Gothic&family=ZCOOL+QingKe+HuangYou&family=Leckerli+One&family=Geist:wght@400..700&display=swap"
+  "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Story+Script&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Outfit:wght@100..900&family=Spline+Sans:wght@300..700&family=Zen+Maru+Gothic&family=ZCOOL+QingKe+HuangYou&family=Leckerli+One&family=Geist:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap"
 
 // Map language codes to CSS class names for font switching
 function getLangClass(lang: string) {
