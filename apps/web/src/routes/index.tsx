@@ -6,16 +6,21 @@ import {
   AiChat02Icon,
   ArrowRight02Icon,
   BookOpen01Icon,
+  Bookmark01Icon,
   Calendar03Icon,
+  ChartDecreaseIcon,
   CheckmarkCircle02Icon,
   ComputerIcon,
+  File01Icon,
   GridViewIcon,
   InboxIcon,
+  Link01Icon,
   MagicWand01Icon,
   PencilEdit02Icon,
-  Search01Icon,
   SmartPhone01Icon,
-  Tag01Icon
+  SparklesIcon,
+  Tick02Icon,
+  TranslateIcon
 } from "@hugeicons/core-free-icons"
 import type { IconSvgElement } from "@hugeicons/react"
 import { HugeiconsIcon } from "@hugeicons/react"
@@ -26,11 +31,13 @@ import Lenis from "lenis"
 
 import "lenis/dist/lenis.css"
 import type { ReactNode } from "react"
-import { useEffect, useRef } from "react"
+import { Fragment, useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
 
 import { BrandLockup } from "@/components/brand-lockup"
 import { getUser } from "@/functions/get-user"
+import type { JapanesePartOfSpeech } from "@/lib/japanese-pos"
+import { JAPANESE_POS_SWATCH_COLOR_MAP } from "@/lib/japanese-pos"
 import { cn } from "@/lib/utils"
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
@@ -295,426 +302,1027 @@ function LandingNavbar() {
 // Hero
 // ---------------------------------------------------------------------------
 
+// The landing motion curve is cubic-bezier(0.22, 1, 0.36, 1), a quint
+// ease-out; GSAP's power4.out is the same family.
+const LANDING_EASE = "power4.out"
+
 function HeroSection() {
   const { t } = useTranslation()
   const root = useRef<HTMLElement>(null)
 
   useGSAP(
-    (_context, contextSafe) => {
-      const mm = gsap.matchMedia()
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const tl = gsap.timeline({
-          defaults: { ease: "power3.out", duration: 0.9 }
-        })
-        tl.from("[data-hero-rise]", { y: 28, autoAlpha: 0, stagger: 0.1 })
-
-        const underline = root.current?.querySelector<SVGPathElement>(
-          "[data-hero-underline] path"
-        )
-        if (underline) {
-          const len = underline.getTotalLength()
-          gsap.set(underline, { strokeDasharray: len, strokeDashoffset: len })
-          tl.to(
-            underline,
-            { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut" },
-            "-=0.35"
-          )
-        }
-
-        tl.from(
-          "[data-parallax]",
-          {
-            autoAlpha: 0,
-            scale: 0.6,
-            y: 40,
-            stagger: 0.12,
-            duration: 1,
-            ease: "back.out(1.5)"
-          },
-          "-=0.8"
-        )
-
-        // Idle float + gentle spin per object
-        for (const el of gsap.utils.toArray<HTMLElement>(
-          "[data-float]",
-          root.current
-        )) {
-          gsap.to(el, {
-            y: gsap.utils.random(-14, -24),
-            duration: gsap.utils.random(3, 4.6),
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: gsap.utils.random(0, 1)
-          })
-          gsap.to(el, {
-            rotation: gsap.utils.random(-6, 6),
-            duration: gsap.utils.random(4.5, 6.5),
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut"
-          })
-        }
-
-        // Scroll parallax: objects drift up at depth-scaled rates
-        for (const el of gsap.utils.toArray<HTMLElement>(
-          "[data-parallax]",
-          root.current
-        )) {
-          const depth = Number.parseFloat(el.dataset.depth ?? "1")
-          gsap.to(el, {
-            yPercent: -16 * depth,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: true
-            }
-          })
-        }
-
-        // Copy gently lifts away on scroll
-        gsap.to("[data-hero-copy]", {
-          yPercent: -8,
-          autoAlpha: 0.4,
-          ease: "none",
-          scrollTrigger: {
-            trigger: root.current,
-            start: "top top",
-            end: "bottom 40%",
-            scrub: true
-          }
-        })
-
-        // Pointer parallax for the object cluster
-        const items = gsap.utils.toArray<HTMLElement>(
-          "[data-parallax]",
-          root.current
-        )
-        const setters = items.map((el) => ({
-          x: gsap.quickTo(el, "x", { duration: 0.7, ease: "power3" }),
-          depth: Number.parseFloat(el.dataset.depth ?? "1")
-        }))
-        const onMove = contextSafe?.((event: PointerEvent) => {
-          const dx = (event.clientX - window.innerWidth / 2) / window.innerWidth
-          for (const s of setters) {
-            s.x(dx * 52 * s.depth)
-          }
-        })
-        if (onMove) {
-          window.addEventListener("pointermove", onMove)
-          return () => window.removeEventListener("pointermove", onMove)
-        }
-      })
-    },
-    { scope: root }
-  )
-
-  return (
-    <section
-      className="relative flex min-h-dvh flex-col justify-start overflow-hidden pt-32 pb-20 md:justify-center md:pt-36 md:pb-28"
-      ref={root}
-    >
-      <Blob className="-top-32 left-1/4 size-[460px] bg-primary/20" />
-      <Blob
-        className="top-10 right-0 size-[380px] bg-amber-300/15"
-        shape="60% 40% 30% 70% / 60% 30% 70% 40%"
-      />
-      <Blob
-        className="bottom-0 left-0 size-[320px] bg-primary/10"
-        shape="40% 60% 55% 45% / 55% 50% 50% 45%"
-      />
-
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-10 px-6 lg:grid-cols-[1.05fr_0.95fr]">
-        {/* Copy */}
-        <div className="text-center lg:text-left" data-hero-copy="">
-          <Badge
-            className="mb-6 gap-1.5 rounded-full px-3 py-1"
-            data-hero-rise=""
-            variant="secondary"
-          >
-            <HugeiconsIcon className="size-3.5" icon={MagicWand01Icon} />
-            {t("landing.hero.badge", "Your personal learning companion")}
-          </Badge>
-
-          <h1
-            className="font-display text-[2.75rem] leading-[1.05] font-bold tracking-tight md:text-6xl"
-            data-hero-rise=""
-          >
-            {t("landing.hero.titleLine1", "Capture, organize &")}{" "}
-            <span className="relative inline-block font-script font-normal text-primary">
-              {t("landing.hero.titleHighlight", "remember")}
-              <svg
-                aria-hidden="true"
-                className="absolute -bottom-2 left-0 w-full text-primary/50"
-                data-hero-underline=""
-                fill="none"
-                preserveAspectRatio="none"
-                viewBox="0 0 200 12"
-              >
-                <path
-                  d="M2 8C40 3 80 3 120 6C150 8 180 7 198 4"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="3"
-                />
-              </svg>
-            </span>{" "}
-            {t("landing.hero.titleLine2", "everything you learn")}
-          </h1>
-
-          <p
-            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl lg:mx-0"
-            data-hero-rise=""
-          >
-            {t(
-              "landing.hero.subtitle",
-              "A warm, playful home for your notes. Capture ideas in a flash, let AI connect the dots, and let spaced review make them stick — so nothing you learn slips away."
-            )}
-          </p>
-
-          <div
-            className="mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
-            data-hero-rise=""
-          >
-            <Link to="/register">
-              <Button className="h-12 cursor-pointer gap-2 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-transform hover:scale-[1.04] active:scale-[0.97]">
-                {t("landing.hero.cta", "Start learning — free")}
-                <HugeiconsIcon className="size-5" icon={ArrowRight02Icon} />
-              </Button>
-            </Link>
-            <a href="#features">
-              <Button
-                className="h-12 cursor-pointer gap-2 rounded-full px-7 text-base transition-transform hover:scale-[1.04] active:scale-[0.97]"
-                variant="outline"
-              >
-                {t("landing.hero.ctaSecondary", "Take the tour")}
-              </Button>
-            </a>
-          </div>
-
-          <div
-            className="mt-10 flex items-center justify-center gap-7 lg:justify-start"
-            data-hero-rise=""
-          >
-            <HeroStat
-              label={t("landing.hero.statPlatforms", "Platforms")}
-              value="3"
-            />
-            <Separator className="h-9" orientation="vertical" />
-            <HeroStat
-              label={t("landing.hero.statFreeLabel", "To start")}
-              value={t("landing.hero.statFreeValue", "Free")}
-            />
-            <Separator className="h-9" orientation="vertical" />
-            <HeroStat
-              label={t("landing.hero.statYoursLabel", "Yours")}
-              value="100%"
-            />
-          </div>
-        </div>
-
-        {/* Floating obsidian object cluster */}
-        <div className="relative mx-auto h-[360px] w-full max-w-md md:h-[460px]">
-          <Halo className="top-1/2 left-1/2 size-72 -translate-x-1/2 -translate-y-1/2" />
-          <Obj
-            alt={t(
-              "landing.hero.objectBook",
-              "A notebook full of what you've learned"
-            )}
-            className="absolute top-6 left-1/2 size-56 -translate-x-1/2 md:size-72"
-            depth={1.6}
-            float
-            src={OBJ.note}
-          />
-          <Obj
-            alt={t("landing.hero.objectSearch", "Search across everything")}
-            className="absolute top-0 right-2 size-24 md:size-28"
-            depth={2.4}
-            float
-            src={OBJ.lens}
-          />
-          <Obj
-            alt={t("landing.hero.objectBookmark", "Save what matters")}
-            className="absolute bottom-2 left-0 size-20 md:size-24"
-            depth={2.1}
-            float
-            src={OBJ.bookmark}
-          />
-          <Obj
-            className="absolute right-6 bottom-10 size-14 md:size-16"
-            depth={3}
-            float
-            src={OBJ.sparkle}
-          />
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function HeroStat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="text-center lg:text-left">
-      <p className="font-number text-3xl text-primary md:text-4xl">
-        <CountUp value={value} />
-      </p>
-      <p className="mt-0.5 text-xs text-muted-foreground">{label}</p>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Features
-// ---------------------------------------------------------------------------
-
-interface FeatureItem {
-  description: string
-  gradient: string
-  icon: IconSvgElement
-  title: string
-}
-
-function FeaturesSection() {
-  const { t } = useTranslation()
-  const root = useRef<HTMLElement>(null)
-
-  const features: FeatureItem[] = [
-    {
-      icon: PencilEdit02Icon,
-      title: t("landing.features.capture.title", "Quick Capture"),
-      description: t(
-        "landing.features.capture.desc",
-        "Catch ideas the moment they strike with a rich, distraction-free editor. Tag and organize without breaking your flow."
-      ),
-      gradient: "from-primary/25 to-amber-300/10"
-    },
-    {
-      icon: Calendar03Icon,
-      title: t("landing.features.review.title", "Spaced Repetition"),
-      description: t(
-        "landing.features.review.desc",
-        "Never forget what you learn. A friendly review schedule resurfaces your notes at exactly the right moment."
-      ),
-      gradient: "from-amber-300/20 to-primary/15"
-    },
-    {
-      icon: AiChat02Icon,
-      title: t("landing.features.ai.title", "AI Knowledge Assistant"),
-      description: t(
-        "landing.features.ai.desc",
-        "Chat with your notes. Ask questions, get summaries, and uncover connections across your whole knowledge base."
-      ),
-      gradient: "from-primary/20 to-orange-300/10"
-    },
-    {
-      icon: Search01Icon,
-      title: t("landing.features.search.title", "Powerful Search"),
-      description: t(
-        "landing.features.search.desc",
-        "Find anything in seconds with full-text and AI-powered semantic search across every entry you've ever made."
-      ),
-      gradient: "from-amber-400/15 to-primary/15"
-    },
-    {
-      icon: Tag01Icon,
-      title: t("landing.features.tags.title", "Smart Organization"),
-      description: t(
-        "landing.features.tags.desc",
-        "Tags, collections, and sources that grow into a personal taxonomy — structure that feels effortless."
-      ),
-      gradient: "from-primary/20 to-amber-300/15"
-    },
-    {
-      icon: GridViewIcon,
-      title: t("landing.features.graph.title", "Knowledge Graph"),
-      description: t(
-        "landing.features.graph.desc",
-        "Watch your notes link up. Explore hidden relationships and see the big picture of everything you know."
-      ),
-      gradient: "from-amber-300/15 to-primary/20"
-    }
-  ]
-
-  useGSAP(
     () => {
       const mm = gsap.matchMedia()
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set("[data-feature-card]", { y: 40, autoAlpha: 0 })
-        ScrollTrigger.batch("[data-feature-card]", {
-          start: "top 88%",
-          onEnter: (batch) =>
-            gsap.to(batch, {
-              y: 0,
-              autoAlpha: 1,
-              stagger: 0.12,
-              duration: 0.7,
-              ease: "power3.out",
-              overwrite: true
-            })
+        gsap
+          .timeline({ defaults: { ease: LANDING_EASE, duration: 0.7 } })
+          .from("[data-hero-rise]", { y: 32, autoAlpha: 0, stagger: 0.06 })
+          .from(
+            "[data-hero-preview]",
+            { y: 32, autoAlpha: 0, duration: 0.8 },
+            "-=0.4"
+          )
+      })
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.from("[data-hero-rise], [data-hero-preview]", {
+          autoAlpha: 0,
+          duration: 0.5,
+          ease: "power1.out"
         })
       })
     },
     { scope: root }
   )
 
-  return (
-    <section className="relative py-20 md:py-28" id="features" ref={root}>
-      <Obj
-        className="animate-floaty pointer-events-none absolute top-16 right-[6%] hidden size-20 lg:block"
-        src={OBJ.tag}
-      />
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeader
-          badge={t("landing.features.badge", "Core Features")}
-          description={t(
-            "landing.features.description",
-            "Everything you need to capture, organize, and actually retain what you learn — in one playful place."
-          )}
-          title={t("landing.features.title", "Built for Lifelong Learners")}
-        />
+  const proofPoints = [
+    t("landing.hero.proofFree", "Free to start, no card needed"),
+    t("landing.hero.proofPlatforms", "Web, iOS and Android"),
+    t("landing.hero.proofOpenSource", "Open source under MIT")
+  ]
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <FeatureCard feature={feature} key={feature.title} />
-          ))}
+  return (
+    <section className="px-6 pt-24 pb-24" ref={root}>
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 pt-16 text-center">
+        <p
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-card py-1 pr-3 pl-1 text-sm text-muted-foreground"
+          data-hero-rise=""
+        >
+          <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-semibold text-primary-foreground">
+            {t("landing.hero.badgeTag", "New")}
+          </span>
+          {t("landing.hero.badge", "Edit a note together in real time")}
+        </p>
+
+        {/* pb-2 keeps descenders inside the clipped gradient. */}
+        <h1
+          className="max-w-[680px] bg-linear-to-r from-black to-[#666666] bg-clip-text pb-2 text-5xl font-semibold tracking-tight text-balance text-transparent md:text-6xl dark:from-white dark:to-[#9b9b9b]"
+          data-hero-rise=""
+        >
+          {t("landing.hero.titleLine1", "Learn it once.")}
+          <br />
+          {t("landing.hero.titleLine2", "Remember it for good.")}
+        </h1>
+
+        <p
+          className="max-w-[680px] text-lg text-pretty text-muted-foreground"
+          data-hero-rise=""
+        >
+          {t(
+            "landing.hero.subtitle",
+            "FolioNote is a learning notebook for students, engineers and language learners. Save notes and links on any device, ask AI about everything you have saved, and get a short daily review that brings ideas back before they fade."
+          )}
+        </p>
+
+        <div
+          className="flex flex-col items-center gap-4 pt-2"
+          data-hero-rise=""
+        >
+          <Link
+            className="group inline-flex items-center gap-2 rounded-xl bg-primary px-3 py-2 text-base font-semibold text-primary-foreground transition-[background-color,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-px hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:scale-[0.98]"
+            to="/register"
+          >
+            {t("landing.hero.cta", "Create your free notebook")}
+            <HugeiconsIcon
+              className="size-4 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1"
+              icon={ArrowRight02Icon}
+            />
+          </Link>
+          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+            {proofPoints.map((point) => (
+              <li className="flex items-center gap-1" key={point}>
+                <HugeiconsIcon
+                  className="size-4 text-primary"
+                  icon={Tick02Icon}
+                />
+                {point}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="w-full pt-10" data-hero-preview="">
+          <HeroAppPreview />
         </div>
       </div>
     </section>
   )
 }
 
-function FeatureCard({ feature }: { feature: FeatureItem }) {
+// Sample workspace drawn in the hero preview. It is a picture of the product,
+// so the copy stays fixed instead of going through i18n.
+const PREVIEW_NAV: {
+  label: string
+  icon: IconSvgElement
+  meta?: string
+  active?: boolean
+  due?: boolean
+}[] = [
+  { label: "Inbox", icon: InboxIcon, meta: "4" },
+  { label: "Entries", icon: File01Icon, meta: "318", active: true },
+  { label: "Review", icon: Calendar03Icon, meta: "12 due", due: true },
+  { label: "Graph", icon: GridViewIcon },
+  { label: "Japanese", icon: TranslateIcon }
+]
+
+const PREVIEW_COLLECTIONS = [
+  { label: "React 19", dot: "bg-primary" },
+  { label: "Systems design", dot: "bg-sky-500" },
+  { label: "JLPT N3", dot: "bg-emerald-500" },
+  { label: "Reading list", dot: "bg-rose-500" }
+] as const
+
+const PREVIEW_CODE = `const [state, formAction, isPending] =
+  useActionState(saveNote, null)
+
+<form action={formAction}>
+  <button disabled={isPending}>Save</button>
+</form>`
+
+const PREVIEW_CITATIONS = [
+  "useActionState in practice",
+  "Forms in React 19",
+  "Comment form refactor"
+] as const
+
+function HeroAppPreview() {
+  const { t } = useTranslation()
+
   return (
     <div
-      className="group relative h-full overflow-hidden rounded-3xl border border-border/60 bg-card/70 p-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-xl"
-      data-feature-card=""
+      aria-label={t(
+        "landing.hero.previewLabel",
+        "FolioNote showing a note about React useActionState next to the AI assistant answering a question with links to three entries"
+      )}
+      className="mx-auto w-full overflow-hidden rounded-3xl border border-border bg-card text-left shadow-[0_1px_2px_rgba(26,25,21,0.04),0_24px_48px_-24px_rgba(26,25,21,0.16)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.3),0_24px_48px_-24px_rgba(0,0,0,0.6)]"
+      role="img"
     >
-      <div
-        className={cn(
-          "absolute inset-0 bg-linear-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100",
-          feature.gradient
-        )}
-      />
-      <div className="relative">
-        <div
-          className={cn(
-            "mb-4 flex size-14 items-center justify-center rounded-2xl bg-linear-to-br transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110",
-            feature.gradient
-          )}
-        >
-          <HugeiconsIcon className="size-7 text-primary" icon={feature.icon} />
+      <div className="flex items-center gap-2 border-b border-border px-4 py-3">
+        <span className="size-3 rounded-full bg-border" />
+        <span className="size-3 rounded-full bg-border" />
+        <span className="size-3 rounded-full bg-border" />
+        <span className="mx-auto text-xs text-muted-foreground">FolioNote</span>
+      </div>
+
+      <div className="grid min-h-[520px] lg:grid-cols-[224px_minmax(0,1fr)_320px]">
+        <div className="hidden flex-col gap-1 border-r border-border bg-surface-secondary/50 px-3 py-4 lg:flex">
+          <div className="flex items-center gap-2 px-2 pt-1 pb-3 text-sm font-semibold">
+            <span className="flex size-6 items-center justify-center rounded-full border border-border bg-card text-xs text-muted-foreground">
+              MS
+            </span>
+            Mina's notebook
+          </div>
+          {PREVIEW_NAV.map((item) => (
+            <div
+              className={cn(
+                "flex items-center gap-2 rounded-lg p-2 text-sm text-muted-foreground",
+                item.active &&
+                  "bg-card font-medium text-foreground ring-1 ring-border"
+              )}
+              key={item.label}
+            >
+              <HugeiconsIcon className="size-4" icon={item.icon} />
+              {item.label}
+              {item.meta ? (
+                <span
+                  className={cn(
+                    "ml-auto text-xs",
+                    item.due ? "font-semibold text-foreground" : ""
+                  )}
+                >
+                  {item.meta}
+                </span>
+              ) : null}
+            </div>
+          ))}
+          <p className="px-2 pt-4 pb-1 text-xs font-medium text-muted-foreground">
+            Collections
+          </p>
+          {PREVIEW_COLLECTIONS.map((collection) => (
+            <div
+              className="flex items-center gap-2 rounded-lg p-2 text-sm text-muted-foreground"
+              key={collection.label}
+            >
+              <span className={cn("size-2 rounded-full", collection.dot)} />
+              {collection.label}
+            </div>
+          ))}
         </div>
-        <h3 className="mb-2 font-display text-xl font-semibold">
-          {feature.title}
-        </h3>
-        <p className="text-sm leading-relaxed text-muted-foreground">
-          {feature.description}
-        </p>
+
+        <div className="flex min-w-0 flex-col gap-4 px-6 py-8 md:px-10">
+          <div className="flex items-center justify-between gap-4 text-xs text-muted-foreground">
+            <span>React 19 / Actions</span>
+            <span className="flex items-center gap-2">
+              <span className="flex">
+                <span className="flex size-6 items-center justify-center rounded-full bg-primary/15 text-xs font-semibold text-foreground ring-2 ring-card">
+                  M
+                </span>
+                <span className="-ml-2 flex size-6 items-center justify-center rounded-full border border-border bg-card text-xs font-semibold ring-2 ring-card">
+                  J
+                </span>
+              </span>
+              2 editing
+            </span>
+          </div>
+          <p className="text-3xl font-semibold tracking-tight">
+            useActionState in practice
+          </p>
+          <div className="flex flex-wrap gap-2 text-xs">
+            <span className="rounded-full bg-primary/15 px-2 py-0.5 font-medium text-foreground">
+              #react
+            </span>
+            <span className="rounded-full border border-border px-2 py-0.5 text-muted-foreground">
+              #forms
+            </span>
+            <span className="flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-muted-foreground">
+              <HugeiconsIcon className="size-3" icon={Link01Icon} />
+              react.dev
+            </span>
+            <span className="rounded-full border border-border px-2 py-0.5 text-muted-foreground">
+              Next review in 3 days
+            </span>
+          </div>
+          <p className="text-base text-muted-foreground">
+            The hook wraps an async action and hands back{" "}
+            <mark className="rounded-sm bg-primary/15 px-0.5 text-foreground">
+              the latest result, a form action and a pending flag
+            </mark>
+            . It replaces most of the manual loading state I used to keep beside
+            every form.
+          </p>
+          <pre className="overflow-hidden rounded-xl border border-border bg-surface-secondary/50 px-4 py-3 font-mono text-xs text-muted-foreground">
+            {PREVIEW_CODE}
+          </pre>
+          <p className="text-base text-muted-foreground">
+            Errors come back through{" "}
+            <code className="font-mono text-sm">state</code>, so the form can
+            show them inline without a separate effect.
+          </p>
+        </div>
+
+        <div className="hidden flex-col gap-3 border-l border-border p-4 lg:flex">
+          <p className="flex items-center gap-2 text-sm font-semibold">
+            <HugeiconsIcon
+              className="size-4 text-primary"
+              icon={SparklesIcon}
+            />
+            Ask your notes
+          </p>
+          <p className="max-w-60 self-end rounded-2xl bg-surface-secondary px-3 py-2 text-sm">
+            How is useActionState different from useFormStatus?
+          </p>
+          <p className="text-sm text-muted-foreground">
+            useActionState owns the result of the action, while useFormStatus
+            only reads whether the parent form is submitting. You noted using
+            both together on the comment form.
+          </p>
+          <div className="flex flex-col items-start gap-2">
+            <span className="text-xs text-muted-foreground">
+              From 3 entries
+            </span>
+            {PREVIEW_CITATIONS.map((title, index) => (
+              <span
+                className="flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground"
+                key={title}
+              >
+                <span className="font-mono">{index + 1}</span>
+                {title}
+              </span>
+            ))}
+          </div>
+          <div className="mt-auto flex items-center justify-between rounded-xl border border-border px-3 py-2 text-sm text-muted-foreground">
+            Ask anything about your notes
+            <HugeiconsIcon className="size-4" icon={ArrowRight02Icon} />
+          </div>
+        </div>
       </div>
     </div>
+  )
+}
+
+// Rises each [data-reveal] child once as it enters the viewport. With reduced
+// motion it only fades.
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null)
+
+  useGSAP(
+    (_context, contextSafe) => {
+      const el = ref.current
+      if (!(el && contextSafe)) {
+        return
+      }
+      const targets = gsap.utils.toArray<HTMLElement>("[data-reveal]", el)
+      const mm = gsap.matchMedia()
+      mm.add(
+        {
+          motion: "(prefers-reduced-motion: no-preference)",
+          reduce: "(prefers-reduced-motion: reduce)"
+        },
+        (context) => {
+          const rise = Boolean(context.conditions?.motion)
+          gsap.set(targets, { autoAlpha: 0, y: rise ? 32 : 0 })
+          const reveal = contextSafe((target: Element) => {
+            gsap.to(target, {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.7,
+              ease: rise ? LANDING_EASE : "power1.out"
+            })
+          })
+          const observer = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (entry.isIntersecting) {
+                  observer.unobserve(entry.target)
+                  reveal(entry.target)
+                }
+              }
+            },
+            { rootMargin: "0px 0px -12% 0px" }
+          )
+          for (const target of targets) {
+            observer.observe(target)
+          }
+          return () => observer.disconnect()
+        }
+      )
+    },
+    { scope: ref }
+  )
+
+  return ref
+}
+
+// ---------------------------------------------------------------------------
+// Problem
+// ---------------------------------------------------------------------------
+
+function ProblemSection() {
+  const { t } = useTranslation()
+  const root = useReveal<HTMLElement>()
+
+  const pains: { title: string; desc: string; icon: IconSvgElement }[] = [
+    {
+      icon: Bookmark01Icon,
+      title: t("landing.problem.links.title", "Links pile up unread"),
+      desc: t(
+        "landing.problem.links.desc",
+        "Bookmarks and read later queues grow faster than you can open them."
+      )
+    },
+    {
+      icon: GridViewIcon,
+      title: t("landing.problem.scatter.title", "Notes scatter across apps"),
+      desc: t(
+        "landing.problem.scatter.desc",
+        "Chat threads, docs and phone photos each hold a piece, and none of them talk to each other."
+      )
+    },
+    {
+      icon: ChartDecreaseIcon,
+      title: t(
+        "landing.problem.fade.title",
+        "Memory fades without a second look"
+      ),
+      desc: t(
+        "landing.problem.fade.desc",
+        "An idea you never revisit is mostly gone within days. A few short reviews keep it."
+      )
+    }
+  ]
+
+  return (
+    <section
+      className="border-y border-border bg-white px-6 py-24 dark:bg-[#1f1f1f]"
+      ref={root}
+    >
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-16">
+        <div
+          className="flex min-w-0 flex-[1_1_440px] flex-col gap-6"
+          data-reveal=""
+        >
+          <p className="text-sm font-semibold text-amber-700 dark:text-primary">
+            {t("landing.problem.eyebrow", "Why notes do not stick")}
+          </p>
+          <h2 className="text-4xl font-semibold tracking-tight text-balance md:text-5xl">
+            {/* Block lines balance on their own, so a phone wrap never
+                strands one word. */}
+            <span className="block">
+              {t("landing.problem.titleLine1", "Saving is easy.")}
+            </span>
+            <span className="block">
+              {t("landing.problem.titleLine2", "Remembering is harder.")}
+            </span>
+          </h2>
+          <p className="text-lg text-pretty text-muted-foreground">
+            {t(
+              "landing.problem.lede",
+              "Most learning tools stop at the save button. FolioNote keeps going after it, so the things you collect turn into things you know."
+            )}
+          </p>
+          <ul className="flex flex-col gap-6 pt-4">
+            {pains.map((pain) => (
+              <li className="flex gap-4" key={pain.title}>
+                <span className="flex size-10 flex-none items-center justify-center rounded-xl bg-primary/15 text-amber-700 dark:text-primary">
+                  <HugeiconsIcon className="size-5" icon={pain.icon} />
+                </span>
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-base font-semibold">{pain.title}</h3>
+                  <p className="text-base text-pretty text-muted-foreground">
+                    {pain.desc}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <figure
+          className="m-0 flex min-w-0 flex-[1_1_440px] flex-col gap-6 rounded-3xl border border-border bg-[#fbfaf7] p-8 dark:bg-[#181818]"
+          data-reveal=""
+        >
+          <div className="flex flex-wrap items-baseline justify-between gap-4">
+            <p className="text-base font-semibold">
+              {t(
+                "landing.problem.chartTitle",
+                "How much you keep over a month"
+              )}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {t("landing.problem.chartNote", "Illustration")}
+            </p>
+          </div>
+          <ForgettingCurveChart />
+          <figcaption className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <span className="w-6 border-t-2 border-dashed border-muted-foreground" />
+              {t("landing.problem.legendWithout", "Without review")}
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="w-6 border-t-2 border-primary" />
+              {t(
+                "landing.problem.legendWith",
+                "With a FolioNote review on days 1, 3, 7 and 16"
+              )}
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  )
+}
+
+// Illustrative curves, not measured data: recall decays on its own, and each
+// review lifts it back up and slows the next decay.
+const CURVE_AXIS_DAYS = [
+  { label: "1", x: 98 },
+  { label: "3", x: 152 },
+  { label: "7", x: 232 },
+  { label: "16", x: 382 },
+  { label: "30", x: 462 }
+] as const
+const CURVE_REVIEW_POINTS = [
+  { x: 98, y: 28 },
+  { x: 152, y: 30 },
+  { x: 232, y: 34 },
+  { x: 382, y: 38 }
+] as const
+
+function ForgettingCurveChart() {
+  const { t } = useTranslation()
+
+  return (
+    <svg
+      aria-label={t(
+        "landing.problem.chartLabel",
+        "Two curves. Without review, recall drops quickly and stays low. With reviews on days 1, 3, 7 and 16, recall is lifted back up each time and ends high."
+      )}
+      className="h-auto w-full"
+      role="img"
+      viewBox="0 0 480 240"
+    >
+      <g className="stroke-border" strokeWidth={1}>
+        <line x1={40} x2={40} y1={20} y2={200} />
+        <line x1={40} x2={470} y1={200} y2={200} />
+        <line strokeDasharray="2 4" x1={40} x2={470} y1={110} y2={110} />
+      </g>
+      <g className="fill-muted-foreground font-mono" fontSize={12}>
+        <text x={0} y={24}>
+          100%
+        </text>
+        <text x={8} y={114}>
+          50%
+        </text>
+        <text x={40} y={222}>
+          {t("landing.problem.chartDay", "Day 0")}
+        </text>
+        {CURVE_AXIS_DAYS.map((day) => (
+          <text key={day.label} textAnchor="middle" x={day.x} y={222}>
+            {day.label}
+          </text>
+        ))}
+      </g>
+      <path
+        className="stroke-muted-foreground"
+        d="M40 20 C70 120 120 160 200 172 S380 186 470 190"
+        fill="none"
+        strokeDasharray="6 6"
+        strokeWidth={2}
+      />
+      <path
+        className="stroke-primary"
+        d="M40 20 C60 70 80 88 98 96 L98 28 C120 70 136 82 152 86 L152 30 C185 62 210 72 232 76 L232 34 C300 56 345 64 382 66 L382 38 C410 48 440 54 470 56"
+        fill="none"
+        strokeLinejoin="round"
+        strokeWidth={2.5}
+      />
+      <g className="fill-primary">
+        {CURVE_REVIEW_POINTS.map((point) => (
+          <circle cx={point.x} cy={point.y} key={point.x} r={4} />
+        ))}
+      </g>
+    </svg>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Benefits
+// ---------------------------------------------------------------------------
+
+function BenefitsSection() {
+  const { t } = useTranslation()
+  const root = useReveal<HTMLElement>()
+
+  return (
+    <section className="scroll-mt-24 px-6 py-24" id="features" ref={root}>
+      <div className="mx-auto flex max-w-6xl flex-col gap-12">
+        <div className="flex max-w-[680px] flex-col gap-4" data-reveal="">
+          <p className="text-sm font-semibold text-amber-700 dark:text-primary">
+            {t("landing.benefits.eyebrow", "What you get")}
+          </p>
+          <h2 className="text-4xl font-semibold tracking-tight text-balance md:text-5xl">
+            <span className="block">
+              {t("landing.benefits.titleLine1", "One notebook that keeps up")}
+            </span>
+            <span className="block">
+              {t("landing.benefits.titleLine2", "with how you learn")}
+            </span>
+          </h2>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-wrap gap-4">
+            <BenefitCard
+              className="flex-[1_1_560px]"
+              desc={t(
+                "landing.benefits.capture.desc",
+                "A calm editor with markdown, code blocks and images on the web, plus quick notes from your phone. Every entry keeps its source, so you always know where an idea came from."
+              )}
+              title={t(
+                "landing.benefits.capture.title",
+                "Capture in seconds, from anywhere"
+              )}
+            >
+              <CaptureMock />
+            </BenefitCard>
+            <BenefitCard
+              className="flex-[1_1_400px]"
+              desc={t(
+                "landing.benefits.ask.desc",
+                "Chat with everything you have saved. Each answer links back to the entries it used. Connect your own model provider key if you prefer."
+              )}
+              title={t(
+                "landing.benefits.ask.title",
+                "Ask your notes, get answers with sources"
+              )}
+            >
+              <AskMock />
+            </BenefitCard>
+          </div>
+
+          <div className="flex flex-wrap gap-4">
+            <BenefitCard
+              className="flex-[1_1_340px]"
+              desc={t(
+                "landing.benefits.review.desc",
+                "Spaced repetition brings each note back right before you would forget it. Rate your recall and the next review moves to match."
+              )}
+              title={t(
+                "landing.benefits.review.title",
+                "Review a few minutes a day"
+              )}
+            >
+              <ReviewMock />
+            </BenefitCard>
+            <BenefitCard
+              className="flex-[1_1_340px]"
+              desc={t(
+                "landing.benefits.graph.desc",
+                "Links and shared tags draw a map of what you know, so a new note can find its neighbors."
+              )}
+              title={t(
+                "landing.benefits.graph.title",
+                "See how your ideas connect"
+              )}
+            >
+              <ConnectionsMock />
+            </BenefitCard>
+            <BenefitCard
+              className="flex-[1_1_340px]"
+              desc={t(
+                "landing.benefits.japanese.desc",
+                "Paste an article and every word gets furigana and a part of speech color. Then practice with JLPT style questions."
+              )}
+              id="japanese"
+              title={t(
+                "landing.benefits.japanese.title",
+                "Read Japanese with grammar in color"
+              )}
+            >
+              <JapaneseMock />
+            </BenefitCard>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function BenefitCard({
+  title,
+  desc,
+  className,
+  id,
+  children
+}: {
+  title: string
+  desc: string
+  className?: string
+  id?: string
+  children: ReactNode
+}) {
+  return (
+    <article
+      className={cn(
+        "flex min-w-0 scroll-mt-24 flex-col gap-6 rounded-3xl border border-border bg-white p-8 dark:bg-[#1f1f1f]",
+        className
+      )}
+      data-reveal=""
+      id={id}
+    >
+      <div className="flex max-w-[520px] flex-col gap-2">
+        <h3 className="text-2xl font-semibold tracking-tight text-balance">
+          {title}
+        </h3>
+        <p className="text-base text-pretty text-muted-foreground">{desc}</p>
+      </div>
+      {/* The mock repeats what the copy says, so screen readers skip it. */}
+      <div
+        aria-hidden="true"
+        className="mt-auto rounded-xl border border-border bg-[#fbfaf7] p-4 dark:bg-[#181818]"
+      >
+        {children}
+      </div>
+    </article>
+  )
+}
+
+const MOCK_CHIP =
+  "inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-xs whitespace-nowrap text-muted-foreground"
+
+// The mocks below are pictures of the product, so their sample copy stays
+// fixed instead of going through i18n.
+const CAPTURE_TOOLS = ["B", "I", "H1", "List", "Code", "Link"] as const
+
+function CaptureMock() {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-1 border-b border-border pb-3">
+        {CAPTURE_TOOLS.map((tool) => (
+          <span className={cn(MOCK_CHIP, "font-mono")} key={tool}>
+            {tool}
+          </span>
+        ))}
+        <span className="ml-auto text-xs text-muted-foreground">Saved</span>
+      </div>
+      <p className="text-lg font-semibold">
+        Notes from Designing Data Intensive Applications, ch. 5
+      </p>
+      <p className="text-sm text-muted-foreground">
+        Leader based replication sends every write through one node. Followers
+        apply the log in the same order, which is why{" "}
+        <mark className="rounded-sm bg-primary/15 px-0.5 text-foreground">
+          read your own writes
+        </mark>{" "}
+        needs care once reads hit a follower.
+      </p>
+      <div className="flex flex-wrap items-center gap-2">
+        <span className={MOCK_CHIP}>
+          <HugeiconsIcon className="size-3" icon={File01Icon} />
+          Book, p. 151
+        </span>
+        <span className="rounded-full bg-primary/15 px-2 py-0.5 text-xs font-medium">
+          #systems
+        </span>
+        <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
+          <HugeiconsIcon className="size-4" icon={SmartPhone01Icon} />
+          Synced to iPhone just now
+        </span>
+      </div>
+    </div>
+  )
+}
+
+function AskMock() {
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="self-end rounded-2xl border border-border bg-white px-3 py-2 text-sm dark:bg-[#1f1f1f]">
+        What did I learn about caching last month?
+      </p>
+      <p className="text-sm text-muted-foreground">
+        You compared write through and write behind caches, and noted that cache
+        stampedes hit the checkout service twice in September.
+      </p>
+      <div className="flex flex-wrap gap-2">
+        <span className={MOCK_CHIP}>
+          <span className="font-mono">1</span>Caching patterns
+        </span>
+        <span className={MOCK_CHIP}>
+          <span className="font-mono">2</span>Checkout incident notes
+        </span>
+      </div>
+    </div>
+  )
+}
+
+const REVIEW_RATINGS = [
+  { label: "Again", next: "1m" },
+  { label: "Hard", next: "6m" },
+  { label: "Good", next: "2d", picked: true },
+  { label: "Easy", next: "5d" }
+] as const
+
+function ReviewMock() {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex justify-between text-xs text-muted-foreground">
+        <span>Due today</span>
+        <span className="font-mono">3 of 12</span>
+      </div>
+      <div className="h-1 rounded-full bg-border">
+        <div className="h-1 w-1/4 rounded-full bg-primary" />
+      </div>
+      <p className="py-2 text-base font-medium">
+        What does useOptimistic return while an action is pending?
+      </p>
+      <div className="flex gap-2">
+        {REVIEW_RATINGS.map((rating) => (
+          <span
+            className={cn(
+              "flex flex-1 flex-col items-center gap-0.5 rounded-lg border p-2 text-sm font-medium",
+              "picked" in rating
+                ? "border-transparent bg-primary/15"
+                : "border-border bg-white dark:bg-[#1f1f1f]"
+            )}
+            key={rating.label}
+          >
+            {rating.label}
+            <span className="font-mono text-xs text-muted-foreground">
+              {rating.next}
+            </span>
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const CONNECTION_NODES = [
+  { label: "Replication", x: 60, y: 44, labelY: 30 },
+  { label: "Redis notes", x: 246, y: 40, labelY: 26 },
+  { label: "Checkout incident", x: 70, y: 146, labelY: 170 },
+  { label: "CDN basics", x: 236, y: 140, labelY: 164 }
+] as const
+const CONNECTION_HUB = { label: "Caching", x: 150, y: 90 } as const
+// Links between outer nodes, by index into CONNECTION_NODES.
+const CONNECTION_LINKS = [
+  [0, 2],
+  [1, 3]
+] as const
+
+function ConnectionsMock() {
+  return (
+    <svg className="block h-auto w-full" viewBox="0 0 300 180">
+      <g className="stroke-border" strokeWidth={1.5}>
+        {CONNECTION_NODES.map((node) => (
+          <line
+            key={node.label}
+            x1={CONNECTION_HUB.x}
+            x2={node.x}
+            y1={CONNECTION_HUB.y}
+            y2={node.y}
+          />
+        ))}
+        {CONNECTION_LINKS.map(([from, to]) => (
+          <line
+            key={`${from}-${to}`}
+            x1={CONNECTION_NODES[from].x}
+            x2={CONNECTION_NODES[to].x}
+            y1={CONNECTION_NODES[from].y}
+            y2={CONNECTION_NODES[to].y}
+          />
+        ))}
+      </g>
+      <circle
+        className="fill-primary"
+        cx={CONNECTION_HUB.x}
+        cy={CONNECTION_HUB.y}
+        r={10}
+      />
+      <g className="fill-white stroke-muted-foreground dark:fill-[#1f1f1f]">
+        {CONNECTION_NODES.map((node) => (
+          <circle
+            cx={node.x}
+            cy={node.y}
+            key={node.label}
+            r={6}
+            strokeWidth={1.5}
+          />
+        ))}
+      </g>
+      <g className="fill-muted-foreground" fontSize={12} textAnchor="middle">
+        <text
+          className="fill-foreground"
+          fontWeight={600}
+          x={CONNECTION_HUB.x}
+          y={CONNECTION_HUB.y + 28}
+        >
+          {CONNECTION_HUB.label}
+        </text>
+        {CONNECTION_NODES.map((node) => (
+          <text key={node.label} x={node.x} y={node.labelY}>
+            {node.label}
+          </text>
+        ))}
+      </g>
+    </svg>
+  )
+}
+
+// 猫が静かに眠っている, tokenized the way the reading view colors it.
+const JAPANESE_SAMPLE: {
+  kanji?: string
+  reading?: string
+  kana: string
+  pos: JapanesePartOfSpeech
+}[] = [
+  { kanji: "猫", reading: "ねこ", kana: "", pos: "noun" },
+  { kana: "が", pos: "particle" },
+  { kanji: "静", reading: "しず", kana: "かに", pos: "adverb" },
+  { kanji: "眠", reading: "ねむ", kana: "って", pos: "verb" },
+  { kana: "いる", pos: "auxiliary" }
+]
+const JAPANESE_SAMPLE_LEGEND: JapanesePartOfSpeech[] = [
+  "noun",
+  "particle",
+  "adverb",
+  "verb",
+  "auxiliary"
+]
+
+function JapaneseMock() {
+  const { t } = useTranslation()
+
+  return (
+    <div className="flex flex-col gap-4">
+      <p className="flex flex-wrap items-end gap-2" lang="ja">
+        {JAPANESE_SAMPLE.map((token) => (
+          <span
+            className="flex flex-col gap-1"
+            key={`${token.kanji ?? ""}${token.kana}`}
+          >
+            <span className="text-xl font-medium">
+              {token.kanji ? (
+                <ruby>
+                  {token.kanji}
+                  <rt className="text-xs font-normal text-muted-foreground">
+                    {token.reading}
+                  </rt>
+                </ruby>
+              ) : null}
+              {token.kana}
+            </span>
+            <span
+              className={cn(
+                "h-0.5 w-full rounded-full",
+                JAPANESE_POS_SWATCH_COLOR_MAP[token.pos]
+              )}
+            />
+          </span>
+        ))}
+      </p>
+      <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
+        {JAPANESE_SAMPLE_LEGEND.map((pos) => (
+          <span className="flex items-center gap-1" key={pos}>
+            <span
+              className={cn(
+                "size-2 rounded-full",
+                JAPANESE_POS_SWATCH_COLOR_MAP[pos]
+              )}
+            />
+            {t(`review.japaneseTyping.posCategories.${pos}`)}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Tagline
+// ---------------------------------------------------------------------------
+
+// Lighting runs from when the text top reaches 85% of the viewport height until
+// its bottom reaches 45%, so each word lights as it crosses the reading line.
+const TAGLINE_START = 0.85
+const TAGLINE_END = 0.45
+
+function TaglineSection() {
+  const { t, i18n } = useTranslation()
+  const textRef = useRef<HTMLParagraphElement>(null)
+
+  const lines = [
+    t("landing.tagline.line1", "Every idea you save"),
+    t("landing.tagline.line2", "should still be with you"),
+    t("landing.tagline.line3", "a year from now.")
+  ]
+  // Word segmentation instead of splitting on spaces, so languages written
+  // without spaces still light word by word.
+  const segmenter = new Intl.Segmenter(i18n.language, { granularity: "word" })
+
+  useEffect(() => {
+    const text = textRef.current
+    if (!text) {
+      return
+    }
+    const words = [...text.querySelectorAll<HTMLElement>("[data-word]")]
+    let frame = 0
+
+    const update = () => {
+      frame = 0
+      const rect = text.getBoundingClientRect()
+      const start = window.innerHeight * TAGLINE_START
+      const end = window.innerHeight * TAGLINE_END
+      const progress = (start - rect.top) / (start - end + rect.height)
+      const lit = Math.round(gsap.utils.clamp(0, 1, progress) * words.length)
+      for (const [index, word] of words.entries()) {
+        word.toggleAttribute("data-lit", index < lit)
+      }
+    }
+    // Scroll fires every frame; batch the reads into one rAF.
+    const schedule = () => {
+      if (!frame) {
+        frame = requestAnimationFrame(update)
+      }
+    }
+
+    update()
+    window.addEventListener("scroll", schedule, { passive: true })
+    window.addEventListener("resize", schedule)
+    return () => {
+      window.removeEventListener("scroll", schedule)
+      window.removeEventListener("resize", schedule)
+      cancelAnimationFrame(frame)
+    }
+  }, [])
+
+  return (
+    <section className="px-6 py-24">
+      <div className="mx-auto flex max-w-6xl justify-center">
+        <p
+          className="max-w-[680px] text-4xl font-semibold tracking-tight text-balance md:text-5xl"
+          ref={textRef}
+        >
+          {lines.map((line) => (
+            <span className="block" key={line}>
+              {[...segmenter.segment(line)].map((segment) =>
+                // Punctuation lights with the words; only spaces stay plain.
+                segment.segment.trim() ? (
+                  <span
+                    className="text-foreground/30 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] data-lit:text-foreground"
+                    data-word=""
+                    key={segment.index}
+                  >
+                    {segment.segment}
+                  </span>
+                ) : (
+                  <Fragment key={segment.index}>{segment.segment}</Fragment>
+                )
+              )}
+            </span>
+          ))}
+        </p>
+      </div>
+    </section>
   )
 }
 
@@ -1723,8 +2331,13 @@ function LandingPage() {
     { scope: root }
   )
 
+  // Flat canvas over the body glow and grain: the redesign keeps backgrounds
+  // solid and lighter than the app theme.
   return (
-    <div className="relative min-h-screen overflow-x-clip" ref={root}>
+    <div
+      className="relative min-h-screen overflow-x-clip bg-[#fbfaf7] font-geist dark:bg-[#181818]"
+      ref={root}
+    >
       <span
         aria-hidden="true"
         className="fixed top-0 left-0 z-[60] h-1 w-full origin-left scale-x-0 bg-linear-to-r from-primary to-amber-400"
@@ -1733,7 +2346,9 @@ function LandingPage() {
       <LandingNavbar />
       <main>
         <HeroSection />
-        <FeaturesSection />
+        <ProblemSection />
+        <BenefitsSection />
+        <TaglineSection />
         <HowItWorksSection />
         <ShowcaseSection />
         <StatsSection />
