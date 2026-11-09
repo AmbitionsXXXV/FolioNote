@@ -1,10 +1,12 @@
 import {
   db,
   entries,
+  entryColumns,
   entrySources,
   entryTags,
   searchHistory
 } from "@folionote/db"
+import type { EntryRow } from "@folionote/db"
 import { createLogger } from "@folionote/log"
 import {
   and,
@@ -144,16 +146,17 @@ async function performFtsSearch(
     }
   }
 
-  // Try FTS first
-  // After running migration 0004, a GIN index on search_vector column will be used
+  // Try FTS first. Must match against the stored `search_vector` column so
+  // Postgres can use entries_search_vector_idx (GIN); computing to_tsvector()
+  // inline here would scan and tokenize every row of the user instead.
   try {
     const ftsItems = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
           ...conditions,
-          sql`to_tsvector('simple', coalesce(${entries.title}, '') || ' ' || coalesce(${entries.contentText}, '')) @@ to_tsquery('simple', ${searchTerms})`
+          sql`${entries.searchVector} @@ to_tsquery('simple', ${searchTerms})`
         )
       )
       // Order by updatedAt only for consistent cursor pagination
@@ -172,7 +175,7 @@ async function performFtsSearch(
   // Fallback to ILIKE
   const searchPattern = `%${query}%`
   const ilikeItems = await db
-    .select()
+    .select(entryColumns)
     .from(entries)
     .where(
       and(
@@ -261,7 +264,7 @@ async function performIlikeSearch(
   additionalConditions: ReturnType<typeof eq>[],
   limit: number,
   cursor?: string
-): Promise<(typeof entries.$inferSelect)[]> {
+): Promise<EntryRow[]> {
   const searchPattern = `%${query}%`
   const conditions = [
     eq(entries.userId, userId),
@@ -286,7 +289,7 @@ async function performIlikeSearch(
   }
 
   return db
-    .select()
+    .select(entryColumns)
     .from(entries)
     .where(and(...conditions))
     .orderBy(desc(entries.updatedAt))
@@ -301,7 +304,7 @@ async function performFilterOnlySearch(
   additionalConditions: ReturnType<typeof eq>[],
   limit: number,
   cursor?: string
-): Promise<(typeof entries.$inferSelect)[]> {
+): Promise<EntryRow[]> {
   const conditions = [
     eq(entries.userId, userId),
     isNull(entries.deletedAt),
@@ -321,7 +324,7 @@ async function performFilterOnlySearch(
   }
 
   return db
-    .select()
+    .select(entryColumns)
     .from(entries)
     .where(and(...conditions))
     .orderBy(desc(entries.updatedAt))
@@ -459,7 +462,7 @@ export const advancedSearch = protectedProcedure
       return createEmptyResult(query ?? "", filters)
     }
 
-    let items: (typeof entries.$inferSelect)[]
+    let items: EntryRow[]
     let searchUsedFts = false
 
     // Perform search based on query presence

@@ -55,6 +55,7 @@ export {
   dailyLogsRelations,
   entries,
   entriesRelations,
+  entryColumns,
   entryCollaborators,
   entryCollaboratorsRelations,
   entryReviewState,
@@ -74,6 +75,7 @@ export {
   tags,
   tagsRelations
 } from "./schema/entries"
+export type { EntryRow } from "./schema/entries"
 export { entryLinks, entryLinksRelations } from "./schema/graph"
 export {
   jpGrammar,

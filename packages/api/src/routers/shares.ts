@@ -1,4 +1,4 @@
-import { db, entries, entryShares } from "@folionote/db"
+import { db, entries, entryColumns, entryShares } from "@folionote/db"
 import { ORPCError } from "@orpc/server"
 import bcrypt from "bcryptjs"
 import { and, eq, isNull } from "drizzle-orm"
@@ -71,7 +71,7 @@ export const createShare = protectedProcedure
 
     // Verify the entry belongs to the user and is not deleted
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -139,7 +139,7 @@ export const getSharesByEntry = protectedProcedure
 
     // Verify the entry belongs to the user
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -318,7 +318,7 @@ export const getPublicEntry = publicProcedure
 
     // Get the entry
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(and(eq(entries.id, share.entryId), isNull(entries.deletedAt)))
       .limit(1)

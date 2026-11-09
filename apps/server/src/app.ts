@@ -17,7 +17,9 @@ import type { RequestIdVariables } from "hono/request-id"
 import { requestId } from "hono/request-id"
 import { timeout } from "hono/timeout"
 
+import { env } from "./env"
 import { registerRoutes } from "./routes"
+import { recordTiming } from "./services/perf-metrics"
 import { isAllowedOrigin } from "./utils/allowed-origin"
 import { convertToSupportedLanguage } from "./utils/language"
 
@@ -75,8 +77,61 @@ app.use(
   timeout(30_000)
 )
 
+// Request timing for plain HTTP routes (auth, AI stream, dict, ...).
+// oRPC procedures are timed per procedure by `timeProcedure` below instead,
+// since they all share the /rpc/* path here.
+const UNTIMED_PATHS = new Set(["/", "/health", "/ready", "/internal/perf"])
+app.use("*", async (c, next) => {
+  const path = c.req.path
+  if (path.startsWith("/rpc/") || UNTIMED_PATHS.has(path)) {
+    await next()
+    return
+  }
+  const startedAt = performance.now()
+  try {
+    await next()
+  } finally {
+    const durationMs = performance.now() - startedAt
+    // routePath collapses "/api/auth/sign-in/email" to "/api/auth/*" so the
+    // series stays bounded; unmatched paths fall back to the literal path.
+    const key = `http.${c.req.method} ${c.req.routePath || path}`
+    recordTiming(key, durationMs, c.res.status < 500)
+    if (durationMs >= env.PERF_SLOW_MS) {
+      log.warn(
+        `slow ${key} ${Math.round(durationMs)}ms status=${c.res.status} reqId=${c.get("requestId") ?? "-"}`
+      )
+    }
+  }
+})
+
 // Auth handler
 app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw))
+
+/**
+ * oRPC client interceptor: time every procedure call by its router path
+ * (e.g. `rpc.entries.list`). Errors still propagate; they are only counted.
+ */
+const timeProcedure: NonNullable<
+  ConstructorParameters<typeof RPCHandler>[1]
+>["clientInterceptors"] = [
+  async ({ path, next }) => {
+    const key = `rpc.${path.join(".")}`
+    const startedAt = performance.now()
+    let ok = true
+    try {
+      return await next()
+    } catch (error) {
+      ok = false
+      throw error
+    } finally {
+      const durationMs = performance.now() - startedAt
+      recordTiming(key, durationMs, ok)
+      if (durationMs >= env.PERF_SLOW_MS) {
+        log.warn(`slow ${key} ${Math.round(durationMs)}ms ok=${ok}`)
+      }
+    }
+  }
+]
 
 // oRPC handlers
 export const apiHandler = new OpenAPIHandler(appRouter, {
@@ -85,6 +140,7 @@ export const apiHandler = new OpenAPIHandler(appRouter, {
       schemaConverters: [new ZodToJsonSchemaConverter()]
     })
   ],
+  clientInterceptors: timeProcedure,
   interceptors: [
     onError((error) => {
       log.error("API error:", error)
@@ -93,6 +149,7 @@ export const apiHandler = new OpenAPIHandler(appRouter, {
 })
 
 export const rpcHandler = new RPCHandler(appRouter, {
+  clientInterceptors: timeProcedure,
   interceptors: [
     onError((error) => {
       log.error("RPC error:", error)

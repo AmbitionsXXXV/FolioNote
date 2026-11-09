@@ -1,4 +1,11 @@
-import { db, entries, entryReviewState, reviewEvents } from "@folionote/db"
+import {
+  db,
+  entries,
+  entryColumns,
+  entryReviewState,
+  reviewEvents
+} from "@folionote/db"
+import type { EntryRow } from "@folionote/db"
 import { ORPCError } from "@orpc/server"
 import {
   and,
@@ -130,13 +137,13 @@ export const getReviewQueue = protectedProcedure
       baseConditions.push(notInArray(entries.id, reviewedTodayIds))
     }
 
-    let items: (typeof entries.$inferSelect)[] = []
+    let items: EntryRow[] = []
 
     switch (rule) {
       case "due": {
         // Get due entries (dueAt <= now)
         const dueItems = await db
-          .select({ entry: entries, state: entryReviewState })
+          .select({ entry: entryColumns, state: entryReviewState })
           .from(entryReviewState)
           .innerJoin(entries, eq(entryReviewState.entryId, entries.id))
           .where(
@@ -161,7 +168,7 @@ export const getReviewQueue = protectedProcedure
 
           // Get entries without review state (new entries)
           const newItems = await db
-            .select({ entry: entries })
+            .select({ entry: entryColumns })
             .from(entries)
             .leftJoin(
               entryReviewState,
@@ -194,7 +201,7 @@ export const getReviewQueue = protectedProcedure
 
         // Get entries without review state (never reviewed)
         const newItems = await db
-          .select({ entry: entries })
+          .select({ entry: entryColumns })
           .from(entries)
           .leftJoin(entryReviewState, eq(entries.id, entryReviewState.entryId))
           .where(
@@ -213,7 +220,7 @@ export const getReviewQueue = protectedProcedure
       case "starred": {
         // Starred entries
         items = await db
-          .select()
+          .select(entryColumns)
           .from(entries)
           .where(and(...baseConditions, eq(entries.isStarred, true)))
           .orderBy(desc(entries.updatedAt))
@@ -223,7 +230,7 @@ export const getReviewQueue = protectedProcedure
       case "unreviewed": {
         // Entries that have never been reviewed (no review state)
         const unreviewedItems = await db
-          .select({ entry: entries })
+          .select({ entry: entryColumns })
           .from(entries)
           .leftJoin(entryReviewState, eq(entries.id, entryReviewState.entryId))
           .where(and(...baseConditions, isNull(entryReviewState.entryId)))
@@ -236,7 +243,7 @@ export const getReviewQueue = protectedProcedure
       default: {
         // All entries (excluding already reviewed today)
         items = await db
-          .select()
+          .select(entryColumns)
           .from(entries)
           .where(and(...baseConditions))
           .orderBy(desc(entries.updatedAt))
@@ -266,7 +273,7 @@ export const markReviewed = protectedProcedure
     return await db.transaction(async (tx) => {
       // 1. Verify the entry belongs to the user and is not deleted
       const [entry] = await tx
-        .select()
+        .select(entryColumns)
         .from(entries)
         .where(
           and(
@@ -628,7 +635,7 @@ export const getEntryReviewCount = protectedProcedure
 
     // Verify the entry belongs to the user
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -684,7 +691,7 @@ export const snooze = protectedProcedure
 
     // Verify the entry belongs to the user
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(

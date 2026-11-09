@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm"
+import { getTableColumns, relations, sql } from "drizzle-orm"
 import {
   boolean,
   customType,
@@ -19,6 +19,13 @@ import { entryLinks } from "./graph"
 const bytea = customType<{ data: Buffer; driverData: Buffer }>({
   dataType() {
     return "bytea"
+  }
+})
+
+/** PostgreSQL full-text search vector column. */
+const tsvector = customType<{ data: string }>({
+  dataType() {
+    return "tsvector"
   }
 })
 
@@ -64,15 +71,44 @@ export const entries = pgTable(
     /** Embedding 索引状态: 'pending' | 'indexed' | 'failed' | 'no_provider' */
     embeddingStatus: text("embedding_status"),
     /** 内容哈希（SHA-256），用于判断内容是否变更 */
-    contentHash: text("content_hash")
+    contentHash: text("content_hash"),
+    /**
+     * 预计算的全文搜索向量（title + contentText），由数据库自动维护。
+     * 搜索必须用 `searchVector @@ to_tsquery(...)` 才能命中下面的 GIN 索引；
+     * 在查询里现算 to_tsvector(...) 会退化成全表扫描。
+     *
+     * 表达式写成 PostgreSQL 规范化后的形式，避免 drizzle-kit 每次 generate
+     * 都认为表达式变了而重建列。
+     */
+    searchVector: tsvector("search_vector").generatedAlwaysAs(
+      sql`to_tsvector('simple'::regconfig, ((COALESCE(title, ''::text) || ' '::text) || COALESCE(content_text, ''::text)))`
+    )
   },
   (table) => [
     index("entries_user_id_updated_at_idx").on(table.userId, table.updatedAt),
     index("entries_user_id_is_inbox_idx").on(table.userId, table.isInbox),
     index("entries_user_id_is_starred_idx").on(table.userId, table.isStarred),
-    index("entries_user_id_deleted_at_idx").on(table.userId, table.deletedAt)
+    index("entries_user_id_deleted_at_idx").on(table.userId, table.deletedAt),
+    index("entries_search_vector_idx").using("gin", table.searchVector),
+    /** 搜索/列表按 updated_at 倒序分页时的覆盖索引（只含未删除行） */
+    index("entries_user_id_updated_at_not_deleted_idx")
+      .on(table.userId, table.updatedAt.desc())
+      .where(sql`deleted_at IS NULL`)
   ]
 )
+
+const { searchVector: _searchVector, ...entryPublicColumns } =
+  getTableColumns(entries)
+
+/**
+ * entries 的全部列，去掉 search_vector。
+ * 该列只为 GIN 索引服务，tsvector 文本和正文一样大，不应随响应发给客户端；
+ * 读取 entries 整行时用 `db.select(entryColumns)` 代替 `db.select()`。
+ */
+export const entryColumns = entryPublicColumns
+
+/** `db.select(entryColumns).from(entries)` 返回的行类型 */
+export type EntryRow = Omit<typeof entries.$inferSelect, "searchVector">
 
 export const entriesRelations = relations(entries, ({ one, many }) => ({
   user: one(user, {
