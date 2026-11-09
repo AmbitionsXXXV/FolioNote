@@ -157,17 +157,15 @@ jobs:
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} << 'ENDSSH'
             set -e
             
-            # Initialize fnm directly (bypass .bashrc interactive check)
-            export FNM_PATH="/root/.local/share/fnm"
-            export PATH="$FNM_PATH:$PATH"
-            eval "$(fnm env --shell bash)"
-            
+            # Load Vite+ directly (bypass .bashrc interactive check)
+            export VP_HOME="/root/.vite-plus"
+            export PATH="$VP_HOME/bin:$PATH"
+
             # Debug: show PATH and commands location
             echo "=== Environment Debug ==="
             echo "PATH: $PATH"
-            which fnm && fnm -V
+            which vp && vp --version
             which node && node -v
-            which npm && npm -v
             which pm2 || echo "pm2 not found"
             echo "========================="
             
@@ -176,7 +174,7 @@ jobs:
             # Check if PM2 is installed
             if ! command -v pm2 &> /dev/null; then
               echo "PM2 not found, installing..."
-              npm install -g pm2
+              vp install -g pm2
             fi
 
             # Check if ecosystem config exists
@@ -265,10 +263,9 @@ jobs:
           sleep 5
 
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SERVER_HOST }} << 'ENDSSH'
-            # Initialize fnm directly
-            export FNM_PATH="/root/.local/share/fnm"
-            export PATH="$FNM_PATH:$PATH"
-            eval "$(fnm env --shell bash)"
+            # Load Vite+ directly
+            export VP_HOME="/root/.vite-plus"
+            export PATH="$VP_HOME/bin:$PATH"
 
             # Process must be registered with PM2
             pm2 show folio-server || exit 1
