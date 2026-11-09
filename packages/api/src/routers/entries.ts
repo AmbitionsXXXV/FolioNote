@@ -1,4 +1,11 @@
-import { db, entries, entryCollaborators, entryTags, tags } from "@folionote/db"
+import {
+  db,
+  entries,
+  entryCollaborators,
+  entryColumns,
+  entryTags,
+  tags
+} from "@folionote/db"
 import { ORPCError } from "@orpc/server"
 import bcrypt from "bcryptjs"
 import { and, desc, eq, inArray, isNotNull, isNull, lt } from "drizzle-orm"
@@ -208,7 +215,7 @@ export const updateEntry = protectedProcedure
       // 检查是否因为版本冲突导致更新失败
       if (expectedVersion !== undefined) {
         const [existingEntry] = await db
-          .select()
+          .select(entryColumns)
           .from(entries)
           .where(
             and(
@@ -311,7 +318,7 @@ export const getEntry = protectedProcedure
     }
 
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(and(eq(entries.id, input.id), isNull(entries.deletedAt)))
       .limit(1)
@@ -416,7 +423,7 @@ export const listEntries = protectedProcedure
     }
 
     const items = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(and(...conditions))
       .orderBy(desc(entries.updatedAt))
@@ -444,7 +451,7 @@ export const addTagToEntry = protectedProcedure
 
     // Verify the entry belongs to the user and is not deleted
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -506,7 +513,7 @@ export const removeTagFromEntry = protectedProcedure
 
     // Verify the entry belongs to the user
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -540,7 +547,7 @@ export const getEntryTags = protectedProcedure
 
     // Verify the entry belongs to the user
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -601,7 +608,7 @@ export const setEntryPassword = protectedProcedure
 
     // Verify the entry belongs to the user
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -647,7 +654,7 @@ export const removeEntryPassword = protectedProcedure
 
     // Verify the entry belongs to the user
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -690,7 +697,7 @@ export const verifyEntryPassword = protectedProcedure
 
     // Get the entry
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
