@@ -15,7 +15,6 @@ import {
 } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import * as FileSystem from "expo-file-system"
 import * as ImageManipulator from "expo-image-manipulator"
 import * as ImagePicker from "expo-image-picker"
 import {
@@ -325,8 +324,7 @@ export function AvatarUploader({
 
     const asset = result.assets[0]
     const mimeType = asset.mimeType ?? "image/jpeg"
-    const fileInfo = await FileSystem.getInfoAsync(asset.uri)
-    const fileSize = fileInfo.exists ? (fileInfo.size ?? 0) : 0
+    const fileSize = asset.fileSize ?? 0
 
     const error = validateFile(mimeType, fileSize)
     if (error) {

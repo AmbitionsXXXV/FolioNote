@@ -406,6 +406,7 @@ export function WebSourcePanel({ onSourceChange }: PanelProps) {
           className="flex-1"
           onChange={setUrl}
           onKeyDown={(event) => {
+            if (event.nativeEvent.isComposing || event.keyCode === 229) return
             if (event.key === "Enter") {
               event.preventDefault()
               submit()

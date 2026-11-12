@@ -60,12 +60,6 @@ interview/
 
 __pycache__
 
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
 .vitest/
 
 # Raw vocabulary exports contain account/session metadata; keep cleaned data only.
@@ -73,3 +67,6 @@ __pycache__
 # Cleaned MOJi word lists still carry MOJi's dictionary content (definitions,
 # pitch accents); the repo is public, so they stay local.
 /packages/db/data/moji-*.json
+
+# Cursor hook run state is machine-local
+.cursor/hooks/state/

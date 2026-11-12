@@ -159,8 +159,8 @@ Server exposes:
 
 ```bash
 DATABASE_URL="postgres://USER:PASSWORD@HOST:PORT/DB_NAME"
-AUTH_SECRET="your-secret-key"
-AUTH_URL="http://localhost:3001"
+BETTER_AUTH_SECRET="your-secret-key"
+BETTER_AUTH_URL="http://localhost:3000"
 CORS_ORIGIN="http://localhost:3001"
 ```
 

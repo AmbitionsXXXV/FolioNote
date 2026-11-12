@@ -4,9 +4,9 @@ import { beforeEach, describe, expect, it } from "vite-plus/test"
 import { session, user } from "../../src/schema/auth"
 import { createTestUser } from "../fixtures/factories"
 import { db } from "../setup"
-import { cleanupDatabase } from "../utils/db-helper"
+import { cleanupDatabase, hasTestDatabase } from "../utils/db-helper"
 
-describe("Auth schema", () => {
+describe.skipIf(!hasTestDatabase)("Auth schema", () => {
   beforeEach(async () => {
     await cleanupDatabase()
   })

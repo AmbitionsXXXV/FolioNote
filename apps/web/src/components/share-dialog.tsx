@@ -494,6 +494,7 @@ function CollaboratorsSection({
           className="min-w-0 flex-1"
           onChange={setInviteEmail}
           onKeyDown={(event) => {
+            if (event.nativeEvent.isComposing || event.keyCode === 229) return
             if (event.key === "Enter" && inviteEmail.trim()) {
               onInvite()
             }

@@ -32,7 +32,7 @@ import { prettifyFormErrors } from "@/lib/form-error"
 
 import Loader from "./loader"
 
-const PASSWORD_MIN_LENGTH = 8
+const PASSWORD_MIN_LENGTH = 10
 
 /**
  * Render a sign-up form UI and handle user registration flow.

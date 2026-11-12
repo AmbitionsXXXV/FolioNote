@@ -441,8 +441,7 @@ export const PromptInputActionAddAttachments = ({
   return (
     <DropdownMenuItem
       {...props}
-      onSelect={(e) => {
-        e.preventDefault()
+      onClick={() => {
         attachments.openFileDialog()
       }}
     >
@@ -1068,7 +1067,11 @@ export const PromptInputTextarea = ({
       }
 
       if (e.key === "Enter") {
-        if (isComposingRef.current || e.nativeEvent.isComposing) {
+        if (
+          isComposingRef.current ||
+          e.nativeEvent.isComposing ||
+          e.keyCode === 229
+        ) {
           return
         }
         if (e.shiftKey) {

@@ -1,7 +1,7 @@
 import { db, entries, entryColumns, entryShares } from "@folionote/db"
 import { ORPCError } from "@orpc/server"
 import bcrypt from "bcryptjs"
-import { and, eq, isNull } from "drizzle-orm"
+import { and, eq, isNull, sql } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 
@@ -331,7 +331,7 @@ export const getPublicEntry = publicProcedure
     await db
       .update(entryShares)
       .set({
-        viewCount: share.viewCount + 1,
+        viewCount: sql`${entryShares.viewCount} + 1`,
         lastViewedAt: new Date()
       })
       .where(eq(entryShares.id, share.id))

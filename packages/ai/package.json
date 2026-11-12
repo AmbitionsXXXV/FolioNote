@@ -28,7 +28,6 @@
     "@mastra/core": "catalog:",
     "@mastra/rag": "catalog:",
     "ai": "catalog:",
-    "tokenlens": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {

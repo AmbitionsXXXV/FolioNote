@@ -128,14 +128,19 @@ export async function syncEntryLinks(
   }
 
   if (toInsert.length > 0) {
-    await db.insert(entryLinks).values(
-      toInsert.map((targetEntryId) => ({
-        id: nanoid(),
-        userId,
-        sourceEntryId,
-        targetEntryId,
-        linkType: "ref" as const
-      }))
-    )
+    await db
+      .insert(entryLinks)
+      .values(
+        toInsert.map((targetEntryId) => ({
+          id: nanoid(),
+          userId,
+          sourceEntryId,
+          targetEntryId,
+          linkType: "ref" as const
+        }))
+      )
+      // Overlapping autosaves can both compute the same insert set; the unique
+      // (source, target, type) index would otherwise fail the second save.
+      .onConflictDoNothing()
   }
 }

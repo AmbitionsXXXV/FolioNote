@@ -10,11 +10,11 @@ import {
 import { useNavigate } from "@tanstack/react-router"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { useDebounce } from "use-debounce"
 
 import { EntryList } from "@/components/entry-list"
 import { Reveal } from "@/components/reveal"
 import { Surface } from "@/components/surface"
+import { useDebounce } from "@/hooks/use-debounce"
 import { cn } from "@/lib/utils"
 import type { Entry } from "@/types"
 import { orpc } from "@/utils/orpc"
@@ -101,7 +101,7 @@ export function AdvancedSearch({
   const [query, setQuery] = useState(initialQuery)
   const [filters, setFilters] = useState<SearchFiltersValue>(initialFilters)
   const [isInputFocused, setIsInputFocused] = useState(false)
-  const [debouncedQuery] = useDebounce(query, 300)
+  const debouncedQuery = useDebounce(query, 300)
 
   // Sync filters when initialFilters prop changes (e.g., from URL parsing)
   useEffect(() => {

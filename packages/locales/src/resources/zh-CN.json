@@ -95,7 +95,8 @@
     "tocPositionRight": "右侧",
     "permissionRequired": "需要权限",
     "navigation": "导航",
-    "optional": "可选"
+    "optional": "可选",
+    "success": "成功"
   },
   "auth": {
     "signIn": "登录",
@@ -122,8 +123,8 @@
     "getStarted": "开始使用",
     "signUpSubtitle": "创建您的账号以开始使用 FolioNote",
     "namePlaceholder": "输入您的姓名",
-    "passwordHint": "密码至少需要 8 个字符",
-    "passwordTooShort": "密码至少需要 8 个字符",
+    "passwordHint": "密码至少需要 10 个字符",
+    "passwordTooShort": "密码至少需要 10 个字符",
     "signUpFailed": "注册失败",
     "haveAccount": "已有账号？",
     "nameRequired": "请输入姓名",
@@ -135,7 +136,7 @@
     "continueWithGoogle": "使用 Google 继续",
     "orContinueWith": "或继续使用",
     "secureLogin": "由 Better Auth 提供安全登录",
-    "passwordRequirements": "至少需要 8 个字符",
+    "passwordRequirements": "至少需要 10 个字符",
     "termsAgreement": "注册即表示您同意我们的服务条款和隐私政策",
     "forgotPasswordTitle": "忘记密码",
     "forgotPasswordSubtitle": "输入您的邮箱，我们将发送重置密码链接",
@@ -452,7 +453,8 @@
         "auxiliary": "助动词",
         "expression": "表达"
       }
-    }
+    },
+    "statsLoadFailed": "复习统计加载失败"
   },
   "japanese": {
     "title": "日语",
@@ -841,7 +843,9 @@
     "profile": "个人资料",
     "knowledge": "知识库",
     "graph": "图谱",
-    "import": "导入"
+    "import": "导入",
+    "sectionMain": "主要",
+    "sectionExplore": "探索"
   },
   "search": {
     "placeholder": "搜索条目...",
@@ -1238,7 +1242,9 @@
       "hour": "小时",
       "day": "天"
     },
-    "permissionDenied": "请授予照片库访问权限以上传头像。"
+    "permissionDenied": "请授予照片库访问权限以上传头像。",
+    "compressError": "图片处理失败",
+    "success": "成功"
   },
   "share": {
     "title": "分享",
@@ -1528,7 +1534,11 @@
       "reject": "拒绝",
       "accepted": "已批准",
       "rejected": "已拒绝"
-    }
+    },
+    "toggleImageGeneration": "切换图片生成",
+    "imageGenerationEnabled": "已启用图片生成",
+    "enableImageGeneration": "启用图片生成",
+    "imagePromptPlaceholder": "描述你想生成的图片…"
   },
   "aiProvider": {
     "title": "AI 提供商设置",

@@ -16,7 +16,18 @@ export const setupTestDatabase = () => {
   // If using real PostgreSQL, ensure test database exists
 }
 
+// These tests wipe whole tables, and `db` connects to DATABASE_URL. Only run
+// them when DATABASE_URL has been pointed at the dedicated test database.
+export const hasTestDatabase =
+  Boolean(process.env.TEST_DATABASE_URL) &&
+  process.env.DATABASE_URL === process.env.TEST_DATABASE_URL
+
 export const cleanupDatabase = async () => {
+  if (!hasTestDatabase) {
+    throw new Error(
+      "Refusing to wipe tables: DATABASE_URL must equal TEST_DATABASE_URL to run database tests."
+    )
+  }
   // Clean in reverse order of foreign key dependencies
   await db.delete(reviewEvents)
   await db.delete(dailyLogs)

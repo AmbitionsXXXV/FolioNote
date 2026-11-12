@@ -133,6 +133,7 @@ function UrlSource({
         isInvalid={fetchError !== null}
         onChange={onUrlChange}
         onKeyDown={(event) => {
+          if (event.nativeEvent.isComposing || event.keyCode === 229) return
           if (event.key === "Enter") {
             event.preventDefault()
             onFetch()

@@ -21,8 +21,7 @@
     "better-auth": "catalog:",
     "dotenv": "catalog:",
     "react": "catalog:",
-    "resend": "^6.6.0",
-    "zod": "catalog:"
+    "resend": "^6.6.0"
   },
   "devDependencies": {
     "@folionote/config": "workspace:*",

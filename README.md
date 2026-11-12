@@ -64,7 +64,7 @@ design/brand/        # Icon sources and platform previews
 
 ### Prerequisites
 
-- **Node.js** matching [`.node-version`](./.node-version) (currently `24.22.0`).
+- **Node.js** matching [`.node-version`](./.node-version) (currently `26.13.0`).
 - **Vite+** (`vp`) for dependency installation, scripts, checks, and tests. The workspace retains a pnpm lockfile; use `vp` as the command entry point.
 - **PostgreSQL**. The Docker setup below uses PostgreSQL 17 and requires Docker with Compose.
 - **HeroUI Pro access**. The project includes licensed Pro packages; installation requires valid authorization. CI supplies `HEROUI_AUTH_TOKEN` through its secret store. Keep credentials out of committed files.

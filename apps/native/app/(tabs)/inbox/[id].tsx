@@ -25,6 +25,7 @@ import type { EntryPasswordSheetRef } from "@/components/entry-password-sheet"
 import { RichTextEditor, RichTextViewer } from "@/components/rich-text"
 import { ShareSheet } from "@/components/share-sheet"
 import type { ShareSheetRef } from "@/components/share-sheet"
+import { useAppTheme } from "@/contexts/app-theme-context"
 import { client, orpc, queryClient } from "@/utils/orpc"
 
 export default function EntryDetailScreen() {
@@ -32,6 +33,7 @@ export default function EntryDetailScreen() {
   const router = useRouter()
   const { t } = useTranslation()
   const [isEditing, setIsEditing] = useState(false)
+  const { isDark } = useAppTheme()
 
   const foregroundColor = useThemeColor("foreground")
   const accentColor = useThemeColor("accent")
@@ -61,7 +63,9 @@ export default function EntryDetailScreen() {
     mutationFn: (data: { contentJson?: string; contentText?: string }) =>
       client.entries.update({ id: id ?? "", ...data }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["entries"] })
+      // oRPC keys look like [["entries", "get"], { input }]; a plain
+      // ["entries"] key matches none of them.
+      queryClient.invalidateQueries({ queryKey: orpc.entries.key() })
     }
   })
 
@@ -163,7 +167,7 @@ export default function EntryDetailScreen() {
                 style: { flex: 1 }
               }}
               editable
-              isDark
+              isDark={isDark}
               onChange={handleContentChange}
               onSave={handleSave}
               placeholder={t("entry.placeholder")}
@@ -183,7 +187,7 @@ export default function EntryDetailScreen() {
             contentInsetAdjustmentBehavior="automatic"
           >
             {contentJson ? (
-              <RichTextViewer content={contentJson} isDark />
+              <RichTextViewer content={contentJson} isDark={isDark} />
             ) : (
               <View className="flex-1 items-center justify-center p-8">
                 <Text className="text-center text-muted">

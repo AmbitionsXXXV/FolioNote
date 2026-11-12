@@ -17,6 +17,10 @@ const STATUS_COLORS = {
 
 const INCOMING_REQUEST_REGEX = /^<--\s+(\w+)\s+(.+)$/
 const OUTGOING_RESPONSE_REGEX = /^-->\s+(\w+)\s+(\S+)\s+(\d+)\s+(.+)$/
+// Hono colors the status code itself when the terminal supports color
+// ("\u001B[32m200\u001B[0m"), which would stop the status group from matching.
+// oxlint-disable-next-line no-control-regex -- matching ESC is the point
+const ANSI_ESCAPE_REGEX = /\u001B\[[0-9;]*m/g
 
 /**
  * Get ANSI color code based on HTTP status code
@@ -72,14 +76,16 @@ function parseHonoLog(message: string): {
   status?: number
   time?: string
 } | null {
+  const plain = message.replaceAll(ANSI_ESCAPE_REGEX, "")
+
   // Incoming request: <-- GET /path
-  const inMatch = message.match(INCOMING_REQUEST_REGEX)
+  const inMatch = plain.match(INCOMING_REQUEST_REGEX)
   if (inMatch?.[1] && inMatch[2]) {
     return { direction: "in", method: inMatch[1], path: inMatch[2] }
   }
 
   // Outgoing response: --> GET /path 200 12ms
-  const outMatch = message.match(OUTGOING_RESPONSE_REGEX)
+  const outMatch = plain.match(OUTGOING_RESPONSE_REGEX)
   if (outMatch?.[1] && outMatch[2] && outMatch[3] && outMatch[4]) {
     return {
       direction: "out",

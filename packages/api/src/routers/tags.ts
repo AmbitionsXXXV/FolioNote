@@ -1,6 +1,6 @@
 import { db, entryTags, tags } from "@folionote/db"
 import { ORPCError } from "@orpc/server"
-import { and, eq } from "drizzle-orm"
+import { and, count, eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 
@@ -205,12 +205,12 @@ export const getTagEntriesCount = protectedProcedure
     }
 
     // Count entries with this tag
-    const associations = await db
-      .select()
+    const [row] = await db
+      .select({ count: count() })
       .from(entryTags)
       .where(eq(entryTags.tagId, input.id))
 
-    return { count: associations.length }
+    return { count: row?.count ?? 0 }
   })
 
 /**

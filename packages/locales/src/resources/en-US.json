@@ -40,7 +40,8 @@
     "tocPositionRight": "Right",
     "permissionRequired": "Permission Required",
     "navigation": "Navigation",
-    "optional": "optional"
+    "optional": "optional",
+    "success": "Success"
   },
   "auth": {
     "signIn": "Sign In",
@@ -67,8 +68,8 @@
     "getStarted": "Get started",
     "signUpSubtitle": "Create your account to start using FolioNote",
     "namePlaceholder": "Enter your name",
-    "passwordHint": "Password must be at least 8 characters",
-    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordHint": "Password must be at least 10 characters",
+    "passwordTooShort": "Password must be at least 10 characters",
     "signUpFailed": "Sign up failed",
     "haveAccount": "Already have an account?",
     "nameRequired": "Name is required",
@@ -80,7 +81,7 @@
     "continueWithGoogle": "Continue with Google",
     "orContinueWith": "or continue with",
     "secureLogin": "Secure login powered by Better Auth",
-    "passwordRequirements": "Must be at least 8 characters long",
+    "passwordRequirements": "Must be at least 10 characters long",
     "termsAgreement": "By signing up, you agree to our Terms and Privacy Policy",
     "forgotPasswordTitle": "Forgot Password",
     "forgotPasswordSubtitle": "Enter your email and we'll send you a link to reset your password",
@@ -397,7 +398,8 @@
         "auxiliary": "Auxiliary",
         "expression": "Expression"
       }
-    }
+    },
+    "statsLoadFailed": "Failed to load review stats"
   },
   "japanese": {
     "title": "Japanese",
@@ -786,7 +788,9 @@
     "profile": "Profile",
     "knowledge": "Knowledge",
     "graph": "Graph",
-    "import": "Import"
+    "import": "Import",
+    "sectionMain": "Main",
+    "sectionExplore": "Explore"
   },
   "search": {
     "placeholder": "Search entries...",
@@ -1238,7 +1242,9 @@
       "hour": "hour",
       "day": "day"
     },
-    "permissionDenied": "Please grant photo library access to upload an avatar."
+    "permissionDenied": "Please grant photo library access to upload an avatar.",
+    "compressError": "Failed to process the image",
+    "success": "Success"
   },
   "share": {
     "title": "Share",
@@ -1528,7 +1534,11 @@
       "reject": "Reject",
       "accepted": "Accepted",
       "rejected": "Rejected"
-    }
+    },
+    "toggleImageGeneration": "Toggle image generation",
+    "imageGenerationEnabled": "Image generation enabled",
+    "enableImageGeneration": "Enable image generation",
+    "imagePromptPlaceholder": "Describe the image you want to create…"
   },
   "aiProvider": {
     "title": "AI Provider Settings",

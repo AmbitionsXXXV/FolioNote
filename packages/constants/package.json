@@ -10,15 +10,14 @@
     }
   },
   "scripts": {
-    "check-types": "tsc --noEmit",
-    "check-keys": "tsx scripts/check-keys.ts"
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@folionote/locales": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "tsx": "catalog:",
+    "@folionote/config": "workspace:*",
     "typescript": "catalog:"
   }
 }

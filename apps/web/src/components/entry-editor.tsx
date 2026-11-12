@@ -446,7 +446,7 @@ export function EntryEditor({
 
   return (
     <div className="entry-editor tiptap-caret-container" ref={containerRef}>
-      <BlockHandle containerRef={containerRef} editor={editor} />
+      {editable && <BlockHandle containerRef={containerRef} editor={editor} />}
       {editable && <EditorBubbleMenu editor={editor} />}
       <EditorContent editor={editor} />
       {editable && <EditorCharacterCount editor={editor} />}

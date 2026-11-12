@@ -2,9 +2,10 @@
  * imports — bring Notion pages, Google Docs, Claude page exports, Markdown
  * and Japanese web articles in as entries, and keep track of their source.
  *
- * Sync modes implemented: `snapshot` (copy once) and `watch` (flag the entry
- * when the source changes; the user re-imports on demand). `pull` and
- * `two_way` are reserved in the schema but not accepted yet.
+ * Sync modes implemented: `snapshot` (copy once), `watch` (flag the entry
+ * when the source changes; the user re-imports on demand) and `pull` (merge
+ * source changes into the entry, see imports-pull.ts). `two_way` is reserved
+ * in the schema but not accepted yet.
  */
 import {
   db,

@@ -27,7 +27,9 @@ function GeneralSettingsPage() {
     setMounted(true)
   }, [])
 
+  // Wired to the danger zone's "sign out all devices" action.
   const handleSignOut = async () => {
+    await authClient.revokeSessions()
     await authClient.signOut()
     router.navigate({ to: "/", reloadDocument: true })
   }

@@ -33,6 +33,17 @@ export interface UseAutoSaveReturn<T> {
   isPending: boolean
 }
 
+const isPlainObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value)
+
+/** Later fields win; non-object payloads are simply replaced. */
+function mergePayload<T>(previous: T | null, next: T): T {
+  if (isPlainObject(previous) && isPlainObject(next)) {
+    return { ...previous, ...next }
+  }
+  return next
+}
+
 /**
  * 自动保存 hook
  *
@@ -68,6 +79,12 @@ export function useAutoSave<T>({
   const savedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pendingDataRef = useRef<T | null>(null)
   const isSavingRef = useRef(false)
+  // Payload waiting for the debounce timer. Callers pass partial updates
+  // ({ title } then { contentJson }), so later calls are merged into it
+  // instead of replacing it.
+  const debouncedDataRef = useRef<T | null>(null)
+  const onSaveRef = useRef(onSave)
+  onSaveRef.current = onSave
 
   // 清理函数
   const cleanup = useCallback(() => {
@@ -81,15 +98,27 @@ export function useAutoSave<T>({
     }
   }, [])
 
-  // 组件卸载时清理
-  useEffect(() => cleanup, [cleanup])
+  // 组件卸载时清理；尚未触发的节流保存立即写出，避免丢失最后一次编辑
+  useEffect(
+    () => () => {
+      cleanup()
+      const unsaved = debouncedDataRef.current
+      debouncedDataRef.current = null
+      if (unsaved !== null) {
+        onSaveRef.current(unsaved).catch(() => {
+          // The component is gone, so there is no status left to update.
+        })
+      }
+    },
+    [cleanup]
+  )
 
   // 执行保存
   const executeSave = useCallback(
     async (data: T) => {
       if (isSavingRef.current) {
         // 如果正在保存，记录待保存数据
-        pendingDataRef.current = data
+        pendingDataRef.current = mergePayload(pendingDataRef.current, data)
         return
       }
 
@@ -136,8 +165,14 @@ export function useAutoSave<T>({
         clearTimeout(debounceRef.current)
       }
 
+      debouncedDataRef.current = mergePayload(debouncedDataRef.current, data)
+
       debounceRef.current = setTimeout(() => {
-        executeSave(data)
+        const merged = debouncedDataRef.current
+        debouncedDataRef.current = null
+        if (merged !== null) {
+          executeSave(merged)
+        }
       }, debounceMs)
     },
     [executeSave, debounceMs]
@@ -147,7 +182,9 @@ export function useAutoSave<T>({
   const saveImmediately = useCallback(
     async (data: T) => {
       cleanup()
-      await executeSave(data)
+      const merged = mergePayload(debouncedDataRef.current, data)
+      debouncedDataRef.current = null
+      await executeSave(merged)
     },
     [cleanup, executeSave]
   )
@@ -158,6 +195,7 @@ export function useAutoSave<T>({
     setStatus("idle")
     setIsPending(false)
     pendingDataRef.current = null
+    debouncedDataRef.current = null
     isSavingRef.current = false
   }, [cleanup])
 

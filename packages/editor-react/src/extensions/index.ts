@@ -20,7 +20,3 @@ export {
   type TableColorDark,
   TableKit
 } from "./table-extension"
-export {
-  openTableGridPicker,
-  type OpenTableGridPickerOptions
-} from "./table-grid-picker"

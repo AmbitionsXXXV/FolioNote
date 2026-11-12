@@ -10,10 +10,14 @@ import { createVercelAiEmbeddingModel } from "@folionote/ai/vercel-ai"
 import { db, entries, entryChunks } from "@folionote/db"
 import { createLogger } from "@folionote/log"
 import { embedMany } from "ai"
-import { and, eq } from "drizzle-orm"
+import { and, eq, sql } from "drizzle-orm"
 import { nanoid } from "nanoid"
 
 const log = createLogger({ prefix: "rag:index-worker" })
+
+// entries.updatedAt has $onUpdate(() => new Date()); indexing status writes are
+// bookkeeping and must not change a note's "last edited" time or list order.
+const KEEP_UPDATED_AT = { updatedAt: sql`${entries.updatedAt}` }
 
 /**
  * Resolve an embedding-capable credential from environment variables.
@@ -79,7 +83,7 @@ export async function indexEntry(
     if (entry) {
       await db
         .update(entries)
-        .set({ embeddingStatus: null, contentHash: null })
+        .set({ embeddingStatus: null, contentHash: null, ...KEEP_UPDATED_AT })
         .where(eq(entries.id, entryId))
     }
     log.debug(
@@ -98,7 +102,7 @@ export async function indexEntry(
   if (!credential) {
     await db
       .update(entries)
-      .set({ embeddingStatus: "no_provider" })
+      .set({ embeddingStatus: "no_provider", ...KEEP_UPDATED_AT })
       .where(eq(entries.id, entryId))
     log.debug(`Skip indexing entry ${entryId}: no embedding credential`)
     return
@@ -107,7 +111,7 @@ export async function indexEntry(
   if (!providerSupports(credential.provider, "embedding")) {
     await db
       .update(entries)
-      .set({ embeddingStatus: "no_provider" })
+      .set({ embeddingStatus: "no_provider", ...KEEP_UPDATED_AT })
       .where(eq(entries.id, entryId))
     log.debug(
       `Skip indexing entry ${entryId}: provider ${credential.provider} has no embedding`
@@ -117,7 +121,7 @@ export async function indexEntry(
 
   await db
     .update(entries)
-    .set({ embeddingStatus: "pending" })
+    .set({ embeddingStatus: "pending", ...KEEP_UPDATED_AT })
     .where(eq(entries.id, entryId))
 
   try {
@@ -126,7 +130,7 @@ export async function indexEntry(
       await db.delete(entryChunks).where(eq(entryChunks.entryId, entryId))
       await db
         .update(entries)
-        .set({ embeddingStatus: null, contentHash: null })
+        .set({ embeddingStatus: null, contentHash: null, ...KEEP_UPDATED_AT })
         .where(eq(entries.id, entryId))
       log.debug(
         `Skip indexing entry ${entryId}: no chunks produced, cleared stale chunks`
@@ -166,7 +170,8 @@ export async function indexEntry(
         .update(entries)
         .set({
           embeddingStatus: "indexed",
-          contentHash: newHash
+          contentHash: newHash,
+          ...KEEP_UPDATED_AT
         })
         .where(eq(entries.id, entryId))
     })
@@ -177,7 +182,7 @@ export async function indexEntry(
   } catch (error) {
     await db
       .update(entries)
-      .set({ embeddingStatus: "failed" })
+      .set({ embeddingStatus: "failed", ...KEEP_UPDATED_AT })
       .where(eq(entries.id, entryId))
     throw error
   }

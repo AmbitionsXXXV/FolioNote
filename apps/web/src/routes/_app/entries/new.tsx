@@ -103,6 +103,7 @@ function NewEntryPage() {
   // Keyboard shortcut: ⌘/Ctrl + S to save
   useHotkey("Mod+S", (event) => {
     event.preventDefault()
+    if (createMutation.isPending) return
     if (title.trim() || content.trim()) {
       handleSave()
     }

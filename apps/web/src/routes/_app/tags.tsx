@@ -353,6 +353,7 @@ function TagCard({
   onEdit: () => void
   onDelete: () => void
 }) {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
   const { data: countData } = useQuery({
@@ -397,7 +398,7 @@ function TagCard({
               </h3>
             </div>
             <p className="pl-5 text-sm text-muted-foreground tabular-nums">
-              {entriesCount} 个条目
+              {t("entry.count", { count: entriesCount })}
             </p>
           </div>
 

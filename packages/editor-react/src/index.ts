@@ -49,8 +49,6 @@ export {
   createSlashCommandExtension,
   createTableKit,
   FoldableHeadings,
-  openTableGridPicker,
-  type OpenTableGridPickerOptions,
   type SlashCommandExtensionOptions,
   TableCommands,
   TableKit

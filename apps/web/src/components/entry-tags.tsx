@@ -135,6 +135,7 @@ export function EntryTags({ entryId, ref }: EntryTagsProps) {
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing || e.keyCode === 229) return
     if (e.key === "Enter") {
       e.preventDefault()
       handleCreateTag()

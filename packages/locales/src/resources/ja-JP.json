@@ -40,7 +40,8 @@
     "tocPositionRight": "右",
     "permissionRequired": "権限が必要です",
     "navigation": "ナビゲーション",
-    "optional": "オプション"
+    "optional": "オプション",
+    "success": "成功"
   },
   "auth": {
     "signIn": "サインイン",
@@ -67,8 +68,8 @@
     "getStarted": "始めましょう",
     "signUpSubtitle": "FolioNote を使用するにはアカウントを作成してください",
     "namePlaceholder": "お名前を入力",
-    "passwordHint": "パスワードは最低 8 文字以上にする必要があります",
-    "passwordTooShort": "パスワードは最低 8 文字以上にする必要があります",
+    "passwordHint": "パスワードは最低 10 文字以上にする必要があります",
+    "passwordTooShort": "パスワードは最低 10 文字以上にする必要があります",
     "signUpFailed": "サインアップ失敗",
     "haveAccount": "すでにアカウントをお持ちですか？",
     "nameRequired": "名前を入力してください",
@@ -80,7 +81,7 @@
     "continueWithGoogle": "Google で続ける",
     "orContinueWith": "または続ける",
     "secureLogin": "Better Auth による安全なログイン",
-    "passwordRequirements": "8 文字以上である必要があります",
+    "passwordRequirements": "10 文字以上である必要があります",
     "termsAgreement": "サインアップすることで、利用規約とプライバシーポリシーに同意したことになります",
     "forgotPasswordTitle": "パスワードを忘れた",
     "forgotPasswordSubtitle": "メールアドレスを入力してください。パスワードリセットリンクを送信します",
@@ -347,7 +348,8 @@
         "auxiliary": "助動詞",
         "expression": "表現"
       }
-    }
+    },
+    "statsLoadFailed": "復習統計の読み込みに失敗しました"
   },
   "japanese": {
     "title": "日本語",
@@ -736,7 +738,9 @@
     "profile": "プロフィール",
     "knowledge": "ナレッジ",
     "graph": "グラフ",
-    "import": "インポート"
+    "import": "インポート",
+    "sectionMain": "メイン",
+    "sectionExplore": "探索"
   },
   "search": {
     "placeholder": "エントリを検索...",
@@ -1238,7 +1242,9 @@
       "hour": "時間",
       "day": "日"
     },
-    "permissionDenied": "アバターをアップロードするにはフォトライブラリへのアクセス権限を付与してください。"
+    "permissionDenied": "アバターをアップロードするにはフォトライブラリへのアクセス権限を付与してください。",
+    "compressError": "画像の処理に失敗しました",
+    "success": "成功"
   },
   "share": {
     "title": "共有",
@@ -1528,7 +1534,11 @@
       "reject": "拒否",
       "accepted": "承認済み",
       "rejected": "拒否済み"
-    }
+    },
+    "toggleImageGeneration": "画像生成を切り替え",
+    "imageGenerationEnabled": "画像生成が有効です",
+    "enableImageGeneration": "画像生成を有効にする",
+    "imagePromptPlaceholder": "作成したい画像を説明してください…"
   },
   "aiProvider": {
     "title": "AIプロバイダー設定",
