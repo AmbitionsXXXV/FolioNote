@@ -7,7 +7,11 @@ import {
   SelectTrigger,
   SelectValue
 } from "@folionote/ui/select"
-import { ComputerIcon, Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons"
+import {
+  ComputerIcon,
+  Moon02Icon,
+  Sun03Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useTheme } from "next-themes"
 import { useTranslation } from "react-i18next"

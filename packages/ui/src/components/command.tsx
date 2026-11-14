@@ -11,7 +11,7 @@ import {
   Cancel01Icon,
   Search01Icon,
   Tick02Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Command as CommandPrimitive } from "cmdk"
 import type * as React from "react"

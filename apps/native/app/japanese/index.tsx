@@ -2,7 +2,7 @@ import {
   ArrowRight01Icon,
   BookOpen01Icon,
   Delete02Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { useLocalSearchParams, useRouter } from "expo-router"

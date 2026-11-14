@@ -6,7 +6,7 @@ import {
   Cancel01Icon,
   PlusSignIcon,
   Tag01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useImperativeHandle, useState } from "react"

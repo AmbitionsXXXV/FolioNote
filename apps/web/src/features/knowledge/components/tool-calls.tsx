@@ -1,4 +1,4 @@
-import { Cancel01Icon, Tick02Icon } from "@hugeicons/core-free-icons"
+import { Cancel01Icon, Tick02Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { UIMessage } from "ai"
 import { memo, useMemo } from "react"

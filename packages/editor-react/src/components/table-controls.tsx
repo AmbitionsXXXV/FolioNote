@@ -1,4 +1,7 @@
-import { Add01Icon, MoreHorizontalIcon } from "@hugeicons/core-free-icons"
+import {
+  Add01Icon,
+  MoreHorizontalIcon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 
 export interface TableControlsProps {

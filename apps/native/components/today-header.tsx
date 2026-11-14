@@ -1,5 +1,5 @@
 import { formatDate } from "@folionote/locales"
-import { FireIcon } from "@hugeicons/core-free-icons"
+import { FireIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useThemeColor } from "heroui-native"
 import { useTranslation } from "react-i18next"

@@ -1,3 +1,4 @@
 {
+  "installCommand": "pnpm config set \"//npm.collectui.pro/:_authToken\" \"$HUGEICONS_NPM_TOKEN\" && pnpm install",
   "buildCommand": "NITRO_PRESET=vercel pnpm run build"
 }

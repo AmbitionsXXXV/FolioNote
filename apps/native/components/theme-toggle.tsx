@@ -1,4 +1,4 @@
-import { Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons"
+import { Moon02Icon, Sun03Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { ImpactFeedbackStyle, impactAsync } from "expo-haptics"
 import { useThemeColor } from "heroui-native"

@@ -1,7 +1,10 @@
 import { alignRuby } from "@folionote/japanese"
 import { Skeleton } from "@folionote/ui/skeleton"
 import { Chip } from "@heroui/react"
-import { ArrowLeft01Icon, ArrowUpRight01Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowLeft01Icon,
+  ArrowUpRight01Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, Link } from "@tanstack/react-router"

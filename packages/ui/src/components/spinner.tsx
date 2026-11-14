@@ -1,5 +1,5 @@
 import { cn } from "@folionote/ui/lib/utils"
-import { Loading03Icon } from "@hugeicons/core-free-icons"
+import { Loading03Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 
 type SpinnerProps = Omit<

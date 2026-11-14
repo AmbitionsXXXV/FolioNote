@@ -1,7 +1,7 @@
 import { JapaneseSentence } from "@folionote/editor-core/extensions"
 import type { Word } from "@folionote/japanese"
 import { Button, Input, Label, TextArea, TextField } from "@heroui/react"
-import { PencilEdit02Icon } from "@hugeicons/core-free-icons"
+import { PencilEdit02Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react"

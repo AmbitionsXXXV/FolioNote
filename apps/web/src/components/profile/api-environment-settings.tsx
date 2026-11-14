@@ -1,7 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@folionote/ui/card"
 import { Label } from "@folionote/ui/label"
 import { Switch } from "@folionote/ui/switch"
-import { CloudServerIcon, ComputerIcon } from "@hugeicons/core-free-icons"
+import {
+  CloudServerIcon,
+  ComputerIcon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useTranslation } from "react-i18next"
 

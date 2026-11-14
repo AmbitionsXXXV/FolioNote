@@ -1,4 +1,4 @@
-import { InboxIcon } from "@hugeicons/core-free-icons"
+import { InboxIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"

@@ -4,7 +4,7 @@ import {
   LockPasswordIcon,
   Share01Icon,
   StarIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Stack, useLocalSearchParams, useRouter } from "expo-router"

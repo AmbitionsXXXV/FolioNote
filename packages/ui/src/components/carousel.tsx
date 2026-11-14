@@ -1,6 +1,9 @@
 import { Button } from "@folionote/ui/button"
 import { cn } from "@folionote/ui/lib/utils"
-import { ArrowLeft01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowLeft01Icon,
+  ArrowRight01Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import useEmblaCarousel from "embla-carousel-react"
 import type { UseEmblaCarouselType } from "embla-carousel-react"

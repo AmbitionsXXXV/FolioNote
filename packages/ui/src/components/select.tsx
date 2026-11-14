@@ -5,7 +5,7 @@ import {
   ArrowUp01Icon,
   Tick02Icon,
   UnfoldMoreIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ComponentProps } from "react"
 

@@ -4,7 +4,7 @@ import {
   RefreshIcon,
   StarIcon,
   ViewIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import type { IconSvgElement } from "@hugeicons/react"
 
 import type { Rating, ReviewRule, SnoozePreset } from "@/types"

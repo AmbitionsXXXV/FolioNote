@@ -14,7 +14,8 @@
     "web": "expo start --web",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "eas-build-pre-install": "[ -z \"$HUGEICONS_NPM_TOKEN\" ] || echo \"//npm.collectui.pro/:_authToken=$HUGEICONS_NPM_TOKEN\" >> ~/.npmrc"
   },
   "dependencies": {
     "@better-auth/expo": "catalog:",
@@ -27,7 +28,7 @@
     "@folionote/locales": "workspace:*",
     "@folionote/utils": "workspace:*",
     "@gorhom/bottom-sheet": "^5.2.6",
-    "@hugeicons/core-free-icons": "catalog:",
+    "@hugeicons-pro/core-stroke-rounded": "catalog:",
     "@hugeicons/react-native": "^1.0.9",
     "@internationalized/date": "^3.12.2",
     "@internationalized/number": "^3.6.7",

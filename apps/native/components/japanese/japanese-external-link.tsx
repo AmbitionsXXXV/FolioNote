@@ -1,4 +1,4 @@
-import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons"
+import { ArrowUpRight01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { openBrowserAsync } from "expo-web-browser"
 import { cn, useThemeColor } from "heroui-native"

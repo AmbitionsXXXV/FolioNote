@@ -1,4 +1,4 @@
-import { Search01Icon, StarIcon } from "@hugeicons/core-free-icons"
+import { Search01Icon, StarIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import { useTranslation } from "react-i18next"

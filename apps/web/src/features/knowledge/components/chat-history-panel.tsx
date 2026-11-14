@@ -14,7 +14,7 @@ import {
   Delete02Icon,
   MessageAdd01Icon,
   MessageMultiple01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { formatDistanceToNow } from "date-fns"
 import { memo, useCallback, useState } from "react"

@@ -2,7 +2,7 @@ import type { TranslateFunction } from "@folionote/editor-core"
 import {
   DragDropVerticalIcon,
   LayoutTable01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { TextSelection } from "@tiptap/pm/state"
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react"

@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@folionote/editor-core": "workspace:*",
-    "@hugeicons/core-free-icons": "catalog:",
+    "@hugeicons-pro/core-stroke-rounded": "catalog:",
     "@hugeicons/react": "catalog:",
     "@tiptap/core": "catalog:",
     "@tiptap/extension-code-block": "catalog:",

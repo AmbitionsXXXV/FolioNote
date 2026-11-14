@@ -1,6 +1,6 @@
 import { Button } from "@folionote/ui/button"
 import { Sidebar } from "@heroui-pro/react"
-import { Search01Icon } from "@hugeicons/core-free-icons"
+import { Search01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Link } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"

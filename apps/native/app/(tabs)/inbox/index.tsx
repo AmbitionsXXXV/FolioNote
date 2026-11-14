@@ -1,4 +1,4 @@
-import { Add01Icon, MailOpen01Icon } from "@hugeicons/core-free-icons"
+import { Add01Icon, MailOpen01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { FlashList } from "@shopify/flash-list"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"

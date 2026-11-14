@@ -6,7 +6,7 @@ import {
 } from "@folionote/ui/dialog"
 import { Input } from "@folionote/ui/input"
 import { Skeleton } from "@folionote/ui/skeleton"
-import { FileEditIcon, Search01Icon } from "@hugeicons/core-free-icons"
+import { FileEditIcon, Search01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import { useImperativeHandle, useState } from "react"

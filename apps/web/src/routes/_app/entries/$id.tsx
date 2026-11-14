@@ -9,7 +9,7 @@ import { Input } from "@folionote/ui/input"
 import { Spinner } from "@folionote/ui/spinner"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@folionote/ui/tooltip"
 import {
-  ArchiveIcon,
+  FolderMoveToIcon,
   ArrowLeft01Icon,
   Delete02Icon,
   InboxIcon,
@@ -18,7 +18,7 @@ import {
   PinIcon,
   Share01Icon,
   StarIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
@@ -433,7 +433,7 @@ function EntryToolbar({
                   className={actionButtonClass}
                   onClick={onMoveToLibrary}
                 >
-                  <HugeiconsIcon className="size-4" icon={ArchiveIcon} />
+                  <HugeiconsIcon className="size-4" icon={FolderMoveToIcon} />
                 </TooltipTrigger>
                 <TooltipContent>{t("entry.moveToLibrary")}</TooltipContent>
               </Tooltip>

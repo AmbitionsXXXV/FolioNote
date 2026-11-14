@@ -1,4 +1,4 @@
-import { AccountSetting01Icon } from "@hugeicons/core-free-icons"
+import { AccountSetting01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"

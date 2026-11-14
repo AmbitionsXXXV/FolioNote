@@ -11,7 +11,7 @@ import {
   Rocket01Icon,
   Search01Icon,
   Tag01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import type { IconSvgElement } from "@hugeicons/react"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Link, useMatchRoute } from "@tanstack/react-router"

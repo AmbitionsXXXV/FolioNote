@@ -10,7 +10,7 @@ import {
   FilterIcon,
   Link01Icon,
   Tag01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import { useCallback, useId, useState } from "react"

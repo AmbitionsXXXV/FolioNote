@@ -11,7 +11,7 @@ import {
 } from "@folionote/ui/select"
 import { Skeleton } from "@folionote/ui/skeleton"
 import { Chip } from "@heroui/react"
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons"
+import { ArrowRight01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"

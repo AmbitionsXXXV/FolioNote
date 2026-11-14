@@ -1,5 +1,8 @@
 import { Button } from "@folionote/ui/button"
-import { AiBrain01Icon, Setting06Icon } from "@hugeicons/core-free-icons"
+import {
+  AiBrain01Icon,
+  Setting06Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Link } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"

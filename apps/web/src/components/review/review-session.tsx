@@ -1,6 +1,6 @@
 import { Button } from "@folionote/ui/button"
 import { Skeleton } from "@folionote/ui/skeleton"
-import { RefreshIcon } from "@hugeicons/core-free-icons"
+import { RefreshIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"

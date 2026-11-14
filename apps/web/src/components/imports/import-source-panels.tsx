@@ -7,7 +7,7 @@ import {
   TextArea,
   TextField
 } from "@heroui/react"
-import { Upload01Icon } from "@hugeicons/core-free-icons"
+import { Upload01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import type { ChangeEvent } from "react"

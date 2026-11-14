@@ -1,4 +1,4 @@
-import { PlayIcon } from "@hugeicons/core-free-icons"
+import { PlayIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { Button, Card, cn } from "heroui-native"
 import { useTranslation } from "react-i18next"

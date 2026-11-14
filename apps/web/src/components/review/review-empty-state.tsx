@@ -1,5 +1,5 @@
 import { Button } from "@folionote/ui/button"
-import { CheckmarkCircle02Icon } from "@hugeicons/core-free-icons"
+import { CheckmarkCircle02Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useTranslation } from "react-i18next"
 

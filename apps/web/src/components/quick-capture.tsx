@@ -1,6 +1,6 @@
 import { Button } from "@folionote/ui/button"
 import { Textarea } from "@folionote/ui/textarea"
-import { Add01Icon, Loading02Icon } from "@hugeicons/core-free-icons"
+import { Add01Icon, Loading02Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"

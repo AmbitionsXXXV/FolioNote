@@ -1,4 +1,7 @@
-import { ArrowRight01Icon, Edit02Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowRight01Icon,
+  Edit02Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useQueryClient } from "@tanstack/react-query"
 import { ImpactFeedbackStyle, impactAsync } from "expo-haptics"

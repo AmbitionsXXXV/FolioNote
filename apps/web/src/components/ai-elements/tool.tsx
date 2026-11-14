@@ -11,7 +11,7 @@ import {
   Clock01Icon,
   Tick02Icon,
   Wrench01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { DynamicToolUIPart, ToolUIPart } from "ai"
 import type { ComponentProps, ReactNode } from "react"

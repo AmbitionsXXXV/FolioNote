@@ -5,7 +5,7 @@ import {
   Clock01Icon,
   Fire02Icon,
   InboxIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { useTranslation } from "react-i18next"
 
 import type { StatsContentProps } from "@/types/review"
