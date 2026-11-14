@@ -14,7 +14,7 @@ import {
   SecurityLockIcon,
   ViewIcon,
   ViewOffSlashIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useForm } from "@tanstack/react-form"
 import { Link, useRouter, useSearch } from "@tanstack/react-router"

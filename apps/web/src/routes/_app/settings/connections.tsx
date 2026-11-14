@@ -1,5 +1,5 @@
 import { Button } from "@heroui/react"
-import { PlugSocketIcon } from "@hugeicons/core-free-icons"
+import { PlugSocketIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { useEffect, useState } from "react"

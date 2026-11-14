@@ -11,7 +11,7 @@ import {
   CloudIcon,
   Loading03Icon,
   WifiDisconnected01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import type { IconSvgElement } from "@hugeicons/react-native"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { cn, useThemeColor } from "heroui-native"

@@ -15,7 +15,7 @@ import {
   CheckmarkCircle02Icon,
   LockPasswordIcon,
   SquareUnlock01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useForm } from "@tanstack/react-form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"

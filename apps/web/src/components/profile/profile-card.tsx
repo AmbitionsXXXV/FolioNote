@@ -4,7 +4,7 @@ import {
   Calendar03Icon,
   Edit02Icon,
   UserAccountIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useRef } from "react"
 import { Trans, useTranslation } from "react-i18next"

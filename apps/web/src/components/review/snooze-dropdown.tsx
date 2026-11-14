@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@folionote/ui/dropdown-menu"
-import { Calendar01Icon, Time01Icon } from "@hugeicons/core-free-icons"
+import { Calendar01Icon, Time01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useTranslation } from "react-i18next"
 

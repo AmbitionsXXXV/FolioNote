@@ -176,9 +176,9 @@ catalogs:
     '@better-auth/expo':
       specifier: ^1.7.10
       version: 1.7.10
-    '@hugeicons/core-free-icons':
-      specifier: ^4.3.5
-      version: 4.3.5
+    '@hugeicons-pro/core-stroke-rounded':
+      specifier: ^4.4.0
+      version: 4.4.0
     '@hugeicons/react':
       specifier: ^1.1.10
       version: 1.1.10
@@ -411,10 +411,10 @@ importers:
         version: 7.0.2
       ultracite:
         specifier: ^8.1.0
-        version: 8.1.0(oxfmt@0.74.0(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(oxlint@1.89.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(prettier@3.9.10)
+        version: 8.1.0(oxfmt@0.74.0(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(oxlint@1.89.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(prettier@3.9.10)
       vite-plus:
         specifier: 'catalog:'
-        version: 1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
+        version: 1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
 
   apps/native:
     dependencies:
@@ -448,9 +448,9 @@ importers:
       '@gorhom/bottom-sheet':
         specifier: ^5.2.6
         version: 5.2.14(aa8aabc8ac42e7d9f4d6c4cd7e1e8518)
-      '@hugeicons/core-free-icons':
+      '@hugeicons-pro/core-stroke-rounded':
         specifier: 'catalog:'
-        version: 4.3.5
+        version: 4.4.0
       '@hugeicons/react-native':
         specifier: ^1.0.9
         version: 1.0.13(react-native-svg@15.16.0(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0))(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
@@ -825,9 +825,9 @@ importers:
       '@hocuspocus/provider':
         specifier: ^4.3.0
         version: 4.3.0(y-protocols@1.0.7(yjs@13.6.31))(yjs@13.6.31)
-      '@hugeicons/core-free-icons':
+      '@hugeicons-pro/core-stroke-rounded':
         specifier: 'catalog:'
-        version: 4.3.5
+        version: 4.4.0
       '@hugeicons/react':
         specifier: 'catalog:'
         version: 1.1.10(react@19.3.1)
@@ -1378,9 +1378,9 @@ importers:
       '@folionote/editor-core':
         specifier: workspace:*
         version: link:../editor-core
-      '@hugeicons/core-free-icons':
+      '@hugeicons-pro/core-stroke-rounded':
         specifier: 'catalog:'
-        version: 4.3.5
+        version: 4.4.0
       '@hugeicons/react':
         specifier: 'catalog:'
         version: 1.1.10(react@19.3.1)
@@ -1561,9 +1561,9 @@ importers:
       '@heroui/styles':
         specifier: ^3.2.0
         version: 3.2.0(tailwind-merge@3.7.0)(tailwindcss@4.3.3)
-      '@hugeicons/core-free-icons':
+      '@hugeicons-pro/core-stroke-rounded':
         specifier: 'catalog:'
-        version: 4.3.5
+        version: 4.4.0
       '@hugeicons/react':
         specifier: 'catalog:'
         version: 1.1.10(react@19.3.1)
@@ -3553,8 +3553,8 @@ packages:
       '@standard-schema/spec': ^1.0.0
       hono: '>=4.11.2'
 
-  '@hugeicons/core-free-icons@4.3.5':
-    resolution: {integrity: sha512-Sv+NjHRPnQk+yZsGCMcGznCHdTfJR9PMMOEKcJYAQU4gy90dmlc9PwdtvYOImBZIjiheMsTLL5eMn2DmHxUiUg==}
+  '@hugeicons-pro/core-stroke-rounded@4.4.0':
+    resolution: {integrity: sha512-MkD8K66BlpeuDLCFHL9VTqzuw/vUzxKHV2Hk0yQxHORXaTvQNkdyFlMP5c0BzQqvByCFIe0HyCIOhrHyu1x0dA==}
 
   '@hugeicons/react-native@1.0.13':
     resolution: {integrity: sha512-C6vA/AHTWSbgeVR93fpfnOKZaijh0RZIW7Ud5Xnh1f5RcV88q3Bn4fqE53k+rcjto6gNylzfs73ksHASgc5tPw==}
@@ -5631,10 +5631,16 @@ packages:
   '@smithy/core@3.24.6':
     resolution: {integrity: sha512-wBXDRup6UU97VKyaiRo8AssnfStPtG0oAAfpq/bC0a1YYau8pM86YB4kM6ccoVi1mS8l/UHbn9oDM+7uozr/ug==}
     engines: {node: '>=18.0.0'}
+    deprecated: |-
+      Deprecated due to a bug in custom logger data redaction. Upgrade to the latest version. If you used a custom logger with this
+        version, review your logs and rotate any credentials or other secrets. See https://github.com/aws/aws-sdk-js-v3/issues/8393.
 
   '@smithy/core@3.36.0':
     resolution: {integrity: sha512-3hJiwG1F5t1SoXqp/yOCmYXziyx7ZVqF63S5W6YU201e/qwVaHPex+E/3vvyY9a3ORq/b+BydeNZpP2saQ9X2g==}
     engines: {node: '>=18.0.0'}
+    deprecated: |-
+      Deprecated due to a bug in custom logger data redaction. Upgrade to the latest version. If you used a custom logger with this
+        version, review your logs and rotate any credentials or other secrets. See https://github.com/aws/aws-sdk-js-v3/issues/8393.
 
   '@smithy/credential-provider-imds@4.3.8':
     resolution: {integrity: sha512-5cAM+KZC02sTqDt6NaLXyu50M/GNMd1eTzDVR8Lb0BBsVtu7RWHo47VPPEEv1vt3Yub6uzr+M5FHC+GtoT0USg==}
@@ -15497,7 +15503,7 @@ snapshots:
       '@standard-schema/spec': 1.1.0
       hono: 4.13.13
 
-  '@hugeicons/core-free-icons@4.3.5': {}
+  '@hugeicons-pro/core-stroke-rounded@4.4.0': {}
 
   '@hugeicons/react-native@1.0.13(react-native-svg@15.16.0(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0))(react-native@0.88.0(@babel/core@7.29.7(supports-color@8.1.1))(@react-native/metro-config@0.86.0(@babel/core@7.29.7(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)':
     dependencies:
@@ -19189,7 +19195,7 @@ snapshots:
       pathe: 2.0.3
       sirv: 3.0.2
       tinyrainbow: 3.2.0
-      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
+      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
 
   '@vitest/utils@5.0.5':
     dependencies:
@@ -19617,7 +19623,7 @@ snapshots:
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
       solid-js: 1.9.17
-      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
+      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
     transitivePeerDependencies:
       - '@opentelemetry/api'
 
@@ -19647,7 +19653,7 @@ snapshots:
       react: 19.3.1
       react-dom: 19.3.0(react@19.3.1)
       solid-js: 1.9.17
-      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
+      vitest: 5.0.5(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/browser-preview@5.0.5)(@vitest/ui@5.0.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)
     transitivePeerDependencies:
       - '@opentelemetry/api'
 
@@ -25458,7 +25464,7 @@ snapshots:
 
   uint8array-extras@1.5.0: {}
 
-  ultracite@8.1.0(oxfmt@0.74.0(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(oxlint@1.89.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(prettier@3.9.10):
+  ultracite@8.1.0(oxfmt@0.74.0(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(oxlint@1.89.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0)))(prettier@3.9.10):
     dependencies:
       '@clack/prompts': 1.8.1
       cli-truncate: 6.1.1
@@ -25480,8 +25486,8 @@ snapshots:
       yaml: 2.9.1
       zod: 4.6.7
     optionalDependencies:
-      oxfmt: 0.74.0(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))
-      oxlint: 1.89.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@26.6.5)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))
+      oxfmt: 0.74.0(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))
+      oxlint: 1.89.0(oxlint-tsgolint@7.0.2004)(vite-plus@1.4.0(@opentelemetry/api@1.9.1)(@types/node@26.6.5)(@vitest/ui@5.0.5)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(msw@3.0.3(@types/node@26.6.5)(@voidzero-dev/vite-plus-core@1.4.0(@types/node@26.6.5)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))(graphql@16.14.2)(supports-color@8.1.1)(typescript@7.0.2))(terser@5.48.0)(tsx@4.22.4)(typescript@7.0.2)(yaml@2.9.0))
       prettier: 3.9.10
 
   uncrypto@0.1.3: {}

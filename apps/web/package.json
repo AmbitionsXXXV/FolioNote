@@ -28,7 +28,7 @@
     "@heroui/react": "^3.2.0",
     "@heroui/styles": "^3.2.0",
     "@hocuspocus/provider": "^4.3.0",
-    "@hugeicons/core-free-icons": "catalog:",
+    "@hugeicons-pro/core-stroke-rounded": "catalog:",
     "@hugeicons/react": "catalog:",
     "@number-flow/react": "^0.6.0",
     "@orpc/client": "catalog:",

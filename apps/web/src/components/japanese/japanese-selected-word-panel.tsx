@@ -1,5 +1,5 @@
 import type { AnalyzedText, Word } from "@folionote/japanese"
-import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons"
+import { ArrowUpRight01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Link } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"

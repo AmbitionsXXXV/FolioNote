@@ -1,7 +1,10 @@
 import { Button } from "@folionote/ui/button"
 import { Input } from "@folionote/ui/input"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@folionote/ui/tooltip"
-import { ArrowLeft01Icon, Loading02Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowLeft01Icon,
+  Loading02Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { useMutation, useQueryClient } from "@tanstack/react-query"

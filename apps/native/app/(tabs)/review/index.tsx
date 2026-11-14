@@ -3,7 +3,7 @@ import {
   Cancel01Icon,
   CheckmarkCircle02Icon,
   PlayIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Button, Card, useThemeColor } from "heroui-native"

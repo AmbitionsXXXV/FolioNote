@@ -8,7 +8,7 @@ import {
   LanguageSkillIcon,
   NoteIcon,
   Rocket01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useQuery } from "@tanstack/react-query"
 import { router } from "expo-router"

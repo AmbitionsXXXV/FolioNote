@@ -1,6 +1,6 @@
 import { Button } from "@folionote/ui/button"
 import { Input } from "@folionote/ui/input"
-import { Search01Icon } from "@hugeicons/core-free-icons"
+import { Search01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   useInfiniteQuery,

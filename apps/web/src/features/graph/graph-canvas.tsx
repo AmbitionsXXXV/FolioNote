@@ -1,4 +1,4 @@
-import { RefreshIcon } from "@hugeicons/core-free-icons"
+import { RefreshIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useNavigate } from "@tanstack/react-router"
 import {

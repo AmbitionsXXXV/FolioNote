@@ -13,7 +13,7 @@ import {
   Sun03Icon,
   Tick02Icon,
   TranslationIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import Constants from "expo-constants"
 import { ImpactFeedbackStyle, impactAsync } from "expo-haptics"

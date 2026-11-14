@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@folionote/ui/select"
-import { LanguageCircleIcon } from "@hugeicons/core-free-icons"
+import { LanguageCircleIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useTranslation } from "react-i18next"
 

@@ -1,5 +1,5 @@
 import { cn } from "@folionote/ui/lib/utils"
-import { FileEditIcon } from "@hugeicons/core-free-icons"
+import { FileEditIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useCallback, useEffect, useId, useRef, useState } from "react"
 import type { RefObject } from "react"

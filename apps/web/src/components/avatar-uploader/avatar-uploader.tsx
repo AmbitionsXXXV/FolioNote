@@ -36,7 +36,7 @@ import {
   Tick01Icon,
   Time02Icon,
   UserCircleIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useCallback, useImperativeHandle, useRef, useState } from "react"
 import Cropper from "react-easy-crop"

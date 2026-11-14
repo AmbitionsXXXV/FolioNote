@@ -4,7 +4,7 @@ import {
   CollapsibleTrigger
 } from "@folionote/ui/collapsible"
 import { cn } from "@folionote/ui/lib/utils"
-import { ArrowDown01Icon, BrainIcon } from "@hugeicons/core-free-icons"
+import { ArrowDown01Icon, BrainIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ComponentProps, ReactNode } from "react"
 import { createContext, memo, use, useEffect, useRef, useState } from "react"

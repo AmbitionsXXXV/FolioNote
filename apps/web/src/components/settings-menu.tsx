@@ -20,7 +20,7 @@ import {
   Moon02Icon,
   Settings01Icon,
   Sun03Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"

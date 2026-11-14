@@ -1,5 +1,9 @@
 import { Button } from "@folionote/ui/button"
-import { Add01Icon, BookOpen01Icon, StarIcon } from "@hugeicons/core-free-icons"
+import {
+  Add01Icon,
+  BookOpen01Icon,
+  StarIcon
+} from "@hugeicons-pro/core-stroke-rounded"
 import type { IconSvgElement } from "@hugeicons/react"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useInfiniteQuery } from "@tanstack/react-query"

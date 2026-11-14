@@ -19,7 +19,7 @@
     "@base-ui/react": "catalog:",
     "@heroui-pro/react": "1.0.0-beta.6",
     "@heroui/styles": "^3.2.0",
-    "@hugeicons/core-free-icons": "catalog:",
+    "@hugeicons-pro/core-stroke-rounded": "catalog:",
     "@hugeicons/react": "catalog:",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",

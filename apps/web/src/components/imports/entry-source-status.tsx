@@ -1,5 +1,5 @@
 import { Button, Modal } from "@heroui/react"
-import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons"
+import { ArrowUpRight01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"

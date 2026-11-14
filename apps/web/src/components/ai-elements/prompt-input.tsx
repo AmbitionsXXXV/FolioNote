@@ -42,7 +42,7 @@ import {
   MultiplicationSignIcon,
   RefreshIcon,
   SquareIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ChatStatus, FileUIPart, SourceDocumentUIPart } from "ai"
 import { nanoid } from "nanoid"

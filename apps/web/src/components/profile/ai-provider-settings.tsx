@@ -27,7 +27,7 @@ import {
   Key01Icon,
   LinkSquare02Icon,
   Tick02Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useCallback, useState } from "react"
 import { useTranslation } from "react-i18next"

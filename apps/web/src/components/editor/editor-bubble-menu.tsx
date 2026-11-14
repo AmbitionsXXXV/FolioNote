@@ -18,7 +18,7 @@ import {
   TextItalicIcon,
   TextStrikethroughIcon,
   Unlink04Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { Editor } from "@tiptap/react"
 import { useEditorState } from "@tiptap/react"

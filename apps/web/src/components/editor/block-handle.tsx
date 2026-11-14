@@ -20,7 +20,7 @@ import {
   TextFontIcon,
   TextIndent01Icon,
   TranslateIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { IconSvgElement } from "@hugeicons/react"
 import type { Editor } from "@tiptap/core"

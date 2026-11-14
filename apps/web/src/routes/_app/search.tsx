@@ -1,4 +1,4 @@
-import { Search01Icon } from "@hugeicons/core-free-icons"
+import { Search01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { createFileRoute, useSearch } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"

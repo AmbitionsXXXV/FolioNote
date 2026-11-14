@@ -28,7 +28,7 @@
     "@folionote/locales": "workspace:*",
     "@folionote/utils": "workspace:*",
     "@gorhom/bottom-sheet": "^5.2.6",
-    "@hugeicons/core-free-icons": "catalog:",
+    "@hugeicons-pro/core-stroke-rounded": "catalog:",
     "@hugeicons/react-native": "^1.0.9",
     "@internationalized/date": "^3.12.2",
     "@internationalized/number": "^3.6.7",

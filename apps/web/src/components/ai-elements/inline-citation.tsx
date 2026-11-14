@@ -6,7 +6,10 @@ import {
   HoverCardContent,
   HoverCardTrigger
 } from "@folionote/ui/hover-card"
-import { ArrowLeft02Icon, ArrowRight02Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowLeft02Icon,
+  ArrowRight02Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   createContext,

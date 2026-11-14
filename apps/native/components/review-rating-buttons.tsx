@@ -3,7 +3,7 @@ import {
   HelpCircleIcon,
   RefreshIcon,
   Tick01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { Button, useThemeColor } from "heroui-native"
 import { useTranslation } from "react-i18next"
