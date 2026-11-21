@@ -228,6 +228,7 @@ minimumReleaseAgeExclude:
   - fumadocs-ui@16.19.6
   - undici@8.13.1
   - i18next@27.2.3
+  - heroui-native-pro@1.0.0
 
 onlyBuiltDependencies:
   - supabase

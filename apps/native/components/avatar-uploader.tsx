@@ -28,6 +28,7 @@ import { useEffect, useImperativeHandle, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Alert, Pressable, Text, View } from "react-native"
 
+import { useBottomSheetOpenState } from "@/hooks/use-bottom-sheet-open-state"
 import { client } from "@/utils/orpc"
 
 type AllowedAvatarMimeType =
@@ -247,6 +248,10 @@ export function AvatarUploader({
 }: AvatarUploaderProps): React.ReactElement {
   const { t } = useTranslation()
   const [actionSheetVisible, setActionSheetVisible] = useState(false)
+  const actionSheet = useBottomSheetOpenState(
+    actionSheetVisible,
+    setActionSheetVisible
+  )
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   const accentColor = useThemeColor("accent")
@@ -433,53 +438,44 @@ export function AvatarUploader({
         )}
       </Pressable>
 
-      <BottomSheet
-        isOpen={actionSheetVisible}
-        onOpenChange={setActionSheetVisible}
-      >
-        <BottomSheet.Portal>
-          <BottomSheet.Overlay />
-          <BottomSheet.Content>
-            <BottomSheet.Title className="mb-4 text-center text-lg font-semibold">
-              {t("avatar.actions")}
-            </BottomSheet.Title>
+      <BottomSheet {...actionSheet}>
+        <BottomSheet.Content>
+          <BottomSheet.Title className="mb-4 text-center text-lg font-semibold">
+            {t("avatar.actions")}
+          </BottomSheet.Title>
 
-            <RateLimitWarning
-              countdown={countdown}
-              isRateLimited={isRateLimited}
-              warningColor={warningColor}
-            />
+          <RateLimitWarning
+            countdown={countdown}
+            isRateLimited={isRateLimited}
+            warningColor={warningColor}
+          />
 
-            <RateLimitStatus
-              isRateLimited={isRateLimited}
-              mutedColor={mutedColor}
-              rateLimitStatus={rateLimitStatus}
-            />
+          <RateLimitStatus
+            isRateLimited={isRateLimited}
+            mutedColor={mutedColor}
+            rateLimitStatus={rateLimitStatus}
+          />
 
-            <View className="gap-2">
-              <UploadButton
-                accentColor={accentColor}
-                foregroundColor={foregroundColor}
-                isRateLimited={isRateLimited}
-                mutedColor={mutedColor}
-                onPress={pickImage}
-              />
-
-              {displayUrl && (
-                <DeleteButton
-                  dangerColor={dangerColor}
-                  onPress={handleDelete}
-                />
-              )}
-            </View>
-
-            <CancelButton
+          <View className="gap-2">
+            <UploadButton
+              accentColor={accentColor}
               foregroundColor={foregroundColor}
+              isRateLimited={isRateLimited}
               mutedColor={mutedColor}
-              onPress={closeActionSheet}
+              onPress={pickImage}
             />
-          </BottomSheet.Content>
-        </BottomSheet.Portal>
+
+            {displayUrl && (
+              <DeleteButton dangerColor={dangerColor} onPress={handleDelete} />
+            )}
+          </View>
+
+          <CancelButton
+            foregroundColor={foregroundColor}
+            mutedColor={mutedColor}
+            onPress={closeActionSheet}
+          />
+        </BottomSheet.Content>
       </BottomSheet>
     </View>
   )

@@ -4,6 +4,7 @@ import { BottomSheet, Button } from "heroui-native"
 import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
+import { useBottomSheetOpenState } from "@/hooks/use-bottom-sheet-open-state"
 import { japanesePosLabelKey } from "@/lib/japanese-pos"
 
 import { JapaneseRuby } from "./japanese-ruby"
@@ -38,6 +39,7 @@ export function JapaneseWordSheet({
 }: JapaneseWordSheetProps) {
   const { t } = useTranslation()
   const router = useRouter()
+  const sheet = useBottomSheetOpenState(isOpen, onOpenChange)
 
   const morphemes =
     word && analysis
@@ -55,88 +57,79 @@ export function JapaneseWordSheet({
   }
 
   return (
-    <BottomSheet isOpen={isOpen} onOpenChange={onOpenChange}>
-      <BottomSheet.Portal>
-        <BottomSheet.Overlay />
-        <BottomSheet.Content>
-          {word ? (
-            <View className="px-1 pb-4">
-              <View className="flex-row flex-wrap items-end gap-x-3">
-                <JapaneseRuby
-                  fontSize={HEADWORD_FONT_SIZE}
-                  segments={word.ruby ?? [{ text: word.surface }]}
-                  textClassName="font-semibold"
-                />
-                {word.reading ? (
-                  <Text className="pb-1 text-sm text-muted">
-                    {word.reading}
-                  </Text>
-                ) : null}
-              </View>
-
-              <View className="mt-4 flex-row flex-wrap">
-                <DetailField
-                  label={t("japanese.reading.fieldBaseForm")}
-                  value={word.baseForm}
-                />
-                <DetailField
-                  label={t("japanese.reading.fieldPos")}
-                  value={t(japanesePosLabelKey(word.pos))}
-                />
-                <DetailField
-                  label={t("japanese.reading.fieldRomaji")}
-                  value={word.romaji ?? EMPTY}
-                />
-                <DetailField
-                  label={t("japanese.reading.fieldReading")}
-                  value={word.reading ?? EMPTY}
-                />
-              </View>
-
-              <JapaneseSectionTitle className="mt-1">
-                {t("japanese.reading.morphemes")}
-              </JapaneseSectionTitle>
-              <View className="mt-1">
-                {morphemes.map((morpheme, index) => (
-                  <View
-                    accessible
-                    className={
-                      index < morphemes.length - 1
-                        ? "flex-row items-baseline justify-between gap-3 border-b border-border py-2"
-                        : "flex-row items-baseline justify-between gap-3 py-2"
-                    }
-                    key={`${morpheme.start}-${morpheme.surface}`}
-                  >
-                    <Text className="text-base text-foreground">
-                      {morpheme.surface}
-                      {morpheme.baseForm &&
-                      morpheme.baseForm !== morpheme.surface ? (
-                        <Text className="text-xs text-muted">
-                          {"  "}
-                          {morpheme.baseForm}
-                        </Text>
-                      ) : null}
-                    </Text>
-                    <Text className="shrink-0 text-xs text-muted">
-                      {t(japanesePosLabelKey(morpheme.learnerPos))}
-                    </Text>
-                  </View>
-                ))}
-              </View>
-
-              <Button
-                className="mt-4"
-                onPress={handleLookUp}
-                variant="secondary"
-              >
-                <Button.Label>
-                  {t("japanese.reading.lookUp", { word: word.baseForm })}
-                </Button.Label>
-              </Button>
+    <BottomSheet {...sheet}>
+      <BottomSheet.Content>
+        {word ? (
+          <View className="px-1 pb-4">
+            <View className="flex-row flex-wrap items-end gap-x-3">
+              <JapaneseRuby
+                fontSize={HEADWORD_FONT_SIZE}
+                segments={word.ruby ?? [{ text: word.surface }]}
+                textClassName="font-semibold"
+              />
+              {word.reading ? (
+                <Text className="pb-1 text-sm text-muted">{word.reading}</Text>
+              ) : null}
             </View>
-          ) : null}
-        </BottomSheet.Content>
-      </BottomSheet.Portal>
+
+            <View className="mt-4 flex-row flex-wrap">
+              <DetailField
+                label={t("japanese.reading.fieldBaseForm")}
+                value={word.baseForm}
+              />
+              <DetailField
+                label={t("japanese.reading.fieldPos")}
+                value={t(japanesePosLabelKey(word.pos))}
+              />
+              <DetailField
+                label={t("japanese.reading.fieldRomaji")}
+                value={word.romaji ?? EMPTY}
+              />
+              <DetailField
+                label={t("japanese.reading.fieldReading")}
+                value={word.reading ?? EMPTY}
+              />
+            </View>
+
+            <JapaneseSectionTitle className="mt-1">
+              {t("japanese.reading.morphemes")}
+            </JapaneseSectionTitle>
+            <View className="mt-1">
+              {morphemes.map((morpheme, index) => (
+                <View
+                  accessible
+                  className={
+                    index < morphemes.length - 1
+                      ? "flex-row items-baseline justify-between gap-3 border-b border-border py-2"
+                      : "flex-row items-baseline justify-between gap-3 py-2"
+                  }
+                  key={`${morpheme.start}-${morpheme.surface}`}
+                >
+                  <Text className="text-base text-foreground">
+                    {morpheme.surface}
+                    {morpheme.baseForm &&
+                    morpheme.baseForm !== morpheme.surface ? (
+                      <Text className="text-xs text-muted">
+                        {"  "}
+                        {morpheme.baseForm}
+                      </Text>
+                    ) : null}
+                  </Text>
+                  <Text className="shrink-0 text-xs text-muted">
+                    {t(japanesePosLabelKey(morpheme.learnerPos))}
+                  </Text>
+                </View>
+              ))}
+            </View>
+
+            <Button className="mt-4" onPress={handleLookUp} variant="secondary">
+              <Button.Label>
+                {t("japanese.reading.lookUp", { word: word.baseForm })}
+              </Button.Label>
+            </Button>
+          </View>
+        ) : null}
+      </BottomSheet.Content>
     </BottomSheet>
   )
 }

@@ -43,6 +43,7 @@ import { BrandLockup } from "@/components/brand-lockup"
 import { Container } from "@/components/container"
 import { useAppTheme } from "@/contexts/app-theme-context"
 import { useAvatarState } from "@/hooks"
+import { useBottomSheetOpenState } from "@/hooks/use-bottom-sheet-open-state"
 import { authClient } from "@/lib/auth-client"
 
 type AvatarState = ReturnType<typeof useAvatarState>
@@ -527,62 +528,60 @@ function LanguageBottomSheet({
 }: LanguageBottomSheetProps) {
   const { t } = useTranslation()
   const accentForegroundColor = useThemeColor("accent-foreground")
+  const sheet = useBottomSheetOpenState(isOpen, onOpenChange)
 
   return (
-    <BottomSheet isOpen={isOpen} onOpenChange={onOpenChange}>
-      <BottomSheet.Portal>
-        <BottomSheet.Overlay />
-        <BottomSheet.Content>
-          <BottomSheet.Title className="mb-4 text-center text-lg font-semibold">
-            {t("common.language")}
-          </BottomSheet.Title>
+    <BottomSheet {...sheet}>
+      <BottomSheet.Content>
+        <BottomSheet.Title className="mb-4 text-center text-lg font-semibold">
+          {t("common.language")}
+        </BottomSheet.Title>
 
-          <View className="gap-1">
-            {supportedLanguages.map((lang) => (
-              <PressableFeedback
-                className={cn(
-                  "flex-row items-center justify-between rounded-xl px-4 py-3",
-                  currentLanguage === lang ? "bg-accent" : "bg-transparent"
-                )}
-                key={lang}
-                onPress={() => onSelect(lang)}
-              >
-                <PressableFeedback.Highlight />
-                <Text
-                  className={cn(
-                    "text-base text-foreground",
-                    currentLanguage === lang
-                      ? "font-medium text-accent-foreground"
-                      : "font-normal text-foreground"
-                  )}
-                >
-                  {LANGUAGE_LABELS[lang]}
-                </Text>
-                {currentLanguage === lang && (
-                  <HugeiconsIcon
-                    color={accentForegroundColor}
-                    icon={Tick02Icon}
-                    size={24}
-                    strokeWidth={2.5}
-                  />
-                )}
-              </PressableFeedback>
-            ))}
-          </View>
-
-          <View className="mt-4 gap-3">
+        <View className="gap-1">
+          {supportedLanguages.map((lang) => (
             <PressableFeedback
-              className="items-center rounded-xl bg-muted/20 py-3"
-              onPress={() => onOpenChange(false)}
+              className={cn(
+                "flex-row items-center justify-between rounded-xl px-4 py-3",
+                currentLanguage === lang ? "bg-accent" : "bg-transparent"
+              )}
+              key={lang}
+              onPress={() => onSelect(lang)}
             >
               <PressableFeedback.Highlight />
-              <Text className="font-medium text-foreground">
-                {t("common.close")}
+              <Text
+                className={cn(
+                  "text-base text-foreground",
+                  currentLanguage === lang
+                    ? "font-medium text-accent-foreground"
+                    : "font-normal text-foreground"
+                )}
+              >
+                {LANGUAGE_LABELS[lang]}
               </Text>
+              {currentLanguage === lang && (
+                <HugeiconsIcon
+                  color={accentForegroundColor}
+                  icon={Tick02Icon}
+                  size={24}
+                  strokeWidth={2.5}
+                />
+              )}
             </PressableFeedback>
-          </View>
-        </BottomSheet.Content>
-      </BottomSheet.Portal>
+          ))}
+        </View>
+
+        <View className="mt-4 gap-3">
+          <PressableFeedback
+            className="items-center rounded-xl bg-muted/20 py-3"
+            onPress={() => onOpenChange(false)}
+          >
+            <PressableFeedback.Highlight />
+            <Text className="font-medium text-foreground">
+              {t("common.close")}
+            </Text>
+          </PressableFeedback>
+        </View>
+      </BottomSheet.Content>
     </BottomSheet>
   )
 }
