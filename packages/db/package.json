@@ -49,7 +49,7 @@
     "@folionote/config": "workspace:*",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "catalog:",
-    "supabase": "^2.105.0",
+    "supabase": "^3.2.0",
     "tsx": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"

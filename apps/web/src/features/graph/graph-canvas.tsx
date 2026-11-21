@@ -320,7 +320,7 @@ export function GraphCanvas({
     <div className="relative h-full w-full">
       <ReactFlow
         className={cn("graph-flow", isConnecting && "connectable-mode")}
-        colorMode={resolvedTheme === "light" ? "light" : "dark"}
+        forceColorMode={resolvedTheme === "light" ? "light" : "dark"}
         connectOnClick={isConnecting}
         edges={displayEdges}
         edgeTypes={edgeTypes}

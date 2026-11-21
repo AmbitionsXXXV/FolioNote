@@ -29,7 +29,7 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "type-fest": "^5.4.0",
+    "type-fest": "^6.0.3",
     "zod": "catalog:"
   },
   "devDependencies": {
