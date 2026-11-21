@@ -44,6 +44,7 @@ export const Route = createFileRoute("/_app/library")({
     queryClient.ensureInfiniteQueryData({
       queryKey: ["entries", "library", "all", undefined],
       queryFn: () => orpc.entries.list.call({ filter: "all", limit: 20 }),
+      getNextPageParam: (lastPage) => lastPage?.nextCursor,
       initialPageParam: undefined as string | undefined
     })
   },
