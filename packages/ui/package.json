@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@base-ui/react": "catalog:",
-    "@heroui-pro/react": "1.0.0-beta.6",
-    "@heroui/styles": "^3.2.0",
+    "@heroui-pro/react": "1.0.0-beta.11",
+    "@heroui/styles": "^3.2.7",
     "@hugeicons-pro/core-stroke-rounded": "catalog:",
     "@hugeicons/react": "catalog:",
     "class-variance-authority": "catalog:",
@@ -26,9 +26,9 @@
     "cmdk": "catalog:",
     "embla-carousel-react": "^8.6.0",
     "next-themes": "catalog:",
-    "react-day-picker": "^10.0.1",
+    "react-day-picker": "^10.0.2",
     "recharts": "catalog:",
-    "sonner": "^2.0.7",
+    "sonner": "^2.0.8",
     "tailwind-merge": "catalog:",
     "tw-animate-css": "catalog:"
   },

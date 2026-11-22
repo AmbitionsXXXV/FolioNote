@@ -14,6 +14,7 @@ export const Route = createFileRoute("/_app/inbox")({
     queryClient.ensureInfiniteQueryData({
       queryKey: ["entries", "inbox"],
       queryFn: () => orpc.entries.list.call({ filter: "inbox", limit: 20 }),
+      getNextPageParam: (lastPage) => lastPage?.nextCursor,
       initialPageParam: undefined as string | undefined
     })
   },

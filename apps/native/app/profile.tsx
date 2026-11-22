@@ -14,6 +14,7 @@ import {
   TextField,
   useThemeColor
 } from "heroui-native"
+import type { InputRef } from "heroui-native"
 import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import {
@@ -29,6 +30,7 @@ import { AvatarUploader } from "@/components/avatar-uploader"
 import type { AvatarUploaderRef } from "@/components/avatar-uploader"
 import { Container } from "@/components/container"
 import { useAvatarState } from "@/hooks"
+import { useBottomSheetOpenState } from "@/hooks/use-bottom-sheet-open-state"
 import { authClient } from "@/lib/auth-client"
 
 /**
@@ -44,6 +46,8 @@ export default function ProfileScreen() {
 
   // Name edit state
   const [nameSheetOpen, setNameSheetOpen] = useState(false)
+  const nameSheet = useBottomSheetOpenState(nameSheetOpen, setNameSheetOpen)
+  const nameInputRef = useRef<InputRef>(null)
   const [editingName, setEditingName] = useState("")
   const [isUpdating, setIsUpdating] = useState(false)
 
@@ -162,37 +166,37 @@ export default function ProfileScreen() {
       </ScrollView>
 
       {/* Name Edit Bottom Sheet */}
-      <BottomSheet isOpen={nameSheetOpen} onOpenChange={setNameSheetOpen}>
-        <BottomSheet.Portal>
-          <BottomSheet.Overlay />
-          <BottomSheet.Content keyboardBehavior="extend">
-            <BottomSheet.Title className="mb-4 text-center text-lg font-semibold">
-              {t("profile.editName")}
-            </BottomSheet.Title>
+      <BottomSheet
+        {...nameSheet}
+        onWillPresent={() => nameInputRef.current?.focus()}
+      >
+        <BottomSheet.Content>
+          <BottomSheet.Title className="mb-4 text-center text-lg font-semibold">
+            {t("profile.editName")}
+          </BottomSheet.Title>
 
-            <View className="mb-6">
-              <TextField>
-                <Input
-                  autoCapitalize="words"
-                  autoCorrect={false}
-                  autoFocus
-                  onChangeText={setEditingName}
-                  placeholder={t("auth.namePlaceholder")}
-                  returnKeyType="done"
-                  value={editingName}
-                />
-              </TextField>
-            </View>
+          <View className="mb-6">
+            <TextField>
+              <Input
+                autoCapitalize="words"
+                autoCorrect={false}
+                onChangeText={setEditingName}
+                placeholder={t("auth.namePlaceholder")}
+                ref={nameInputRef}
+                returnKeyType="done"
+                value={editingName}
+              />
+            </TextField>
+          </View>
 
-            <Button isDisabled={isUpdating} onPress={handleSaveName}>
-              {isUpdating ? (
-                <ActivityIndicator color="white" size="small" />
-              ) : (
-                <Button.Label>{t("common.save")}</Button.Label>
-              )}
-            </Button>
-          </BottomSheet.Content>
-        </BottomSheet.Portal>
+          <Button isDisabled={isUpdating} onPress={handleSaveName}>
+            {isUpdating ? (
+              <ActivityIndicator color="white" size="small" />
+            ) : (
+              <Button.Label>{t("common.save")}</Button.Label>
+            )}
+          </Button>
+        </BottomSheet.Content>
       </BottomSheet>
     </Container>
   )

@@ -42,14 +42,14 @@
     "@folionote/japanese": "workspace:*",
     "dotenv": "catalog:",
     "drizzle-orm": "catalog:",
-    "pg": "^8.21.0",
+    "pg": "^8.23.1",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@folionote/config": "workspace:*",
-    "@types/pg": "^8.20.0",
+    "@types/pg": "^8.23.1",
     "drizzle-kit": "catalog:",
-    "supabase": "^2.105.0",
+    "supabase": "^3.2.0",
     "tsx": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"

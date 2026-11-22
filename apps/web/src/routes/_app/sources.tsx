@@ -84,6 +84,8 @@ export const Route = createFileRoute("/_app/sources")({
     queryClient.ensureInfiniteQueryData({
       queryKey: ["sources", "infinite", "all"],
       queryFn: () => orpc.sources.list.call({ type: undefined, limit: 20 }),
+      getNextPageParam: (lastPage) =>
+        lastPage?.hasMore ? lastPage.nextCursor : undefined,
       initialPageParam: undefined as string | undefined
     })
   },

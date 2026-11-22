@@ -99,7 +99,7 @@
     "ai": "catalog:",
     "drizzle-orm": "catalog:",
     "nanoid": "catalog:",
-    "turndown": "^7.2.2",
+    "turndown": "^7.2.5",
     "undici": "catalog:",
     "zod": "catalog:"
   },

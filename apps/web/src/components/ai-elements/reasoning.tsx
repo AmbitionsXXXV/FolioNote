@@ -6,6 +6,7 @@ import {
 import { cn } from "@folionote/ui/lib/utils"
 import { ArrowDown01Icon, BrainIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
+import type { TFunction } from "i18next"
 import type { ComponentProps, ReactNode } from "react"
 import { createContext, memo, use, useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -201,7 +202,7 @@ ReasoningTrigger.displayName = "ReasoningTrigger"
 ReasoningContent.displayName = "ReasoningContent"
 
 function defaultGetThinkingMessage(
-  t: (key: string, options?: Record<string, number>) => string,
+  t: TFunction,
   isStreaming: boolean,
   duration?: number
 ): ReactNode {

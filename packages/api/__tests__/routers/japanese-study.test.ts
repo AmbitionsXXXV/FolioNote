@@ -22,10 +22,7 @@ const authed = () =>
   createMockContext({ session: createMockSession({ user: { id: "owner-a" } }) })
 
 const expectOrpcCode = async (promise: Promise<unknown>, code: string) => {
-  const error = await promise.then(
-    () => null,
-    (error: unknown) => error
-  )
+  const error = await promise.then(() => null).catch((error: unknown) => error)
   expect(error).toBeInstanceOf(ORPCError)
   expect((error as ORPCError<string, unknown>).code).toBe(code)
 }
