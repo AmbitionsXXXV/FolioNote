@@ -209,23 +209,25 @@ function JapaneseLexiconPage() {
       </header>
 
       <div className="flex flex-wrap items-end justify-between gap-3">
-        {isNotebook ? <span /> : (
-        <label className="flex flex-col gap-1.5 text-xs font-medium text-muted-foreground">
-          {t("japanese.library.list.unitFilter")}
-          <input
-            className="min-h-9 w-40 rounded-lg border border-input bg-background px-3 text-sm text-foreground transition-colors outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
-            list="japanese-lexicon-units"
-            onChange={(event) => setUnitInput(event.target.value)}
-            placeholder={t("japanese.library.list.unitFilterPlaceholder")}
-            type="text"
-            value={unitInput}
-          />
-          <datalist id="japanese-lexicon-units">
-            {seenUnits.map((value) => (
-              <option key={value} value={value} />
-            ))}
-          </datalist>
-        </label>
+        {isNotebook ? (
+          <span />
+        ) : (
+          <label className="flex flex-col gap-1.5 text-xs font-medium text-muted-foreground">
+            {t("japanese.library.list.unitFilter")}
+            <input
+              className="min-h-9 w-40 rounded-lg border border-input bg-background px-3 text-sm text-foreground transition-colors outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30"
+              list="japanese-lexicon-units"
+              onChange={(event) => setUnitInput(event.target.value)}
+              placeholder={t("japanese.library.list.unitFilterPlaceholder")}
+              type="text"
+              value={unitInput}
+            />
+            <datalist id="japanese-lexicon-units">
+              {seenUnits.map((value) => (
+                <option key={value} value={value} />
+              ))}
+            </datalist>
+          </label>
         )}
         <p className="text-xs text-muted-foreground">
           <span
@@ -363,7 +365,9 @@ function JapaneseLexiconPage() {
                         className="text-muted-foreground hover:text-danger"
                         isDisabled={removeEntry.isPending}
                         isIconOnly
-                        onPress={() => removeEntry.mutate({ entryId: entry.id })}
+                        onPress={() =>
+                          removeEntry.mutate({ entryId: entry.id })
+                        }
                         size="sm"
                         variant="ghost"
                       >

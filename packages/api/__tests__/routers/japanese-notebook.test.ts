@@ -76,7 +76,11 @@ describe("Japanese notebook API", () => {
       { vocabId: "vocab-cat", meaningLanguage: "zh" },
       { context: authed() }
     )
-    expect(saved).toEqual({ lexiconId: "nb-1", entryId: 42, alreadySaved: false })
+    expect(saved).toEqual({
+      lexiconId: "nb-1",
+      entryId: 42,
+      alreadySaved: false
+    })
 
     const [notebookSql, notebookParams] = query.mock.calls[1] ?? []
     expect(notebookSql).toContain('insert into "jp_lexicons"')
@@ -109,13 +113,18 @@ describe("Japanese notebook API", () => {
       { vocabId: "vocab-cat", meaningLanguage: "zh" },
       { context: authed() }
     )
-    expect(saved).toEqual({ lexiconId: "nb-1", entryId: null, alreadySaved: true })
+    expect(saved).toEqual({
+      lexiconId: "nb-1",
+      entryId: null,
+      alreadySaved: true
+    })
     expect(query).toHaveBeenCalledTimes(4)
   })
 
   it("moves an already-saved word to its newest sentence without recounting", async () => {
+    // No articleId, so no ownership query: word-bank match, notebook insert,
+    // notebook select, entry upsert.
     query
-      .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [["nb-1"]] })
@@ -131,8 +140,12 @@ describe("Japanese notebook API", () => {
       },
       { context: authed() }
     )
-    expect(saved).toEqual({ lexiconId: "nb-1", entryId: 43, alreadySaved: true })
-    expect(query).toHaveBeenCalledTimes(5)
+    expect(saved).toEqual({
+      lexiconId: "nb-1",
+      entryId: 43,
+      alreadySaved: true
+    })
+    expect(query).toHaveBeenCalledTimes(4)
   })
 
   it("keeps the context sentence but drops another user's article link", async () => {
@@ -181,7 +194,9 @@ describe("Japanese notebook API", () => {
   })
 
   it("has no summary before the first save", async () => {
-    const result = await call(notebook.summary, undefined, { context: authed() })
+    const result = await call(notebook.summary, undefined, {
+      context: authed()
+    })
     expect(result).toBeNull()
     expect(query).toHaveBeenCalledTimes(1)
   })
@@ -190,11 +205,19 @@ describe("Japanese notebook API", () => {
     query
       .mockResolvedValueOnce({ rows: [["nb-1", 5]] })
       .mockResolvedValueOnce({ rows: [["小説"], ["図書館"]] })
-    const result = await call(notebook.summary, undefined, { context: authed() })
-    expect(result).toEqual({ id: "nb-1", entryCount: 5, recent: ["小説", "図書館"] })
+    const result = await call(notebook.summary, undefined, {
+      context: authed()
+    })
+    expect(result).toEqual({
+      id: "nb-1",
+      entryCount: 5,
+      recent: ["小説", "図書館"]
+    })
     const [notebookSql, notebookParams] = query.mock.calls[0] ?? []
     expect(notebookSql).toContain('from "jp_lexicons"')
-    expect(notebookParams).toEqual(expect.arrayContaining(["owner-a", "notebook"]))
+    expect(notebookParams).toEqual(
+      expect.arrayContaining(["owner-a", "notebook"])
+    )
     expect(statements()[1]).toContain("order by")
   })
 })

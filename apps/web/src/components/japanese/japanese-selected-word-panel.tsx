@@ -73,8 +73,8 @@ export function SelectedWordPanel({
   const { t } = useTranslation()
   const posLabel = t(`review.japaneseTyping.posCategories.${word.pos}`)
   const savedEntryId =
-    lexiconMatches.find((match) => match.lexiconKind === "notebook")
-      ?.entryId ?? null
+    lexiconMatches.find((match) => match.lexiconKind === "notebook")?.entryId ??
+    null
   const morphemes = word.morphemeIndexes
     .map((index) => analysis.morphemes[index])
     .filter((morpheme) => morpheme !== undefined)

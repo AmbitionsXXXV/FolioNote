@@ -54,6 +54,11 @@ vi.mock("@/utils/orpc", () => ({
             queryFn: () => Promise.resolve([])
           })
         }
+      },
+      // The word panel's 生词本 button; this test never presses it.
+      notebook: {
+        save: { mutationOptions: () => ({ mutationFn: vi.fn() }) },
+        remove: { mutationOptions: () => ({ mutationFn: vi.fn() }) }
       }
     }
   }

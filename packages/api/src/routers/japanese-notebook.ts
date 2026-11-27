@@ -1,4 +1,10 @@
-import { db, jpArticles, jpLexiconEntries, jpLexicons, jpVocab } from "@folionote/db"
+import {
+  db,
+  jpArticles,
+  jpLexiconEntries,
+  jpLexicons,
+  jpVocab
+} from "@folionote/db"
 import { DEFAULT_MAX_CHARS } from "@folionote/japanese"
 import { ORPCError } from "@orpc/server"
 import { and, desc, eq, inArray, sql } from "drizzle-orm"
@@ -179,10 +185,7 @@ const saveWord = protectedProcedure
         meanings: word ? meaningsIn(word, input.meaningLanguage) : [],
         vocabId,
         contextSentence: input.context?.sentence ?? null,
-        contextArticleId: await ownedArticleId(
-          input.context?.articleId,
-          userId
-        )
+        contextArticleId: await ownedArticleId(input.context?.articleId, userId)
       }
     }
 
