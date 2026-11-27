@@ -7,7 +7,9 @@ import { useTranslation } from "react-i18next"
 import type { LexiconMatch } from "@/hooks/use-japanese-lexicon-lookup"
 import { formatLexiconTag } from "@/hooks/use-japanese-lexicon-lookup"
 
+import { JapaneseNotebookButton } from "./japanese-notebook-button"
 import { JapaneseRuby } from "./japanese-ruby"
+import { JapaneseSpeakButton } from "./japanese-speak-button"
 
 function DetailField({ label, value }: { label: string; value: string }) {
   return (
@@ -56,13 +58,23 @@ function LexiconMatches({ matches }: { matches: LexiconMatch[] }) {
 export function SelectedWordPanel({
   word,
   analysis,
-  lexiconMatches = []
+  lexiconMatches = [],
+  allowSave = false,
+  articleId
 }: {
   word: Word
   analysis: AnalyzedText
   lexiconMatches?: LexiconMatch[]
+  /** Offer "save to notebook"; needs a lookup that includes the notebook. */
+  allowSave?: boolean
+  /** The saved article the sentence belongs to, kept with the saved word. */
+  articleId?: string
 }) {
   const { t } = useTranslation()
+  const posLabel = t(`review.japaneseTyping.posCategories.${word.pos}`)
+  const savedEntryId =
+    lexiconMatches.find((match) => match.lexiconKind === "notebook")
+      ?.entryId ?? null
   const morphemes = word.morphemeIndexes
     .map((index) => analysis.morphemes[index])
     .filter((morpheme) => morpheme !== undefined)
@@ -78,6 +90,29 @@ export function SelectedWordPanel({
             {word.reading}
           </span>
         ) : null}
+        <JapaneseSpeakButton className="self-center" text={word.surface} />
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        {allowSave ? (
+          <JapaneseNotebookButton
+            savedEntryId={savedEntryId}
+            word={{
+              headword: word.surface,
+              reading: word.reading,
+              baseForm: word.baseForm,
+              pos: posLabel,
+              context: {
+                sentence: analysis.text.trim(),
+                ...(articleId ? { articleId } : {})
+              }
+            }}
+          />
+        ) : null}
+        <JapaneseSpeakButton
+          label={t("japanese.speech.playSentence")}
+          text={analysis.text}
+        />
       </div>
 
       {lexiconMatches.length > 0 ? (
@@ -89,10 +124,7 @@ export function SelectedWordPanel({
           label={t("japanese.reading.fieldBaseForm")}
           value={word.baseForm}
         />
-        <DetailField
-          label={t("japanese.reading.fieldPos")}
-          value={t(`review.japaneseTyping.posCategories.${word.pos}`)}
-        />
+        <DetailField label={t("japanese.reading.fieldPos")} value={posLabel} />
         <DetailField
           label={t("japanese.reading.fieldRomaji")}
           value={word.romaji ?? "—"}

@@ -111,7 +111,9 @@ function JapaneseLexiconPage() {
                 className="font-script-ja text-2xl font-semibold tracking-tight"
                 lang="ja"
               >
-                {lexicon.name}
+                {lexicon.kind === "notebook"
+                  ? t("japanese.notebook.title")
+                  : lexicon.name}
               </h1>
               {lexicon.level ? (
                 <Chip color="accent" size="sm" variant="soft">
@@ -136,6 +138,15 @@ function JapaneseLexiconPage() {
                 })}
               </span>
             </p>
+            {lexicon.kind === "notebook" && lexicon.entryCount > 0 ? (
+              <Link
+                className="mt-3 inline-flex text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
+                search={{ deck: `lexicon:${lexicon.id}` }}
+                to="/japanese/practice/vocab"
+              >
+                {t("japanese.notebook.study")}
+              </Link>
+            ) : null}
           </>
         ) : (
           <div className="space-y-2">
@@ -224,6 +235,14 @@ function JapaneseLexiconPage() {
                     <span className="ml-1.5 text-[11px] text-muted-foreground">
                       {entry.pos}
                     </span>
+                  ) : null}
+                  {entry.contextSentence ? (
+                    <p
+                      className="mt-1 max-w-[20rem] text-xs leading-relaxed text-muted-foreground"
+                      lang="ja"
+                    >
+                      {entry.contextSentence}
+                    </p>
                   ) : null}
                 </td>
                 <td className="px-3 py-2.5 font-script-ja" lang="ja">

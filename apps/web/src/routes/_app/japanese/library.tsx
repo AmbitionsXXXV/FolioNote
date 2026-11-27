@@ -266,7 +266,9 @@ function JapaneseLibraryPage() {
                         className="truncate font-script-ja text-base font-medium"
                         lang="ja"
                       >
-                        {lexicon.name}
+                        {lexicon.kind === "notebook"
+                          ? t("japanese.notebook.title")
+                          : lexicon.name}
                       </span>
                       {lexicon.level ? (
                         <Chip color="accent" size="sm" variant="soft">
@@ -304,7 +306,10 @@ function JapaneseLibraryPage() {
                     setDeleteTarget({
                       kind: "lexicon",
                       id: lexicon.id,
-                      name: lexicon.name,
+                      name:
+                        lexicon.kind === "notebook"
+                          ? t("japanese.notebook.title")
+                          : lexicon.name,
                       count: lexicon.entryCount
                     })
                   }

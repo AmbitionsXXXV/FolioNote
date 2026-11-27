@@ -9,6 +9,7 @@ import {
   japaneseArticlesRouter,
   japaneseLexiconsRouter
 } from "./japanese-library"
+import { japaneseNotebookRouter } from "./japanese-notebook"
 import { analyzeJapaneseText } from "./japanese-runtime"
 import { japaneseStudyRouter } from "./japanese-study"
 
@@ -241,6 +242,7 @@ export const analyzeJapanese = protectedProcedure
 export const japaneseRouter = {
   articles: japaneseArticlesRouter,
   lexicons: japaneseLexiconsRouter,
+  notebook: japaneseNotebookRouter,
   study: japaneseStudyRouter,
   search: searchJapanese,
   word: getJapaneseWord,

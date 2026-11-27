@@ -296,7 +296,7 @@ export const japaneseArticlesRouter = {
     )
 }
 
-async function matchVocabulary(entries: PreparedLexiconEntry[]) {
+export async function matchVocabulary(entries: PreparedLexiconEntry[]) {
   const forms = [
     ...new Set(entries.flatMap((entry) => [entry.headword, entry.baseForm]))
   ]
@@ -476,8 +476,10 @@ export const japaneseLexiconsRouter = {
       return db
         .select({
           baseForm: jpLexiconEntries.baseForm,
+          entryId: jpLexiconEntries.id,
           lexiconId: jpLexicons.id,
           lexiconName: jpLexicons.name,
+          lexiconKind: jpLexicons.kind,
           unit: jpLexiconEntries.unit,
           meanings: jpLexiconEntries.meanings
         })

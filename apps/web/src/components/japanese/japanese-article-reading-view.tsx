@@ -419,7 +419,9 @@ export function JapaneseArticleReadingView({
         <aside className="lg:sticky lg:top-6 lg:self-start">
           {selectedWord && selectedSentence?.analysis ? (
             <SelectedWordPanel
+              allowSave
               analysis={selectedSentence.analysis}
+              articleId={articleId}
               lexiconMatches={lexicons.matches.get(selectedWord.baseForm)}
               word={selectedWord}
             />

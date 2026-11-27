@@ -647,7 +647,8 @@
       },
       "kind": {
         "book": "Book",
-        "deck": "Deck"
+        "deck": "Deck",
+        "notebook": "Notebook"
       },
       "meaningLanguage": {
         "zh": "中文",
@@ -751,6 +752,24 @@
       "loadFailed": "Couldn't load",
       "retry": "Try again",
       "rateFailed": "Progress wasn't saved. Please try again."
+    },
+    "notebook": {
+      "title": "Notebook",
+      "save": "Save to notebook",
+      "saved": "In your notebook",
+      "remove": "Remove from notebook",
+      "savedToast": "Saved to your notebook",
+      "removedToast": "Removed from your notebook",
+      "saveFailed": "Couldn't save to your notebook. Try again.",
+      "removeFailed": "Couldn't remove it from your notebook. Try again.",
+      "fromYourReading": "From your reading",
+      "study": "Study notebook"
+    },
+    "speech": {
+      "play": "Play",
+      "playWord": "Play “{{text}}”",
+      "playSentence": "Play sentence",
+      "failed": "Couldn't play it: no Japanese voice is available in this browser."
     }
   },
   "activity": {
