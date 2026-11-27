@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@base-ui/react": "catalog:",
-    "@heroui-pro/react": "1.0.0-beta.11",
-    "@heroui/styles": "^3.2.7",
+    "@heroui-pro/react": "1.0.1",
+    "@heroui/styles": "^3.2.8",
     "@hugeicons-pro/core-stroke-rounded": "catalog:",
     "@hugeicons/react": "catalog:",
     "class-variance-authority": "catalog:",

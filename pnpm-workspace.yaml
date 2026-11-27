@@ -27,6 +27,9 @@ packageExtensions:
       react: ">=19.0.0"
       react-aria-components: ">=1.18.0"
       react-dom: ">=19.0.0"
+      # 1.0.x imports "tailwind-variants/config" (v4-only); without this it
+      # resolves the hoisted tailwind-variants@3 and the web build fails.
+      tailwind-variants: ">=4.0.2"
 
 allowBuilds:
   "@heroui-pro/react": true
