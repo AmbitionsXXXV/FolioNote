@@ -1,7 +1,7 @@
 import { db, jpArticles, jpLexiconEntries, jpLexicons, jpVocab } from "@folionote/db"
 import { DEFAULT_MAX_CHARS } from "@folionote/japanese"
 import { ORPCError } from "@orpc/server"
-import { and, eq, inArray, sql } from "drizzle-orm"
+import { and, desc, eq, inArray, sql } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 
@@ -124,7 +124,7 @@ function refreshEntryCount(lexiconId: string) {
 
 /**
  * japanese.notebook.save - Put a word into the caller's 生词本. Saving a word
- * that is already there keeps the first entry (and its context sentence).
+ * that is already there keeps one entry and updates it to the newest sentence.
  * The word then shows up as a new card in the notebook deck.
  */
 const saveWord = protectedProcedure
@@ -195,14 +195,31 @@ const saveWord = protectedProcedure
         readingSource: entry.reading ? "engine" : null,
         position: sql`(select coalesce(max(${jpLexiconEntries.position}), 0) + 1 from ${jpLexiconEntries} where ${jpLexiconEntries.lexiconId} = ${notebook.id})`
       })
-      .onConflictDoNothing()
-      .returning({ id: jpLexiconEntries.id })
-    if (inserted) await refreshEntryCount(notebook.id)
+      // Saving a word again from a new sentence moves its card to that
+      // sentence; saving it again without one leaves the entry untouched.
+      .onConflictDoUpdate({
+        target: [
+          jpLexiconEntries.lexiconId,
+          jpLexiconEntries.headword,
+          jpLexiconEntries.reading
+        ],
+        set: {
+          contextSentence: sql`excluded.context_sentence`,
+          contextArticleId: sql`excluded.context_article_id`
+        },
+        setWhere: sql`excluded.context_sentence is not null`
+      })
+      .returning({
+        id: jpLexiconEntries.id,
+        // xmax is 0 only on a freshly inserted row.
+        isNew: sql<boolean>`(xmax = 0)`
+      })
+    if (inserted?.isNew) await refreshEntryCount(notebook.id)
 
     return {
       lexiconId: notebook.id,
       entryId: inserted?.id ?? null,
-      alreadySaved: !inserted
+      alreadySaved: !inserted?.isNew
     }
   })
 
@@ -237,7 +254,31 @@ const removeWord = protectedProcedure
     return { lexiconId: removed.lexiconId }
   })
 
+const RECENT_WORDS = 4
+
+/**
+ * japanese.notebook.summary - The caller's notebook with its latest words, for
+ * the library card. Null until the first word is saved.
+ */
+const summary = protectedProcedure.handler(async ({ context }) => {
+  const userId = context.session.user.id
+  const [notebook] = await db
+    .select({ id: jpLexicons.id, entryCount: jpLexicons.entryCount })
+    .from(jpLexicons)
+    .where(and(eq(jpLexicons.userId, userId), eq(jpLexicons.kind, "notebook")))
+    .limit(1)
+  if (!notebook) return null
+  const recent = await db
+    .select({ headword: jpLexiconEntries.headword })
+    .from(jpLexiconEntries)
+    .where(eq(jpLexiconEntries.lexiconId, notebook.id))
+    .orderBy(desc(jpLexiconEntries.createdAt), desc(jpLexiconEntries.id))
+    .limit(RECENT_WORDS)
+  return { ...notebook, recent: recent.map((row) => row.headword) }
+})
+
 export const japaneseNotebookRouter = {
   save: saveWord,
-  remove: removeWord
+  remove: removeWord,
+  summary
 }

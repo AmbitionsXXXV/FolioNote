@@ -151,9 +151,10 @@ textarea::-webkit-resizer {
   --overlay: oklch(0.992 0.0045 84);
   --overlay-foreground: var(--foreground);
 
-  /* Brand accent — warm amber */
-  --accent: oklch(0.685 0.132 69);
-  --accent-foreground: oklch(0.215 0.022 60);
+  /* Brand accent — deep amber with warm light-gray ink: pure white on it was
+     too bright and dark ink read as black-on-amber (≈4.9:1). */
+  --accent: oklch(0.503 0.111 64);
+  --accent-foreground: oklch(0.927 0.013 75);
 
   /* Neutral default control surface */
   --default: oklch(0.922 0.015 80);

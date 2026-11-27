@@ -1,12 +1,22 @@
 import { Skeleton } from "@folionote/ui/skeleton"
 import { Button, Chip } from "@heroui/react"
-import { ArrowLeft01Icon } from "@hugeicons-pro/core-stroke-rounded"
+import {
+  ArrowLeft01Icon,
+  Delete02Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { useInfiniteQuery } from "@tanstack/react-query"
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from "@tanstack/react-query"
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
 
+import { JapaneseSpeakButton } from "@/components/japanese/japanese-speak-button"
 import { useDebounce } from "@/hooks/use-debounce"
 import { orpc } from "@/utils/orpc"
 
@@ -18,6 +28,8 @@ const PAGE_SIZE = 50
 const FILTER_DEBOUNCE_MS = 300
 const BACK_LINK_CLASS =
   "inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
+const SOURCE_LINK_CLASS =
+  "text-xs text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
 
 function TableSkeleton() {
   return (
@@ -56,6 +68,34 @@ function JapaneseLexiconPage() {
   )
 
   const lexicon = query.data?.pages[0]?.lexicon
+  const isNotebook = lexicon?.kind === "notebook"
+  const queryClient = useQueryClient()
+  const decks = useQuery({
+    ...orpc.japanese.study.decks.queryOptions(),
+    enabled: isNotebook
+  })
+  const due =
+    decks.data?.lexicons.find((deck) => deck.id === lexicon?.id)?.due ?? 0
+  const removeEntry = useMutation(
+    orpc.japanese.notebook.remove.mutationOptions({
+      onSuccess: async () => {
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: orpc.japanese.lexicons.key()
+          }),
+          queryClient.invalidateQueries({
+            queryKey: orpc.japanese.notebook.key()
+          }),
+          queryClient.invalidateQueries({ queryKey: orpc.japanese.study.key() })
+        ])
+        toast.success(t("japanese.notebook.removedToast"))
+      },
+      onError: () => {
+        toast.error(t("japanese.notebook.removeFailed"))
+      }
+    })
+  )
+  const columnCount = isNotebook ? 5 : 4
   const entries = useMemo(
     () => query.data?.pages.flatMap((page) => page.entries) ?? [],
     [query.data]
@@ -103,9 +143,9 @@ function JapaneseLexiconPage() {
     <div className="mx-auto flex w-full max-w-[900px] flex-col gap-6 pb-16">
       <div>{backLink}</div>
 
-      <header>
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         {lexicon ? (
-          <>
+          <div>
             <div className="flex flex-wrap items-center gap-2">
               <h1
                 className="font-script-ja text-2xl font-semibold tracking-tight"
@@ -122,8 +162,12 @@ function JapaneseLexiconPage() {
               ) : null}
             </div>
             <p className="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
-              <span>{t(`japanese.library.kind.${lexicon.kind}`)}</span>
-              <span aria-hidden="true">·</span>
+              {isNotebook ? null : (
+                <>
+                  <span>{t(`japanese.library.kind.${lexicon.kind}`)}</span>
+                  <span aria-hidden="true">·</span>
+                </>
+              )}
               <span>
                 {t("japanese.library.entryCount", {
                   count: lexicon.entryCount
@@ -137,26 +181,35 @@ function JapaneseLexiconPage() {
                   )
                 })}
               </span>
+              {isNotebook ? (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <span>{t("japanese.notebook.listMeta")}</span>
+                </>
+              ) : null}
             </p>
-            {lexicon.kind === "notebook" && lexicon.entryCount > 0 ? (
-              <Link
-                className="mt-3 inline-flex text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
-                search={{ deck: `lexicon:${lexicon.id}` }}
-                to="/japanese/practice/vocab"
-              >
-                {t("japanese.notebook.study")}
-              </Link>
-            ) : null}
-          </>
+          </div>
         ) : (
           <div className="space-y-2">
             <Skeleton className="h-8 w-56" />
             <Skeleton className="h-4 w-40" />
           </div>
         )}
+        {lexicon && isNotebook && lexicon.entryCount > 0 ? (
+          <Link
+            className="inline-flex min-h-11 items-center self-start rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:outline-none sm:self-auto"
+            search={{ deck: `lexicon:${lexicon.id}` }}
+            to="/japanese/practice/vocab"
+          >
+            {due > 0
+              ? t("japanese.notebook.startReviewDue", { count: due })
+              : t("japanese.notebook.startReview")}
+          </Link>
+        ) : null}
       </header>
 
       <div className="flex flex-wrap items-end justify-between gap-3">
+        {isNotebook ? <span /> : (
         <label className="flex flex-col gap-1.5 text-xs font-medium text-muted-foreground">
           {t("japanese.library.list.unitFilter")}
           <input
@@ -173,6 +226,7 @@ function JapaneseLexiconPage() {
             ))}
           </datalist>
         </label>
+        )}
         <p className="text-xs text-muted-foreground">
           <span
             aria-hidden="true"
@@ -197,15 +251,28 @@ function JapaneseLexiconPage() {
               <th className="px-3 py-2" scope="col">
                 {t("japanese.library.list.colMeanings")}
               </th>
-              <th className="px-3 py-2" scope="col">
-                {t("japanese.library.list.colUnit")}
-              </th>
+              {isNotebook ? (
+                <>
+                  <th className="px-3 py-2" scope="col">
+                    {t("japanese.notebook.colSource")}
+                  </th>
+                  <th className="px-3 py-2" scope="col">
+                    <span className="sr-only">
+                      {t("japanese.notebook.colActions")}
+                    </span>
+                  </th>
+                </>
+              ) : (
+                <th className="px-3 py-2" scope="col">
+                  {t("japanese.library.list.colUnit")}
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="divide-y divide-border/40">
             {query.isPending ? (
               <tr>
-                <td colSpan={4}>
+                <td colSpan={columnCount}>
                   <TableSkeleton />
                 </td>
               </tr>
@@ -214,7 +281,7 @@ function JapaneseLexiconPage() {
               <tr>
                 <td
                   className="px-3 py-8 text-center text-sm text-muted-foreground"
-                  colSpan={4}
+                  colSpan={columnCount}
                 >
                   {t("japanese.library.list.empty")}
                 </td>
@@ -235,14 +302,6 @@ function JapaneseLexiconPage() {
                     <span className="ml-1.5 text-[11px] text-muted-foreground">
                       {entry.pos}
                     </span>
-                  ) : null}
-                  {entry.contextSentence ? (
-                    <p
-                      className="mt-1 max-w-[20rem] text-xs leading-relaxed text-muted-foreground"
-                      lang="ja"
-                    >
-                      {entry.contextSentence}
-                    </p>
                   ) : null}
                 </td>
                 <td className="px-3 py-2.5 font-script-ja" lang="ja">
@@ -269,9 +328,58 @@ function JapaneseLexiconPage() {
                     <span className="text-muted-foreground/50">—</span>
                   )}
                 </td>
-                <td className="px-3 py-2.5 text-xs text-muted-foreground tabular-nums">
-                  {entry.unit ?? "—"}
-                </td>
+                {isNotebook ? (
+                  <>
+                    <td className="max-w-[22rem] px-3 py-2.5">
+                      {entry.contextSentence ? (
+                        <span
+                          className="block font-script-ja leading-relaxed text-foreground/85"
+                          lang="ja"
+                        >
+                          {entry.contextSentence}
+                        </span>
+                      ) : null}
+                      {entry.contextArticleId && entry.contextArticleTitle ? (
+                        <Link
+                          className={SOURCE_LINK_CLASS}
+                          lang="ja"
+                          params={{ articleId: entry.contextArticleId }}
+                          to="/japanese/read/$articleId"
+                        >
+                          {entry.contextArticleTitle}
+                        </Link>
+                      ) : (
+                        <span className="text-xs text-muted-foreground">
+                          {entry.contextSentence
+                            ? t("japanese.notebook.fromYourReading")
+                            : t("japanese.notebook.fromSearch")}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-2 py-1.5 whitespace-nowrap">
+                      <JapaneseSpeakButton text={entry.headword} />
+                      <Button
+                        aria-label={t("japanese.notebook.remove")}
+                        className="text-muted-foreground hover:text-danger"
+                        isDisabled={removeEntry.isPending}
+                        isIconOnly
+                        onPress={() => removeEntry.mutate({ entryId: entry.id })}
+                        size="sm"
+                        variant="ghost"
+                      >
+                        <HugeiconsIcon
+                          aria-hidden="true"
+                          className="size-4"
+                          icon={Delete02Icon}
+                        />
+                      </Button>
+                    </td>
+                  </>
+                ) : (
+                  <td className="px-3 py-2.5 text-xs text-muted-foreground tabular-nums">
+                    {entry.unit ?? "—"}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

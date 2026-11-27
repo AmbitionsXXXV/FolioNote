@@ -818,7 +818,18 @@
       "saveFailed": "加入生词本失败，请重试",
       "removeFailed": "移出生词本失败，请重试",
       "fromYourReading": "出自你的阅读",
-      "study": "去背生词本"
+      "study": "去背生词本",
+      "wordCount": "{{count}} 个词",
+      "dueCount": "{{count}} 个待复习",
+      "recent": "最近加入：",
+      "startReview": "开始复习",
+      "startReviewDue": "开始复习 · {{count}} 个待复习",
+      "viewAll": "查看全部",
+      "empty": "阅读或查词时点「加入生词本」，词会连同原句出现在这里。",
+      "listMeta": "阅读和查词时加入",
+      "colSource": "出处",
+      "colActions": "操作",
+      "fromSearch": "从查词加入"
     },
     "speech": {
       "play": "朗读",

@@ -763,7 +763,18 @@
       "saveFailed": "Couldn't save to your notebook. Try again.",
       "removeFailed": "Couldn't remove it from your notebook. Try again.",
       "fromYourReading": "From your reading",
-      "study": "Study notebook"
+      "study": "Study notebook",
+      "wordCount": "{{count}} words",
+      "dueCount": "{{count}} due",
+      "recent": "Recently added: ",
+      "startReview": "Start review",
+      "startReviewDue": "Start review · {{count}} due",
+      "viewAll": "View all",
+      "empty": "Tap “Add to notebook” while reading or searching, and the word lands here with its sentence.",
+      "listMeta": "Added while reading and searching",
+      "colSource": "Source",
+      "colActions": "Actions",
+      "fromSearch": "Added from search"
     },
     "speech": {
       "play": "Play",

@@ -44,6 +44,7 @@ export function JapaneseNotebookButton({
   const refresh = () =>
     Promise.all([
       queryClient.invalidateQueries({ queryKey: orpc.japanese.lexicons.key() }),
+      queryClient.invalidateQueries({ queryKey: orpc.japanese.notebook.key() }),
       queryClient.invalidateQueries({ queryKey: orpc.japanese.study.key() })
     ])
 

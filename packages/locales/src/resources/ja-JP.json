@@ -713,7 +713,18 @@
       "saveFailed": "単語帳に追加できませんでした。もう一度お試しください。",
       "removeFailed": "単語帳から削除できませんでした。もう一度お試しください。",
       "fromYourReading": "あなたの読んだ文から",
-      "study": "単語帳で学習"
+      "study": "単語帳で学習",
+      "wordCount": "{{count}} 語",
+      "dueCount": "復習待ち {{count}} 語",
+      "recent": "最近追加：",
+      "startReview": "復習を始める",
+      "startReviewDue": "復習を始める · {{count}} 語",
+      "viewAll": "すべて見る",
+      "empty": "読解や検索で「単語帳に追加」を押すと、例文と一緒にここに入ります。",
+      "listMeta": "読解と検索から追加",
+      "colSource": "出典",
+      "colActions": "操作",
+      "fromSearch": "検索から追加"
     },
     "speech": {
       "play": "読み上げ",

@@ -422,9 +422,17 @@ export const japaneseLexiconsRouter = {
     .handler(async ({ input, context }) => {
       const lexicon = await ownedLexicon(input.id, context.session.user.id)
       const found = await db
-        .select({ entry: jpLexiconEntries })
+        .select({
+          entry: jpLexiconEntries,
+          contextArticleTitle: jpArticles.title
+        })
         .from(jpLexiconEntries)
         .innerJoin(jpLexicons, eq(jpLexicons.id, jpLexiconEntries.lexiconId))
+        // Notebook entries link back to the article they were saved from.
+        .leftJoin(
+          jpArticles,
+          eq(jpArticles.id, jpLexiconEntries.contextArticleId)
+        )
         .where(
           and(
             eq(jpLexicons.userId, context.session.user.id),
@@ -439,7 +447,12 @@ export const japaneseLexiconsRouter = {
         )
         .orderBy(asc(jpLexiconEntries.position))
         .limit(input.limit + 1)
-      const entries = found.slice(0, input.limit).map(({ entry }) => entry)
+      const entries = found
+        .slice(0, input.limit)
+        .map(({ entry, contextArticleTitle }) => ({
+          ...entry,
+          contextArticleTitle
+        }))
       return {
         lexicon,
         entries,

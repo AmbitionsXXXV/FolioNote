@@ -41,9 +41,9 @@
       --default: oklch(0.922 0.015 80);
       --default-foreground: oklch(0.3 0.01 64);
 
-      /* Accent = web primary (warm honey-amber) */
-      --accent: oklch(0.685 0.132 69);
-      --accent-foreground: oklch(0.215 0.022 60);
+      /* Accent = web primary (deep amber, warm light-gray ink) */
+      --accent: oklch(0.503 0.111 64);
+      --accent-foreground: oklch(0.927 0.013 75);
 
       /* Form Field Defaults - Colors */
       --field-background: oklch(0.992 0.0045 84);

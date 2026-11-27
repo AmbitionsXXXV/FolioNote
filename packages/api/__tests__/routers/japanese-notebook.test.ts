@@ -70,7 +70,7 @@ describe("Japanese notebook API", () => {
       .mockResolvedValueOnce({ rows: [CAT_ROW] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [["nb-1"]] })
-      .mockResolvedValueOnce({ rows: [[42]] })
+      .mockResolvedValueOnce({ rows: [[42, true]] })
     const saved = await call(
       notebook.save,
       { vocabId: "vocab-cat", meaningLanguage: "zh" },
@@ -86,7 +86,10 @@ describe("Japanese notebook API", () => {
     )
     const [entrySql, entryParams] = query.mock.calls[3] ?? []
     expect(entrySql).toContain('insert into "jp_lexicon_entries"')
-    expect(entrySql).toContain("on conflict do nothing")
+    expect(entrySql).toContain(
+      'on conflict ("lexicon_id","headword","reading") do update'
+    )
+    expect(entrySql).toContain("where excluded.context_sentence is not null")
     expect(entryParams).toEqual(
       expect.arrayContaining(["nb-1", "猫", "ねこ", "vocab-cat"])
     )
@@ -110,6 +113,28 @@ describe("Japanese notebook API", () => {
     expect(query).toHaveBeenCalledTimes(4)
   })
 
+  it("moves an already-saved word to its newest sentence without recounting", async () => {
+    query
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [["nb-1"]] })
+      .mockResolvedValueOnce({ rows: [[43, false]] })
+    const saved = await call(
+      notebook.save,
+      {
+        headword: "食べた",
+        reading: "たべた",
+        baseForm: "食べる",
+        meaningLanguage: "zh",
+        context: { sentence: "パンを食べた。" }
+      },
+      { context: authed() }
+    )
+    expect(saved).toEqual({ lexiconId: "nb-1", entryId: 43, alreadySaved: true })
+    expect(query).toHaveBeenCalledTimes(5)
+  })
+
   it("keeps the context sentence but drops another user's article link", async () => {
     // Word-bank match finds nothing, then the article is not the caller's.
     query
@@ -117,7 +142,7 @@ describe("Japanese notebook API", () => {
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [["nb-1"]] })
-      .mockResolvedValueOnce({ rows: [[43]] })
+      .mockResolvedValueOnce({ rows: [[43, true]] })
     await call(
       notebook.save,
       {
@@ -153,5 +178,23 @@ describe("Japanese notebook API", () => {
       expect.arrayContaining([7, "owner-a", "notebook"])
     )
     expect(query).toHaveBeenCalledTimes(1)
+  })
+
+  it("has no summary before the first save", async () => {
+    const result = await call(notebook.summary, undefined, { context: authed() })
+    expect(result).toBeNull()
+    expect(query).toHaveBeenCalledTimes(1)
+  })
+
+  it("summarizes the caller's notebook with its latest words", async () => {
+    query
+      .mockResolvedValueOnce({ rows: [["nb-1", 5]] })
+      .mockResolvedValueOnce({ rows: [["小説"], ["図書館"]] })
+    const result = await call(notebook.summary, undefined, { context: authed() })
+    expect(result).toEqual({ id: "nb-1", entryCount: 5, recent: ["小説", "図書館"] })
+    const [notebookSql, notebookParams] = query.mock.calls[0] ?? []
+    expect(notebookSql).toContain('from "jp_lexicons"')
+    expect(notebookParams).toEqual(expect.arrayContaining(["owner-a", "notebook"]))
+    expect(statements()[1]).toContain("order by")
   })
 })
