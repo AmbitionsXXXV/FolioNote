@@ -9,8 +9,10 @@ import { Container } from "@/components/container"
 import { JapaneseAttribution } from "@/components/japanese/japanese-attribution"
 import { JapaneseExternalLink } from "@/components/japanese/japanese-external-link"
 import { JapaneseLevelChip } from "@/components/japanese/japanese-level-chip"
+import { JapaneseNotebookButton } from "@/components/japanese/japanese-notebook-button"
 import { JapaneseRuby } from "@/components/japanese/japanese-ruby"
 import { JapaneseSectionTitle } from "@/components/japanese/japanese-section-title"
+import { JapaneseSpeakButton } from "@/components/japanese/japanese-speak-button"
 import { parseFuriganaMarkup } from "@/lib/japanese-furigana"
 import { jmdictPosLabelKey } from "@/lib/japanese-jmdict-pos"
 import { orpc } from "@/utils/orpc"
@@ -123,11 +125,17 @@ export default function JapaneseWordScreen() {
               <Text className="text-base text-muted">{word.reading}</Text>
             ) : null}
             <Text className="text-sm text-muted">{word.romaji}</Text>
+            <JapaneseSpeakButton className="self-center" text={word.reading} />
           </View>
           <View className="mt-3 flex-row flex-wrap items-center gap-1.5">
             <JapaneseLevelChip approximate level={word.level} />
             <PosChips codes={word.jmdictPos} />
           </View>
+          <JapaneseNotebookButton
+            className="mt-4"
+            lookupForm={word.word}
+            word={{ vocabId: word.id }}
+          />
         </View>
 
         <View>
@@ -168,17 +176,26 @@ export default function JapaneseWordScreen() {
                   }
                   key={example.ja}
                 >
-                  {example.furigana ? (
-                    <JapaneseRuby
-                      fontSize={EXAMPLE_FONT_SIZE}
-                      segments={parseFuriganaMarkup(example.furigana)}
-                      wrap
+                  <View className="flex-row items-start gap-2">
+                    <View className="flex-1">
+                      {example.furigana ? (
+                        <JapaneseRuby
+                          fontSize={EXAMPLE_FONT_SIZE}
+                          segments={parseFuriganaMarkup(example.furigana)}
+                          wrap
+                        />
+                      ) : (
+                        <Text className="text-xl leading-8 text-foreground">
+                          {example.ja}
+                        </Text>
+                      )}
+                    </View>
+                    <JapaneseSpeakButton
+                      className="pt-1"
+                      label={t("japanese.speech.playSentence")}
+                      text={example.ja}
                     />
-                  ) : (
-                    <Text className="text-xl leading-8 text-foreground">
-                      {example.ja}
-                    </Text>
-                  )}
+                  </View>
                   <Text className="mt-1 text-sm leading-5 text-muted">
                     {example.en}
                   </Text>

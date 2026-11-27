@@ -702,7 +702,8 @@
       },
       "kind": {
         "book": "书",
-        "deck": "卡组"
+        "deck": "卡组",
+        "notebook": "生词本"
       },
       "meaningLanguage": {
         "zh": "中文",
@@ -806,6 +807,35 @@
       "loadFailed": "加载失败",
       "retry": "重试",
       "rateFailed": "进度没有保存，请再试一次。"
+    },
+    "notebook": {
+      "title": "生词本",
+      "save": "加入生词本",
+      "saved": "已在生词本",
+      "remove": "移出生词本",
+      "savedToast": "已加入生词本",
+      "removedToast": "已移出生词本",
+      "saveFailed": "加入生词本失败，请重试",
+      "removeFailed": "移出生词本失败，请重试",
+      "fromYourReading": "出自你的阅读",
+      "study": "去背生词本",
+      "wordCount": "{{count}} 个词",
+      "dueCount": "{{count}} 个待复习",
+      "recent": "最近加入：",
+      "startReview": "开始复习",
+      "startReviewDue": "开始复习 · {{count}} 个待复习",
+      "viewAll": "查看全部",
+      "empty": "阅读或查词时点「加入生词本」，词会连同原句出现在这里。",
+      "listMeta": "阅读和查词时加入",
+      "colSource": "出处",
+      "colActions": "操作",
+      "fromSearch": "从查词加入"
+    },
+    "speech": {
+      "play": "朗读",
+      "playWord": "朗读「{{text}}」",
+      "playSentence": "朗读整句",
+      "failed": "朗读失败：这个浏览器没有可用的日语语音"
     }
   },
   "activity": {

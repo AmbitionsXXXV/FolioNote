@@ -2,6 +2,7 @@ import { Skeleton } from "@folionote/ui/skeleton"
 import { Button, Chip } from "@heroui/react"
 import {
   ArrowRight01Icon,
+  Bookmark01Icon,
   Delete02Icon,
   PlusSignIcon
 } from "@hugeicons-pro/core-stroke-rounded"
@@ -24,6 +25,11 @@ const ROW_CLASS =
   "group flex items-center gap-3 rounded-2xl px-3 py-3 transition-colors hover:bg-surface-secondary/70"
 const ROW_LINK_CLASS =
   "flex min-w-0 flex-1 items-center gap-3 focus-visible:rounded-xl focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
+
+const PRIMARY_ACTION_CLASS =
+  "inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:outline-none"
+const SECONDARY_ACTION_CLASS =
+  "inline-flex min-h-11 items-center rounded-xl border border-border bg-surface px-4 text-sm font-medium text-foreground transition-colors hover:bg-surface-secondary focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
 
 type DeleteTarget =
   | { kind: "article"; id: string; title: string }
@@ -115,6 +121,84 @@ function DeleteButton({
   )
 }
 
+/**
+ * The reader's 生词本, pinned above the shelves: it fills from reading and
+ * search rather than from an import, so it never sits among imported lists.
+ */
+function NotebookCard() {
+  const { t } = useTranslation()
+  const summary = useQuery(orpc.japanese.notebook.summary.queryOptions())
+  const decks = useQuery(orpc.japanese.study.decks.queryOptions())
+
+  if (summary.isPending) {
+    return <Skeleton className="h-36 rounded-3xl" />
+  }
+  const notebook = summary.data
+  const due =
+    decks.data?.lexicons.find((deck) => deck.id === notebook?.id)?.due ?? 0
+
+  return (
+    <section
+      aria-labelledby="japanese-notebook-title"
+      className="flex flex-col gap-3.5 rounded-3xl border border-primary/35 bg-surface px-5 py-5"
+    >
+      <div className="flex flex-wrap items-center gap-2.5">
+        <HugeiconsIcon
+          aria-hidden="true"
+          className="size-5 text-primary"
+          icon={Bookmark01Icon}
+        />
+        <h2 className="text-lg font-semibold" id="japanese-notebook-title">
+          {t("japanese.notebook.title")}
+        </h2>
+        {notebook ? (
+          <span className="text-sm text-muted-foreground">
+            {t("japanese.notebook.wordCount", { count: notebook.entryCount })}
+            {due > 0 ? (
+              <>
+                {" · "}
+                <span className="font-semibold text-primary">
+                  {t("japanese.notebook.dueCount", { count: due })}
+                </span>
+              </>
+            ) : null}
+          </span>
+        ) : null}
+      </div>
+      {notebook && notebook.recent.length > 0 ? (
+        <p className="text-sm text-muted-foreground">
+          {t("japanese.notebook.recent")}
+          <span className="font-script-ja text-foreground" lang="ja">
+            {notebook.recent.join("、")}
+          </span>
+        </p>
+      ) : (
+        <p className="text-sm text-muted-foreground">
+          {t("japanese.notebook.empty")}
+        </p>
+      )}
+      {notebook && notebook.entryCount > 0 ? (
+        <div className="flex flex-wrap gap-2.5">
+          <Link
+            className={PRIMARY_ACTION_CLASS}
+            search={{ deck: `lexicon:${notebook.id}` }}
+            to="/japanese/practice/vocab"
+          >
+            {t("japanese.notebook.startReview")}
+          </Link>
+          <Link
+            className={SECONDARY_ACTION_CLASS}
+            params={{ lexiconId: notebook.id }}
+            to="/japanese/lists/$lexiconId"
+          >
+            {t("japanese.notebook.viewAll")}
+          </Link>
+        </div>
+      ) : null}
+    </section>
+  )
+}
+
 function JapaneseLibraryPage() {
   const { i18n, t } = useTranslation()
   const queryClient = useQueryClient()
@@ -122,7 +206,11 @@ function JapaneseLibraryPage() {
   const locale = i18n.resolvedLanguage ?? i18n.language
 
   const articles = useQuery(orpc.japanese.articles.list.queryOptions())
-  const lexicons = useQuery(orpc.japanese.lexicons.list.queryOptions())
+  const lexicons = useQuery({
+    ...orpc.japanese.lexicons.list.queryOptions(),
+    // The notebook has its own card above.
+    select: (rows) => rows.filter((lexicon) => lexicon.kind !== "notebook")
+  })
 
   const deleteArticle = useMutation({
     mutationFn: (id: string) => orpc.japanese.articles.delete.call({ id }),
@@ -171,6 +259,8 @@ function JapaneseLibraryPage() {
           {t("japanese.library.importAction")}
         </Link>
       </header>
+
+      <NotebookCard />
 
       <Section
         count={articles.data?.length}

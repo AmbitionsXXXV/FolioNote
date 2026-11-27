@@ -7,8 +7,10 @@ import { Text, View } from "react-native"
 import { useBottomSheetOpenState } from "@/hooks/use-bottom-sheet-open-state"
 import { japanesePosLabelKey } from "@/lib/japanese-pos"
 
+import { JapaneseNotebookButton } from "./japanese-notebook-button"
 import { JapaneseRuby } from "./japanese-ruby"
 import { JapaneseSectionTitle } from "./japanese-section-title"
+import { JapaneseSpeakButton } from "./japanese-speak-button"
 
 const HEADWORD_FONT_SIZE = 30
 const EMPTY = "—"
@@ -70,7 +72,28 @@ export function JapaneseWordSheet({
               {word.reading ? (
                 <Text className="pb-1 text-sm text-muted">{word.reading}</Text>
               ) : null}
+              <JapaneseSpeakButton className="pb-1.5" text={word.surface} />
             </View>
+
+            {analysis ? (
+              <View className="mt-3 flex-row items-center gap-3">
+                <JapaneseNotebookButton
+                  className="flex-1"
+                  lookupForm={word.baseForm}
+                  word={{
+                    headword: word.surface,
+                    reading: word.reading,
+                    baseForm: word.baseForm,
+                    pos: t(japanesePosLabelKey(word.pos)),
+                    context: { sentence: analysis.text.trim() }
+                  }}
+                />
+                <JapaneseSpeakButton
+                  label={t("japanese.speech.playSentence")}
+                  text={analysis.text}
+                />
+              </View>
+            ) : null}
 
             <View className="mt-4 flex-row flex-wrap">
               <DetailField

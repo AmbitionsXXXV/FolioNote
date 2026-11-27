@@ -597,7 +597,8 @@
       },
       "kind": {
         "book": "本",
-        "deck": "デッキ"
+        "deck": "デッキ",
+        "notebook": "単語帳"
       },
       "meaningLanguage": {
         "zh": "中文",
@@ -701,6 +702,35 @@
       "loadFailed": "読み込めませんでした",
       "retry": "再試行",
       "rateFailed": "進捗を保存できませんでした。もう一度お試しください。"
+    },
+    "notebook": {
+      "title": "単語帳",
+      "save": "単語帳に追加",
+      "saved": "単語帳に追加済み",
+      "remove": "単語帳から削除",
+      "savedToast": "単語帳に追加しました",
+      "removedToast": "単語帳から削除しました",
+      "saveFailed": "単語帳に追加できませんでした。もう一度お試しください。",
+      "removeFailed": "単語帳から削除できませんでした。もう一度お試しください。",
+      "fromYourReading": "あなたの読んだ文から",
+      "study": "単語帳で学習",
+      "wordCount": "{{count}} 語",
+      "dueCount": "復習待ち {{count}} 語",
+      "recent": "最近追加：",
+      "startReview": "復習を始める",
+      "startReviewDue": "復習を始める · {{count}} 語",
+      "viewAll": "すべて見る",
+      "empty": "読解や検索で「単語帳に追加」を押すと、例文と一緒にここに入ります。",
+      "listMeta": "読解と検索から追加",
+      "colSource": "出典",
+      "colActions": "操作",
+      "fromSearch": "検索から追加"
+    },
+    "speech": {
+      "play": "読み上げ",
+      "playWord": "「{{text}}」を読み上げ",
+      "playSentence": "文を読み上げ",
+      "failed": "読み上げできませんでした。このブラウザで使える日本語音声がありません。"
     }
   },
   "activity": {
