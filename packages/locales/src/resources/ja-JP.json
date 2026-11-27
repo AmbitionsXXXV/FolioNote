@@ -770,7 +770,8 @@
     "graph": "グラフ",
     "import": "インポート",
     "sectionMain": "メイン",
-    "sectionExplore": "探索"
+    "sectionExplore": "探索",
+    "record": "学習記録"
   },
   "search": {
     "placeholder": "エントリを検索...",
@@ -1802,5 +1803,76 @@
       "review_one": "{{count}} 件の競合を確認",
       "review_other": "{{count}} 件の競合を確認"
     }
+  },
+  "streak": {
+    "record": "学習記録",
+    "openRecord": "学習記録を見る",
+    "headlineCheckedIn": "今日のハンコ済み・{{count}} 日連続",
+    "headlineToCheckIn": "あと少し学べば {{count}} 個目のハンコ",
+    "headlineStart": "少し学んで最初のハンコを押そう",
+    "currentLabel": "連続学習",
+    "days": "{{count}} 日",
+    "stampLabel": "日連続",
+    "stampAria": "{{count}} 日連続のハンコ",
+    "longest": "最長 {{count}} 日",
+    "toMilestone": "あと {{count}} 日で {{milestone}} 日達成",
+    "freezes": "ストリークフリーズ {{count}} 枚",
+    "freezeHint": "学べなかった日は自動でフリーズを 1 枚使います。7 日連続ごとに 1 枚、最大 {{max}} 枚。",
+    "frozenNote": "{{count}} 日休みましたが、フリーズで連続を守りました。",
+    "atRisk": "今日はまだ学習していません。明朝 {{hour}} 時までに学べば連続が続きます。",
+    "week": "今週",
+    "today": "今日",
+    "goalTitle": "今日の目標",
+    "goalRemaining": "あと {{count}} ポイント",
+    "goalMet": "今日の目標達成",
+    "pointsOf": "/ {{goal}} pt",
+    "goalAria": "今日の目標 {{points}} / {{goal}} ポイント",
+    "goalHint": "復習 +1 · 新しい単語 +2 · ノート +2 · 記事 +5",
+    "continue": "学習を続ける",
+    "lang": {
+      "ja": "日本語",
+      "en": "英語",
+      "other": "ノート"
+    },
+    "status": {
+      "active": "学習済み",
+      "goal_met": "目標達成",
+      "frozen": "フリーズ",
+      "none": "未学習",
+      "future": "これから"
+    },
+    "calendar": {
+      "prevMonth": "前の月",
+      "nextMonth": "次の月",
+      "currentStreak": "現在の連続",
+      "studyDays": "今月の学習日",
+      "monthPoints": "今月のポイント",
+      "goalMetDays": "目標達成",
+      "goalMetValue": "{{count}} / {{total}} 日",
+      "dayDetail": "その日の詳細",
+      "noActivity": "この日の学習記録はありません",
+      "noteLabel": "この日のひとこと（任意）",
+      "notePlaceholder": "今日は何を学んだ？",
+      "noteSaved": "保存しました",
+      "noteFailed": "保存できませんでした",
+      "dayPoints": "{{count}} pt",
+      "loadFailed": "学習記録を読み込めませんでした"
+    },
+    "kinds": {
+      "entry_review": "ノートを復習",
+      "vocab_review": "単語を復習",
+      "vocab_new": "新しい単語を学習",
+      "entry_create": "ノートを作成",
+      "article_read": "記事を読了",
+      "exam_complete": "テストを完了"
+    },
+    "toast": {
+      "checkedIn": "ハンコ！{{count}} 日連続",
+      "goalMet": "今日の目標達成 · {{points}} pt",
+      "milestone": "達成：{{count}} 日連続",
+      "freezeEarned": "ストリークフリーズを 1 枚獲得"
+    },
+    "stampMark": "学",
+    "freezeMark": "休"
   }
 }

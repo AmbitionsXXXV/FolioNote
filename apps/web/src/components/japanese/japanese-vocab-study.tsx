@@ -28,6 +28,8 @@ import {
 } from "@/components/japanese/japanese-practice-tabs"
 import { JapaneseRuby } from "@/components/japanese/japanese-ruby"
 import { JapaneseSpeakButton } from "@/components/japanese/japanese-speak-button"
+import { getBrowserTimeZone } from "@/components/streak/streak-utils"
+import { useLearningProgress } from "@/components/streak/use-learning-progress"
 import { parseFuriganaMarkup } from "@/lib/japanese-furigana"
 import { circledAccent, pitchPattern } from "@/lib/japanese/pitch-accent"
 import { cn } from "@/lib/utils"
@@ -363,6 +365,7 @@ function StudyCardFace({
 function StudySession({ deck }: { deck: StudyDeck }) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
+  const onProgress = useLearningProgress()
   const [index, setIndex] = useState(0)
   const [revealed, setRevealed] = useState(false)
   const [ratedCount, setRatedCount] = useState(0)
@@ -381,7 +384,8 @@ function StudySession({ deck }: { deck: StudyDeck }) {
 
   const rate = useMutation(
     orpc.japanese.study.rate.mutationOptions({
-      onSuccess: () => {
+      onSuccess: (saved) => {
+        onProgress(saved?.progress)
         // Only the deck counts; the batch itself stays a fixed snapshot.
         queryClient.invalidateQueries({
           queryKey: orpc.japanese.study.decks.key()
@@ -398,7 +402,7 @@ function StudySession({ deck }: { deck: StudyDeck }) {
 
   const handleRate = (rating: (typeof RATINGS)[number]["rating"]) => {
     if (!card || !revealed || rate.isPending) return
-    rate.mutate({ key: card.key, rating })
+    rate.mutate({ key: card.key, rating, timeZone: getBrowserTimeZone() })
   }
 
   const startNextBatch = async () => {

@@ -875,7 +875,8 @@
     "graph": "图谱",
     "import": "导入",
     "sectionMain": "主要",
-    "sectionExplore": "探索"
+    "sectionExplore": "探索",
+    "record": "学习记录"
   },
   "search": {
     "placeholder": "搜索条目...",
@@ -1802,5 +1803,76 @@
       "review_one": "处理 {{count}} 处冲突",
       "review_other": "处理 {{count}} 处冲突"
     }
+  },
+  "streak": {
+    "record": "学习记录",
+    "openRecord": "查看学习记录",
+    "headlineCheckedIn": "今天已盖章，连续 {{count}} 天",
+    "headlineToCheckIn": "今天再学一点，就能盖上第 {{count}} 个章",
+    "headlineStart": "学一点，盖下第一个章",
+    "currentLabel": "连续学习",
+    "days": "{{count}} 天",
+    "stampLabel": "天连续",
+    "stampAria": "连续 {{count}} 天的印章",
+    "longest": "最长纪录 {{count}} 天",
+    "toMilestone": "再坚持 {{count}} 天解锁 {{milestone}} 天里程碑",
+    "freezes": "{{count}} 张补签卡",
+    "freezeHint": "漏学一天会自动用掉一张补签卡。每连续 7 天得一张，最多 {{max}} 张。",
+    "frozenNote": "有 {{count}} 天没学，已用补签卡保住连续。",
+    "atRisk": "今天还没学，明早 {{hour}} 点前学一点就能保住连续。",
+    "week": "本周",
+    "today": "今天",
+    "goalTitle": "今日目标",
+    "goalRemaining": "还差 {{count}} 分",
+    "goalMet": "今日目标达成",
+    "pointsOf": "/ {{goal}} 分",
+    "goalAria": "今日目标完成 {{points}} / {{goal}} 分",
+    "goalHint": "复习一张 +1 · 学新词 +2 · 记笔记 +2 · 读文章 +5",
+    "continue": "继续学习",
+    "lang": {
+      "ja": "日语",
+      "en": "英语",
+      "other": "笔记"
+    },
+    "status": {
+      "active": "学过",
+      "goal_met": "达成目标",
+      "frozen": "补签",
+      "none": "没学",
+      "future": "还没到"
+    },
+    "calendar": {
+      "prevMonth": "上个月",
+      "nextMonth": "下个月",
+      "currentStreak": "当前连续",
+      "studyDays": "本月学习",
+      "monthPoints": "本月得分",
+      "goalMetDays": "目标达成",
+      "goalMetValue": "{{count}} / {{total}} 天",
+      "dayDetail": "当天明细",
+      "noActivity": "这天没有学习记录",
+      "noteLabel": "这天的一句话（可选）",
+      "notePlaceholder": "今天学到了什么？",
+      "noteSaved": "已保存",
+      "noteFailed": "保存失败",
+      "dayPoints": "{{count}} 分",
+      "loadFailed": "学习记录加载失败"
+    },
+    "kinds": {
+      "entry_review": "复习笔记",
+      "vocab_review": "复习单词",
+      "vocab_new": "学新词",
+      "entry_create": "记了一条笔记",
+      "article_read": "读完一篇文章",
+      "exam_complete": "完成一套测验"
+    },
+    "toast": {
+      "checkedIn": "盖章！连续 {{count}} 天",
+      "goalMet": "今日目标达成 · {{points}} 分",
+      "milestone": "解锁里程碑：连续 {{count}} 天",
+      "freezeEarned": "获得 1 张补签卡"
+    },
+    "stampMark": "学",
+    "freezeMark": "补"
   }
 }
