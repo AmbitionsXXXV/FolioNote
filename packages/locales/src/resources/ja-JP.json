@@ -771,7 +771,9 @@
     "import": "インポート",
     "sectionMain": "メイン",
     "sectionExplore": "探索",
-    "record": "学習記録"
+    "record": "学習記録",
+    "capture": "メモする",
+    "capturePlaceholder": "メモ、または単語を貼り付け…"
   },
   "search": {
     "placeholder": "エントリを検索...",

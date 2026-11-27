@@ -821,7 +821,9 @@
     "import": "Import",
     "sectionMain": "Main",
     "sectionExplore": "Explore",
-    "record": "Learning record"
+    "record": "Learning record",
+    "capture": "Jot down",
+    "capturePlaceholder": "Jot something down, or paste a word…"
   },
   "search": {
     "placeholder": "Search entries...",

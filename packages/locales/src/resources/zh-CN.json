@@ -876,7 +876,9 @@
     "import": "导入",
     "sectionMain": "主要",
     "sectionExplore": "探索",
-    "record": "学习记录"
+    "record": "学习记录",
+    "capture": "记一笔",
+    "capturePlaceholder": "记一笔，或粘贴一个词…"
   },
   "search": {
     "placeholder": "搜索条目...",

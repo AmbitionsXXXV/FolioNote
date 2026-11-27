@@ -97,13 +97,8 @@ function StackLayout() {
           options={{ ...detailScreenOptions, title: t("nav.profile") }}
         />
         <Stack.Screen
-          name="japanese/index"
-          options={{
-            ...detailScreenOptions,
-            title: t("japanese.title"),
-            headerLargeTitle: true,
-            headerLargeTitleShadowVisible: false
-          }}
+          name="settings"
+          options={{ ...detailScreenOptions, title: t("common.settings") }}
         />
         <Stack.Screen
           name="japanese/word/[id]"
