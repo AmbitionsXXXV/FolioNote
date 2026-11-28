@@ -79,7 +79,15 @@ export {
   tags,
   tagsRelations
 } from "./schema/entries"
-export type { EntryRow } from "./schema/entries"
+export type { DailyActivityCounts, EntryRow } from "./schema/entries"
+export {
+  learningActivities,
+  learningActivitiesRelations,
+  userMilestones,
+  userMilestonesRelations,
+  userStreaks,
+  userStreaksRelations
+} from "./schema/learning"
 export { entryLinks, entryLinksRelations } from "./schema/graph"
 export {
   jpGrammar,
