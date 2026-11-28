@@ -15,6 +15,10 @@ import { EntryCard } from "@/components/entry-card"
 import { PageContainer } from "@/components/page-container"
 import { QuickCapture } from "@/components/quick-capture"
 import { Reveal } from "@/components/reveal"
+import {
+  streakTodayQueryOptions,
+  TodayCheckIn
+} from "@/components/streak/today-check-in"
 import { Surface } from "@/components/surface"
 import { getUserTimezoneOffset } from "@/constants"
 import { cn, getGreetingKey } from "@/lib/utils"
@@ -35,6 +39,7 @@ export const Route = createFileRoute("/_app/activity")({
       queryKey: ["review", "dueStats", tzOffset],
       queryFn: () => orpc.review.getDueStats.call({ tzOffset })
     })
+    queryClient.ensureQueryData(streakTodayQueryOptions())
     queryClient.ensureQueryData({
       queryKey: ["entries", "inbox", "count"],
       queryFn: () => orpc.entries.list.call({ filter: "inbox", limit: 1 })
@@ -234,6 +239,11 @@ function ActivityPage() {
           </Link>
         )}
       </header>
+
+      {/* Daily check-in: streak stamp + daily goal */}
+      <Reveal className="mb-12" delay={30}>
+        <TodayCheckIn />
+      </Reveal>
 
       {/* Quick Capture */}
       <Reveal className="mb-12" delay={60}>

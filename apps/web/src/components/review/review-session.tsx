@@ -9,6 +9,8 @@ import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
 import { Reveal } from "@/components/reveal"
+import { getBrowserTimeZone } from "@/components/streak/streak-utils"
+import { useLearningProgress } from "@/components/streak/use-learning-progress"
 import { Surface } from "@/components/surface"
 import {
   getUserTimezoneOffset,
@@ -42,6 +44,7 @@ export function ReviewSession({
 }: ReviewSessionProps) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
+  const onProgress = useLearningProgress()
   const tzOffset = getUserTimezoneOffset()
 
   const {
@@ -62,8 +65,13 @@ export function ReviewSession({
 
   const markReviewedMutation = useMutation({
     mutationFn: ({ entryId, rating }: { entryId: string; rating: Rating }) =>
-      orpc.review.markReviewed.call({ entryId, rating }),
+      orpc.review.markReviewed.call({
+        entryId,
+        rating,
+        timeZone: getBrowserTimeZone()
+      }),
     onSuccess: (data) => {
+      onProgress(data.progress)
       queryClient.invalidateQueries({ queryKey: ["review", "stats"] })
       queryClient.invalidateQueries({ queryKey: ["review", "dueStats"] })
 

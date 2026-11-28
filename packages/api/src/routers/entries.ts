@@ -15,6 +15,7 @@ import { z } from "zod"
 import { protectedProcedure } from "../index"
 import { processContentUpdate } from "../utils/content"
 import { getEntryAccessRole } from "../utils/entry-access"
+import { recordLearningActivity } from "../utils/learning-activity"
 import { extractEntryRefs, syncEntryLinks } from "../utils/link-sync"
 
 const BCRYPT_ROUNDS = 10
@@ -144,6 +145,13 @@ export const createEntry = protectedProcedure
     if (contentText) {
       onContentChange?.(id, userId)
     }
+
+    await recordLearningActivity(db, {
+      userId,
+      kind: "entry_create",
+      refId: id,
+      meta: { title: input.title }
+    })
 
     return entry
   })

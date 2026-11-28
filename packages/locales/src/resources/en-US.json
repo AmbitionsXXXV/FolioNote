@@ -820,7 +820,10 @@
     "graph": "Graph",
     "import": "Import",
     "sectionMain": "Main",
-    "sectionExplore": "Explore"
+    "sectionExplore": "Explore",
+    "record": "Learning record",
+    "capture": "Jot down",
+    "capturePlaceholder": "Jot something down, or paste a word…"
   },
   "search": {
     "placeholder": "Search entries...",
@@ -1802,5 +1805,78 @@
       "review_one": "Review {{count}} conflict",
       "review_other": "Review {{count}} conflicts"
     }
+  },
+  "streak": {
+    "record": "Learning record",
+    "openRecord": "View learning record",
+    "headlineCheckedIn": "Stamped today: {{count}}-day streak",
+    "headlineToCheckIn": "Study a little to earn stamp #{{count}}",
+    "headlineStart": "Study a little to earn your first stamp",
+    "currentLabel": "Current streak",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "stampLabel": "day streak",
+    "stampAria": "Stamp for a {{count}}-day streak",
+    "longest": "Longest {{count}} days",
+    "toMilestone": "{{count}} more days to the {{milestone}}-day milestone",
+    "freezes_one": "{{count}} streak freeze",
+    "freezes_other": "{{count}} streak freezes",
+    "freezeHint": "Missing a day uses a freeze automatically. Earn one every 7 days in a row, up to {{max}}.",
+    "frozenNote": "Missed {{count}} day(s); a freeze kept your streak.",
+    "atRisk": "You haven't studied today. Study before {{hour}}:00 tomorrow morning to keep your streak.",
+    "week": "This week",
+    "today": "Today",
+    "goalTitle": "Daily goal",
+    "goalRemaining": "{{count}} points to go",
+    "goalMet": "Daily goal met",
+    "pointsOf": "/ {{goal}} pts",
+    "goalAria": "Daily goal {{points}} of {{goal}} points",
+    "goalHint": "Review a card +1 · New word +2 · Note +2 · Article +5",
+    "continue": "Keep studying",
+    "lang": {
+      "ja": "Japanese",
+      "en": "English",
+      "other": "Notes"
+    },
+    "status": {
+      "active": "Studied",
+      "goal_met": "Goal met",
+      "frozen": "Freeze",
+      "none": "Missed",
+      "future": "Upcoming"
+    },
+    "calendar": {
+      "prevMonth": "Previous month",
+      "nextMonth": "Next month",
+      "currentStreak": "Current streak",
+      "studyDays": "Days studied",
+      "monthPoints": "Points this month",
+      "goalMetDays": "Goal met",
+      "goalMetValue": "{{count}} / {{total}} days",
+      "dayDetail": "Day details",
+      "noActivity": "Nothing studied this day",
+      "noteLabel": "A line about this day (optional)",
+      "notePlaceholder": "What did you learn?",
+      "noteSaved": "Saved",
+      "noteFailed": "Couldn't save",
+      "dayPoints": "{{count}} pts",
+      "loadFailed": "Couldn't load your learning record"
+    },
+    "kinds": {
+      "entry_review": "Reviewed a note",
+      "vocab_review": "Reviewed a word",
+      "vocab_new": "Learned a new word",
+      "entry_create": "Wrote a note",
+      "article_read": "Finished an article",
+      "exam_complete": "Finished a quiz"
+    },
+    "toast": {
+      "checkedIn": "Stamped! {{count}}-day streak",
+      "goalMet": "Daily goal met · {{points}} pts",
+      "milestone": "Milestone: {{count}}-day streak",
+      "freezeEarned": "You earned a streak freeze"
+    },
+    "stampMark": "✓",
+    "freezeMark": "❄"
   }
 }

@@ -1,76 +1,65 @@
 import { NativeTabs } from "expo-router/unstable-native-tabs"
+import { useThemeColor } from "heroui-native"
 import { useTranslation } from "react-i18next"
-import { DynamicColorIOS, Platform } from "react-native"
+
+import { CaptureAccessory } from "@/components/capture-accessory"
+import { TabBarProvider, useTabBar } from "@/contexts/tab-bar-context"
 
 /**
  * Router settings for NativeTabs
- * - initialRouteName: 'home' ensures deep links can navigate back to home tab
+ * - initialRouteName: 'today' ensures deep links can navigate back to Today
  */
 export const unstable_settings = {
-  initialRouteName: "home"
+  initialRouteName: "today"
 }
 
 /**
- * Native Tabs Layout with iOS 26 Liquid Glass support
- *
- * Features:
- * - Uses NativeTabs for native system tab bar
- * - SF Symbols for iOS icons (auto Liquid Glass on iOS 26+)
- * - DynamicColorIOS for automatic light/dark mode adaptation
- * - Bouncing transitions between routes (iOS)
- * - Automatic scroll-to-top behavior
- * - Each tab has its own Stack navigator for header support
+ * Four free-standing, icon-only tabs on the system Liquid Glass tab bar
+ * (iOS 26), with the capture bar as the bottom accessory above them.
+ * Settings lives behind the avatar in each tab's header.
  */
-export default function TabLayout() {
+function Tabs() {
   const { t } = useTranslation()
-
-  // Dynamic colors for Liquid Glass compatibility
-  // Liquid Glass automatically changes colors based on background
-  const dynamicLabelColor =
-    Platform.OS === "ios"
-      ? DynamicColorIOS({ dark: "white", light: "black" })
-      : undefined
-
-  const dynamicTintColor =
-    Platform.OS === "ios"
-      ? DynamicColorIOS({ dark: "white", light: "black" })
-      : undefined
+  const { isHidden } = useTabBar()
+  // Selected tab reads as the app's amber; unselected icons follow the glass.
+  const accentColor = useThemeColor("accent")
 
   return (
     <NativeTabs
-      labelStyle={{
-        color: dynamicLabelColor
-      }}
-      tintColor={dynamicTintColor}
+      hidden={isHidden}
+      minimizeBehavior="onScrollDown"
+      tintColor={accentColor}
     >
-      <NativeTabs.Trigger name="home">
-        <NativeTabs.Trigger.Label>{t("nav.home")}</NativeTabs.Trigger.Label>
+      <NativeTabs.BottomAccessory>
+        <CaptureAccessory />
+      </NativeTabs.BottomAccessory>
+
+      <NativeTabs.Trigger name="today">
+        <NativeTabs.Trigger.Label hidden>
+          {t("nav.today")}
+        </NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          drawable="ic_home"
-          sf={{ default: "house", selected: "house.fill" }}
+          md="today"
+          sf={{ default: "sun.max", selected: "sun.max.fill" }}
         />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="inbox">
-        <NativeTabs.Trigger.Label>{t("nav.inbox")}</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Label hidden>
+          {t("nav.inbox")}
+        </NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          drawable="ic_mail"
-          sf={{ default: "envelope", selected: "envelope.fill" }}
-        />
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name="today">
-        <NativeTabs.Trigger.Label>{t("nav.today")}</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon
-          drawable="ic_calendar"
-          sf={{ default: "calendar", selected: "calendar.circle.fill" }}
+          md="inbox"
+          sf={{ default: "tray", selected: "tray.fill" }}
         />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="review">
-        <NativeTabs.Trigger.Label>{t("nav.review")}</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Label hidden>
+          {t("nav.review")}
+        </NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          drawable="ic_refresh"
+          md="autorenew"
           sf={{
             default: "arrow.clockwise",
             selected: "arrow.clockwise.circle.fill"
@@ -78,15 +67,26 @@ export default function TabLayout() {
         />
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="settings">
-        <NativeTabs.Trigger.Label>
-          {t("common.settings")}
+      <NativeTabs.Trigger name="japanese">
+        <NativeTabs.Trigger.Label hidden>
+          {t("nav.japanese")}
         </NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          drawable="ic_settings"
-          sf={{ default: "gearshape", selected: "gearshape.fill" }}
+          md="translate"
+          sf={{
+            default: "character.book.closed",
+            selected: "character.book.closed.fill"
+          }}
         />
       </NativeTabs.Trigger>
     </NativeTabs>
+  )
+}
+
+export default function TabLayout() {
+  return (
+    <TabBarProvider>
+      <Tabs />
+    </TabBarProvider>
   )
 }

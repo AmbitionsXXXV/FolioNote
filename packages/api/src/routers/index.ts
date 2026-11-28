@@ -12,6 +12,7 @@ import { searchRouter } from "./search"
 import { sharesRouter } from "./shares"
 import { sourcesRouter } from "./sources"
 import { storageRouter } from "./storage"
+import { streakRouter } from "./streak"
 import { tagsRouter } from "./tags"
 
 export const appRouter = {
@@ -31,6 +32,7 @@ export const appRouter = {
   shares: sharesRouter,
   storage: storageRouter,
   japanese: japaneseRouter,
+  streak: streakRouter,
   imports: importsRouter
 }
 export type AppRouter = typeof appRouter

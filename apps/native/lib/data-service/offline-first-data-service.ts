@@ -15,6 +15,7 @@ import {
   tagsRepository
 } from "../repositories"
 import type { ReviewRating } from "../repositories/review-repository"
+import { getDeviceTimeZone } from "../study-day"
 import { pendingOperations } from "../sync"
 import type {
   CreateEntryInput,
@@ -554,7 +555,11 @@ export function createOfflineFirstDataService(
         // Try to sync immediately
         if (await isNetworkAvailable()) {
           try {
-            await client.review.markReviewed({ entryId, rating })
+            await client.review.markReviewed({
+              entryId,
+              rating,
+              timeZone: getDeviceTimeZone()
+            })
             await reviewRepository.markStateSynced(entryId)
             await pendingOperations.remove(entryId)
           } catch {

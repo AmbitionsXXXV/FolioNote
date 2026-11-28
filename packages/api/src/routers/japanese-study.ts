@@ -24,11 +24,13 @@ import {
 import { z } from "zod"
 
 import { protectedProcedure } from "../index"
+import { recordLearningActivity } from "../utils/learning-activity"
 import {
   calculateNextReview,
   createDefaultReviewState
 } from "../utils/spaced-repetition"
 import type { Rating } from "../utils/spaced-repetition"
+import { TimeZoneSchema } from "../utils/time-zone-schema"
 import { ownedLexicon } from "./japanese-library"
 
 const LEVELS = ["N5", "N4", "N3", "N2", "N1"] as const
@@ -427,25 +429,37 @@ const studyQueue = protectedProcedure
  * its next review.
  */
 const rateCard = protectedProcedure
-  .input(z.object({ key: CardKeySchema, rating: RatingSchema }))
+  .input(
+    z.object({
+      key: CardKeySchema,
+      rating: RatingSchema,
+      timeZone: TimeZoneSchema
+    })
+  )
   .handler(async ({ input, context }) => {
     const userId = context.session.user.id
     const now = new Date()
     let target: SQL | undefined
     let values: { vocabId: string } | { lexiconEntryId: number }
+    let term: string | undefined
 
     if ("vocabId" in input.key) {
       const [word] = await db
-        .select({ id: jpVocab.id })
+        .select({ id: jpVocab.id, word: jpVocab.word })
         .from(jpVocab)
         .where(eq(jpVocab.id, input.key.vocabId))
         .limit(1)
       if (!word) throw new ORPCError("NOT_FOUND", { message: "Word not found" })
       values = { vocabId: word.id }
+      term = word.word
       target = eq(jpStudyState.vocabId, word.id)
     } else {
       const [entry] = await db
-        .select({ id: jpLexiconEntries.id, vocabId: jpLexiconEntries.vocabId })
+        .select({
+          id: jpLexiconEntries.id,
+          vocabId: jpLexiconEntries.vocabId,
+          headword: jpLexiconEntries.headword
+        })
         .from(jpLexiconEntries)
         .innerJoin(jpLexicons, eq(jpLexicons.id, jpLexiconEntries.lexiconId))
         .where(
@@ -463,6 +477,7 @@ const rateCard = protectedProcedure
           message: "Rate this entry by its word id"
         })
       values = { lexiconEntryId: entry.id }
+      term = entry.headword
       target = eq(jpStudyState.lexiconEntryId, entry.id)
     }
 
@@ -490,7 +505,18 @@ const rateCard = protectedProcedure
         dueAt: jpStudyState.dueAt,
         intervalDays: jpStudyState.intervalDays
       })
-    return saved
+    // A card seen for the first time counts as learning a new word.
+    const progress = await recordLearningActivity(db, {
+      userId,
+      kind: previous ? "vocab_review" : "vocab_new",
+      refId:
+        "vocabId" in values ? values.vocabId : String(values.lexiconEntryId),
+      language: "ja",
+      meta: { rating: input.rating, term },
+      occurredAt: now,
+      timeZone: input.timeZone
+    })
+    return saved ? { ...saved, progress } : saved
   })
 
 export const japaneseStudyRouter = {
