@@ -3,7 +3,8 @@ import {
   jpArticles,
   jpLexiconEntries,
   jpLexicons,
-  jpVocab
+  jpVocab,
+  studyMaterials
 } from "@folionote/db"
 import {
   DEFAULT_MAX_CHARS,
@@ -424,7 +425,8 @@ export const japaneseLexiconsRouter = {
       const found = await db
         .select({
           entry: jpLexiconEntries,
-          contextArticleTitle: jpArticles.title
+          contextArticleTitle: jpArticles.title,
+          contextMaterialTitle: studyMaterials.title
         })
         .from(jpLexiconEntries)
         .innerJoin(jpLexicons, eq(jpLexicons.id, jpLexiconEntries.lexiconId))
@@ -432,6 +434,11 @@ export const japaneseLexiconsRouter = {
         .leftJoin(
           jpArticles,
           eq(jpArticles.id, jpLexiconEntries.contextArticleId)
+        )
+        // ...or to the video line they were tapped in.
+        .leftJoin(
+          studyMaterials,
+          eq(studyMaterials.id, jpLexiconEntries.contextMaterialId)
         )
         .where(
           and(
@@ -449,9 +456,10 @@ export const japaneseLexiconsRouter = {
         .limit(input.limit + 1)
       const entries = found
         .slice(0, input.limit)
-        .map(({ entry, contextArticleTitle }) => ({
+        .map(({ entry, contextArticleTitle, contextMaterialTitle }) => ({
           ...entry,
-          contextArticleTitle
+          contextArticleTitle,
+          contextMaterialTitle
         }))
       return {
         lexicon,

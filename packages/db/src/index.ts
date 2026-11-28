@@ -88,7 +88,19 @@ import {
   userStreaks,
   userStreaksRelations
 } from "./schema/learning"
+import {
+  studyMaterials,
+  studyMaterialsRelations,
+  studySegments,
+  studySegmentsRelations
+} from "./schema/study-materials"
 
+export {
+  studyMaterials,
+  studyMaterialsRelations,
+  studySegments,
+  studySegmentsRelations
+} from "./schema/study-materials"
 export {
   entryExternalLinks,
   entryExternalLinksRelations,
@@ -107,6 +119,11 @@ export {
 } from "./schema/japanese-library"
 
 const schema = {
+  // Listening materials (YouTube 听读)
+  studyMaterials,
+  studyMaterialsRelations,
+  studySegments,
+  studySegmentsRelations,
   // Learning record / streak
   learningActivities,
   learningActivitiesRelations,

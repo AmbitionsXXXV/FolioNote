@@ -417,7 +417,8 @@
     "sections": {
       "search": "Search",
       "reading": "Reading",
-      "practice": "Practice"
+      "practice": "Practice",
+      "listening": "Listen"
     },
     "search": {
       "label": "Search the Japanese word bank",
@@ -787,6 +788,64 @@
       "playWord": "Play “{{text}}”",
       "playSentence": "Play sentence",
       "failed": "Couldn't play it: no Japanese voice is available in this browser."
+    },
+    "listen": {
+      "title": "YouTube listening",
+      "description": "Paste a YouTube link and a caption file, then listen while you read: the current line highlights, tap a line to jump, loop one line, change speed.",
+      "source": {
+        "videoLabel": "YouTube link",
+        "videoInvalid": "That doesn't look like a video link. Paste a single video URL (watch, youtu.be or shorts).",
+        "subtitleLabel": "Captions (SRT or VTT)",
+        "subtitlePlaceholder": "Paste .srt / .vtt content, e.g.\n1\n00:00:01,000 --> 00:00:03,000\nこんにちは",
+        "subtitleHint": "Paste caption text or upload an .srt / .vtt file.",
+        "upload": "Upload caption file",
+        "cueCount_one": "{{count}} line found",
+        "cueCount_other": "{{count}} lines found",
+        "noCues": "No timed caption lines found. Check that it's SRT or VTT.",
+        "fileTooLarge": "That file is over 2 MB. Is it a caption file?",
+        "fileUnreadable": "Couldn't read the file. Try again.",
+        "start": "Start listening",
+        "previewLoading": "Loading video details…",
+        "previewUnavailable": "Couldn't load video details. Playback still works."
+      },
+      "player": {
+        "untitled": "YouTube video",
+        "changeSource": "Change video or captions",
+        "previous": "Previous line",
+        "next": "Next line",
+        "play": "Play",
+        "pause": "Pause",
+        "loop": "Loop line",
+        "looping": "Looping",
+        "speed": "Speed",
+        "offset": "Caption offset",
+        "offsetHint": "Captions show up before the voice? Press +. After? Press −.",
+        "shortcuts": "Shortcuts: Space play/pause · ← → previous/next line · R loop line",
+        "error": {
+          "invalid": "This video link is invalid.",
+          "unavailable": "This video doesn't exist or is private.",
+          "embedDisabled": "The owner doesn't allow this video to play on other sites.",
+          "playback": "Playback failed. Refresh and try again.",
+          "apiUnavailable": "Couldn't load the YouTube player. Check your connection and refresh."
+        }
+      },
+      "transcript": {
+        "label": "Captions",
+        "backToCurrent": "Back to current line",
+        "tapWordHint": "Tap a word in the current line to look it up and save it to your notebook (with this line and its time).",
+        "replayLine": "Replay this line"
+      },
+      "library": {
+        "add": "Add a video",
+        "captionPolicy": "Captions only come from SRT/VTT you provide. Videos play in YouTube's official player and are never downloaded.",
+        "loadFailed": "Couldn't load your videos. Refresh to try again.",
+        "finished": "Finished",
+        "progress": "Line {{current}} of {{total}}",
+        "addFailed": "Couldn't add the video. Try again later.",
+        "loading": "Loading…",
+        "notFound": "This video wasn't found. It may have been deleted.",
+        "back": "Back to listening"
+      }
     },
     "daily": {
       "title": "Daily words",
@@ -1964,7 +2023,8 @@
       "vocab_new": "Learned a new word",
       "entry_create": "Wrote a note",
       "article_read": "Finished an article",
-      "exam_complete": "Finished a quiz"
+      "exam_complete": "Finished a quiz",
+      "listen_complete": "Finished a video"
     },
     "toast": {
       "checkedIn": "Stamped! {{count}}-day streak",

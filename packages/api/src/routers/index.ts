@@ -7,6 +7,7 @@ import { entryCollaboratorsRouter } from "./entry-collaborators"
 import { graphRouter } from "./graph"
 import { importsRouter } from "./imports"
 import { japaneseRouter } from "./japanese"
+import { listeningRouter } from "./listening"
 import { reviewRouter } from "./review"
 import { searchRouter } from "./search"
 import { sharesRouter } from "./shares"
@@ -14,6 +15,7 @@ import { sourcesRouter } from "./sources"
 import { storageRouter } from "./storage"
 import { streakRouter } from "./streak"
 import { tagsRouter } from "./tags"
+import { youtubeRouter } from "./youtube"
 
 export const appRouter = {
   healthCheck: publicProcedure.handler(() => "OK"),
@@ -33,7 +35,9 @@ export const appRouter = {
   storage: storageRouter,
   japanese: japaneseRouter,
   streak: streakRouter,
-  imports: importsRouter
+  imports: importsRouter,
+  youtube: youtubeRouter,
+  listening: listeningRouter
 }
 export type AppRouter = typeof appRouter
 export type AppRouterClient = RouterClient<typeof appRouter>

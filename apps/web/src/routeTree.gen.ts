@@ -40,6 +40,8 @@ import { Route as AppJapaneseLibraryRouteImport } from './routes/_app/japanese/l
 import { Route as AppSettingsConnectionsRouteImport } from './routes/_app/settings/connections'
 import { Route as AppSettingsGeneralRouteImport } from './routes/_app/settings/general'
 import { Route as AppSettingsModelsRouteImport } from './routes/_app/settings/models'
+import { Route as AppJapaneseListenIndexRouteImport } from './routes/_app/japanese/listen/index'
+import { Route as AppJapaneseListenMaterialIdRouteImport } from './routes/_app/japanese/listen/$materialId'
 import { Route as AppJapaneseListsLexiconIdRouteImport } from './routes/_app/japanese/lists/$lexiconId'
 import { Route as AppJapanesePracticeExamRouteImport } from './routes/_app/japanese/practice/exam'
 import { Route as AppJapanesePracticeVocabRouteImport } from './routes/_app/japanese/practice/vocab'
@@ -201,6 +203,17 @@ const AppSettingsModelsRoute = AppSettingsModelsRouteImport.update({
   path: '/models',
   getParentRoute: () => AppSettingsRoute,
 } as any)
+const AppJapaneseListenIndexRoute = AppJapaneseListenIndexRouteImport.update({
+  id: '/listen/',
+  path: '/listen/',
+  getParentRoute: () => AppJapaneseRoute,
+} as any)
+const AppJapaneseListenMaterialIdRoute =
+  AppJapaneseListenMaterialIdRouteImport.update({
+    id: '/listen/$materialId',
+    path: '/listen/$materialId',
+    getParentRoute: () => AppJapaneseRoute,
+  } as any)
 const AppJapaneseListsLexiconIdRoute =
   AppJapaneseListsLexiconIdRouteImport.update({
     id: '/lists/$lexiconId',
@@ -266,11 +279,13 @@ export interface FileRoutesByFullPath {
   '/settings/general': typeof AppSettingsGeneralRoute
   '/settings/models': typeof AppSettingsModelsRoute
   '/japanese/': typeof AppJapaneseIndexRoute
+  '/japanese/listen/$materialId': typeof AppJapaneseListenMaterialIdRoute
   '/japanese/lists/$lexiconId': typeof AppJapaneseListsLexiconIdRoute
   '/japanese/practice/exam': typeof AppJapanesePracticeExamRoute
   '/japanese/practice/vocab': typeof AppJapanesePracticeVocabRoute
   '/japanese/read/$articleId': typeof AppJapaneseReadArticleIdRoute
   '/japanese/word/$id': typeof AppJapaneseWordIdRoute
+  '/japanese/listen/': typeof AppJapaneseListenIndexRoute
   '/japanese/read/': typeof AppJapaneseReadIndexRoute
 }
 export interface FileRoutesByTo {
@@ -303,11 +318,13 @@ export interface FileRoutesByTo {
   '/settings/general': typeof AppSettingsGeneralRoute
   '/settings/models': typeof AppSettingsModelsRoute
   '/japanese': typeof AppJapaneseIndexRoute
+  '/japanese/listen/$materialId': typeof AppJapaneseListenMaterialIdRoute
   '/japanese/lists/$lexiconId': typeof AppJapaneseListsLexiconIdRoute
   '/japanese/practice/exam': typeof AppJapanesePracticeExamRoute
   '/japanese/practice/vocab': typeof AppJapanesePracticeVocabRoute
   '/japanese/read/$articleId': typeof AppJapaneseReadArticleIdRoute
   '/japanese/word/$id': typeof AppJapaneseWordIdRoute
+  '/japanese/listen': typeof AppJapaneseListenIndexRoute
   '/japanese/read': typeof AppJapaneseReadIndexRoute
 }
 export interface FileRoutesById {
@@ -343,11 +360,13 @@ export interface FileRoutesById {
   '/_app/settings/general': typeof AppSettingsGeneralRoute
   '/_app/settings/models': typeof AppSettingsModelsRoute
   '/_app/japanese/': typeof AppJapaneseIndexRoute
+  '/_app/japanese/listen/$materialId': typeof AppJapaneseListenMaterialIdRoute
   '/_app/japanese/lists/$lexiconId': typeof AppJapaneseListsLexiconIdRoute
   '/_app/japanese/practice/exam': typeof AppJapanesePracticeExamRoute
   '/_app/japanese/practice/vocab': typeof AppJapanesePracticeVocabRoute
   '/_app/japanese/read/$articleId': typeof AppJapaneseReadArticleIdRoute
   '/_app/japanese/word/$id': typeof AppJapaneseWordIdRoute
+  '/_app/japanese/listen/': typeof AppJapaneseListenIndexRoute
   '/_app/japanese/read/': typeof AppJapaneseReadIndexRoute
 }
 export interface FileRouteTypes {
@@ -383,11 +402,13 @@ export interface FileRouteTypes {
     | '/settings/general'
     | '/settings/models'
     | '/japanese/'
+    | '/japanese/listen/$materialId'
     | '/japanese/lists/$lexiconId'
     | '/japanese/practice/exam'
     | '/japanese/practice/vocab'
     | '/japanese/read/$articleId'
     | '/japanese/word/$id'
+    | '/japanese/listen/'
     | '/japanese/read/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -420,11 +441,13 @@ export interface FileRouteTypes {
     | '/settings/general'
     | '/settings/models'
     | '/japanese'
+    | '/japanese/listen/$materialId'
     | '/japanese/lists/$lexiconId'
     | '/japanese/practice/exam'
     | '/japanese/practice/vocab'
     | '/japanese/read/$articleId'
     | '/japanese/word/$id'
+    | '/japanese/listen'
     | '/japanese/read'
   id:
     | '__root__'
@@ -459,11 +482,13 @@ export interface FileRouteTypes {
     | '/_app/settings/general'
     | '/_app/settings/models'
     | '/_app/japanese/'
+    | '/_app/japanese/listen/$materialId'
     | '/_app/japanese/lists/$lexiconId'
     | '/_app/japanese/practice/exam'
     | '/_app/japanese/practice/vocab'
     | '/_app/japanese/read/$articleId'
     | '/_app/japanese/word/$id'
+    | '/_app/japanese/listen/'
     | '/_app/japanese/read/'
   fileRoutesById: FileRoutesById
 }
@@ -698,6 +723,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsModelsRouteImport
       parentRoute: typeof AppSettingsRoute
     }
+    '/_app/japanese/listen/': {
+      id: '/_app/japanese/listen/'
+      path: '/listen'
+      fullPath: '/japanese/listen/'
+      preLoaderRoute: typeof AppJapaneseListenIndexRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
+    '/_app/japanese/listen/$materialId': {
+      id: '/_app/japanese/listen/$materialId'
+      path: '/listen/$materialId'
+      fullPath: '/japanese/listen/$materialId'
+      preLoaderRoute: typeof AppJapaneseListenMaterialIdRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
     '/_app/japanese/lists/$lexiconId': {
       id: '/_app/japanese/lists/$lexiconId'
       path: '/lists/$lexiconId'
@@ -747,11 +786,13 @@ interface AppJapaneseRouteChildren {
   AppJapaneseImportRoute: typeof AppJapaneseImportRoute
   AppJapaneseLibraryRoute: typeof AppJapaneseLibraryRoute
   AppJapaneseIndexRoute: typeof AppJapaneseIndexRoute
+  AppJapaneseListenMaterialIdRoute: typeof AppJapaneseListenMaterialIdRoute
   AppJapaneseListsLexiconIdRoute: typeof AppJapaneseListsLexiconIdRoute
   AppJapanesePracticeExamRoute: typeof AppJapanesePracticeExamRoute
   AppJapanesePracticeVocabRoute: typeof AppJapanesePracticeVocabRoute
   AppJapaneseReadArticleIdRoute: typeof AppJapaneseReadArticleIdRoute
   AppJapaneseWordIdRoute: typeof AppJapaneseWordIdRoute
+  AppJapaneseListenIndexRoute: typeof AppJapaneseListenIndexRoute
   AppJapaneseReadIndexRoute: typeof AppJapaneseReadIndexRoute
 }
 
@@ -759,11 +800,13 @@ const AppJapaneseRouteChildren: AppJapaneseRouteChildren = {
   AppJapaneseImportRoute: AppJapaneseImportRoute,
   AppJapaneseLibraryRoute: AppJapaneseLibraryRoute,
   AppJapaneseIndexRoute: AppJapaneseIndexRoute,
+  AppJapaneseListenMaterialIdRoute: AppJapaneseListenMaterialIdRoute,
   AppJapaneseListsLexiconIdRoute: AppJapaneseListsLexiconIdRoute,
   AppJapanesePracticeExamRoute: AppJapanesePracticeExamRoute,
   AppJapanesePracticeVocabRoute: AppJapanesePracticeVocabRoute,
   AppJapaneseReadArticleIdRoute: AppJapaneseReadArticleIdRoute,
   AppJapaneseWordIdRoute: AppJapaneseWordIdRoute,
+  AppJapaneseListenIndexRoute: AppJapaneseListenIndexRoute,
   AppJapaneseReadIndexRoute: AppJapaneseReadIndexRoute,
 }
 

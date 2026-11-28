@@ -89,6 +89,12 @@ export {
   userStreaks,
   userStreaksRelations
 } from "./schema/learning"
+export {
+  studyMaterials,
+  studyMaterialsRelations,
+  studySegments,
+  studySegmentsRelations
+} from "./schema/study-materials"
 export { entryLinks, entryLinksRelations } from "./schema/graph"
 export {
   jpGrammar,

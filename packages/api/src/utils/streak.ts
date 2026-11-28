@@ -11,7 +11,8 @@ export const ACTIVITY_KINDS = [
   "vocab_new",
   "entry_create",
   "article_read",
-  "exam_complete"
+  "exam_complete",
+  "listen_complete"
 ] as const
 
 export type ActivityKind = (typeof ACTIVITY_KINDS)[number]
@@ -28,7 +29,9 @@ export const ACTIVITY_POINTS: Record<ActivityKind, number> = {
   vocab_new: 2,
   entry_create: 2,
   article_read: 5,
-  exam_complete: 10
+  exam_complete: 10,
+  // Finishing a video is roughly an article's worth of reading practice.
+  listen_complete: 5
 }
 
 export const DEFAULT_DAILY_GOAL = 20
