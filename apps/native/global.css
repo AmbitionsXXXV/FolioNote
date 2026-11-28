@@ -12,8 +12,17 @@
   /* Warm obsidian (used as dark text on bright status chips) */
   --eclipse: oklch(0.21 0.006 60);
 
-  /* Base radius — native-tuned: web uses 1.5rem, 1rem reads better on mobile */
+  /* Base radius. HeroUI derives card/surface/menu radii as 3× this, which
+     made cards 48px; pin the roles instead so cards read native (20px) and
+     buttons stay capsules (see the button override below). */
   --radius: 1rem;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
+  --radius-3xl: 20px;
+  --radius-4xl: 24px;
 
   /* Opacity */
   --opacity-disabled: 0.5;
@@ -30,22 +39,28 @@
   :root {
     @variant light {
       /* FolioNote — Obsidian & Warm Amber (light), synced from packages/ui */
-      --background: oklch(0.964 0.009 84);
+      --background: oklch(0.968 0.005 70);
       --foreground: oklch(0.265 0.008 62);
 
-      /* Surface: non-overlay components (cards, accordions, disclosure groups) */
-      --surface: oklch(0.992 0.0045 84);
+      /* Surface: non-overlay components (cards, accordions, disclosure groups).
+         Every neutral sits on the accent's hue (70) with a whisper of chroma so
+         cards never mix warm beige with HeroUI's cool zinc defaults. */
+      --surface: oklch(0.995 0.0015 70);
       --surface-foreground: var(--foreground);
+      --surface-secondary: oklch(0.978 0.004 70);
+      --surface-secondary-foreground: var(--foreground);
+      --surface-tertiary: oklch(0.962 0.005 70);
+      --surface-tertiary-foreground: var(--foreground);
 
       /* Overlay: floating components (dialogs, popovers, modals, menus) */
-      --overlay: oklch(0.992 0.0045 84);
+      --overlay: oklch(0.995 0.0015 70);
       --overlay-foreground: var(--foreground);
 
       /* Muted = web muted-foreground (muted text / placeholders) */
       --muted: oklch(0.485 0.015 64);
 
       /* Default = web secondary. Keep light-mode fills light (L >= 0.94). */
-      --default: oklch(0.952 0.008 80);
+      --default: oklch(0.952 0.006 70);
       --default-foreground: oklch(0.3 0.01 64);
 
       /* Accent = web primary (amber = selected tab icon #AF7131, near-white ink) */
@@ -53,10 +68,10 @@
       --accent-foreground: oklch(0.993 0.004 75);
 
       /* Form Field Defaults - Colors */
-      --field-background: oklch(0.992 0.0045 84);
+      --field-background: oklch(0.995 0.0015 70);
       --field-foreground: var(--foreground);
       --field-placeholder: var(--muted);
-      --field-border: oklch(0.898 0.013 80);
+      --field-border: oklch(0.905 0.008 70);
 
       /* Status Colors */
       --success: oklch(0.7329 0.1935 150.81);
@@ -75,33 +90,37 @@
       --freeze: oklch(0.47 0.08 258);
 
       /* Component Colors */
-      --segment: oklch(0.992 0.0045 84);
+      --segment: oklch(0.995 0.0015 70);
       --segment-foreground: var(--foreground);
 
       /* Misc Colors */
-      --border: oklch(0.898 0.013 80);
-      --divider: oklch(0.898 0.013 80);
+      --border: oklch(0.905 0.008 70);
+      --divider: oklch(0.905 0.008 70);
       --link: oklch(0.685 0.132 69);
     }
 
     @variant dark {
       /* FolioNote — Obsidian & Warm Amber (dark), synced from packages/ui */
-      --background: oklch(0.195 0.006 56);
+      --background: oklch(0.165 0.004 70);
       --foreground: oklch(0.925 0.013 82);
 
       /* Surface: non-overlay components (cards, accordions, disclosure groups) */
-      --surface: oklch(0.245 0.009 58);
+      --surface: oklch(0.215 0.005 70);
       --surface-foreground: var(--foreground);
+      --surface-secondary: oklch(0.245 0.006 70);
+      --surface-secondary-foreground: var(--foreground);
+      --surface-tertiary: oklch(0.275 0.006 70);
+      --surface-tertiary-foreground: var(--foreground);
 
       /* Overlay: floating components — slightly lighter than surface for contrast */
-      --overlay: oklch(0.27 0.009 58);
+      --overlay: oklch(0.25 0.006 70);
       --overlay-foreground: var(--foreground);
 
       /* Muted = web muted-foreground (muted text / placeholders) */
       --muted: oklch(0.715 0.015 74);
 
       /* Default = web secondary */
-      --default: oklch(0.3 0.011 58);
+      --default: oklch(0.29 0.007 70);
       --default-foreground: oklch(0.9 0.012 82);
 
       /* Accent = web primary (brighter amber that glows on dark) */
@@ -112,7 +131,7 @@
       --field-background: var(--default);
       --field-foreground: var(--foreground);
       --field-placeholder: var(--muted);
-      --field-border: oklch(0.305 0.011 58);
+      --field-border: oklch(0.31 0.008 70);
 
       /* Status Colors */
       --success: oklch(0.7329 0.1935 150.81);
@@ -130,13 +149,26 @@
       --freeze: oklch(0.72 0.08 258);
 
       /* Component Colors */
-      --segment: oklch(0.3 0.011 58);
+      --segment: oklch(0.29 0.007 70);
       --segment-foreground: var(--foreground);
 
       /* Misc Colors */
-      --border: oklch(0.305 0.011 58);
-      --divider: oklch(0.305 0.011 58);
+      --border: oklch(0.31 0.008 70);
+      --divider: oklch(0.31 0.008 70);
       --link: oklch(0.778 0.136 72);
     }
+  }
+}
+
+/* Buttons are capsules on iOS 26; with --radius-3xl pinned to 20px the
+   HeroUI size classes would otherwise square them off. */
+@layer components {
+  .button__root--size-sm,
+  .button__root--size-md,
+  .button__root--size-lg,
+  .button__background--size-sm,
+  .button__background--size-md,
+  .button__background--size-lg {
+    border-radius: 9999px;
   }
 }
