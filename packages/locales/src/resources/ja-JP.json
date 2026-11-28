@@ -349,7 +349,12 @@
         "expression": "表現"
       }
     },
-    "statsLoadFailed": "復習統計の読み込みに失敗しました"
+    "statsLoadFailed": "復習統計の読み込みに失敗しました",
+    "itemsUnit": "件",
+    "overdueCount": "期限切れ {{count}}",
+    "scopeTitle": "復習の範囲",
+    "statsTitle": "統計",
+    "start": "復習を始める"
   },
   "japanese": {
     "title": "日本語",
@@ -1966,5 +1971,18 @@
     },
     "stampMark": "学",
     "freezeMark": "休"
+  },
+  "today": {
+    "todoTitle": "今日やること",
+    "todoDue": "復習期限のノート",
+    "todoNew": "初めて復習するノート"
+  },
+  "inbox": {
+    "filterAll": "すべて",
+    "filterPinned": "ピン留め",
+    "filterStarred": "スター",
+    "today": "今日",
+    "yesterday": "昨日",
+    "emptyFilter": "条件に合うノートはありません"
   }
 }

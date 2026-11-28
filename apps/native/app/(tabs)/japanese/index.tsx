@@ -1,29 +1,26 @@
 import {
-  ArrowRight01Icon,
   BookOpen01Icon,
-  Delete02Icon
+  CloudIcon,
+  NoteEditIcon
 } from "@hugeicons-pro/core-stroke-rounded"
-import { HugeiconsIcon } from "@hugeicons/react-native"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { useLocalSearchParams, useRouter } from "expo-router"
-import {
-  Button,
-  Card,
-  Chip,
-  PressableFeedback,
-  SearchField,
-  Skeleton,
-  useThemeColor
-} from "heroui-native"
+import type { Href } from "expo-router"
+import { Button, SearchField, Skeleton } from "heroui-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ScrollView, Text, View } from "react-native"
 
 import { Container } from "@/components/container"
+import {
+  GroupedCard,
+  GroupedRow,
+  GroupedSection,
+  RowSeparator
+} from "@/components/grouped-list"
 import { DailyStudyCard } from "@/components/japanese/daily-study-card"
 import { JapaneseAttribution } from "@/components/japanese/japanese-attribution"
 import { JapaneseSearchResults } from "@/components/japanese/japanese-search-results"
-import { JapaneseSectionTitle } from "@/components/japanese/japanese-section-title"
 import { useDebounce } from "@/hooks/use-debounce"
 import { useOnDeviceJapanese } from "@/hooks/use-on-device-japanese"
 import { removeOnDeviceDictionary } from "@/lib/japanese/on-device-engine"
@@ -32,8 +29,13 @@ import { orpc } from "@/utils/orpc"
 const SEARCH_DEBOUNCE_MS = 250
 const SEARCH_LIMIT = 20
 const LEVELS_STALE_MS = 5 * 60 * 1000
-const EXAMPLE_QUERIES = ["たべる", "taberu", "食", "てみる", "eat"]
 const LEVEL_ORDER = ["N5", "N4", "N3", "N2", "N1"]
+/**
+ * The word book list lives in the root stack (app/japanese/books.tsx, added
+ * with the daily-vocab work). Widened to string and cast to Href until that route exists;
+ * drop both casts once it does.
+ */
+const WORD_BOOK_PATH = "/japanese/books" as string
 
 interface LevelCount {
   level: string
@@ -42,7 +44,7 @@ interface LevelCount {
   grammar: number
 }
 
-function LevelRow({
+function LevelGrid({
   levels,
   isPending
 }: {
@@ -52,85 +54,46 @@ function LevelRow({
   const { t } = useTranslation()
 
   return (
-    <View>
-      <JapaneseSectionTitle>
-        {t("japanese.search.levelsTitle")}
-      </JapaneseSectionTitle>
-      <View className="mt-3 flex-row gap-2">
-        {isPending || !levels
-          ? LEVEL_ORDER.map((level) => (
-              <Skeleton className="h-20 flex-1 rounded-2xl" key={level} />
-            ))
-          : levels.map((level) => (
-              <View
-                accessibilityLabel={`${level.level}: ${t("japanese.search.levelWords", { count: level.words })}, ${t("japanese.search.levelKanji", { count: level.kanji })}, ${t("japanese.search.levelGrammar", { count: level.grammar })}`}
-                accessible
-                className="flex-1 items-center rounded-2xl border border-border bg-surface px-1 py-3"
-                key={level.level}
-              >
-                <Text className="text-lg font-semibold text-accent">
-                  {level.level}
-                </Text>
-                <Text className="mt-1 text-sm font-medium text-foreground">
-                  {level.words}
-                </Text>
-                <Text className="text-[10px] text-muted">
-                  {t("japanese.search.resultsWords")}
-                </Text>
-              </View>
-            ))}
-      </View>
-      <Text className="mt-2 text-xs leading-4 text-muted">
-        {t("japanese.search.levelsNote")}
-      </Text>
-    </View>
-  )
-}
-
-function ReadingCard({ onPress }: { onPress: () => void }) {
-  const { t } = useTranslation()
-  const accentColor = useThemeColor("accent")
-  const mutedColor = useThemeColor("muted")
-
-  return (
-    <PressableFeedback
-      accessibilityHint={t("japanese.search.readingDescription")}
-      accessibilityLabel={t("japanese.search.readingTitle")}
-      accessibilityRole="button"
-      onPress={onPress}
-    >
-      <PressableFeedback.Highlight />
-      <Card className="p-4" variant="secondary">
-        <View className="flex-row items-center">
-          <View className="mr-3 size-12 items-center justify-center rounded-lg bg-accent/10">
-            <HugeiconsIcon
-              color={accentColor}
-              icon={BookOpen01Icon}
-              size={24}
-            />
-          </View>
-          <View className="flex-1">
-            <Text className="font-medium text-foreground">
-              {t("japanese.search.readingTitle")}
-            </Text>
-            <Text className="text-sm text-muted">
-              {t("japanese.search.readingDescription")}
-            </Text>
-          </View>
-          <HugeiconsIcon color={mutedColor} icon={ArrowRight01Icon} size={20} />
+    <GroupedSection title={t("japanese.search.levelsTitle")}>
+      <GroupedCard className="p-3">
+        <View className="flex-row gap-1.5">
+          {isPending || !levels
+            ? LEVEL_ORDER.map((level) => (
+                <Skeleton className="h-[68px] flex-1 rounded-xl" key={level} />
+              ))
+            : levels.map((level) => (
+                <View
+                  accessibilityLabel={`${level.level}: ${t("japanese.search.levelWords", { count: level.words })}, ${t("japanese.search.levelKanji", { count: level.kanji })}, ${t("japanese.search.levelGrammar", { count: level.grammar })}`}
+                  accessible
+                  className="flex-1 items-center gap-0.5 rounded-xl bg-default py-2.5"
+                  key={level.level}
+                >
+                  <Text className="text-base font-bold text-accent">
+                    {level.level}
+                  </Text>
+                  <Text className="text-[13px] font-semibold text-foreground tabular-nums">
+                    {level.words}
+                  </Text>
+                  <Text className="text-[10px] text-muted">
+                    {t("japanese.search.resultsWords")}
+                  </Text>
+                </View>
+              ))}
         </View>
-      </Card>
-    </PressableFeedback>
+        <Text className="mt-2.5 text-xs leading-4 text-muted">
+          {t("japanese.search.levelsNote")}
+        </Text>
+      </GroupedCard>
+    </GroupedSection>
   )
 }
 
 const BYTES_PER_MB = 1_000_000
 
 /** Status of the downloaded dictionary for on-device analysis, with removal. */
-function DictionaryCard() {
+function DictionaryRow() {
   const { t } = useTranslation()
   const engine = useOnDeviceJapanese()
-  const dangerColor = useThemeColor("danger")
   const isBusy =
     engine.status === "downloading" ||
     engine.status === "verifying" ||
@@ -141,23 +104,13 @@ function DictionaryCard() {
         .map(([key, value]) => `${key} ${value}ms`)
         .join(" · ")
     : ""
+  const canRemove = Boolean(dictionary || engine.hasCachedFiles)
 
   return (
-    <View>
-      <JapaneseSectionTitle>
-        {t("japanese.engine.statusTitle")}
-      </JapaneseSectionTitle>
-      <Card className="mt-3 p-4" variant="secondary">
-        <View className="flex-row items-center gap-3">
-          <Text className="flex-1 text-sm leading-5 text-muted">
-            {dictionary
-              ? t("japanese.engine.statusDownloaded", {
-                  size: Math.round(dictionary.bytes / BYTES_PER_MB),
-                  version: dictionary.version.slice(0, 6)
-                })
-              : t("japanese.engine.statusNotDownloaded")}
-          </Text>
-          {(dictionary || engine.hasCachedFiles) && (
+    <GroupedCard>
+      <GroupedRow
+        accessory={
+          canRemove ? (
             <Button
               accessibilityLabel={t("japanese.engine.remove")}
               isDisabled={isBusy}
@@ -167,28 +120,32 @@ function DictionaryCard() {
               size="sm"
               variant="tertiary"
             >
-              <HugeiconsIcon
-                color={dangerColor}
-                icon={Delete02Icon}
-                size={16}
-              />
-              <Button.Label>{t("japanese.engine.remove")}</Button.Label>
+              <Button.Label className="text-danger">
+                {t("japanese.engine.remove")}
+              </Button.Label>
             </Button>
-          )}
-        </View>
-        {devMetrics.length > 0 && (
-          <Text className="mt-2 text-[11px] text-muted">{devMetrics}</Text>
-        )}
-      </Card>
-    </View>
+          ) : undefined
+        }
+        icon={CloudIcon}
+        iconTone="neutral"
+        label={t("japanese.engine.statusTitle")}
+        sublabel={
+          dictionary
+            ? t("japanese.engine.statusDownloaded", {
+                size: Math.round(dictionary.bytes / BYTES_PER_MB),
+                version: dictionary.version.slice(0, 6)
+              })
+            : t("japanese.engine.statusNotDownloaded")
+        }
+      />
+      {devMetrics.length > 0 && (
+        <Text className="px-4 pb-3 text-[11px] text-muted">{devMetrics}</Text>
+      )}
+    </GroupedCard>
   )
 }
 
-function HubHome({
-  onPickExample
-}: {
-  onPickExample: (value: string) => void
-}) {
+function HubHome() {
   const { t } = useTranslation()
   const router = useRouter()
   const levels = useQuery({
@@ -197,31 +154,26 @@ function HubHome({
   })
 
   return (
-    <View className="gap-6">
-      <View className="flex-row flex-wrap items-center gap-2">
-        <Text className="text-sm text-muted">
-          {t("japanese.search.tryLabel")}
-        </Text>
-        {EXAMPLE_QUERIES.map((example) => (
-          <Chip
-            accessibilityLabel={`${t("japanese.search.tryLabel")} ${example}`}
-            accessibilityRole="button"
-            color="default"
-            hitSlop={8}
-            key={example}
-            onPress={() => onPickExample(example)}
-            variant="soft"
-          >
-            <Chip.Label>{example}</Chip.Label>
-          </Chip>
-        ))}
-      </View>
+    <View className="gap-4">
+      <GroupedCard>
+        <GroupedRow
+          icon={BookOpen01Icon}
+          label={t("japanese.search.readingTitle")}
+          onPress={() => router.push("/japanese/read")}
+          sublabel={t("japanese.search.readingDescription")}
+        />
+        <RowSeparator />
+        <GroupedRow
+          icon={NoteEditIcon}
+          label={t("japanese.notebook.title")}
+          onPress={() => router.push(WORD_BOOK_PATH as Href)}
+          sublabel={t("japanese.notebook.listMeta")}
+        />
+      </GroupedCard>
 
-      <LevelRow isPending={levels.isPending} levels={levels.data} />
+      <LevelGrid isPending={levels.isPending} levels={levels.data} />
 
-      <ReadingCard onPress={() => router.push("/japanese/read")} />
-
-      <DictionaryCard />
+      <DictionaryRow />
     </View>
   )
 }
@@ -245,18 +197,18 @@ export default function JapaneseHubScreen() {
   return (
     <Container className="flex-1" disableScroll disableTopInset>
       <ScrollView
-        contentContainerStyle={{ padding: 16, paddingBottom: 32, gap: 24 }}
+        contentContainerStyle={{ padding: 16, paddingTop: 4, gap: 16 }}
         contentInsetAdjustmentBehavior="automatic"
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
         <DailyStudyCard />
         <View>
-          <Text className="text-sm text-muted">
+          <Text className="px-1 text-[13px] text-muted">
             {t("japanese.description")}
           </Text>
           <SearchField className="mt-3" onChange={setInput} value={input}>
-            <SearchField.Group className="h-12 rounded-2xl">
+            <SearchField.Group className="h-11 rounded-full">
               <SearchField.SearchIcon />
               <SearchField.Input
                 accessibilityLabel={t("japanese.search.label")}
@@ -277,7 +229,7 @@ export default function JapaneseHubScreen() {
             query={trimmedQuery}
           />
         ) : (
-          <HubHome onPickExample={setInput} />
+          <HubHome />
         )}
 
         <JapaneseAttribution />

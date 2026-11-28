@@ -399,7 +399,13 @@
         "expression": "Expression"
       }
     },
-    "statsLoadFailed": "Failed to load review stats"
+    "statsLoadFailed": "Failed to load review stats",
+    "itemsUnit_one": "item",
+    "itemsUnit_other": "items",
+    "overdueCount": "{{count}} overdue",
+    "scopeTitle": "Review scope",
+    "statsTitle": "Stats",
+    "start": "Start review"
   },
   "japanese": {
     "title": "Japanese",
@@ -1968,5 +1974,18 @@
     },
     "stampMark": "✓",
     "freezeMark": "❄"
+  },
+  "today": {
+    "todoTitle": "To do today",
+    "todoDue": "Notes due for review",
+    "todoNew": "New notes to review"
+  },
+  "inbox": {
+    "filterAll": "All",
+    "filterPinned": "Pinned",
+    "filterStarred": "Starred",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "emptyFilter": "No notes match this filter"
   }
 }

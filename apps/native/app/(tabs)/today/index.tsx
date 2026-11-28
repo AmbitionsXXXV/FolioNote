@@ -17,9 +17,12 @@ import { useLocalMode } from "@/contexts/local-mode-context"
 import { authClient } from "@/lib/auth-client"
 import { orpc } from "@/utils/orpc"
 
+/** Rows in the recent list; extra are fetched because inbox items are dropped. */
+const RECENT_ROWS = 6
+
 /**
- * Today (the former Home merged in): greeting, the check-in stamp and daily
- * goal, today's review, quick stats and recent entries.
+ * Today (the former Home merged in): the check-in stamp and daily goal as
+ * the hero, what is left to do today, and recent entries.
  */
 export default function TodayScreen() {
   const { t } = useTranslation()
@@ -54,7 +57,7 @@ export default function TodayScreen() {
   })
 
   const { data: recentData, isLoading: isLoadingRecent } = useQuery({
-    ...orpc.entries.list.queryOptions({ input: { filter: "all", limit: 4 } }),
+    ...orpc.entries.list.queryOptions({ input: { filter: "all", limit: 8 } }),
     enabled: isSignedIn
   })
 
@@ -82,13 +85,13 @@ export default function TodayScreen() {
   }
 
   const isRefetching = isRefetchingTodayStats || isRefetchingDueStats
-  const userName = session?.user?.name?.split(" ")[0] ?? t("common.other")
-  const recentEntries = recentData?.items?.filter((e) => !e.isInbox) ?? []
+  const recentEntries =
+    recentData?.items?.filter((e) => !e.isInbox).slice(0, RECENT_ROWS) ?? []
+  const totalDue = (dueStats?.overdue ?? 0) + (dueStats?.dueToday ?? 0)
 
   return (
     <Container className="flex-1" disableScroll disableTopInset>
       <TodayContent
-        dueToday={dueStats?.dueToday ?? 0}
         footer={
           isSignedIn ? (
             <RecentEntriesSection
@@ -117,15 +120,10 @@ export default function TodayScreen() {
         newCount={dueStats?.newCount ?? 0}
         onRefresh={handleRefresh}
         onStartReview={() => router.navigate("/review")}
-        overdue={dueStats?.overdue ?? 0}
-        reviewedToday={todayStats?.reviewedToday ?? 0}
-        starredEntries={todayStats?.starredEntries ?? 0}
-        // The check-in card shows the streak when signed in; the header
-        // badge is the offline / local-mode fallback.
+        // The check-in card shows the streak when signed in; the eyebrow
+        // carries it as the offline / local-mode fallback.
         streak={isSignedIn ? 0 : (todayStats?.streak ?? 0)}
-        totalEntries={todayStats?.totalEntries ?? 0}
-        unreviewedEntries={todayStats?.unreviewedEntries ?? 0}
-        userName={userName}
+        totalDue={totalDue}
       />
     </Container>
   )

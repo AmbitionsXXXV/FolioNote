@@ -7,7 +7,14 @@ export default function ReviewLayout() {
 
   return (
     <TabStack>
-      <TabStack.Screen name="index" options={{ title: t("nav.review") }} />
+      <TabStack.Screen
+        name="index"
+        options={{
+          title: t("nav.review"),
+          headerLargeTitle: true,
+          headerLargeTitleShadowVisible: false
+        }}
+      />
     </TabStack>
   )
 }

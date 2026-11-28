@@ -566,7 +566,9 @@ export class ReviewRepository {
       }
     }
 
-    const sortedDates = [...uniqueDates].toSorted().toReversed()
+    // Hermes has no toSorted / toReversed; sort a copy in place instead.
+    // oxlint-disable-next-line unicorn/no-array-sort, unicorn/no-array-reverse
+    const sortedDates = [...uniqueDates].sort().reverse()
     const dateSet = new Set(sortedDates)
 
     // Check if today or yesterday has a review

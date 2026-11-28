@@ -136,30 +136,31 @@ textarea::-webkit-resizer {
      the component migration is in progress. */
 
   /* Base */
-  --background: oklch(0.964 0.009 84);
+  --background: oklch(0.968 0.005 70);
   --foreground: oklch(0.265 0.008 62);
 
   /* Surfaces — cards, accordions, non-overlay containers */
-  --surface: oklch(0.992 0.0045 84);
+  --surface: oklch(0.995 0.0015 70);
   --surface-foreground: var(--foreground);
-  --surface-secondary: oklch(0.962 0.007 82);
+  --surface-secondary: oklch(0.978 0.004 70);
   --surface-secondary-foreground: var(--foreground);
-  --surface-tertiary: oklch(0.948 0.009 80);
+  --surface-tertiary: oklch(0.962 0.005 70);
   --surface-tertiary-foreground: var(--foreground);
 
   /* Overlays — tooltips, popovers, modals, menus */
-  --overlay: oklch(0.992 0.0045 84);
+  --overlay: oklch(0.995 0.0015 70);
   --overlay-foreground: var(--foreground);
 
-  /* Brand accent — deep amber with warm light-gray ink: pure white on it was
-     too bright and dark ink read as black-on-amber (≈4.9:1). */
-  --accent: oklch(0.503 0.111 64);
-  --accent-foreground: oklch(0.927 0.013 75);
+  /* Brand accent — amber at the same hue/chroma as the selected tab icon
+     (#AF7131); one step lighter than the old 0.503 because the deep amber read
+     too heavy in light mode. Near-white warm ink, never black-based (≈4:1). */
+  --accent: oklch(0.603 0.111 64);
+  --accent-foreground: oklch(0.993 0.004 75);
 
   /* Neutral default control surface. Light mode keeps every fill light
      (L >= 0.94): fields, chips, tracks and secondary buttons must never read
      as a dark-ish gray on the paper background. */
-  --default: oklch(0.952 0.008 80);
+  --default: oklch(0.952 0.006 70);
   --default-foreground: oklch(0.3 0.01 64);
 
   /* Secondary text */
@@ -175,14 +176,14 @@ textarea::-webkit-resizer {
   --freeze: oklch(0.47 0.08 258);
 
   /* Lines + focus */
-  --border: oklch(0.898 0.013 80);
-  --separator: oklch(0.898 0.013 80);
+  --border: oklch(0.905 0.008 70);
+  --separator: oklch(0.905 0.008 70);
   --focus: oklch(0.685 0.132 69);
 
   /* Form fields */
-  --field-background: oklch(0.992 0.0045 84);
+  --field-background: oklch(0.995 0.0015 70);
   --field-foreground: var(--foreground);
-  --field-border: oklch(0.898 0.013 80);
+  --field-border: oklch(0.905 0.008 70);
   --field-placeholder: var(--muted);
 
   /* Legacy shadcn aliases → HeroUI tokens (removed as custom CSS migrates) */
@@ -210,7 +211,7 @@ textarea::-webkit-resizer {
   --sidebar-primary-foreground: oklch(0.215 0.022 60);
   --sidebar-accent: oklch(0.942 0.026 78);
   --sidebar-accent-foreground: oklch(0.3 0.02 64);
-  --sidebar-border: oklch(0.898 0.013 80);
+  --sidebar-border: oklch(0.905 0.008 70);
   --sidebar-ring: oklch(0.685 0.132 69);
   --font-sans: DM Sans, sans-serif;
   --font-serif: Source Serif 4, serif;
@@ -253,19 +254,19 @@ textarea::-webkit-resizer {
      HeroUI components theme correctly in dark mode. */
 
   /* Base */
-  --background: oklch(0.195 0.006 56);
+  --background: oklch(0.165 0.004 70);
   --foreground: oklch(0.925 0.013 82);
 
   /* Surfaces */
-  --surface: oklch(0.245 0.009 58);
+  --surface: oklch(0.215 0.005 70);
   --surface-foreground: var(--foreground);
-  --surface-secondary: oklch(0.265 0.009 58);
+  --surface-secondary: oklch(0.245 0.006 70);
   --surface-secondary-foreground: var(--foreground);
-  --surface-tertiary: oklch(0.3 0.011 58);
+  --surface-tertiary: oklch(0.275 0.006 70);
   --surface-tertiary-foreground: var(--foreground);
 
   /* Overlays */
-  --overlay: oklch(0.245 0.009 58);
+  --overlay: oklch(0.25 0.006 70);
   --overlay-foreground: var(--foreground);
 
   /* Brand accent */
@@ -273,7 +274,7 @@ textarea::-webkit-resizer {
   --accent-foreground: oklch(0.2 0.012 60);
 
   /* Neutral default control surface */
-  --default: oklch(0.3 0.011 58);
+  --default: oklch(0.29 0.007 70);
   --default-foreground: oklch(0.9 0.012 82);
 
   /* Secondary text */
@@ -288,14 +289,14 @@ textarea::-webkit-resizer {
   --freeze: oklch(0.72 0.08 258);
 
   /* Lines + focus */
-  --border: oklch(0.305 0.011 58);
-  --separator: oklch(0.305 0.011 58);
+  --border: oklch(0.31 0.008 70);
+  --separator: oklch(0.31 0.008 70);
   --focus: oklch(0.778 0.136 72);
 
   /* Form fields */
-  --field-background: oklch(0.245 0.009 58);
+  --field-background: oklch(0.245 0.006 70);
   --field-foreground: var(--foreground);
-  --field-border: oklch(0.305 0.011 58);
+  --field-border: oklch(0.31 0.008 70);
   --field-placeholder: var(--muted);
 
   /* Legacy shadcn aliases → HeroUI tokens */
@@ -323,7 +324,7 @@ textarea::-webkit-resizer {
   --sidebar-primary-foreground: oklch(0.2 0.012 60);
   --sidebar-accent: oklch(0.335 0.04 70);
   --sidebar-accent-foreground: oklch(0.92 0.012 82);
-  --sidebar-border: oklch(0.305 0.011 58);
+  --sidebar-border: oklch(0.31 0.008 70);
   --sidebar-ring: oklch(0.778 0.136 72);
   --font-sans: DM Sans, sans-serif;
   --font-serif: Source Serif 4, serif;
