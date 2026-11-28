@@ -3,7 +3,8 @@ import {
   jpArticles,
   jpLexiconEntries,
   jpLexicons,
-  jpVocab
+  jpVocab,
+  studyMaterials
 } from "@folionote/db"
 import { DEFAULT_MAX_CHARS } from "@folionote/japanese"
 import { ORPCError } from "@orpc/server"
@@ -36,7 +37,10 @@ const SaveInput = z.union([
     context: z
       .object({
         sentence: z.string().trim().min(1).max(CONTEXT_MAX_CHARS),
-        articleId: z.string().min(1).max(128).optional()
+        articleId: z.string().min(1).max(128).optional(),
+        /** A listening material (video) and the line's start time in it. */
+        materialId: z.string().min(1).max(128).optional(),
+        timeMs: z.number().int().min(0).optional()
       })
       .optional()
   })
@@ -76,6 +80,31 @@ async function ownedArticleId(articleId: string | undefined, userId: string) {
     .where(and(eq(jpArticles.id, articleId), eq(jpArticles.userId, userId)))
     .limit(1)
   return article?.id ?? null
+}
+
+/** Same rule for videos: only the caller's own material is linked. */
+async function ownedMaterialId(materialId: string | undefined, userId: string) {
+  if (materialId === undefined) return null
+  const [material] = await db
+    .select({ id: studyMaterials.id })
+    .from(studyMaterials)
+    .where(
+      and(eq(studyMaterials.id, materialId), eq(studyMaterials.userId, userId))
+    )
+    .limit(1)
+  return material?.id ?? null
+}
+
+/** The time only means something next to the video it points into. */
+async function videoContext(
+  context: { materialId?: string; timeMs?: number } | undefined,
+  userId: string
+) {
+  const contextMaterialId = await ownedMaterialId(context?.materialId, userId)
+  return {
+    contextMaterialId,
+    contextTimeMs: contextMaterialId === null ? null : (context?.timeMs ?? null)
+  }
 }
 
 type MeaningLanguageCode = z.infer<typeof MeaningLanguage>
@@ -146,6 +175,8 @@ const saveWord = protectedProcedure
       vocabId: string | null
       contextSentence: string | null
       contextArticleId: string | null
+      contextMaterialId: string | null
+      contextTimeMs: number | null
     }
 
     if ("vocabId" in input) {
@@ -159,7 +190,9 @@ const saveWord = protectedProcedure
         meanings: meaningsIn(word, input.meaningLanguage),
         vocabId: word.id,
         contextSentence: null,
-        contextArticleId: null
+        contextArticleId: null,
+        contextMaterialId: null,
+        contextTimeMs: null
       }
     } else {
       const reading = input.reading || null
@@ -185,7 +218,11 @@ const saveWord = protectedProcedure
         meanings: word ? meaningsIn(word, input.meaningLanguage) : [],
         vocabId,
         contextSentence: input.context?.sentence ?? null,
-        contextArticleId: await ownedArticleId(input.context?.articleId, userId)
+        contextArticleId: await ownedArticleId(
+          input.context?.articleId,
+          userId
+        ),
+        ...(await videoContext(input.context, userId))
       }
     }
 
@@ -208,7 +245,9 @@ const saveWord = protectedProcedure
         ],
         set: {
           contextSentence: sql`excluded.context_sentence`,
-          contextArticleId: sql`excluded.context_article_id`
+          contextArticleId: sql`excluded.context_article_id`,
+          contextMaterialId: sql`excluded.context_material_id`,
+          contextTimeMs: sql`excluded.context_time_ms`
         },
         setWhere: sql`excluded.context_sentence is not null`
       })

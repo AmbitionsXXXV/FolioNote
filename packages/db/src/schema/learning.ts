@@ -24,7 +24,7 @@ export const learningActivities = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
-    /** entry_review | vocab_review | vocab_new | entry_create | article_read | exam_complete */
+    /** entry_review | vocab_review | vocab_new | entry_create | article_read | exam_complete | listen_complete */
     kind: text("kind").notNull(),
     /** 关联对象 id（条目 / 单词 / 文章），仅用于展示明细 */
     refId: text("ref_id"),

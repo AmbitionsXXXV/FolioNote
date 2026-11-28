@@ -169,6 +169,13 @@
       "when": 1795803612070,
       "tag": "0023_learning_streaks",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1795867041069,
+      "tag": "0024_listening_materials",
+      "breakpoints": true
     }
   ]
 }

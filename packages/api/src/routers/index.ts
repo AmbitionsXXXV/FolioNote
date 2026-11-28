@@ -7,6 +7,7 @@ import { entryCollaboratorsRouter } from "./entry-collaborators"
 import { graphRouter } from "./graph"
 import { importsRouter } from "./imports"
 import { japaneseRouter } from "./japanese"
+import { listeningRouter } from "./listening"
 import { reviewRouter } from "./review"
 import { searchRouter } from "./search"
 import { sharesRouter } from "./shares"
@@ -35,7 +36,8 @@ export const appRouter = {
   japanese: japaneseRouter,
   streak: streakRouter,
   imports: importsRouter,
-  youtube: youtubeRouter
+  youtube: youtubeRouter,
+  listening: listeningRouter
 }
 export type AppRouter = typeof appRouter
 export type AppRouterClient = RouterClient<typeof appRouter>

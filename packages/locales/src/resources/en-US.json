@@ -1914,7 +1914,8 @@
       "vocab_new": "Learned a new word",
       "entry_create": "Wrote a note",
       "article_read": "Finished an article",
-      "exam_complete": "Finished a quiz"
+      "exam_complete": "Finished a quiz",
+      "listen_complete": "Finished a video"
     },
     "toast": {
       "checkedIn": "Stamped! {{count}}-day streak",

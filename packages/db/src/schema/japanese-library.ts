@@ -15,6 +15,7 @@ import {
 
 import { user } from "./auth"
 import { jpVocab } from "./japanese"
+import { studyMaterials } from "./study-materials"
 
 export const jpArticles = pgTable(
   "jp_articles",
@@ -132,6 +133,12 @@ export const jpLexiconEntries = pgTable(
       () => jpArticles.id,
       { onDelete: "set null" }
     ),
+    /** Notebook only: the video the sentence came from, and where in it. */
+    contextMaterialId: text("context_material_id").references(
+      () => studyMaterials.id,
+      { onDelete: "set null" }
+    ),
+    contextTimeMs: integer("context_time_ms"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),

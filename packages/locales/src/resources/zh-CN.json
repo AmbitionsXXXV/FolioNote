@@ -1911,7 +1911,8 @@
       "vocab_new": "学新词",
       "entry_create": "记了一条笔记",
       "article_read": "读完一篇文章",
-      "exam_complete": "完成一套测验"
+      "exam_complete": "完成一套测验",
+      "listen_complete": "听完一个视频"
     },
     "toast": {
       "checkedIn": "盖章！连续 {{count}} 天",

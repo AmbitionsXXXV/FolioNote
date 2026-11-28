@@ -1911,7 +1911,8 @@
       "vocab_new": "新しい単語を学習",
       "entry_create": "ノートを作成",
       "article_read": "記事を読了",
-      "exam_complete": "テストを完了"
+      "exam_complete": "テストを完了",
+      "listen_complete": "動画を視聴完了"
     },
     "toast": {
       "checkedIn": "ハンコ！{{count}} 日連続",
