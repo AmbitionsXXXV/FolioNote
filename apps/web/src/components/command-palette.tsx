@@ -5,7 +5,7 @@ import {
   InboxIcon,
   Link01Icon,
   Search01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"

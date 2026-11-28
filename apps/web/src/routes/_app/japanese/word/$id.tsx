@@ -1,16 +1,23 @@
 import { alignRuby } from "@folionote/japanese"
 import { Skeleton } from "@folionote/ui/skeleton"
 import { Chip } from "@heroui/react"
-import { ArrowLeft01Icon, ArrowUpRight01Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowLeft01Icon,
+  ArrowUpRight01Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, Link } from "@tanstack/react-router"
+import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { z } from "zod"
 
 import { JapaneseAttribution } from "@/components/japanese/japanese-attribution"
 import { JapaneseLevelChip } from "@/components/japanese/japanese-level-chip"
+import { JapaneseNotebookButton } from "@/components/japanese/japanese-notebook-button"
 import { JapaneseRuby } from "@/components/japanese/japanese-ruby"
+import { JapaneseSpeakButton } from "@/components/japanese/japanese-speak-button"
+import { useJapaneseLexiconLookup } from "@/hooks/use-japanese-lexicon-lookup"
 import { parseFuriganaMarkup } from "@/lib/japanese-furigana"
 import { jmdictPosLabelKey } from "@/lib/japanese-jmdict-pos"
 import { orpc } from "@/utils/orpc"
@@ -45,6 +52,24 @@ function PosChips({ codes }: { codes: string[] }) {
         )
       })}
     </>
+  )
+}
+
+/** Save toggle for a word-bank word; notebook entries store it under its headword. */
+function WordNotebookAction({
+  vocabId,
+  headword
+}: {
+  vocabId: string
+  headword: string
+}) {
+  const baseForms = useMemo(() => [headword], [headword])
+  const { matches } = useJapaneseLexiconLookup(baseForms)
+  const savedEntryId =
+    matches.get(headword)?.find((match) => match.lexiconKind === "notebook")
+      ?.entryId ?? null
+  return (
+    <JapaneseNotebookButton savedEntryId={savedEntryId} word={{ vocabId }} />
   )
 }
 
@@ -117,7 +142,11 @@ function JapaneseWordPage() {
   const { word, examples, kanji } = data
   const headword = alignRuby(word.word, word.reading) ?? [{ text: word.word }]
   const wantsChinese = (i18n.resolvedLanguage ?? i18n.language).startsWith("zh")
-  const preferred = word.meaningsZh ?? word.meaningsEn
+  const chineseFirst = word.meaningsZh ?? word.meaningsEn
+  const preferred =
+    wantsChinese || word.meaningsEn.length === 0
+      ? chineseFirst
+      : word.meaningsEn
   // Some MOJi words only carry Japanese definitions.
   const meanings =
     preferred.length > 0 ? preferred : (word.meaningsJa ?? preferred)
@@ -139,10 +168,14 @@ function JapaneseWordPage() {
             <span lang="ja">{word.reading}</span>
           ) : null}
           <span className="font-mono text-sm">{word.romaji}</span>
+          <JapaneseSpeakButton className="self-center" text={word.reading} />
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
           <JapaneseLevelChip approximate level={word.level} />
           <PosChips codes={word.jmdictPos} />
+        </div>
+        <div className="mt-4">
+          <WordNotebookAction headword={word.word} vocabId={word.id} />
         </div>
       </header>
 
@@ -176,15 +209,25 @@ function JapaneseWordPage() {
           <ul className="mt-3 divide-y divide-border/40">
             {examples.map((example) => (
               <li className="py-4" key={example.ja}>
-                <p className="font-script-ja text-xl leading-[1.9]" lang="ja">
-                  {example.furigana ? (
-                    <JapaneseRuby
-                      segments={parseFuriganaMarkup(example.furigana)}
-                    />
-                  ) : (
-                    example.ja
-                  )}
-                </p>
+                <div className="flex items-start gap-1">
+                  <p
+                    className="flex-1 font-script-ja text-xl leading-[1.9]"
+                    lang="ja"
+                  >
+                    {example.furigana ? (
+                      <JapaneseRuby
+                        segments={parseFuriganaMarkup(example.furigana)}
+                      />
+                    ) : (
+                      example.ja
+                    )}
+                  </p>
+                  <JapaneseSpeakButton
+                    className="mt-1"
+                    label={t("japanese.speech.playSentence")}
+                    text={example.ja}
+                  />
+                </div>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {wantsChinese
                     ? (example.zh ?? example.en)

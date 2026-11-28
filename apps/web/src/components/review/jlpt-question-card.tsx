@@ -1,4 +1,4 @@
-import { Tick02Icon } from "@hugeicons/core-free-icons"
+import { Tick02Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ReactNode } from "react"
 import { useTranslation } from "react-i18next"

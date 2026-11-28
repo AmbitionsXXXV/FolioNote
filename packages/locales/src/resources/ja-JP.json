@@ -40,7 +40,8 @@
     "tocPositionRight": "右",
     "permissionRequired": "権限が必要です",
     "navigation": "ナビゲーション",
-    "optional": "オプション"
+    "optional": "オプション",
+    "success": "成功"
   },
   "auth": {
     "signIn": "サインイン",
@@ -67,8 +68,8 @@
     "getStarted": "始めましょう",
     "signUpSubtitle": "FolioNote を使用するにはアカウントを作成してください",
     "namePlaceholder": "お名前を入力",
-    "passwordHint": "パスワードは最低 8 文字以上にする必要があります",
-    "passwordTooShort": "パスワードは最低 8 文字以上にする必要があります",
+    "passwordHint": "パスワードは最低 10 文字以上にする必要があります",
+    "passwordTooShort": "パスワードは最低 10 文字以上にする必要があります",
     "signUpFailed": "サインアップ失敗",
     "haveAccount": "すでにアカウントをお持ちですか？",
     "nameRequired": "名前を入力してください",
@@ -80,7 +81,7 @@
     "continueWithGoogle": "Google で続ける",
     "orContinueWith": "または続ける",
     "secureLogin": "Better Auth による安全なログイン",
-    "passwordRequirements": "8 文字以上である必要があります",
+    "passwordRequirements": "10 文字以上である必要があります",
     "termsAgreement": "サインアップすることで、利用規約とプライバシーポリシーに同意したことになります",
     "forgotPasswordTitle": "パスワードを忘れた",
     "forgotPasswordSubtitle": "メールアドレスを入力してください。パスワードリセットリンクを送信します",
@@ -347,7 +348,8 @@
         "auxiliary": "助動詞",
         "expression": "表現"
       }
-    }
+    },
+    "statsLoadFailed": "復習統計の読み込みに失敗しました"
   },
   "japanese": {
     "title": "日本語",
@@ -595,7 +597,8 @@
       },
       "kind": {
         "book": "本",
-        "deck": "デッキ"
+        "deck": "デッキ",
+        "notebook": "単語帳"
       },
       "meaningLanguage": {
         "zh": "中文",
@@ -699,6 +702,35 @@
       "loadFailed": "読み込めませんでした",
       "retry": "再試行",
       "rateFailed": "進捗を保存できませんでした。もう一度お試しください。"
+    },
+    "notebook": {
+      "title": "単語帳",
+      "save": "単語帳に追加",
+      "saved": "単語帳に追加済み",
+      "remove": "単語帳から削除",
+      "savedToast": "単語帳に追加しました",
+      "removedToast": "単語帳から削除しました",
+      "saveFailed": "単語帳に追加できませんでした。もう一度お試しください。",
+      "removeFailed": "単語帳から削除できませんでした。もう一度お試しください。",
+      "fromYourReading": "あなたの読んだ文から",
+      "study": "単語帳で学習",
+      "wordCount": "{{count}} 語",
+      "dueCount": "復習待ち {{count}} 語",
+      "recent": "最近追加：",
+      "startReview": "復習を始める",
+      "startReviewDue": "復習を始める · {{count}} 語",
+      "viewAll": "すべて見る",
+      "empty": "読解や検索で「単語帳に追加」を押すと、例文と一緒にここに入ります。",
+      "listMeta": "読解と検索から追加",
+      "colSource": "出典",
+      "colActions": "操作",
+      "fromSearch": "検索から追加"
+    },
+    "speech": {
+      "play": "読み上げ",
+      "playWord": "「{{text}}」を読み上げ",
+      "playSentence": "文を読み上げ",
+      "failed": "読み上げできませんでした。このブラウザで使える日本語音声がありません。"
     }
   },
   "activity": {
@@ -736,7 +768,12 @@
     "profile": "プロフィール",
     "knowledge": "ナレッジ",
     "graph": "グラフ",
-    "import": "インポート"
+    "import": "インポート",
+    "sectionMain": "メイン",
+    "sectionExplore": "探索",
+    "record": "学習記録",
+    "capture": "メモする",
+    "capturePlaceholder": "メモ、または単語を貼り付け…"
   },
   "search": {
     "placeholder": "エントリを検索...",
@@ -1238,7 +1275,9 @@
       "hour": "時間",
       "day": "日"
     },
-    "permissionDenied": "アバターをアップロードするにはフォトライブラリへのアクセス権限を付与してください。"
+    "permissionDenied": "アバターをアップロードするにはフォトライブラリへのアクセス権限を付与してください。",
+    "compressError": "画像の処理に失敗しました",
+    "success": "成功"
   },
   "share": {
     "title": "共有",
@@ -1528,7 +1567,11 @@
       "reject": "拒否",
       "accepted": "承認済み",
       "rejected": "拒否済み"
-    }
+    },
+    "toggleImageGeneration": "画像生成を切り替え",
+    "imageGenerationEnabled": "画像生成が有効です",
+    "enableImageGeneration": "画像生成を有効にする",
+    "imagePromptPlaceholder": "作成したい画像を説明してください…"
   },
   "aiProvider": {
     "title": "AIプロバイダー設定",
@@ -1762,5 +1805,76 @@
       "review_one": "{{count}} 件の競合を確認",
       "review_other": "{{count}} 件の競合を確認"
     }
+  },
+  "streak": {
+    "record": "学習記録",
+    "openRecord": "学習記録を見る",
+    "headlineCheckedIn": "今日のハンコ済み・{{count}} 日連続",
+    "headlineToCheckIn": "あと少し学べば {{count}} 個目のハンコ",
+    "headlineStart": "少し学んで最初のハンコを押そう",
+    "currentLabel": "連続学習",
+    "days": "{{count}} 日",
+    "stampLabel": "日連続",
+    "stampAria": "{{count}} 日連続のハンコ",
+    "longest": "最長 {{count}} 日",
+    "toMilestone": "あと {{count}} 日で {{milestone}} 日達成",
+    "freezes": "ストリークフリーズ {{count}} 枚",
+    "freezeHint": "学べなかった日は自動でフリーズを 1 枚使います。7 日連続ごとに 1 枚、最大 {{max}} 枚。",
+    "frozenNote": "{{count}} 日休みましたが、フリーズで連続を守りました。",
+    "atRisk": "今日はまだ学習していません。明朝 {{hour}} 時までに学べば連続が続きます。",
+    "week": "今週",
+    "today": "今日",
+    "goalTitle": "今日の目標",
+    "goalRemaining": "あと {{count}} ポイント",
+    "goalMet": "今日の目標達成",
+    "pointsOf": "/ {{goal}} pt",
+    "goalAria": "今日の目標 {{points}} / {{goal}} ポイント",
+    "goalHint": "復習 +1 · 新しい単語 +2 · ノート +2 · 記事 +5",
+    "continue": "学習を続ける",
+    "lang": {
+      "ja": "日本語",
+      "en": "英語",
+      "other": "ノート"
+    },
+    "status": {
+      "active": "学習済み",
+      "goal_met": "目標達成",
+      "frozen": "フリーズ",
+      "none": "未学習",
+      "future": "これから"
+    },
+    "calendar": {
+      "prevMonth": "前の月",
+      "nextMonth": "次の月",
+      "currentStreak": "現在の連続",
+      "studyDays": "今月の学習日",
+      "monthPoints": "今月のポイント",
+      "goalMetDays": "目標達成",
+      "goalMetValue": "{{count}} / {{total}} 日",
+      "dayDetail": "その日の詳細",
+      "noActivity": "この日の学習記録はありません",
+      "noteLabel": "この日のひとこと（任意）",
+      "notePlaceholder": "今日は何を学んだ？",
+      "noteSaved": "保存しました",
+      "noteFailed": "保存できませんでした",
+      "dayPoints": "{{count}} pt",
+      "loadFailed": "学習記録を読み込めませんでした"
+    },
+    "kinds": {
+      "entry_review": "ノートを復習",
+      "vocab_review": "単語を復習",
+      "vocab_new": "新しい単語を学習",
+      "entry_create": "ノートを作成",
+      "article_read": "記事を読了",
+      "exam_complete": "テストを完了"
+    },
+    "toast": {
+      "checkedIn": "ハンコ！{{count}} 日連続",
+      "goalMet": "今日の目標達成 · {{points}} pt",
+      "milestone": "達成：{{count}} 日連続",
+      "freezeEarned": "ストリークフリーズを 1 枚獲得"
+    },
+    "stampMark": "学",
+    "freezeMark": "休"
   }
 }

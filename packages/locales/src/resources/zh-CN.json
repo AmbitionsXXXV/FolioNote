@@ -95,7 +95,8 @@
     "tocPositionRight": "右侧",
     "permissionRequired": "需要权限",
     "navigation": "导航",
-    "optional": "可选"
+    "optional": "可选",
+    "success": "成功"
   },
   "auth": {
     "signIn": "登录",
@@ -122,8 +123,8 @@
     "getStarted": "开始使用",
     "signUpSubtitle": "创建您的账号以开始使用 FolioNote",
     "namePlaceholder": "输入您的姓名",
-    "passwordHint": "密码至少需要 8 个字符",
-    "passwordTooShort": "密码至少需要 8 个字符",
+    "passwordHint": "密码至少需要 10 个字符",
+    "passwordTooShort": "密码至少需要 10 个字符",
     "signUpFailed": "注册失败",
     "haveAccount": "已有账号？",
     "nameRequired": "请输入姓名",
@@ -135,7 +136,7 @@
     "continueWithGoogle": "使用 Google 继续",
     "orContinueWith": "或继续使用",
     "secureLogin": "由 Better Auth 提供安全登录",
-    "passwordRequirements": "至少需要 8 个字符",
+    "passwordRequirements": "至少需要 10 个字符",
     "termsAgreement": "注册即表示您同意我们的服务条款和隐私政策",
     "forgotPasswordTitle": "忘记密码",
     "forgotPasswordSubtitle": "输入您的邮箱，我们将发送重置密码链接",
@@ -452,7 +453,8 @@
         "auxiliary": "助动词",
         "expression": "表达"
       }
-    }
+    },
+    "statsLoadFailed": "复习统计加载失败"
   },
   "japanese": {
     "title": "日语",
@@ -700,7 +702,8 @@
       },
       "kind": {
         "book": "书",
-        "deck": "卡组"
+        "deck": "卡组",
+        "notebook": "生词本"
       },
       "meaningLanguage": {
         "zh": "中文",
@@ -804,6 +807,35 @@
       "loadFailed": "加载失败",
       "retry": "重试",
       "rateFailed": "进度没有保存，请再试一次。"
+    },
+    "notebook": {
+      "title": "生词本",
+      "save": "加入生词本",
+      "saved": "已在生词本",
+      "remove": "移出生词本",
+      "savedToast": "已加入生词本",
+      "removedToast": "已移出生词本",
+      "saveFailed": "加入生词本失败，请重试",
+      "removeFailed": "移出生词本失败，请重试",
+      "fromYourReading": "出自你的阅读",
+      "study": "去背生词本",
+      "wordCount": "{{count}} 个词",
+      "dueCount": "{{count}} 个待复习",
+      "recent": "最近加入：",
+      "startReview": "开始复习",
+      "startReviewDue": "开始复习 · {{count}} 个待复习",
+      "viewAll": "查看全部",
+      "empty": "阅读或查词时点「加入生词本」，词会连同原句出现在这里。",
+      "listMeta": "阅读和查词时加入",
+      "colSource": "出处",
+      "colActions": "操作",
+      "fromSearch": "从查词加入"
+    },
+    "speech": {
+      "play": "朗读",
+      "playWord": "朗读「{{text}}」",
+      "playSentence": "朗读整句",
+      "failed": "朗读失败：这个浏览器没有可用的日语语音"
     }
   },
   "activity": {
@@ -841,7 +873,12 @@
     "profile": "个人资料",
     "knowledge": "知识库",
     "graph": "图谱",
-    "import": "导入"
+    "import": "导入",
+    "sectionMain": "主要",
+    "sectionExplore": "探索",
+    "record": "学习记录",
+    "capture": "记一笔",
+    "capturePlaceholder": "记一笔，或粘贴一个词…"
   },
   "search": {
     "placeholder": "搜索条目...",
@@ -1238,7 +1275,9 @@
       "hour": "小时",
       "day": "天"
     },
-    "permissionDenied": "请授予照片库访问权限以上传头像。"
+    "permissionDenied": "请授予照片库访问权限以上传头像。",
+    "compressError": "图片处理失败",
+    "success": "成功"
   },
   "share": {
     "title": "分享",
@@ -1528,7 +1567,11 @@
       "reject": "拒绝",
       "accepted": "已批准",
       "rejected": "已拒绝"
-    }
+    },
+    "toggleImageGeneration": "切换图片生成",
+    "imageGenerationEnabled": "已启用图片生成",
+    "enableImageGeneration": "启用图片生成",
+    "imagePromptPlaceholder": "描述你想生成的图片…"
   },
   "aiProvider": {
     "title": "AI 提供商设置",
@@ -1762,5 +1805,76 @@
       "review_one": "处理 {{count}} 处冲突",
       "review_other": "处理 {{count}} 处冲突"
     }
+  },
+  "streak": {
+    "record": "学习记录",
+    "openRecord": "查看学习记录",
+    "headlineCheckedIn": "今天已盖章，连续 {{count}} 天",
+    "headlineToCheckIn": "今天再学一点，就能盖上第 {{count}} 个章",
+    "headlineStart": "学一点，盖下第一个章",
+    "currentLabel": "连续学习",
+    "days": "{{count}} 天",
+    "stampLabel": "天连续",
+    "stampAria": "连续 {{count}} 天的印章",
+    "longest": "最长纪录 {{count}} 天",
+    "toMilestone": "再坚持 {{count}} 天解锁 {{milestone}} 天里程碑",
+    "freezes": "{{count}} 张补签卡",
+    "freezeHint": "漏学一天会自动用掉一张补签卡。每连续 7 天得一张，最多 {{max}} 张。",
+    "frozenNote": "有 {{count}} 天没学，已用补签卡保住连续。",
+    "atRisk": "今天还没学，明早 {{hour}} 点前学一点就能保住连续。",
+    "week": "本周",
+    "today": "今天",
+    "goalTitle": "今日目标",
+    "goalRemaining": "还差 {{count}} 分",
+    "goalMet": "今日目标达成",
+    "pointsOf": "/ {{goal}} 分",
+    "goalAria": "今日目标完成 {{points}} / {{goal}} 分",
+    "goalHint": "复习一张 +1 · 学新词 +2 · 记笔记 +2 · 读文章 +5",
+    "continue": "继续学习",
+    "lang": {
+      "ja": "日语",
+      "en": "英语",
+      "other": "笔记"
+    },
+    "status": {
+      "active": "学过",
+      "goal_met": "达成目标",
+      "frozen": "补签",
+      "none": "没学",
+      "future": "还没到"
+    },
+    "calendar": {
+      "prevMonth": "上个月",
+      "nextMonth": "下个月",
+      "currentStreak": "当前连续",
+      "studyDays": "本月学习",
+      "monthPoints": "本月得分",
+      "goalMetDays": "目标达成",
+      "goalMetValue": "{{count}} / {{total}} 天",
+      "dayDetail": "当天明细",
+      "noActivity": "这天没有学习记录",
+      "noteLabel": "这天的一句话（可选）",
+      "notePlaceholder": "今天学到了什么？",
+      "noteSaved": "已保存",
+      "noteFailed": "保存失败",
+      "dayPoints": "{{count}} 分",
+      "loadFailed": "学习记录加载失败"
+    },
+    "kinds": {
+      "entry_review": "复习笔记",
+      "vocab_review": "复习单词",
+      "vocab_new": "学新词",
+      "entry_create": "记了一条笔记",
+      "article_read": "读完一篇文章",
+      "exam_complete": "完成一套测验"
+    },
+    "toast": {
+      "checkedIn": "盖章！连续 {{count}} 天",
+      "goalMet": "今日目标达成 · {{points}} 分",
+      "milestone": "解锁里程碑：连续 {{count}} 天",
+      "freezeEarned": "获得 1 张补签卡"
+    },
+    "stampMark": "学",
+    "freezeMark": "补"
   }
 }

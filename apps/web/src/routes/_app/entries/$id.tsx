@@ -9,7 +9,7 @@ import { Input } from "@folionote/ui/input"
 import { Spinner } from "@folionote/ui/spinner"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@folionote/ui/tooltip"
 import {
-  ArchiveIcon,
+  FolderMoveToIcon,
   ArrowLeft01Icon,
   Delete02Icon,
   InboxIcon,
@@ -18,7 +18,7 @@ import {
   PinIcon,
   Share01Icon,
   StarIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
@@ -77,6 +77,10 @@ const actionButtonClass =
   "inline-flex size-9 shrink-0 items-center justify-center rounded-xl text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
 
 export const Route = createFileRoute("/_app/entries/$id")({
+  // The page keeps unsaved title/content in local state. Without a remount,
+  // going from one entry straight to another would carry that state over and
+  // autosave the previous entry's content into the new one.
+  remountDeps: ({ params }) => params.id,
   loader: async ({ params, context: { queryClient } }) => {
     if (typeof window === "undefined") {
       return { entry: undefined }
@@ -429,7 +433,7 @@ function EntryToolbar({
                   className={actionButtonClass}
                   onClick={onMoveToLibrary}
                 >
-                  <HugeiconsIcon className="size-4" icon={ArchiveIcon} />
+                  <HugeiconsIcon className="size-4" icon={FolderMoveToIcon} />
                 </TooltipTrigger>
                 <TooltipContent>{t("entry.moveToLibrary")}</TooltipContent>
               </Tooltip>

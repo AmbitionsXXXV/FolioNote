@@ -15,7 +15,7 @@ import {
   Delete02Icon,
   Edit02Icon,
   Tag01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, Link } from "@tanstack/react-router"
@@ -353,6 +353,7 @@ function TagCard({
   onEdit: () => void
   onDelete: () => void
 }) {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
   const { data: countData } = useQuery({
@@ -397,7 +398,7 @@ function TagCard({
               </h3>
             </div>
             <p className="pl-5 text-sm text-muted-foreground tabular-nums">
-              {entriesCount} 个条目
+              {t("entry.count", { count: entriesCount })}
             </p>
           </div>
 

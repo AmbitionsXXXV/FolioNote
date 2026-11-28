@@ -5,7 +5,7 @@ import { attachments, db, entries } from "@folionote/db"
 import { createLogger } from "@folionote/log"
 import { getS3Config, STORAGE_BUCKETS } from "@folionote/storage"
 import { generateText, Output } from "ai"
-import { and, eq, inArray, isNull } from "drizzle-orm"
+import { and, eq, inArray, isNull, like, sql } from "drizzle-orm"
 import { z } from "zod"
 
 const log = createLogger({ prefix: "image-captioning" })
@@ -361,7 +361,11 @@ export async function ensureEntryImageCaptions(
       and(
         eq(attachments.userId, input.userId),
         isNull(attachments.deletedAt),
-        inArray(attachments.entryId, uniqueEntryIds)
+        inArray(attachments.entryId, uniqueEntryIds),
+        // Filter before the limit: otherwise already-captioned or non-image
+        // rows use up the batch and the remaining images are never captioned.
+        like(attachments.mimeType, "image/%"),
+        sql`coalesce(trim(${attachments.description}), '') = ''`
       )
     )
     .limit(maxCount)

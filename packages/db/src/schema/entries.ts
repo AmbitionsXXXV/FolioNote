@@ -4,6 +4,7 @@ import {
   customType,
   index,
   integer,
+  jsonb,
   pgTable,
   real,
   text,
@@ -507,8 +508,15 @@ export const reviewEventsRelations = relations(reviewEvents, ({ one }) => ({
 }))
 
 /**
- * daily_logs - 每日日志（可选，Phase 1.5）
- * 用于每日回顾和学习统计
+ * Per-language activity counts for one day, keyed by language
+ * ("ja" | "en" | "other") then by activity kind.
+ */
+export type DailyActivityCounts = Record<string, Record<string, number>>
+
+/**
+ * daily_logs - 每日学习记录（打卡）
+ * 一行 = 用户本地的一天（按 user_streaks.day_start_hour 切日）。
+ * status 为空表示当天没有学习；frozen 表示被补签卡保住。
  */
 export const dailyLogs = pgTable(
   "daily_logs",
@@ -523,6 +531,16 @@ export const dailyLogs = pgTable(
     summary: text("summary"),
     /** 当日心情/状态（可选） */
     mood: text("mood"),
+    /** 当日累计得分 */
+    points: integer("points").default(0).notNull(),
+    /** 当日目标分（记录当天生效的目标，改目标不影响历史） */
+    goalPoints: integer("goal_points").default(20).notNull(),
+    /** active | goal_met | frozen */
+    status: text("status"),
+    /** 按语言、按活动类型的计数 */
+    counts: jsonb("counts").$type<DailyActivityCounts>().default({}).notNull(),
+    /** 当天第一次学习的时间 */
+    firstActivityAt: timestamp("first_activity_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -531,7 +549,9 @@ export const dailyLogs = pgTable(
       .$onUpdate(() => new Date())
       .notNull()
   },
-  (table) => [index("daily_logs_user_id_date_idx").on(table.userId, table.date)]
+  (table) => [
+    uniqueIndex("daily_logs_user_id_date_unique").on(table.userId, table.date)
+  ]
 )
 
 export const dailyLogsRelations = relations(dailyLogs, ({ one }) => ({

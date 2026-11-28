@@ -1,4 +1,4 @@
-import { TextAlignLeftIcon } from "@hugeicons/core-free-icons"
+import { TextAlignLeftIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { TOCItemType } from "fumadocs-core/toc"
 import {

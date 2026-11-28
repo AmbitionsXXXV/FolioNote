@@ -1,5 +1,5 @@
 import { useGSAP } from "@gsap/react"
-import { Add01Icon, ArrowRight02Icon } from "@hugeicons/core-free-icons"
+import { Add01Icon, ArrowRight02Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { createFileRoute, Link, redirect } from "@tanstack/react-router"
 import gsap from "gsap"

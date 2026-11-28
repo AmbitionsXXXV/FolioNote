@@ -1,6 +1,6 @@
 import { Button } from "@folionote/ui/button"
 import { HoverCardTrigger } from "@folionote/ui/hover-card"
-import { Cancel01Icon, FileEditIcon } from "@hugeicons/core-free-icons"
+import { Cancel01Icon, FileEditIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useTranslation } from "react-i18next"
 

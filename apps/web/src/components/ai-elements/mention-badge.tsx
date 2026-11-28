@@ -1,4 +1,4 @@
-import { FileEditIcon } from "@hugeicons/core-free-icons"
+import { FileEditIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 
 import { cn } from "@/lib/utils"

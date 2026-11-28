@@ -1,6 +1,6 @@
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 import { Button } from "@folionote/ui/button"
-import { Cancel01Icon } from "@hugeicons/core-free-icons"
+import { Cancel01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type * as React from "react"
 

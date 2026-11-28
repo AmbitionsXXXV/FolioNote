@@ -8,7 +8,7 @@ import {
   SecurityLockIcon,
   ViewIcon,
   ViewOffSlashIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useForm } from "@tanstack/react-form"
 import type { AnyFieldApi } from "@tanstack/react-form"
@@ -22,7 +22,7 @@ import { BrandLockup } from "@/components/brand-lockup"
 import { authClient } from "@/lib/auth-client"
 import { prettifyFormErrors } from "@/lib/form-error"
 
-const PASSWORD_MIN_LENGTH = 8
+const PASSWORD_MIN_LENGTH = 10
 
 /**
  * Renders the reset password form and handles password reset.

@@ -9,7 +9,7 @@ import {
   RefreshIcon,
   Rocket01Icon,
   Tick02Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { useCallback, useMemo, useState } from "react"

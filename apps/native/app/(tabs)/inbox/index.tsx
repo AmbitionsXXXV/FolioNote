@@ -1,7 +1,8 @@
-import { Add01Icon, MailOpen01Icon } from "@hugeicons/core-free-icons"
+import { Add01Icon, MailOpen01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { FlashList } from "@shopify/flash-list"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { router, useLocalSearchParams } from "expo-router"
 import {
   Button,
   Card,
@@ -10,7 +11,8 @@ import {
   TextField,
   useThemeColor
 } from "heroui-native"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import type { ComponentRef } from "react"
 import { useTranslation } from "react-i18next"
 import { ActivityIndicator, RefreshControl, Text, View } from "react-native"
 
@@ -21,12 +23,27 @@ import { useDataServiceContext } from "@/contexts/data-service-context"
 interface QuickCaptureProps {
   onCapture: (value: string) => void
   isPending: boolean
+  /** Focus the field once, e.g. when opened from the tab bar's capture bar. */
+  shouldFocus: boolean
+  onFocused: () => void
 }
 
-function QuickCapture({ onCapture, isPending }: QuickCaptureProps) {
+function QuickCapture({
+  onCapture,
+  isPending,
+  shouldFocus,
+  onFocused
+}: QuickCaptureProps) {
   const { t } = useTranslation()
   const [inputValue, setInputValue] = useState("")
   const foregroundColor = useThemeColor("foreground")
+  const inputRef = useRef<ComponentRef<typeof Input>>(null)
+
+  useEffect(() => {
+    if (!shouldFocus) return
+    inputRef.current?.focus()
+    onFocused()
+  }, [shouldFocus, onFocused])
 
   const handleSubmit = () => {
     const trimmedValue = inputValue.trim()
@@ -42,6 +59,7 @@ function QuickCapture({ onCapture, isPending }: QuickCaptureProps) {
         <TextField className="mr-3 flex-1">
           <Input
             onChangeText={setInputValue}
+            ref={inputRef}
             onSubmitEditing={handleSubmit}
             placeholder={t("entry.quickCapture")}
             returnKeyType="done"
@@ -73,6 +91,8 @@ export default function InboxScreen() {
   const queryClient = useQueryClient()
   const mutedColor = useThemeColor("muted")
   const accentColor = useThemeColor("accent")
+  const { capture } = useLocalSearchParams<{ capture?: string }>()
+  const clearCaptureParam = () => router.setParams({ capture: undefined })
 
   // Fetch inbox entries using DataService
   const { data, isLoading, isRefetching, refetch } = useQuery({
@@ -136,6 +156,8 @@ export default function InboxScreen() {
             <QuickCapture
               isPending={createEntryMutation.isPending}
               onCapture={handleCapture}
+              onFocused={clearCaptureParam}
+              shouldFocus={capture === "1"}
             />
 
             {entries.length > 0 && (

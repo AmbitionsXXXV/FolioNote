@@ -1,7 +1,7 @@
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog"
 import { Button } from "@folionote/ui/button"
 import { cn } from "@folionote/ui/lib/utils"
-import { Cancel01Icon } from "@hugeicons/core-free-icons"
+import { Cancel01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {

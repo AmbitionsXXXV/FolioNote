@@ -18,7 +18,7 @@ import {
   TextItalicIcon,
   TextStrikethroughIcon,
   Unlink04Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { Editor } from "@tiptap/react"
 import { useEditorState } from "@tiptap/react"
@@ -111,6 +111,7 @@ function LinkPopoverButton({ editor, isActive }: LinkPopoverButtonProps) {
   }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent.isComposing || event.keyCode === 229) return
     if (event.key === "Enter") {
       event.preventDefault()
       apply()

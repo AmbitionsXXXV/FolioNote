@@ -7,7 +7,7 @@ import {
   TextArea,
   TextField
 } from "@heroui/react"
-import { Upload01Icon } from "@hugeicons/core-free-icons"
+import { Upload01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import type { ChangeEvent } from "react"
@@ -406,6 +406,7 @@ export function WebSourcePanel({ onSourceChange }: PanelProps) {
           className="flex-1"
           onChange={setUrl}
           onKeyDown={(event) => {
+            if (event.nativeEvent.isComposing || event.keyCode === 229) return
             if (event.key === "Enter") {
               event.preventDefault()
               submit()

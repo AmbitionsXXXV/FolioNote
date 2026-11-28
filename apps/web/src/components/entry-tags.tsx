@@ -6,7 +6,7 @@ import {
   Cancel01Icon,
   PlusSignIcon,
   Tag01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useImperativeHandle, useState } from "react"
@@ -135,6 +135,7 @@ export function EntryTags({ entryId, ref }: EntryTagsProps) {
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing || e.keyCode === 229) return
     if (e.key === "Enter") {
       e.preventDefault()
       handleCreateTag()

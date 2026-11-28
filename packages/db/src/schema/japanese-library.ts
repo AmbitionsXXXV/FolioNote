@@ -9,7 +9,8 @@ import {
   real,
   text,
   timestamp,
-  unique
+  unique,
+  uniqueIndex
 } from "drizzle-orm/pg-core"
 
 import { user } from "./auth"
@@ -57,6 +58,10 @@ export const jpArticles = pgTable(
   ]
 )
 
+/**
+ * A reader's word lists. "book" and "deck" are imported lists; "notebook" is
+ * the one per-user 生词本 that words saved while reading or searching go into.
+ */
 export const jpLexicons = pgTable(
   "jp_lexicons",
   {
@@ -65,7 +70,7 @@ export const jpLexicons = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
-    kind: text("kind", { enum: ["book", "deck"] }).notNull(),
+    kind: text("kind", { enum: ["book", "deck", "notebook"] }).notNull(),
     level: text("level", { enum: ["N5", "N4", "N3", "N2", "N1"] }),
     meaningLanguage: text("meaning_language", {
       enum: ["zh", "en", "ja"]
@@ -80,8 +85,18 @@ export const jpLexicons = pgTable(
       .notNull()
   },
   (table) => [
-    unique("jp_lexicons_user_name_unique").on(table.userId, table.name),
-    check("jp_lexicons_kind_check", sql`${table.kind} in ('book', 'deck')`),
+    // The notebook's stored name is never shown (clients localize it), so it
+    // must not block an imported list from using the same name.
+    uniqueIndex("jp_lexicons_user_name_unique")
+      .on(table.userId, table.name)
+      .where(sql`${table.kind} <> 'notebook'`),
+    uniqueIndex("jp_lexicons_user_notebook_unique")
+      .on(table.userId)
+      .where(sql`${table.kind} = 'notebook'`),
+    check(
+      "jp_lexicons_kind_check",
+      sql`${table.kind} in ('book', 'deck', 'notebook')`
+    ),
     check(
       "jp_lexicons_level_check",
       sql`${table.level} in ('N5', 'N4', 'N3', 'N2', 'N1')`
@@ -111,6 +126,12 @@ export const jpLexiconEntries = pgTable(
     vocabId: text("vocab_id").references(() => jpVocab.id, {
       onDelete: "set null"
     }),
+    /** Notebook only: the sentence the word was saved from, shown on its card. */
+    contextSentence: text("context_sentence"),
+    contextArticleId: text("context_article_id").references(
+      () => jpArticles.id,
+      { onDelete: "set null" }
+    ),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),

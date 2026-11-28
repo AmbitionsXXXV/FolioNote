@@ -4,6 +4,7 @@ import {
   AiBrain01Icon,
   Atom02Icon,
   BookOpen01Icon,
+  Calendar03Icon,
   FileImportIcon,
   InboxIcon,
   LanguageSquareIcon,
@@ -11,7 +12,7 @@ import {
   Rocket01Icon,
   Search01Icon,
   Tag01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import type { IconSvgElement } from "@hugeicons/react"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Link, useMatchRoute } from "@tanstack/react-router"
@@ -30,6 +31,7 @@ interface NavItem {
 
 const mainNavItems: NavItem[] = [
   { to: "/activity", labelKey: "nav.activity", icon: Activity01Icon },
+  { to: "/record", labelKey: "nav.record", icon: Calendar03Icon },
   { to: "/inbox", labelKey: "nav.inbox", icon: InboxIcon },
   { to: "/library", labelKey: "nav.library", icon: BookOpen01Icon },
   { to: "/import", labelKey: "nav.import", icon: FileImportIcon }

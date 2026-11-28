@@ -3,7 +3,7 @@ import {
   CloudIcon,
   NoteEditIcon,
   RefreshIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import type { IconSvgElement } from "@hugeicons/react-native"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { router } from "expo-router"

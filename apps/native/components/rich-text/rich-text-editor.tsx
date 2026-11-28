@@ -44,6 +44,7 @@ export default function RichTextEditor({
   onSave
 }: RichTextEditorProps) {
   const throttleRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pendingChangeRef = useRef<(() => void) | null>(null)
   const isInternalUpdateRef = useRef(false)
 
   const editor = useEditor({
@@ -73,12 +74,16 @@ export default function RichTextEditor({
         if (throttleRef.current) {
           clearTimeout(throttleRef.current)
         }
-        throttleRef.current = setTimeout(() => {
+        const emitChange = () => {
+          throttleRef.current = null
+          pendingChangeRef.current = null
           isInternalUpdateRef.current = true
           const json = JSON.stringify(editorInstance.getJSON())
           const text = editorInstance.getText()
           onChange(json, text)
-        }, 300)
+        }
+        pendingChangeRef.current = emitChange
+        throttleRef.current = setTimeout(emitChange, 300)
       }
     }
   })
@@ -114,12 +119,14 @@ export default function RichTextEditor({
     }
   }, [content, editor])
 
-  // Cleanup throttle on unmount
+  // On unmount, deliver the change still waiting on the throttle; clearing
+  // it would lose whatever was typed in the last 300 ms.
   useEffect(
     () => () => {
       if (throttleRef.current) {
         clearTimeout(throttleRef.current)
       }
+      pendingChangeRef.current?.()
     },
     []
   )

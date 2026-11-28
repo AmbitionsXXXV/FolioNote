@@ -230,7 +230,13 @@ export const PROVIDER_CONFIGS: Record<AiProvider, ProviderConfig> = {
         supportsBaseUrl: true
       }
     },
-    capabilities: ["chat", "structured_output", "vision", "streaming"],
+    capabilities: [
+      "chat",
+      "structured_output",
+      "function_calling",
+      "vision",
+      "streaming"
+    ],
     defaultModels: {
       chat: "claude-sonnet-4-20250514"
     }

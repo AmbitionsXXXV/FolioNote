@@ -151,9 +151,10 @@ textarea::-webkit-resizer {
   --overlay: oklch(0.992 0.0045 84);
   --overlay-foreground: var(--foreground);
 
-  /* Brand accent — warm amber */
-  --accent: oklch(0.685 0.132 69);
-  --accent-foreground: oklch(0.215 0.022 60);
+  /* Brand accent — deep amber with warm light-gray ink: pure white on it was
+     too bright and dark ink read as black-on-amber (≈4.9:1). */
+  --accent: oklch(0.503 0.111 64);
+  --accent-foreground: oklch(0.927 0.013 75);
 
   /* Neutral default control surface */
   --default: oklch(0.922 0.015 80);
@@ -165,6 +166,11 @@ textarea::-webkit-resizer {
   /* Status */
   --danger: oklch(0.585 0.182 27);
   --danger-foreground: oklch(0.99 0.005 90);
+
+  /* Check-in stamps (印章): vermilion ink, indigo for freeze-covered days */
+  --stamp: oklch(0.53 0.165 33);
+  --stamp-foreground: oklch(0.96 0.008 75);
+  --freeze: oklch(0.47 0.08 258);
 
   /* Lines + focus */
   --border: oklch(0.898 0.013 80);
@@ -275,6 +281,10 @@ textarea::-webkit-resizer {
   --danger: oklch(0.62 0.19 26);
   --danger-foreground: oklch(0.96 0.006 90);
 
+  --stamp: oklch(0.66 0.16 33);
+  --stamp-foreground: oklch(0.22 0.02 40);
+  --freeze: oklch(0.72 0.08 258);
+
   /* Lines + focus */
   --border: oklch(0.305 0.011 58);
   --separator: oklch(0.305 0.011 58);
@@ -363,6 +373,9 @@ textarea::-webkit-resizer {
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-stamp: var(--stamp);
+  --color-stamp-foreground: var(--stamp-foreground);
+  --color-freeze: var(--freeze);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);

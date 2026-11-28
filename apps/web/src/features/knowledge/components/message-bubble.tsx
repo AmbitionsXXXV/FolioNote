@@ -1,4 +1,4 @@
-import { Copy01Icon, RefreshIcon } from "@hugeicons/core-free-icons"
+import { Copy01Icon, RefreshIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { memo, useCallback } from "react"
 import { useTranslation } from "react-i18next"

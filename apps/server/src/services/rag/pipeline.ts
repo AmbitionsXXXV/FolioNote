@@ -37,6 +37,12 @@ export async function ragRetrieve(
   const { userId, query, excludeIds, topK, model, embeddingModel, config } =
     input
 
+  // An empty query turns the ILIKE routes into `%%`, which matches every note
+  // and still pays for rewrite, embedding and rerank calls.
+  if (!query.trim()) {
+    return []
+  }
+
   const enableRewrite = config?.enableQueryRewrite !== false
   const enableRerank = config?.enableRerank !== false
 

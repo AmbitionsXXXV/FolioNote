@@ -1,5 +1,5 @@
 import { formatDate } from "@folionote/locales"
-import { PinIcon, StarIcon } from "@hugeicons/core-free-icons"
+import { PinIcon, StarIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useRouter } from "expo-router"
 import { Card, PressableFeedback, useThemeColor } from "heroui-native"

@@ -1,4 +1,4 @@
-import { PinIcon, StarIcon } from "@hugeicons/core-free-icons"
+import { PinIcon, StarIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Handle, Position } from "@xyflow/react"
 import type { NodeProps } from "@xyflow/react"

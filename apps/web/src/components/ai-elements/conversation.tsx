@@ -1,5 +1,8 @@
 import { Button } from "@folionote/ui/button"
-import { ArrowDown02Icon, FileDownloadIcon } from "@hugeicons/core-free-icons"
+import {
+  ArrowDown02Icon,
+  FileDownloadIcon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ComponentProps } from "react"
 import { useCallback } from "react"

@@ -2,7 +2,7 @@ import {
   Alert01Icon,
   CheckmarkCircle02Icon,
   Loading02Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useTranslation } from "react-i18next"
 

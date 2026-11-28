@@ -12,7 +12,7 @@ import {
   MoreVerticalIcon,
   PinIcon,
   StarIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Link } from "@tanstack/react-router"
 import type { MouseEvent } from "react"

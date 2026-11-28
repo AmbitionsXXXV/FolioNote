@@ -12,6 +12,7 @@ import {
   and,
   asc,
   count,
+  desc,
   eq,
   inArray,
   isNotNull,
@@ -23,11 +24,13 @@ import {
 import { z } from "zod"
 
 import { protectedProcedure } from "../index"
+import { recordLearningActivity } from "../utils/learning-activity"
 import {
   calculateNextReview,
   createDefaultReviewState
 } from "../utils/spaced-repetition"
 import type { Rating } from "../utils/spaced-repetition"
+import { TimeZoneSchema } from "../utils/time-zone-schema"
 import { ownedLexicon } from "./japanese-library"
 
 const LEVELS = ["N5", "N4", "N3", "N2", "N1"] as const
@@ -133,6 +136,8 @@ interface StudyCard {
     furigana: string | null
     zh: string | null
     en: string | null
+    /** "context": the sentence the reader saved the word from. */
+    source: "context" | "bank"
   } | null
   isNew: boolean
   intervalDays: number
@@ -202,6 +207,7 @@ async function lexiconQueue(
         reading: jpLexiconEntries.reading,
         meanings: jpLexiconEntries.meanings,
         pos: jpLexiconEntries.pos,
+        contextSentence: jpLexiconEntries.contextSentence,
         dueAt: jpStudyState.dueAt,
         intervalDays: jpStudyState.intervalDays
       })
@@ -236,6 +242,11 @@ async function lexiconQueue(
   const wordById = new Map(words.map((word) => [word.vocabId, word]))
   const lang = lexicon.meaningLanguage
 
+  const contextExample = (sentence: string | null): StudyCard["example"] =>
+    sentence === null
+      ? null
+      : { ja: sentence, furigana: null, zh: null, en: null, source: "context" }
+
   return entries.map((entry): StudyCard => {
     const word =
       entry.vocabId === null ? undefined : wordById.get(entry.vocabId)
@@ -255,7 +266,7 @@ async function lexiconQueue(
         pitchAccents: [],
         partOfSpeech: entry.pos,
         meanings,
-        example: null,
+        example: contextExample(entry.contextSentence),
         isNew: entry.dueAt === null,
         intervalDays: entry.intervalDays ?? 0
       }
@@ -268,14 +279,19 @@ async function lexiconQueue(
     // The list's own wording fills a language the word bank lacks.
     if (card.meanings[lang].length === 0) card.meanings[lang] = entry.meanings
     card.partOfSpeech ??= entry.pos
+    // The sentence the reader met the word in beats a dictionary example.
+    card.example = contextExample(entry.contextSentence)
     return card
   })
 }
 
-/** One example per word: the first with a Chinese line, else with English. */
+/**
+ * One example per word: the first with a Chinese line, else with English.
+ * Cards that already carry the reader's own context sentence keep it.
+ */
 async function attachExamples(cards: StudyCard[]) {
   const ids = cards.flatMap((card) =>
-    "vocabId" in card.key ? [card.key.vocabId] : []
+    "vocabId" in card.key && card.example === null ? [card.key.vocabId] : []
   )
   if (ids.length === 0) return cards
   const rows = await db
@@ -299,11 +315,11 @@ async function attachExamples(cards: StudyCard[]) {
     if (!current || rank(row) < rank(current)) byWord.set(row.vocabId, row)
   }
   for (const card of cards) {
-    if (!("vocabId" in card.key)) continue
+    if (!("vocabId" in card.key) || card.example !== null) continue
     const example = byWord.get(card.key.vocabId)
     if (example) {
       const { vocabId: _vocabId, ...sentence } = example
-      card.example = sentence
+      card.example = { ...sentence, source: "bank" }
     }
   }
   return cards
@@ -337,6 +353,7 @@ const listDecks = protectedProcedure.handler(async ({ context }) => {
       .select({
         id: jpLexicons.id,
         name: jpLexicons.name,
+        kind: jpLexicons.kind,
         level: jpLexicons.level,
         ...progressCounts(now)
       })
@@ -348,7 +365,8 @@ const listDecks = protectedProcedure.handler(async ({ context }) => {
       .leftJoin(jpStudyState, entryProgress(userId))
       .where(eq(jpLexicons.userId, userId))
       .groupBy(jpLexicons.id)
-      .orderBy(asc(jpLexicons.name))
+      // The reader's own notebook leads; imported lists follow by name.
+      .orderBy(desc(sql`${jpLexicons.kind} = 'notebook'`), asc(jpLexicons.name))
   ])
 
   return {
@@ -411,25 +429,37 @@ const studyQueue = protectedProcedure
  * its next review.
  */
 const rateCard = protectedProcedure
-  .input(z.object({ key: CardKeySchema, rating: RatingSchema }))
+  .input(
+    z.object({
+      key: CardKeySchema,
+      rating: RatingSchema,
+      timeZone: TimeZoneSchema
+    })
+  )
   .handler(async ({ input, context }) => {
     const userId = context.session.user.id
     const now = new Date()
     let target: SQL | undefined
     let values: { vocabId: string } | { lexiconEntryId: number }
+    let term: string | undefined
 
     if ("vocabId" in input.key) {
       const [word] = await db
-        .select({ id: jpVocab.id })
+        .select({ id: jpVocab.id, word: jpVocab.word })
         .from(jpVocab)
         .where(eq(jpVocab.id, input.key.vocabId))
         .limit(1)
       if (!word) throw new ORPCError("NOT_FOUND", { message: "Word not found" })
       values = { vocabId: word.id }
+      term = word.word
       target = eq(jpStudyState.vocabId, word.id)
     } else {
       const [entry] = await db
-        .select({ id: jpLexiconEntries.id, vocabId: jpLexiconEntries.vocabId })
+        .select({
+          id: jpLexiconEntries.id,
+          vocabId: jpLexiconEntries.vocabId,
+          headword: jpLexiconEntries.headword
+        })
         .from(jpLexiconEntries)
         .innerJoin(jpLexicons, eq(jpLexicons.id, jpLexiconEntries.lexiconId))
         .where(
@@ -447,6 +477,7 @@ const rateCard = protectedProcedure
           message: "Rate this entry by its word id"
         })
       values = { lexiconEntryId: entry.id }
+      term = entry.headword
       target = eq(jpStudyState.lexiconEntryId, entry.id)
     }
 
@@ -474,7 +505,18 @@ const rateCard = protectedProcedure
         dueAt: jpStudyState.dueAt,
         intervalDays: jpStudyState.intervalDays
       })
-    return saved
+    // A card seen for the first time counts as learning a new word.
+    const progress = await recordLearningActivity(db, {
+      userId,
+      kind: previous ? "vocab_review" : "vocab_new",
+      refId:
+        "vocabId" in values ? values.vocabId : String(values.lexiconEntryId),
+      language: "ja",
+      meta: { rating: input.rating, term },
+      occurredAt: now,
+      timeZone: input.timeZone
+    })
+    return saved ? { ...saved, progress } : saved
   })
 
 export const japaneseStudyRouter = {

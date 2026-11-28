@@ -1,7 +1,7 @@
 import type { Word } from "@folionote/japanese"
 import { splitArticle, decodeJapaneseBytes } from "@folionote/japanese"
 import { Button, Input, Label, TextArea, TextField } from "@heroui/react"
-import { Upload01Icon } from "@hugeicons/core-free-icons"
+import { Upload01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   keepPreviousData,
@@ -133,6 +133,7 @@ function UrlSource({
         isInvalid={fetchError !== null}
         onChange={onUrlChange}
         onKeyDown={(event) => {
+          if (event.nativeEvent.isComposing || event.keyCode === 229) return
           if (event.key === "Enter") {
             event.preventDefault()
             onFetch()

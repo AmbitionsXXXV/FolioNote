@@ -7,7 +7,11 @@ import {
   SelectTrigger,
   SelectValue
 } from "@folionote/ui/select"
-import { FilterIcon, Search01Icon, ViewIcon } from "@hugeicons/core-free-icons"
+import {
+  FilterIcon,
+  Search01Icon,
+  ViewIcon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useReactFlow } from "@xyflow/react"
 import { useCallback } from "react"

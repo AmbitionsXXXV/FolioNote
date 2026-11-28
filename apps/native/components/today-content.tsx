@@ -1,4 +1,5 @@
 import { useThemeColor } from "heroui-native"
+import type { ReactNode } from "react"
 import { RefreshControl, ScrollView } from "react-native"
 
 import { QuickStatsCard } from "./quick-stats-card"
@@ -18,6 +19,10 @@ interface TodayContentProps {
   isRefetching: boolean
   onRefresh: () => void
   onStartReview: () => void
+  /** Rendered under the greeting (check-in card, local-mode banner). */
+  header?: ReactNode
+  /** Rendered after the stats (recent entries). */
+  footer?: ReactNode
 }
 
 export function TodayContent({
@@ -32,7 +37,9 @@ export function TodayContent({
   unreviewedEntries,
   isRefetching,
   onRefresh,
-  onStartReview
+  onStartReview,
+  header,
+  footer
 }: TodayContentProps) {
   const accentColor = useThemeColor("accent")
 
@@ -54,6 +61,8 @@ export function TodayContent({
     >
       <TodayHeader streak={streak} userName={userName} />
 
+      {header}
+
       <TodayReviewCard
         dueToday={dueToday}
         hasItemsToReview={hasItemsToReview}
@@ -69,6 +78,8 @@ export function TodayContent({
         totalEntries={totalEntries}
         unreviewedEntries={unreviewedEntries}
       />
+
+      {footer}
     </ScrollView>
   )
 }

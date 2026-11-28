@@ -42,7 +42,7 @@ import {
   MultiplicationSignIcon,
   RefreshIcon,
   SquareIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ChatStatus, FileUIPart, SourceDocumentUIPart } from "ai"
 import { nanoid } from "nanoid"
@@ -441,8 +441,7 @@ export const PromptInputActionAddAttachments = ({
   return (
     <DropdownMenuItem
       {...props}
-      onSelect={(e) => {
-        e.preventDefault()
+      onClick={() => {
         attachments.openFileDialog()
       }}
     >
@@ -1068,7 +1067,11 @@ export const PromptInputTextarea = ({
       }
 
       if (e.key === "Enter") {
-        if (isComposingRef.current || e.nativeEvent.isComposing) {
+        if (
+          isComposingRef.current ||
+          e.nativeEvent.isComposing ||
+          e.keyCode === 229
+        ) {
           return
         }
         if (e.shiftKey) {

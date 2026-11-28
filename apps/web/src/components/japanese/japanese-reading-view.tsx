@@ -304,6 +304,7 @@ export function JapaneseReadingView() {
         <aside className="lg:sticky lg:top-6 lg:self-start">
           {selectedWord && selectedAnalysis ? (
             <SelectedWordPanel
+              allowSave
               analysis={selectedAnalysis}
               lexiconMatches={lexicons.matches.get(selectedWord.baseForm)}
               word={selectedWord}
