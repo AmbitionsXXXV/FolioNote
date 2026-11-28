@@ -37,8 +37,8 @@
       /* Muted = web muted-foreground (muted text / placeholders) */
       --muted: oklch(0.485 0.015 64);
 
-      /* Default = web secondary */
-      --default: oklch(0.922 0.015 80);
+      /* Default = web secondary. Keep light-mode fills light (L >= 0.94). */
+      --default: oklch(0.952 0.008 80);
       --default-foreground: oklch(0.3 0.01 64);
 
       /* Accent = web primary (deep amber, warm light-gray ink) */
@@ -88,7 +88,7 @@
       /* Muted = web muted-foreground (muted text / placeholders) */
       --muted: oklch(0.715 0.015 74);
 
-      /* Default = web secondary */
+      /* Default = web secondary. Keep light-mode fills light (L >= 0.94). */
       --default: oklch(0.3 0.011 58);
       --default-foreground: oklch(0.9 0.012 82);
 

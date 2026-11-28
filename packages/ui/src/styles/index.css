@@ -142,9 +142,9 @@ textarea::-webkit-resizer {
   /* Surfaces — cards, accordions, non-overlay containers */
   --surface: oklch(0.992 0.0045 84);
   --surface-foreground: var(--foreground);
-  --surface-secondary: oklch(0.941 0.012 82);
+  --surface-secondary: oklch(0.962 0.007 82);
   --surface-secondary-foreground: var(--foreground);
-  --surface-tertiary: oklch(0.922 0.015 80);
+  --surface-tertiary: oklch(0.948 0.009 80);
   --surface-tertiary-foreground: var(--foreground);
 
   /* Overlays — tooltips, popovers, modals, menus */
@@ -156,8 +156,10 @@ textarea::-webkit-resizer {
   --accent: oklch(0.503 0.111 64);
   --accent-foreground: oklch(0.927 0.013 75);
 
-  /* Neutral default control surface */
-  --default: oklch(0.922 0.015 80);
+  /* Neutral default control surface. Light mode keeps every fill light
+     (L >= 0.94): fields, chips, tracks and secondary buttons must never read
+     as a dark-ish gray on the paper background. */
+  --default: oklch(0.952 0.008 80);
   --default-foreground: oklch(0.3 0.01 64);
 
   /* Secondary text */
@@ -201,7 +203,7 @@ textarea::-webkit-resizer {
   --sidebar-foreground: oklch(0.265 0.008 62);
   --sidebar-primary: oklch(0.685 0.132 69);
   --sidebar-primary-foreground: oklch(0.215 0.022 60);
-  --sidebar-accent: oklch(0.918 0.035 78);
+  --sidebar-accent: oklch(0.942 0.026 78);
   --sidebar-accent-foreground: oklch(0.3 0.02 64);
   --sidebar-border: oklch(0.898 0.013 80);
   --sidebar-ring: oklch(0.685 0.132 69);
