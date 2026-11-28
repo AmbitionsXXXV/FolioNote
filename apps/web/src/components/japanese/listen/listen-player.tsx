@@ -247,7 +247,7 @@ export function ListenPlayer({
           >
             −0.25s
           </Button>
-          <span className="min-w-14 text-center font-mono tabular-nums text-foreground">
+          <span className="min-w-14 text-center font-mono text-foreground tabular-nums">
             {offsetLabel}
           </span>
           <Button

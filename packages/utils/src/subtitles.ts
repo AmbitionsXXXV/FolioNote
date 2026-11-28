@@ -71,7 +71,9 @@ const cleanCueText = (lines: string[]): string =>
  * highlighted or looped.
  */
 export function parseSubtitles(source: string): SubtitleCue[] {
-  const normalized = source.replace(/^﻿/, "").replace(LINE_BREAK_PATTERN, "\n")
+  const normalized = source
+    .replace(BYTE_ORDER_MARK_PATTERN, "")
+    .replace(LINE_BREAK_PATTERN, "\n")
   const parsed: Omit<SubtitleCue, "index">[] = []
 
   for (const block of normalized.split(BLOCK_SEPARATOR_PATTERN)) {

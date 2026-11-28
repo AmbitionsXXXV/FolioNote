@@ -9,7 +9,7 @@ import {
 describe("parseSubtitles", () => {
   it("parses SRT with CRLF, a BOM, multi-line text and markup", () => {
     const srt =
-      "﻿1\r\n00:00:01,000 --> 00:00:02,500\r\n<i>こんにちは</i>\r\n世界\r\n\r\n" +
+      "\uFEFF1\r\n00:00:01,000 --> 00:00:02,500\r\n<i>こんにちは</i>\r\n世界\r\n\r\n" +
       "2\r\n00:00:03,000 --> 00:00:04,000\r\n{\\an8}Tom &amp; Jerry\r\n"
     expect(parseSubtitles(srt)).toEqual([
       { endMs: 2500, index: 0, startMs: 1000, text: "こんにちは\n世界" },
