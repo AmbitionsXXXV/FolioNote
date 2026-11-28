@@ -48,9 +48,9 @@
       --default: oklch(0.952 0.008 80);
       --default-foreground: oklch(0.3 0.01 64);
 
-      /* Accent = web primary (deep amber, warm light-gray ink) */
-      --accent: oklch(0.503 0.111 64);
-      --accent-foreground: oklch(0.927 0.013 75);
+      /* Accent = web primary (amber = selected tab icon #AF7131, near-white ink) */
+      --accent: oklch(0.603 0.111 64);
+      --accent-foreground: oklch(0.993 0.004 75);
 
       /* Form Field Defaults - Colors */
       --field-background: oklch(0.992 0.0045 84);

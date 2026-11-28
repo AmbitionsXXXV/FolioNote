@@ -151,10 +151,11 @@ textarea::-webkit-resizer {
   --overlay: oklch(0.992 0.0045 84);
   --overlay-foreground: var(--foreground);
 
-  /* Brand accent — deep amber with warm light-gray ink: pure white on it was
-     too bright and dark ink read as black-on-amber (≈4.9:1). */
-  --accent: oklch(0.503 0.111 64);
-  --accent-foreground: oklch(0.927 0.013 75);
+  /* Brand accent — amber at the same hue/chroma as the selected tab icon
+     (#AF7131); one step lighter than the old 0.503 because the deep amber read
+     too heavy in light mode. Near-white warm ink, never black-based (≈4:1). */
+  --accent: oklch(0.603 0.111 64);
+  --accent-foreground: oklch(0.993 0.004 75);
 
   /* Neutral default control surface. Light mode keeps every fill light
      (L >= 0.94): fields, chips, tracks and secondary buttons must never read
