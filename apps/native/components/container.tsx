@@ -12,7 +12,6 @@ type Props = AnimatedProps<ViewProps> & {
   className?: string
   disableScroll?: boolean
   disableTopInset?: boolean
-  disableBottomInset?: boolean
   /**
    * When true, disables automatic content inset adjustment for transparent headers.
    * Use this for pages that don't need extra space for transparent navigation bars.
@@ -34,7 +33,6 @@ export function Container({
   className,
   disableScroll = false,
   disableTopInset = false,
-  disableBottomInset = false,
   disableContentInsetAdjustment = false,
   entering,
   ...props
@@ -47,10 +45,11 @@ export function Container({
       // Gentle, app-wide screen entrance (mirrors the web shell fade-in);
       // callers can override by passing their own `entering`.
       entering={entering ?? FadeIn.duration(350)}
-      style={{
-        paddingBottom: disableBottomInset ? 0 : insets.bottom,
-        paddingTop: disableTopInset ? 0 : insets.top
-      }}
+      // No bottom inset: on iOS 26+ content scrolls under the Liquid Glass
+      // tab bar and home indicator. Scroll views get their bottom inset from
+      // contentInsetAdjustmentBehavior="automatic"; padding here left an
+      // opaque strip of background below the tab bar.
+      style={{ paddingTop: disableTopInset ? 0 : insets.top }}
       {...props}
     >
       {disableScroll ? (
