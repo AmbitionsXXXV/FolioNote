@@ -39,6 +39,7 @@
   --color-again-soft-foreground: var(--again-soft-foreground);
   --color-good-soft: var(--good-soft);
   --color-good-soft-foreground: var(--good-soft-foreground);
+  --color-hairline: var(--divider);
   /* Video/subtitle stage: always dark, in both themes */
   --color-stage: oklch(0.215 0.005 70);
   --color-stage-foreground: oklch(0.94 0.006 70);

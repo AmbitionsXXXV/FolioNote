@@ -295,8 +295,8 @@ export function ListenStep({
                 {DEMO_WORD.headword}
               </Text>
               <Text className="text-[15px] text-muted">{DEMO_WORD.reading}</Text>
-              <View className="ml-auto rounded-full bg-default px-2.5 py-[3px]">
-                <Text className="text-xs text-muted">{t("onboarding.flow.flip.noun")}</Text>
+              <View className="ml-auto rounded-full bg-accent-soft px-2.5 py-[3px]">
+                <Text className="text-xs font-medium text-accent-soft-foreground">{t("onboarding.flow.flip.noun")}</Text>
               </View>
             </View>
             <Text className="text-[17px] text-foreground">

@@ -79,7 +79,9 @@ export function FormRow({
   return (
     <View className="ml-4">
       <View className="min-h-[52px] flex-row items-center pr-3">
-        <Text className="w-16 text-base text-foreground">{label}</Text>
+        <Text className="w-24 text-base text-foreground" numberOfLines={1}>
+          {label}
+        </Text>
         <TextInput
           accessibilityLabel={label}
           autoCapitalize="none"

@@ -76,7 +76,7 @@ export function RulerWheel({
       accessibilityRole="adjustable"
       accessibilityValue={{ min, max, now: value }}
       accessible
-      className="h-14 justify-center"
+      className="h-12 justify-start pt-1"
       onAccessibilityAction={(event) => {
         step(event.nativeEvent.actionName === "increment" ? 1 : -1)
       }}
@@ -115,7 +115,7 @@ export function RulerWheel({
                 <View
                   className={cn(
                     "w-[1.5px] rounded-full",
-                    major ? "h-5 bg-muted/60" : "h-2.5 bg-divider"
+                    major ? "h-5 bg-muted/60" : "h-2.5 bg-muted/35"
                   )}
                 />
                 {major ? (
@@ -135,7 +135,7 @@ export function RulerWheel({
         </ScrollView>
       ) : null}
       <View
-        className="absolute top-0 h-7 w-[3px] rounded-full bg-accent"
+        className="absolute top-0 h-8 w-[3px] rounded-full bg-accent"
         pointerEvents="none"
         style={{ left: sidePadding - 1.5 }}
       />

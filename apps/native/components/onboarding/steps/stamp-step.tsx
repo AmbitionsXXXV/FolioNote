@@ -236,7 +236,7 @@ export function StampStep({
 
       <View className="items-center px-6" style={{ paddingBottom: insets.bottom + 12 }}>
         {done ? (
-          <Animated.View className="self-stretch" entering={FadeIn.delay(reduceMotion ? 0 : 700)}>
+          <Animated.View className="self-stretch" entering={FadeIn.delay(reduceMotion ? 0 : 420)}>
             <PrimaryButton
               label={nextLabel}
               onPress={onNext}

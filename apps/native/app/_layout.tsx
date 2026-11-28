@@ -6,7 +6,7 @@ import { Stack } from "expo-router"
 import * as SplashScreen from "expo-splash-screen"
 import { HeroUINativeProvider, useThemeColor } from "heroui-native"
 import type { ComponentProps } from "react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { I18nextProvider, useTranslation } from "react-i18next"
 import { ActivityIndicator, Platform, View } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
@@ -52,7 +52,16 @@ function StackLayout() {
   const canAccessApp = isAuthenticated || isLocalMode
 
   // Show loading while checking auth state or local mode state
-  if (isAuthPending || isLocalModeLoading) {
+  // Only the first check blocks: the session refetches whenever the app
+  // returns to the foreground, and swapping the Stack for a spinner then
+  // would unmount whatever the reader was in the middle of (onboarding).
+  const isLoading = isAuthPending || isLocalModeLoading
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false)
+  useEffect(() => {
+    if (!isLoading) setHasLoadedOnce(true)
+  }, [isLoading])
+
+  if (isLoading && !hasLoadedOnce) {
     return (
       <View className="flex-1 items-center justify-center bg-background">
         <ActivityIndicator size="large" />

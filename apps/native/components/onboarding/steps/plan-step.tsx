@@ -8,6 +8,7 @@ import { cn, useThemeColor } from "heroui-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Switch, Text, TextInput, View } from "react-native"
+import { KeyboardStickyView } from "react-native-keyboard-controller"
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useCSSVariable } from "uniwind"
@@ -88,7 +89,7 @@ export function PlanStep({
   const insets = useSafeAreaInsets()
   const accent = useThemeColor("accent")
   const accentForeground = useThemeColor("accent-foreground")
-  const divider = String(useCSSVariable("--color-divider") ?? "gray")
+  const divider = String(useCSSVariable("--color-hairline") ?? "gray")
   const [plan, setPlan] = useState(initialPlan)
   const [typed, setTyped] = useState<string | null>(null)
 
@@ -227,7 +228,6 @@ export function PlanStep({
                 }}
                 value={plan.dailyNewWords}
               />
-              <View className="h-4" />
             </View>
           </Animated.View>
         ) : null}
@@ -257,16 +257,18 @@ export function PlanStep({
         </Animated.View>
       </ScrollView>
 
-      <View className="px-6 pt-2" style={{ paddingBottom: insets.bottom + 12 }}>
-        <PrimaryButton
-          isDisabled={!(plan.useNotes || plan.useJapanese)}
-          label={t("onboarding.flow.plan.done")}
-          onPress={() => onDone(plan)}
-          trailing={
-            <HugeiconsIcon color={accentForeground} icon={ArrowRight01Icon} size={18} />
-          }
-        />
-      </View>
+      <KeyboardStickyView offset={{ opened: insets.bottom }}>
+        <View className="px-6 pt-2" style={{ paddingBottom: insets.bottom + 12 }}>
+          <PrimaryButton
+            isDisabled={!(plan.useNotes || plan.useJapanese)}
+            label={t("onboarding.flow.plan.done")}
+            onPress={() => onDone(plan)}
+            trailing={
+              <HugeiconsIcon color={accentForeground} icon={ArrowRight01Icon} size={18} />
+            }
+          />
+        </View>
+      </KeyboardStickyView>
     </View>
   )
 }

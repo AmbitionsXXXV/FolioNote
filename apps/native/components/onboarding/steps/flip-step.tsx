@@ -81,6 +81,8 @@ export function FlipStep({
   const accentForeground = useThemeColor("accent-foreground")
   const [flipped, setFlipped] = useState(false)
   const [rating, setRating] = useState<RatingFeel | null>(null)
+  // Ratings appear once the card has landed, so a tap never hits mid-flip.
+  const [canRate, setCanRate] = useState(false)
   const turn = useSharedValue(0)
 
   const flip = () => {
@@ -89,8 +91,10 @@ export function FlipStep({
     if (reduceMotion) {
       turn.value = 1
       haptics.flip()
+      setCanRate(true)
       return
     }
+    setTimeout(() => setCanRate(true), FLIP_MS)
     turn.value = withTiming(1, { duration: FLIP_MS, easing: FLIP_EASING })
     // The card is edge-on at about 40% of the eased curve.
     setTimeout(haptics.flip, FLIP_MS * 0.3)
@@ -107,6 +111,7 @@ export function FlipStep({
       : {
           transform: [
             { perspective: 1200 },
+            { scale: interpolate(turn.value, [0, 0.5, 1], [1, 0.88, 1]) },
             { rotateY: `${interpolate(turn.value, [0, 1], [0, 180])}deg` }
           ]
         }
@@ -117,6 +122,7 @@ export function FlipStep({
       : {
           transform: [
             { perspective: 1200 },
+            { scale: interpolate(turn.value, [0, 0.5, 1], [1, 0.88, 1]) },
             { rotateY: `${interpolate(turn.value, [0, 1], [180, 360])}deg` }
           ]
         }
@@ -128,12 +134,14 @@ export function FlipStep({
     <View className="flex-1 bg-background">
       <OnboardingTopBar onBack={onBack} onSkip={onSkip} progress={2} />
       <View className="flex-1 px-6" style={{ paddingTop: insets.top + 72 }}>
-        <StepHeading
-          subtitle={t("onboarding.flow.flip.body")}
-          title={t("onboarding.flow.flip.title")}
-        />
+        <View style={{ zIndex: 2 }}>
+          <StepHeading
+            subtitle={t("onboarding.flow.flip.body")}
+            title={t("onboarding.flow.flip.title")}
+          />
+        </View>
 
-        <View className="mt-7 h-[286px]">
+        <View className="mt-7 h-[286px]" style={{ zIndex: 1 }}>
           <Animated.View
             className="absolute inset-0"
             style={[{ backfaceVisibility: "hidden" }, frontStyle]}
@@ -184,10 +192,10 @@ export function FlipStep({
           </Animated.View>
         </View>
 
-        {flipped && !rating ? (
+        {canRate && !rating ? (
           <Animated.View
             className="mt-6 flex-row gap-2"
-            entering={FadeIn.delay(reduceMotion ? 0 : FLIP_MS - 120)}
+            entering={FadeIn.duration(180)}
             exiting={FadeOut.duration(160)}
           >
             <RateButton

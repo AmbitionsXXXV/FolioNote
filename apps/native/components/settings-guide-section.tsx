@@ -37,7 +37,7 @@ import { client } from "@/utils/orpc"
 export function SettingsGuideSection() {
   const { t } = useTranslation()
   const accent = useThemeColor("accent")
-  const divider = String(useCSSVariable("--color-divider") ?? "gray")
+  const divider = String(useCSSVariable("--color-hairline") ?? "gray")
   const { data: session } = authClient.useSession()
   const reminder = useReminderTime()
   const refresh = useRefreshReminderTime()

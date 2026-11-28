@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next"
 import { View } from "react-native"
 import Animated, {
   FadeIn,
-  FadeOut,
   SlideInLeft,
   SlideInRight,
   useReducedMotion
@@ -219,7 +218,6 @@ export function OnboardingFlow({
       <Animated.View
         className="flex-1"
         entering={entering}
-        exiting={FadeOut.duration(140)}
         key={step}
       >
         {renderStep()}

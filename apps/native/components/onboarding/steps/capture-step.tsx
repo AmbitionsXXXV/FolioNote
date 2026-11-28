@@ -210,7 +210,8 @@ export function CaptureStep({
               <TextInput
                 accessibilityLabel={t("onboarding.flow.capture.inputLabel")}
                 autoFocus
-                className="min-w-0 flex-1 text-base text-foreground"
+                className="max-h-[120px] min-w-0 flex-1 py-2 text-base leading-[22px] text-foreground"
+                multiline
                 onChangeText={setText}
                 onSubmitEditing={send}
                 placeholder={t("onboarding.flow.capture.placeholder")}
