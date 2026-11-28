@@ -1890,6 +1890,9 @@
   "inbox": {
     "filterAll": "すべて",
     "filterPinned": "ピン留め",
-    "filterStarred": "スター"
+    "filterStarred": "スター",
+    "today": "今日",
+    "yesterday": "昨日",
+    "emptyFilter": "条件に合うノートはありません"
   }
 }

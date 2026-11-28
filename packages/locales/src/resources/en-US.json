@@ -1894,6 +1894,9 @@
   "inbox": {
     "filterAll": "All",
     "filterPinned": "Pinned",
-    "filterStarred": "Starred"
+    "filterStarred": "Starred",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "emptyFilter": "No notes match this filter"
   }
 }

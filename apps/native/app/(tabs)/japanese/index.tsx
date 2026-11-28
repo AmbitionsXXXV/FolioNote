@@ -5,6 +5,7 @@ import {
 } from "@hugeicons-pro/core-stroke-rounded"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { useLocalSearchParams, useRouter } from "expo-router"
+import type { Href } from "expo-router"
 import { Button, SearchField, Skeleton } from "heroui-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -28,8 +29,12 @@ const SEARCH_DEBOUNCE_MS = 250
 const SEARCH_LIMIT = 20
 const LEVELS_STALE_MS = 5 * 60 * 1000
 const LEVEL_ORDER = ["N5", "N4", "N3", "N2", "N1"]
-/** The word book list lives in the root stack (app/japanese/books). */
-const WORD_BOOK_PATH = "/japanese/books"
+/**
+ * The word book list lives in the root stack (app/japanese/books.tsx, added
+ * with the daily-vocab work). Typed as Href by hand until that route exists;
+ * drop the annotation once it does.
+ */
+const WORD_BOOK_PATH: string = "/japanese/books"
 
 interface LevelCount {
   level: string
@@ -101,43 +106,41 @@ function DictionaryRow() {
   const canRemove = Boolean(dictionary || engine.hasCachedFiles)
 
   return (
-    <GroupedSection title={t("japanese.engine.statusTitle")}>
-      <GroupedCard>
-        <GroupedRow
-          accessory={
-            canRemove ? (
-              <Button
-                accessibilityLabel={t("japanese.engine.remove")}
-                isDisabled={isBusy}
-                onPress={() => {
-                  void removeOnDeviceDictionary()
-                }}
-                size="sm"
-                variant="tertiary"
-              >
-                <Button.Label className="text-danger">
-                  {t("japanese.engine.remove")}
-                </Button.Label>
-              </Button>
-            ) : undefined
-          }
-          icon={CloudIcon}
-          iconTone="neutral"
-          label={t("japanese.engine.statusTitle")}
-          sublabel={
-            dictionary
-              ? t("japanese.engine.statusDownloaded", {
-                  size: Math.round(dictionary.bytes / BYTES_PER_MB),
-                  version: dictionary.version.slice(0, 6)
-                })
-              : t("japanese.engine.statusNotDownloaded")
-          }
-        />
-        {devMetrics.length > 0 && (
-          <Text className="px-4 pb-3 text-[11px] text-muted">{devMetrics}</Text>
-        )}
-      </GroupedCard>
-    </GroupedSection>
+    <GroupedCard>
+      <GroupedRow
+        accessory={
+          canRemove ? (
+            <Button
+              accessibilityLabel={t("japanese.engine.remove")}
+              isDisabled={isBusy}
+              onPress={() => {
+                void removeOnDeviceDictionary()
+              }}
+              size="sm"
+              variant="tertiary"
+            >
+              <Button.Label className="text-danger">
+                {t("japanese.engine.remove")}
+              </Button.Label>
+            </Button>
+          ) : undefined
+        }
+        icon={CloudIcon}
+        iconTone="neutral"
+        label={t("japanese.engine.statusTitle")}
+        sublabel={
+          dictionary
+            ? t("japanese.engine.statusDownloaded", {
+                size: Math.round(dictionary.bytes / BYTES_PER_MB),
+                version: dictionary.version.slice(0, 6)
+              })
+            : t("japanese.engine.statusNotDownloaded")
+        }
+      />
+      {devMetrics.length > 0 && (
+        <Text className="px-4 pb-3 text-[11px] text-muted">{devMetrics}</Text>
+      )}
+    </GroupedCard>
   )
 }
 
@@ -162,7 +165,7 @@ function HubHome() {
         <GroupedRow
           icon={NoteEditIcon}
           label={t("japanese.notebook.title")}
-          onPress={() => router.push(WORD_BOOK_PATH)}
+          onPress={() => router.push(WORD_BOOK_PATH as Href)}
           sublabel={t("japanese.notebook.listMeta")}
         />
       </GroupedCard>

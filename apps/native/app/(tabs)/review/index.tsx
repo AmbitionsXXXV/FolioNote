@@ -10,8 +10,13 @@ import {
 } from "@hugeicons-pro/core-stroke-rounded"
 import type { IconSvgElement } from "@hugeicons/react-native"
 import { HugeiconsIcon } from "@hugeicons/react-native"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Button, cn, useThemeColor } from "heroui-native"
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from "@tanstack/react-query"
+import { Button, useThemeColor } from "heroui-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import {
@@ -136,23 +141,13 @@ interface ScopeOption {
   count: number | undefined
 }
 
-function StatCell({
-  label,
-  value,
-  valueClassName
-}: {
-  label: string
-  value: string | number
-  valueClassName?: string
-}) {
+/** "–" rather than a misleading 0 while stats are missing or failed. */
+const statValue = (value: number | undefined) => value ?? "–"
+
+function StatCell({ label, value }: { label: string; value: string | number }) {
   return (
     <View className="flex-1 items-center gap-0.5 py-3.5">
-      <Text
-        className={cn(
-          "text-[22px] font-bold text-foreground tabular-nums",
-          valueClassName
-        )}
-      >
+      <Text className="text-[22px] font-bold text-foreground tabular-nums">
         {value}
       </Text>
       <Text className="text-xs text-muted">{label}</Text>
@@ -173,25 +168,26 @@ export default function ReviewScreen() {
   const accentColor = useThemeColor("accent")
 
   const {
-    data: queueData,
+    data: queueItems,
     isLoading,
+    isError: isQueueError,
     refetch,
     isRefetching
   } = useQuery({
     queryKey: ["review", "queue", currentRule],
-    queryFn: async () => {
-      if (!dataService) {
-        return { items: [], reviewedTodayCount: 0 }
-      }
-      const items = await dataService.review.getQueue({
-        mode: currentRule,
-        limit: 50,
-        tzOffset: getTzOffset()
-      })
-      const todayStats = await dataService.review.getTodayStats(getTzOffset())
-      return { items, reviewedTodayCount: todayStats.reviewedToday }
-    },
-    enabled: !!dataService
+    // Only the queue: today's stats come from their own query, so a failing
+    // stats endpoint can no longer empty the queue and disable "start".
+    queryFn: () =>
+      dataService
+        ? dataService.review.getQueue({
+            mode: currentRule,
+            limit: 50,
+            tzOffset: getTzOffset()
+          })
+        : [],
+    enabled: !!dataService,
+    // Switching scope keeps the page and swaps the list in place.
+    placeholderData: keepPreviousData
   })
 
   // Same keys as the Today tab, so both read one cache.
@@ -221,6 +217,8 @@ export default function ReviewScreen() {
     }
   })
 
+  const entries = queueItems ?? []
+
   const handleStartReview = () => {
     setIsReviewing(true)
     setCurrentIndex(0)
@@ -233,7 +231,7 @@ export default function ReviewScreen() {
   }
 
   const handleRating = (rating: Rating) => {
-    const currentEntry = queueData?.items[currentIndex]
+    const currentEntry = entries[currentIndex]
     if (currentEntry) {
       markReviewedMutation.mutate({ entryId: currentEntry.id, rating })
     }
@@ -254,9 +252,8 @@ export default function ReviewScreen() {
     )
   }
 
-  const entries = queueData?.items ?? []
   const hasMoreEntries = currentIndex < entries.length
-  const reviewedTodayCount = queueData?.reviewedTodayCount ?? 0
+  const reviewedTodayCount = todayStats?.reviewedToday ?? 0
 
   if (isReviewing && hasMoreEntries) {
     return (
@@ -282,6 +279,12 @@ export default function ReviewScreen() {
   const totalDue = (dueStats?.overdue ?? 0) + (dueStats?.dueToday ?? 0)
   const goalTotal = reviewedTodayCount + totalDue
   const progress = goalTotal > 0 ? reviewedTodayCount / goalTotal : 0
+  let startLabel = t("review.noReviewItems")
+  if (entries.length > 0) {
+    startLabel = t("review.startCount", { count: entries.length })
+  } else if (isQueueError) {
+    startLabel = t("review.loadFailed")
+  }
   const scopeOptions: ScopeOption[] = [
     {
       rule: "due",
@@ -381,11 +384,7 @@ export default function ReviewScreen() {
             onPress={handleStartReview}
             size="lg"
           >
-            <Button.Label>
-              {entries.length > 0
-                ? t("review.startCount", { count: entries.length })
-                : t("review.noReviewItems")}
-            </Button.Label>
+            <Button.Label>{startLabel}</Button.Label>
           </Button>
         </GroupedCard>
 
@@ -426,16 +425,19 @@ export default function ReviewScreen() {
           <GroupedCard className="flex-row">
             <StatCell
               label={t("review.statsStreak")}
-              value={t("streak.days", { count: todayStats?.streak ?? 0 })}
-              valueClassName="text-danger"
+              value={
+                todayStats
+                  ? t("streak.days", { count: todayStats.streak })
+                  : "–"
+              }
             />
             <StatCell
               label={t("review.statsTotalEntries")}
-              value={todayStats?.totalEntries ?? 0}
+              value={statValue(todayStats?.totalEntries)}
             />
             <StatCell
               label={t("review.statsUnreviewedEntries")}
-              value={todayStats?.unreviewedEntries ?? 0}
+              value={statValue(todayStats?.unreviewedEntries)}
             />
           </GroupedCard>
         </GroupedSection>

@@ -114,6 +114,8 @@ function QuickCapture({
 
 const clearCaptureParam = () => router.setParams({ capture: undefined })
 
+type TranslateFn = ReturnType<typeof useTranslation>["t"]
+
 type InboxFilter = "all" | "pinned" | "starred"
 
 const INBOX_FILTERS: InboxFilter[] = ["all", "pinned", "starred"]
@@ -151,13 +153,21 @@ function EntryGroup({
   )
 }
 
-/** "Today" / "Yesterday" in the UI language, else a short date. */
-function dayHeading(daysAgo: number, date: Date, locale: string): string {
-  if (daysAgo === 0 || daysAgo === 1) {
-    const label = new Intl.RelativeTimeFormat(locale, {
-      numeric: "auto"
-    }).format(-daysAgo, "day")
-    return label.charAt(0).toUpperCase() + label.slice(1)
+/**
+ * Section heading for a day. Intl.RelativeTimeFormat is missing on Hermes
+ * (it crashed the inbox at launch), so today / yesterday come from i18n.
+ */
+function dayHeading(
+  daysAgo: number,
+  date: Date,
+  locale: string,
+  t: TranslateFn
+): string {
+  if (daysAgo === 0) {
+    return t("inbox.today")
+  }
+  if (daysAgo === 1) {
+    return t("inbox.yesterday")
   }
   return formatDate(date, { locale, preset: "short" })
 }
@@ -288,11 +298,15 @@ export default function InboxScreen() {
           <View className="items-center justify-center py-20">
             <HugeiconsIcon color={mutedColor} icon={MailOpen01Icon} size={64} />
             <Text className="mt-4 text-center text-lg text-muted">
-              {t("entry.emptyInbox")}
+              {filter === "all"
+                ? t("entry.emptyInbox")
+                : t("inbox.emptyFilter")}
             </Text>
-            <Text className="mt-2 px-8 text-center text-sm text-muted">
-              {t("home.actionDescription.newEntry")}
-            </Text>
+            {filter === "all" && (
+              <Text className="mt-2 px-8 text-center text-sm text-muted">
+                {t("home.actionDescription.newEntry")}
+              </Text>
+            )}
           </View>
         ) : (
           <>
@@ -303,7 +317,7 @@ export default function InboxScreen() {
               <EntryGroup
                 entries={group.entries}
                 key={group.dayKey}
-                title={dayHeading(group.daysAgo, group.date, i18n.language)}
+                title={dayHeading(group.daysAgo, group.date, i18n.language, t)}
               />
             ))}
           </>

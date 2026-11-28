@@ -1890,6 +1890,9 @@
   "inbox": {
     "filterAll": "全部",
     "filterPinned": "置顶",
-    "filterStarred": "星标"
+    "filterStarred": "星标",
+    "today": "今天",
+    "yesterday": "昨天",
+    "emptyFilter": "没有符合条件的笔记"
   }
 }

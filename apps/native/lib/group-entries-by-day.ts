@@ -1,6 +1,7 @@
 export interface DatedEntry {
   id: string
   createdAt: Date | string | number
+  updatedAt?: Date | string | number | null
 }
 
 export interface DayGroup<T extends DatedEntry> {
@@ -25,24 +26,30 @@ function toDayKey(date: Date): string {
   return `${date.getFullYear()}-${month}-${day}`
 }
 
+/** The date a row shows: last edit, else creation. */
+export function entryActivityDate(entry: DatedEntry): Date {
+  return new Date(entry.updatedAt ?? entry.createdAt)
+}
+
 /**
- * Splits entries into local calendar days, keeping the incoming order
- * (newest first) inside each day and across days. Entries with an
- * unparsable date are dropped rather than grouped under a bogus day.
+ * Splits entries into local calendar days by their last activity (the same
+ * date the row displays), newest day first and newest entry first within a
+ * day, whatever order the API returned. Entries with an unparsable date are
+ * dropped rather than grouped under a bogus day.
  */
 export function groupEntriesByDay<T extends DatedEntry>(
   entries: T[],
   now: Date = new Date()
 ): DayGroup<T>[] {
   const today = startOfLocalDay(now)
-  const groups = new Map<string, DayGroup<T>>()
+  const dated = entries
+    .map((entry) => ({ entry, at: entryActivityDate(entry) }))
+    .filter(({ at }) => !Number.isNaN(at.getTime()))
+    .toSorted((a, b) => b.at.getTime() - a.at.getTime())
 
-  for (const entry of entries) {
-    const created = new Date(entry.createdAt)
-    if (Number.isNaN(created.getTime())) {
-      continue
-    }
-    const day = startOfLocalDay(created)
+  const groups = new Map<string, DayGroup<T>>()
+  for (const { entry, at } of dated) {
+    const day = startOfLocalDay(at)
     const dayKey = toDayKey(day)
     let group = groups.get(dayKey)
     if (!group) {

@@ -35,3 +35,35 @@ it("accepts ISO strings and drops unparsable dates", () => {
   expect(groups).toHaveLength(1)
   expect(groups[0]?.entries.map((e) => e.id)).toEqual(["a"])
 })
+
+it("groups by last edit and sorts days and rows newest first", () => {
+  const groups = groupEntriesByDay(
+    [
+      // API order is not by edit time; the headings must still read
+      // today, then older days, matching the date each row shows.
+      {
+        id: "old-edited-today",
+        createdAt: new Date(2026, 10, 20, 9),
+        updatedAt: new Date(2026, 10, 28, 9)
+      },
+      { id: "two-days", createdAt: new Date(2026, 10, 26, 9) },
+      {
+        id: "yesterday",
+        createdAt: new Date(2026, 10, 27, 9),
+        updatedAt: null
+      },
+      {
+        id: "latest",
+        createdAt: new Date(2026, 10, 28, 7),
+        updatedAt: new Date(2026, 10, 28, 9, 30)
+      }
+    ],
+    NOW
+  )
+
+  expect(groups.map((g) => [g.daysAgo, g.entries.map((e) => e.id)])).toEqual([
+    [0, ["latest", "old-edited-today"]],
+    [1, ["yesterday"]],
+    [2, ["two-days"]]
+  ])
+})
