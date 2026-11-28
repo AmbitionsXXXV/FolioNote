@@ -46,10 +46,10 @@ export default function AuthLayout() {
         }}
       >
         <Stack.Screen name="onboarding" options={{ headerShown: false }} />
-        <Stack.Screen name="sign-in" options={{ title: t("auth.signIn") }} />
+        {/* The page draws its own glass back button; no title bar. */}
         <Stack.Screen
-          name="sign-up"
-          options={{ title: t("auth.createAccount") }}
+          name="sign-in"
+          options={{ headerShown: false, title: t("auth.signIn") }}
         />
       </Stack>
     </View>

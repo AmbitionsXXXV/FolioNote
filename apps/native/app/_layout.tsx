@@ -6,13 +6,14 @@ import { Stack } from "expo-router"
 import * as SplashScreen from "expo-splash-screen"
 import { HeroUINativeProvider, useThemeColor } from "heroui-native"
 import type { ComponentProps } from "react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { I18nextProvider, useTranslation } from "react-i18next"
 import { ActivityIndicator, Platform, View } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 
 import { FirstLaunchHandler } from "@/components/first-launch-handler"
+import { OnboardingDraftApplier } from "@/components/onboarding/onboarding-draft-applier"
 import { AppThemeProvider, useAppTheme } from "@/contexts/app-theme-context"
 import { DataServiceProvider } from "@/contexts/data-service-context"
 import { LocalModeProvider, useLocalMode } from "@/contexts/local-mode-context"
@@ -51,7 +52,16 @@ function StackLayout() {
   const canAccessApp = isAuthenticated || isLocalMode
 
   // Show loading while checking auth state or local mode state
-  if (isAuthPending || isLocalModeLoading) {
+  // Only the first check blocks: the session refetches whenever the app
+  // returns to the foreground, and swapping the Stack for a spinner then
+  // would unmount whatever the reader was in the middle of (onboarding).
+  const isLoading = isAuthPending || isLocalModeLoading
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false)
+  useEffect(() => {
+    if (!isLoading) setHasLoadedOnce(true)
+  }, [isLoading])
+
+  if (isLoading && !hasLoadedOnce) {
     return (
       <View className="flex-1 items-center justify-center bg-background">
         <ActivityIndicator size="large" />
@@ -112,6 +122,10 @@ function StackLayout() {
         <Stack.Screen
           name="settings"
           options={{ ...detailScreenOptions, title: t("common.settings") }}
+        />
+        <Stack.Screen
+          name="welcome"
+          options={{ headerShown: false, presentation: "fullScreenModal" }}
         />
         <Stack.Screen
           name="japanese/word/[id]"
@@ -179,6 +193,7 @@ export default function Layout() {
                   <HeroUINativeProvider>
                     <StackLayout />
                     <FirstLaunchHandler />
+                    <OnboardingDraftApplier />
                   </HeroUINativeProvider>
                 </DataServiceProvider>
               </LocalModeProvider>

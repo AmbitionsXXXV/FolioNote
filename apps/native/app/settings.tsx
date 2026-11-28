@@ -41,6 +41,7 @@ import Animated, { ZoomIn } from "react-native-reanimated"
 
 import { BrandLockup } from "@/components/brand-lockup"
 import { Container } from "@/components/container"
+import { SettingsGuideSection } from "@/components/settings-guide-section"
 import { useAppTheme } from "@/contexts/app-theme-context"
 import { useAvatarState } from "@/hooks"
 import { useBottomSheetOpenState } from "@/hooks/use-bottom-sheet-open-state"
@@ -122,6 +123,8 @@ export default function SettingsScreen() {
           currentLanguage={currentLanguage}
           onPress={() => setLanguageModalVisible(true)}
         />
+
+        <SettingsGuideSection />
 
         {session?.user && (
           <DangerZoneSection

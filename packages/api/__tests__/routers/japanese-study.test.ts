@@ -209,7 +209,7 @@ describe("Japanese study API", () => {
       expect.arrayContaining(['{"kind":"level","level":"N4","pos":"verb"}'])
     )
     await expectOrpcCode(
-      call(study.updatePlan, { dailyNewWords: 7 }, { context: authed() }),
+      call(study.updatePlan, { dailyNewWords: 51 }, { context: authed() }),
       "BAD_REQUEST"
     )
   })

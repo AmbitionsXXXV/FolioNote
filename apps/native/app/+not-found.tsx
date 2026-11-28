@@ -1,10 +1,21 @@
-import { Link, Stack } from "expo-router"
+import { Link, Redirect, Stack } from "expo-router"
 import { Button, Card } from "heroui-native"
 import { Text, View } from "react-native"
 
 import { Container } from "@/components/container"
+import { useLocalMode } from "@/contexts/local-mode-context"
+import { authClient } from "@/lib/auth-client"
 
 export default function NotFoundScreen() {
+  const { data: session, isPending } = authClient.useSession()
+  const { isLocalMode, isLoading } = useLocalMode()
+  const isSignedOut = !(isPending || isLoading || session?.user || isLocalMode)
+  // Signed out, "/" points into the guarded tabs: start at onboarding
+  // (which itself forwards to sign-in once it has been seen).
+  if (isSignedOut) {
+    return <Redirect href="/(auth)/onboarding" />
+  }
+
   return (
     <>
       <Stack.Screen options={{ title: "Oops!" }} />

@@ -11,6 +11,16 @@ import { getDeviceTimeZone } from "@/lib/study-day"
 import { orpc } from "@/utils/orpc"
 
 const NEW_WORD_OPTIONS = [5, 10, 15, 20, 30] as const
+
+/** Onboarding allows any count from 1 to 50; show a custom one in the row. */
+const newWordChoices = (current: number | undefined): number[] => {
+  const options: number[] = [...NEW_WORD_OPTIONS]
+  if (current !== undefined && !options.includes(current)) {
+    options.push(current)
+    options.sort((a, b) => a - b)
+  }
+  return options
+}
 const REVIEW_LIMIT_OPTIONS = [null, 100, 200] as const
 
 function Choices<T extends number | null>({
@@ -146,8 +156,8 @@ export default function DailyPlanSheet() {
         format={String}
         label={t("japanese.daily.plan.newWords")}
         onChange={(option) => update.mutate({ dailyNewWords: option })}
-        options={NEW_WORD_OPTIONS}
-        value={dailyNewWords as (typeof NEW_WORD_OPTIONS)[number] | undefined}
+        options={newWordChoices(dailyNewWords)}
+        value={dailyNewWords}
       />
       <SectionLabel>{t("japanese.daily.plan.reviewLimit")}</SectionLabel>
       <Choices

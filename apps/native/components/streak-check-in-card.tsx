@@ -4,6 +4,7 @@ import { cn } from "heroui-native"
 import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
+import { useStampGlyph } from "@/lib/stamp-glyph"
 import { getDeviceTimeZone, studyDayToDate } from "@/lib/study-day"
 import { orpc } from "@/utils/orpc"
 
@@ -73,6 +74,7 @@ function WeekStamp({
  */
 export function StreakCheckInCard({ enabled }: { enabled: boolean }) {
   const { t, i18n } = useTranslation()
+  const stampGlyph = useStampGlyph()
   const { data } = useQuery({
     ...orpc.streak.getToday.queryOptions({
       input: { timeZone: getDeviceTimeZone() }
@@ -167,7 +169,7 @@ export function StreakCheckInCard({ enabled }: { enabled: boolean }) {
                 date={day.date}
                 freezeMark={t("streak.freezeMark")}
                 isToday={isToday}
-                mark={t("streak.stampMark")}
+                mark={stampGlyph ?? t("streak.stampMark")}
                 status={day.status}
               />
             </View>

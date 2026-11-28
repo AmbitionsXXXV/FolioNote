@@ -39,7 +39,8 @@ import {
 import type { Rating } from "../utils/spaced-repetition"
 import { getLocalDate } from "../utils/streak"
 import {
-  DAILY_NEW_WORD_OPTIONS,
+  DAILY_NEW_WORDS_MAX,
+  DAILY_NEW_WORDS_MIN,
   DAILY_REVIEW_LIMIT_OPTIONS,
   DEFAULT_DAILY_NEW_WORDS,
   planToday,
@@ -755,10 +756,12 @@ const optionOf = (options: readonly number[], message: string) =>
 const updatePlan = protectedProcedure
   .input(
     z.object({
-      dailyNewWords: optionOf(
-        DAILY_NEW_WORD_OPTIONS,
-        "Unsupported daily new-word count"
-      ).optional(),
+      dailyNewWords: z
+        .number()
+        .int()
+        .min(DAILY_NEW_WORDS_MIN)
+        .max(DAILY_NEW_WORDS_MAX)
+        .optional(),
       dailyReviewLimit: optionOf(
         DAILY_REVIEW_LIMIT_OPTIONS,
         "Unsupported review limit"

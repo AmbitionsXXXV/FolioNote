@@ -12,7 +12,140 @@
     "localModeTitle": "本地模式",
     "localModeFeatureComingSoon": "离线功能即将推出",
     "localModeFeatureDesc": "登录即可使用云同步、复习调度等功能。本地存储支持正在开发中。",
-    "signInNow": "立即登录"
+    "signInNow": "立即登录",
+    "flow": {
+      "previous": "上一步",
+      "skip": "跳过",
+      "progress": "引导进度",
+      "demoMeaning": "树叶间洒下的阳光",
+      "cover": {
+        "title": "学到的，\n都留得下来。",
+        "body": "笔记、单词、听过的句子，记一次，到点它会回来找你。",
+        "start": "翻开第一页",
+        "haveAccount": "我已有账号",
+        "language": "界面语言",
+        "languageAria": "界面语言：{{language}}",
+        "noteCard": "SQLite WAL 模式为什么更快",
+        "noteDue": "3 天后复习",
+        "subtitle": "字幕"
+      },
+      "capture": {
+        "title": "先记一笔",
+        "body": "刚学到的一个词、一句话都行。不用整理，它会先落进收件箱。",
+        "inbox": "收件箱",
+        "slot": "你的第一条笔记会落在这里",
+        "ideasLabel": "没想好写什么？点一个试试",
+        "idea1": "「木漏れ日」= 树叶间洒下的阳光",
+        "idea2": "今天才知道：WAL 模式下读写互不阻塞",
+        "idea3": "想记住的一句话：急がば回れ",
+        "placeholder": "记一笔，或粘贴一个词…",
+        "inputLabel": "记一笔",
+        "send": "存进收件箱",
+        "justNow": "刚刚 · 明天第一次复习",
+        "points": "+2 分",
+        "after": "记下了。它会按遗忘的节奏回来：明天、3 天后、1 周后…你只管记。",
+        "next": "下一步：翻一张卡"
+      },
+      "flip": {
+        "title": "到点了，翻一张",
+        "body": "先自己想读音和意思，再翻面。照实打分，它决定这张卡多久后再来。",
+        "tapToFlip": "轻点翻面",
+        "flipAria": "翻面看答案",
+        "noun": "名词",
+        "exampleMeaning": "走在树叶间洒下的阳光里。",
+        "again": "不认识",
+        "hard": "模糊",
+        "good": "认识",
+        "nextLabel": "下次见它：",
+        "next": {
+          "again": "10 分钟后，这一轮结束前",
+          "hard": "明天",
+          "good": "3 天后"
+        },
+        "stops": {
+          "tenMinutes": "10 分钟",
+          "tomorrow": "明天",
+          "threeDays": "3 天后",
+          "oneWeek": "1 周后",
+          "oneMonth": "1 个月后"
+        },
+        "continue": "下一步：听一句"
+      },
+      "listen": {
+        "title": "听到的，也能留下",
+        "body": "看视频学日语时，点一下字幕里的词，它会连同这句话一起收进生词本。",
+        "replay": "再听一遍",
+        "source": "示例句 · 系统语音朗读",
+        "translation": "树叶间洒下的阳光非常美。",
+        "wordAria": "查看「{{word}}」",
+        "hint": "点一下发亮的词",
+        "keeps": "会一起存下：这句字幕和时间点 0:42",
+        "save": "加入生词本",
+        "saved": "已加入生词本 · 明天开始复习",
+        "next": "下一步：定个节奏"
+      },
+      "plan": {
+        "title": "定个每天的量",
+        "body": "少一点没关系，每天来才算数。之后在设置里随时能改。",
+        "usesLabel": "想用它做什么（可多选）",
+        "notes": "记笔记",
+        "notesSub": "到点提醒复习",
+        "japanese": "学日语",
+        "japaneseSub": "背词、阅读、听读",
+        "levelLabel": "现在的日语水平",
+        "beginner": "零基础",
+        "newWords": "每天新词",
+        "minutes_one": "大约 {{count}} 分钟",
+        "minutes_other": "大约 {{count}} 分钟",
+        "countHint": "可以直接输入，{{min}} 到 {{max}}",
+        "unit": "个",
+        "remind": "每天 21:00 提醒我",
+        "remindSub": "打开时才会请求通知权限",
+        "done": "就这样"
+      },
+      "stamp": {
+        "title": "按住，盖下第一天",
+        "body": "今天你记了一笔、翻了一张卡、收了一个词，够盖一个章了。",
+        "doneTitle": "第 1 天，盖好了",
+        "doneBody": "明天再来，它就是「2 日連続」。",
+        "pageOne": "第 1 页",
+        "dayOne": "1 日目",
+        "sealAria": "第 1 天的印章",
+        "glyphLabel": "章上的字",
+        "glyphAria": "章上刻「{{glyph}}」",
+        "hold": "按住",
+        "holdAria": "按住盖章",
+        "holdHint": "按住约 1 秒",
+        "next": "把这一页存起来"
+      },
+      "signUp": {
+        "title": "把这一页存起来",
+        "body": "建个账号，刚才这些就会同步到网页和别的设备。",
+        "receiptTitle": "你的第一页 · {{date}}",
+        "receiptNote": "笔记 1 条，已进收件箱",
+        "receiptWord": "生词 1 个：{{word}}",
+        "receiptPlan_one": "每天 {{count}} 个新词",
+        "receiptPlan_other": "每天 {{count}} 个新词",
+        "receiptPlanRemind_one": "每天 {{count}} 个新词 · {{time}} 提醒",
+        "receiptPlanRemind_other": "每天 {{count}} 个新词 · {{time}} 提醒",
+        "receiptEmpty": "一个印章：第 1 天",
+        "submit": "创建账号并保存",
+        "local": "先不注册，只存在这台 iPhone 上"
+      },
+      "signIn": {
+        "title": "欢迎回来",
+        "body": "接着上次停下的那一页。",
+        "fromStart": "从第一页开始"
+      },
+      "form": {
+        "nickname": "昵称",
+        "nicknamePlaceholder": "怎么称呼你",
+        "passwordMin": "至少 10 位",
+        "passwordPlaceholder": "输入密码",
+        "showPassword": "显示密码",
+        "hidePassword": "隐藏密码"
+      }
+    }
   },
   "home": {
     "systemReady": "系统就绪",
@@ -1984,5 +2117,17 @@
     "today": "今天",
     "yesterday": "昨天",
     "emptyFilter": "没有符合条件的笔记"
+  },
+  "reminder": {
+    "title": "FolioNote",
+    "body": "今天的那一页还空着，来翻几张卡吧。",
+    "section": "提醒与引导",
+    "daily": "每日提醒",
+    "dailyHint": "每天在固定时间提醒你来学一会儿",
+    "time": "提醒时间",
+    "timeTitle": "每天几点提醒你",
+    "replayOnboarding": "再看一遍引导",
+    "deniedTitle": "通知没有打开",
+    "deniedBody": "在 iPhone 的「设置 › 通知 › FolioNote」里允许通知后，再打开提醒。"
   }
 }
