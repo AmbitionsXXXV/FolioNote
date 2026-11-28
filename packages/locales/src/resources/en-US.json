@@ -798,7 +798,9 @@
         "noCues": "No timed caption lines found. Check that it's SRT or VTT.",
         "fileTooLarge": "That file is over 2 MB. Is it a caption file?",
         "fileUnreadable": "Couldn't read the file. Try again.",
-        "start": "Start listening"
+        "start": "Start listening",
+        "previewLoading": "Loading video details…",
+        "previewUnavailable": "Couldn't load video details. Playback still works."
       },
       "player": {
         "untitled": "YouTube video",

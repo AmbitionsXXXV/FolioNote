@@ -8,6 +8,8 @@ import type { ChangeEvent } from "react"
 import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
+import { ListenVideoPreview } from "./listen-video-preview"
+
 export interface ListenSource {
   videoInput: string
   videoId: string
@@ -70,6 +72,7 @@ export function ListenSourceForm({
   }
 
   const cueCount = parseSubtitles(subtitleText).length
+  const typedVideoId = parseYouTubeVideoId(videoInput)
 
   return (
     <form
@@ -98,6 +101,9 @@ export function ListenSourceForm({
           </p>
         ) : null}
       </TextField>
+      {typedVideoId ? (
+        <ListenVideoPreview key={typedVideoId} videoUrl={typedVideoId} />
+      ) : null}
 
       <div className="flex flex-col gap-2">
         <TextField

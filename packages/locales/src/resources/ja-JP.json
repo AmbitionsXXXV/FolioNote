@@ -747,7 +747,9 @@
         "noCues": "タイムコード付きの字幕行が見つかりません。SRT か VTT か確認してください。",
         "fileTooLarge": "ファイルが 2 MB を超えています。字幕ファイルか確認してください。",
         "fileUnreadable": "ファイルを読み込めませんでした。もう一度お試しください。",
-        "start": "リスニング開始"
+        "start": "リスニング開始",
+        "previewLoading": "動画情報を読み込み中…",
+        "previewUnavailable": "動画情報を取得できませんでしたが、再生はできます。"
       },
       "player": {
         "untitled": "YouTube 動画",

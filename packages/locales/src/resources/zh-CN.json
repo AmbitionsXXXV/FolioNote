@@ -852,7 +852,9 @@
         "noCues": "没找到带时间轴的字幕行，请确认是 SRT 或 VTT 格式。",
         "fileTooLarge": "文件太大（超过 2 MB），请确认是字幕文件。",
         "fileUnreadable": "读取文件失败，请重试。",
-        "start": "开始听读"
+        "start": "开始听读",
+        "previewLoading": "正在读取视频信息…",
+        "previewUnavailable": "暂时读不到视频信息，不影响播放。"
       },
       "player": {
         "untitled": "YouTube 视频",
