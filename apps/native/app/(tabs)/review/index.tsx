@@ -281,7 +281,9 @@ export default function ReviewScreen() {
   const progress = goalTotal > 0 ? reviewedTodayCount / goalTotal : 0
   let startLabel = t("review.noReviewItems")
   if (entries.length > 0) {
-    startLabel = t("review.startCount", { count: entries.length })
+    // No count: the queue can mix due and new notes, so it would disagree
+    // with the due number above. The scope rows carry the counts.
+    startLabel = t("review.start")
   } else if (isQueueError) {
     startLabel = t("review.loadFailed")
   }

@@ -45,7 +45,10 @@ export function groupEntriesByDay<T extends DatedEntry>(
   const dated = entries
     .map((entry) => ({ entry, at: entryActivityDate(entry) }))
     .filter(({ at }) => !Number.isNaN(at.getTime()))
-    .toSorted((a, b) => b.at.getTime() - a.at.getTime())
+    // Hermes has no Array.prototype.toSorted (crashed the inbox at launch);
+    // sorting the fresh array from map/filter mutates nothing shared.
+    // oxlint-disable-next-line unicorn/no-array-sort
+    .sort((a, b) => b.at.getTime() - a.at.getTime())
 
   const groups = new Map<string, DayGroup<T>>()
   for (const { entry, at } of dated) {

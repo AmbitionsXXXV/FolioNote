@@ -352,9 +352,9 @@
     "statsLoadFailed": "復習統計の読み込みに失敗しました",
     "itemsUnit": "件",
     "overdueCount": "期限切れ {{count}}",
-    "startCount": "復習を始める · {{count}} 件",
     "scopeTitle": "復習の範囲",
-    "statsTitle": "統計"
+    "statsTitle": "統計",
+    "start": "復習を始める"
   },
   "japanese": {
     "title": "日本語",

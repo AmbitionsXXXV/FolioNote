@@ -403,10 +403,9 @@
     "itemsUnit_one": "item",
     "itemsUnit_other": "items",
     "overdueCount": "{{count}} overdue",
-    "startCount_one": "Start review · {{count}} item",
-    "startCount_other": "Start review · {{count}} items",
     "scopeTitle": "Review scope",
-    "statsTitle": "Stats"
+    "statsTitle": "Stats",
+    "start": "Start review"
   },
   "japanese": {
     "title": "Japanese",

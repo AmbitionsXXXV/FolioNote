@@ -457,9 +457,9 @@
     "statsLoadFailed": "复习统计加载失败",
     "itemsUnit": "条",
     "overdueCount": "逾期 {{count}}",
-    "startCount": "开始复习 · {{count}} 条",
     "scopeTitle": "复习范围",
-    "statsTitle": "统计"
+    "statsTitle": "统计",
+    "start": "开始复习"
   },
   "japanese": {
     "title": "日语",
