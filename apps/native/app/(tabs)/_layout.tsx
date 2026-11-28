@@ -30,7 +30,8 @@ const TAB_MOTIONS: { name: string; motion: TabMotionKind }[] = [
 
 /** Plays the selected tab's motion whenever the active tab changes. */
 function useTabSelectionMotion() {
-  const segments = useSegments()
+  // Typed routes narrow segments per route; only the tab name is needed here.
+  const segments: readonly string[] = useSegments()
   const activeTab = segments[1]
   const previousTab = useRef(activeTab)
 
