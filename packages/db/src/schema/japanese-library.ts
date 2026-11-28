@@ -212,6 +212,38 @@ export const jpStudyState = pgTable(
   ]
 )
 
+/**
+ * jp_study_plans - Each reader's daily vocabulary plan, shared by web and
+ * iPhone: how many new words a day, an optional review cap, and the deck they
+ * last chose (JSON, e.g. `{"kind":"level","level":"N4","pos":"verb"}`).
+ */
+export const jpStudyPlans = pgTable(
+  "jp_study_plans",
+  {
+    userId: text("user_id")
+      .primaryKey()
+      .references(() => user.id, { onDelete: "cascade" }),
+    dailyNewWords: integer("daily_new_words").notNull().default(10),
+    /** Null means no cap: every due card is offered. */
+    dailyReviewLimit: integer("daily_review_limit"),
+    deck: text("deck"),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull()
+  },
+  (table) => [
+    check(
+      "jp_study_plans_new_words_check",
+      sql`${table.dailyNewWords} between 0 and 100`
+    ),
+    check(
+      "jp_study_plans_review_limit_check",
+      sql`${table.dailyReviewLimit} is null or ${table.dailyReviewLimit} > 0`
+    )
+  ]
+)
+
 export const jpArticlesRelations = relations(jpArticles, ({ one }) => ({
   user: one(user, { fields: [jpArticles.userId], references: [user.id] })
 }))

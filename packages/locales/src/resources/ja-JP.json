@@ -349,7 +349,12 @@
         "expression": "表現"
       }
     },
-    "statsLoadFailed": "復習統計の読み込みに失敗しました"
+    "statsLoadFailed": "復習統計の読み込みに失敗しました",
+    "itemsUnit": "件",
+    "overdueCount": "期限切れ {{count}}",
+    "scopeTitle": "復習の範囲",
+    "statsTitle": "統計",
+    "start": "復習を始める"
   },
   "japanese": {
     "title": "日本語",
@@ -788,6 +793,96 @@
         "loading": "読み込み中…",
         "notFound": "この動画が見つかりません。削除された可能性があります。",
         "back": "リスニング一覧へ"
+      }
+    },
+    "daily": {
+      "title": "今日の単語",
+      "new": "新しい単語",
+      "review": "復習",
+      "start": "単語学習を始める",
+      "continue_one": "続ける · 残り {{count}} 語",
+      "continue_other": "続ける · 残り {{count}} 語",
+      "allDone": "今日の計画は完了です",
+      "moreNew": "新しい単語をあと 5 語",
+      "pointsHint": "新しい単語は 1 語 2 点、復習は 1 語 1 点。今日の目標と連続記録に加算されます",
+      "changeBook": "単語帳を変更（現在：{{name}}）",
+      "backlog": "復習が多いので、今日の新しい単語は半分です",
+      "offlineCard": "オフラインです。前回保存したカードで学習できます",
+      "pos": {
+        "noun": "名詞",
+        "verb": "動詞",
+        "adjective": "形容詞",
+        "adverb": "副詞"
+      },
+      "books": {
+        "title": "単語帳を選ぶ",
+        "all": "{{level}} すべて",
+        "progress": "学習済み {{studied}}",
+        "due_one": "復習 {{count}} 語",
+        "due_other": "復習 {{count}} 語",
+        "overlap": "品詞が複数ある単語は、それぞれの単語帳に入り、進み具合は共通です。",
+        "myLists": "自分のリスト",
+        "levels": "JLPT レベル",
+        "saveFailed": "保存できませんでした。もう一度お試しください。"
+      },
+      "plan": {
+        "title": "毎日の計画",
+        "newWords": "1 日の新しい単語の数",
+        "reviewLimit": "1 日の復習の上限",
+        "unlimited": "上限なし",
+        "order": "期限の来た単語を先に復習し、その後に新しい単語が出ます。復習が 100 語を超えると新しい単語は半分になります。",
+        "autoSpeak": "カードを自動で読み上げる",
+        "autoSpeakHint": "オフラインのときは端末の日本語音声を使います",
+        "slow": "ゆっくり読み上げる",
+        "slowHint": "0.75 倍速",
+        "example": "答えを表示したら例文も読む",
+        "exampleHint": "単語のあとに例文を読み上げます",
+        "shared": "計画はウェブと iPhone で共通です。",
+        "betterVoice": "より良い日本語音声を入れる",
+        "betterVoiceHint": "iOS の「設定 › アクセシビリティ › 読み上げコンテンツ › 声 › 日本語」で「拡張」の声をダウンロードすると、より自然に読み上げます。",
+        "saveFailed": "計画を保存できませんでした。もう一度お試しください。"
+      },
+      "session": {
+        "close": "学習を終える",
+        "settings": "学習の設定",
+        "progress": "今回の進み具合",
+        "pending_one": "未同期 {{count}} 件",
+        "pending_other": "未同期 {{count}} 件",
+        "counts": "新しい単語 {{new}} · 復習 {{review}} · やり直し {{again}}",
+        "think": "読み方と意味を思い出してから答えを見ましょう",
+        "tapToFlip": "カードをタップしても裏返せます",
+        "reveal": "答えを見る",
+        "revealHint": "カードを裏返します",
+        "meanings": "意味",
+        "noMeaning": "この単語にはまだ意味がありません。",
+        "exampleContext": "例文 · あなたの読書から",
+        "exampleBank": "例文 · 単語データ",
+        "speakWord": "「{{text}}」を読み上げる",
+        "speakExample": "例文を読み上げる",
+        "again": "わからない",
+        "hard": "あいまい",
+        "good": "わかる",
+        "offline": "オフライン：前回保存したカードで学習中",
+        "emptyTitle": "この単語帳で今学ぶ単語はありません",
+        "emptyDescription": "今日の新しい単語と復習は終わりました。別の単語帳を選ぶか、また明日どうぞ。",
+        "loadFailed": "カードを読み込めませんでした",
+        "retry": "再試行",
+        "rateFailed": "評価を端末に保存できませんでした。もう一度タップしてください。"
+      },
+      "done": {
+        "title": "今回の学習が終わりました",
+        "new": "新しい単語",
+        "review": "復習",
+        "time": "時間",
+        "goal": "今日の目標",
+        "goalMet": "達成",
+        "forgotten_one": "覚えていなかった {{count}} 語は次回先に出ます",
+        "forgotten_other": "覚えていなかった {{count}} 語は次回先に出ます",
+        "synced": "すべて同期済み",
+        "pending_one": "{{count}} 件はオンラインになったら同期します",
+        "pending_other": "{{count}} 件はオンラインになったら同期します",
+        "finish": "完了",
+        "moreNew": "新しい単語をあと 5 語"
       }
     }
   },
@@ -1935,5 +2030,18 @@
     },
     "stampMark": "学",
     "freezeMark": "休"
+  },
+  "today": {
+    "todoTitle": "今日やること",
+    "todoDue": "復習期限のノート",
+    "todoNew": "初めて復習するノート"
+  },
+  "inbox": {
+    "filterAll": "すべて",
+    "filterPinned": "ピン留め",
+    "filterStarred": "スター",
+    "today": "今日",
+    "yesterday": "昨日",
+    "emptyFilter": "条件に合うノートはありません"
   }
 }

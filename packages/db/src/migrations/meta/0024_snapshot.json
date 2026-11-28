@@ -1,5 +1,5 @@
 {
-  "id": "70e12593-ddb0-44df-a5c5-2a9aeb1e3b40",
+  "id": "eaeca8e4-3977-4180-bb09-d7945af7e761",
   "prevId": "db5e9b60-6efe-4cea-ab0f-f1df07895eca",
   "version": "7",
   "dialect": "postgresql",
@@ -3604,18 +3604,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "context_material_id": {
-          "name": "context_material_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "context_time_ms": {
-          "name": "context_time_ms",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -3708,15 +3696,6 @@
           "tableFrom": "jp_lexicon_entries",
           "tableTo": "jp_articles",
           "columnsFrom": ["context_article_id"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
-        },
-        "jp_lexicon_entries_context_material_id_study_materials_id_fk": {
-          "name": "jp_lexicon_entries_context_material_id_study_materials_id_fk",
-          "tableFrom": "jp_lexicon_entries",
-          "tableTo": "study_materials",
-          "columnsFrom": ["context_material_id"],
           "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
@@ -3867,6 +3846,70 @@
         "jp_lexicons_meaning_language_check": {
           "name": "jp_lexicons_meaning_language_check",
           "value": "\"jp_lexicons\".\"meaning_language\" in ('zh', 'en', 'ja')"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.jp_study_plans": {
+      "name": "jp_study_plans",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "daily_new_words": {
+          "name": "daily_new_words",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 10
+        },
+        "daily_review_limit": {
+          "name": "daily_review_limit",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deck": {
+          "name": "deck",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "jp_study_plans_user_id_user_id_fk": {
+          "name": "jp_study_plans_user_id_user_id_fk",
+          "tableFrom": "jp_study_plans",
+          "tableTo": "user",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "jp_study_plans_new_words_check": {
+          "name": "jp_study_plans_new_words_check",
+          "value": "\"jp_study_plans\".\"daily_new_words\" between 0 and 100"
+        },
+        "jp_study_plans_review_limit_check": {
+          "name": "jp_study_plans_review_limit_check",
+          "value": "\"jp_study_plans\".\"daily_review_limit\" is null or \"jp_study_plans\".\"daily_review_limit\" > 0"
         }
       },
       "isRLSEnabled": false
@@ -4408,6 +4451,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "audio_path": {
+          "name": "audio_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
@@ -4591,6 +4640,12 @@
         "tatoeba_id": {
           "name": "tatoeba_id",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "audio_path": {
+          "name": "audio_path",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }
@@ -4929,254 +4984,6 @@
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.study_materials": {
-      "name": "study_materials",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "kind": {
-          "name": "kind",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "source_ref": {
-          "name": "source_ref",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "title": {
-          "name": "title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "channel_title": {
-          "name": "channel_title",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "thumbnail_url": {
-          "name": "thumbnail_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "duration_seconds": {
-          "name": "duration_seconds",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "language": {
-          "name": "language",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'ja'"
-        },
-        "caption_source": {
-          "name": "caption_source",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "caption_file_name": {
-          "name": "caption_file_name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "segment_count": {
-          "name": "segment_count",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "last_segment_index": {
-          "name": "last_segment_index",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "last_opened_at": {
-          "name": "last_opened_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "completed_at": {
-          "name": "completed_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {
-        "study_materials_user_opened_idx": {
-          "name": "study_materials_user_opened_idx",
-          "columns": [
-            {
-              "expression": "user_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "last_opened_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
-      "foreignKeys": {
-        "study_materials_user_id_user_id_fk": {
-          "name": "study_materials_user_id_user_id_fk",
-          "tableFrom": "study_materials",
-          "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "study_materials_user_source_unique": {
-          "name": "study_materials_user_source_unique",
-          "nullsNotDistinct": false,
-          "columns": ["user_id", "kind", "source_ref"]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {
-        "study_materials_kind_check": {
-          "name": "study_materials_kind_check",
-          "value": "\"study_materials\".\"kind\" in ('youtube')"
-        },
-        "study_materials_caption_source_check": {
-          "name": "study_materials_caption_source_check",
-          "value": "\"study_materials\".\"caption_source\" in ('user_file', 'user_paste')"
-        }
-      },
-      "isRLSEnabled": false
-    },
-    "public.study_segments": {
-      "name": "study_segments",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "study_segments_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
-        },
-        "material_id": {
-          "name": "material_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "position": {
-          "name": "position",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "start_ms": {
-          "name": "start_ms",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "end_ms": {
-          "name": "end_ms",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "text": {
-          "name": "text",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "study_segments_material_id_study_materials_id_fk": {
-          "name": "study_segments_material_id_study_materials_id_fk",
-          "tableFrom": "study_segments",
-          "tableTo": "study_materials",
-          "columnsFrom": ["material_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "study_segments_material_position_unique": {
-          "name": "study_segments_material_position_unique",
-          "nullsNotDistinct": false,
-          "columns": ["material_id", "position"]
-        }
-      },
-      "policies": {},
-      "checkConstraints": {
-        "study_segments_time_check": {
-          "name": "study_segments_time_check",
-          "value": "\"study_segments\".\"end_ms\" > \"study_segments\".\"start_ms\""
-        }
-      },
       "isRLSEnabled": false
     }
   },

@@ -122,4 +122,95 @@ describe("Japanese study API", () => {
       expect.arrayContaining(["owner-a", "vocab-cat"])
     )
   })
+
+  it("limits a part-of-speech book by JMdict codes and caps new cards", async () => {
+    await call(
+      study.queue,
+      {
+        deck: { kind: "level", level: "N4", pos: "verb" },
+        limit: 20,
+        newLimit: 3
+      },
+      { context: authed() }
+    )
+    const [dueSql] = query.mock.calls[0] ?? []
+    expect(dueSql).toContain('"jp_vocab"."jmdict_pos" ?| array[')
+    expect(dueSql).toContain("like 'v5%'")
+    const [, freshParams] = query.mock.calls[1] ?? []
+    // Twenty cards were asked for, but only three of them may be new.
+    expect(freshParams?.at(-1)).toBe(3)
+  })
+
+  it("skips unseen cards entirely when today's new words are done", async () => {
+    await call(
+      study.queue,
+      { deck: { kind: "level", level: "N5" }, limit: 20, newLimit: 0 },
+      { context: authed() }
+    )
+    expect(query).toHaveBeenCalledTimes(1)
+  })
+
+  it("applies a replayed offline rating only once", async () => {
+    query
+      .mockResolvedValueOnce({ rows: [["vocab-cat", "猫"]] })
+      .mockResolvedValueOnce({ rows: [["jp-rate:owner-a:abcdefgh"]] })
+      .mockResolvedValueOnce({ rows: [["2026-10-19T00:00:00.000Z", 3]] })
+    const saved = await call(
+      study.rate,
+      {
+        key: { vocabId: "vocab-cat" },
+        rating: "good",
+        clientId: "abcdefgh",
+        occurredAt: new Date()
+      },
+      { context: authed() }
+    )
+    expect(saved?.progress).toBeNull()
+    expect(saved?.intervalDays).toBe(3)
+    const [seenSql, seenParams] = query.mock.calls[1] ?? []
+    expect(seenSql).toContain('from "learning_activities"')
+    expect(seenParams).toEqual(["jp-rate:owner-a:abcdefgh", 1])
+    const statements = query.mock.calls.map(([statement]) => statement)
+    expect(statements.some((sql) => sql.startsWith("insert"))).toBe(false)
+  })
+
+  it("rejects malformed client ids", async () => {
+    await expectOrpcCode(
+      call(
+        study.rate,
+        { key: { vocabId: "vocab-cat" }, rating: "good", clientId: "x y" },
+        { context: authed() }
+      ),
+      "BAD_REQUEST"
+    )
+  })
+
+  it("stores the deck as JSON and validates plan options", async () => {
+    query.mockResolvedValueOnce({
+      rows: [
+        [
+          "owner-a",
+          15,
+          null,
+          '{"kind":"level","level":"N4","pos":"verb"}',
+          "2026-11-28T00:00:00.000Z"
+        ]
+      ]
+    })
+    const saved = await call(
+      study.updatePlan,
+      { dailyNewWords: 15, deck: { kind: "level", level: "N4", pos: "verb" } },
+      { context: authed() }
+    )
+    expect(saved.deck).toEqual({ kind: "level", level: "N4", pos: "verb" })
+    const [insertSql, insertParams] = query.mock.calls[0] ?? []
+    expect(insertSql).toContain('insert into "jp_study_plans"')
+    expect(insertParams).toEqual(
+      expect.arrayContaining(['{"kind":"level","level":"N4","pos":"verb"}'])
+    )
+    await expectOrpcCode(
+      call(study.updatePlan, { dailyNewWords: 7 }, { context: authed() }),
+      "BAD_REQUEST"
+    )
+  })
 })

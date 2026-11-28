@@ -7,7 +7,14 @@ export default function TodayLayout() {
 
   return (
     <TabStack>
-      <TabStack.Screen name="index" options={{ title: t("review.today") }} />
+      <TabStack.Screen
+        name="index"
+        options={{
+          title: t("nav.today"),
+          headerLargeTitle: true,
+          headerLargeTitleShadowVisible: false
+        }}
+      />
     </TabStack>
   )
 }
