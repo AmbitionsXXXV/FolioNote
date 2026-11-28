@@ -2,10 +2,13 @@ import {
   db,
   jpLexiconEntries,
   jpLexicons,
+  jpStudyPlans,
   jpStudyState,
   jpVocab,
-  jpVocabExamples
+  jpVocabExamples,
+  learningActivities
 } from "@folionote/db"
+import { getJpAudioUrl } from "@folionote/storage"
 import { ORPCError } from "@orpc/server"
 import type { SQL } from "drizzle-orm"
 import {
@@ -24,20 +27,61 @@ import {
 import { z } from "zod"
 
 import { protectedProcedure } from "../index"
-import { recordLearningActivity } from "../utils/learning-activity"
+import {
+  loadStreakSettings,
+  recordLearningActivity,
+  resolveTimeZone
+} from "../utils/learning-activity"
 import {
   calculateNextReview,
   createDefaultReviewState
 } from "../utils/spaced-repetition"
 import type { Rating } from "../utils/spaced-repetition"
+import { getLocalDate } from "../utils/streak"
+import {
+  DAILY_NEW_WORD_OPTIONS,
+  DAILY_REVIEW_LIMIT_OPTIONS,
+  DEFAULT_DAILY_NEW_WORDS,
+  planToday,
+  replayTime
+} from "../utils/study-plan"
 import { TimeZoneSchema } from "../utils/time-zone-schema"
 import { ownedLexicon } from "./japanese-library"
 
 const LEVELS = ["N5", "N4", "N3", "N2", "N1"] as const
 const DEFAULT_BATCH = 20
 
+/** Built-in word books split each JLPT level by part of speech. */
+const POS_BOOKS = ["noun", "verb", "adjective", "adverb"] as const
+type PosBook = (typeof POS_BOOKS)[number]
+const POS_CODES: Record<PosBook, string[]> = {
+  noun: ["n", "n-adv", "n-t", "pn", "num", "ctr"],
+  verb: ["v1", "vk", "vs-i", "vs-s", "vz"],
+  adjective: ["adj-i", "adj-na", "adj-no", "adj-ix"],
+  adverb: ["adv", "adv-to"]
+}
+
+/**
+ * Words tagged with any of the book's JMdict codes. A word with several parts
+ * of speech belongs to several books and shares its progress between them.
+ */
+const posFilter = (pos: PosBook): SQL => {
+  const codes = sql`array[${sql.join(
+    POS_CODES[pos].map((code) => sql`${code}`),
+    sql`, `
+  )}]::text[]`
+  const tagged = sql`${jpVocab.jmdictPos} ?| ${codes}`
+  if (pos !== "verb") return tagged
+  // Godan verbs carry one code per ending (v5k, v5r, v5k-s…).
+  return sql`(${tagged} or exists (select 1 from jsonb_array_elements_text(${jpVocab.jmdictPos}) as pos_code where pos_code like 'v5%'))`
+}
+
 const DeckSchema = z.discriminatedUnion("kind", [
-  z.object({ kind: z.literal("level"), level: z.enum(LEVELS) }),
+  z.object({
+    kind: z.literal("level"),
+    level: z.enum(LEVELS),
+    pos: z.enum(POS_BOOKS).optional()
+  }),
   z.object({
     kind: z.literal("moji"),
     collectionId: z.string().trim().min(1).max(64)
@@ -89,6 +133,33 @@ const progressCounts = (now: Date) => ({
   due: sql<number>`count(*) filter (where ${jpStudyState.dueAt} <= ${now})::int`
 })
 
+type BookColumns = Record<
+  `${PosBook}${"Total" | "Studied" | "Due"}`,
+  SQL<number>
+>
+
+/** Total / studied / due counts for every part-of-speech book, as columns. */
+const bookColumns = (now: Date): BookColumns =>
+  Object.fromEntries(
+    POS_BOOKS.flatMap((pos) => {
+      const inBook = posFilter(pos)
+      return [
+        [`${pos}Total`, sql<number>`count(*) filter (where ${inBook})::int`],
+        [
+          `${pos}Studied`,
+          sql<number>`count(${jpStudyState.id}) filter (where ${inBook})::int`
+        ],
+        [
+          `${pos}Due`,
+          sql<number>`count(*) filter (where ${inBook} and ${jpStudyState.dueAt} <= ${now})::int`
+        ]
+      ]
+    })
+  ) as BookColumns
+
+const audioUrl = (path: string | null): string | null =>
+  path === null ? null : getJpAudioUrl(path)
+
 const wordColumns = {
   vocabId: jpVocab.id,
   word: jpVocab.word,
@@ -99,7 +170,8 @@ const wordColumns = {
   meaningsZh: jpVocab.meaningsZh,
   meaningsJa: jpVocab.meaningsJa,
   meaningsEn: jpVocab.meaningsEn,
-  partOfSpeech: mojiField("partOfSpeech")
+  partOfSpeech: mojiField("partOfSpeech"),
+  audioPath: jpVocab.audioPath
 }
 const vocabColumns = {
   ...wordColumns,
@@ -118,6 +190,7 @@ interface VocabRow {
   meaningsJa: string[] | null
   meaningsEn: string[]
   partOfSpeech: string | null
+  audioPath: string | null
   dueAt: Date | null
   intervalDays: number | null
 }
@@ -139,6 +212,8 @@ interface StudyCard {
     /** "context": the sentence the reader saved the word from. */
     source: "context" | "bank"
   } | null
+  /** Pre-generated pronunciations; null falls back to the device voice. */
+  audio: { word: string | null; example: string | null }
   isNew: boolean
   intervalDays: number
 }
@@ -158,19 +233,31 @@ function vocabCard(row: VocabRow): StudyCard {
       en: row.meaningsEn
     },
     example: null,
+    audio: { word: audioUrl(row.audioPath), example: null },
     isNew: row.dueAt === null,
     intervalDays: row.intervalDays ?? 0
   }
 }
+
+interface QueueLimits {
+  /** Cards in the batch. */
+  limit: number
+  /** Unseen cards allowed in the batch; undefined fills the batch. */
+  newLimit?: number
+}
+
+const freshCount = ({ limit, newLimit }: QueueLimits, dueCount: number) =>
+  Math.max(0, Math.min(limit - dueCount, newLimit ?? limit))
 
 /** Due cards first (oldest due first), then unseen cards in deck order. */
 async function vocabQueue(
   userId: string,
   filter: SQL | undefined,
   deckOrder: SQL[],
-  limit: number,
+  limits: QueueLimits,
   now: Date
 ) {
+  const { limit } = limits
   const due = await db
     .select(vocabColumns)
     .from(jpVocab)
@@ -178,15 +265,16 @@ async function vocabQueue(
     .where(and(filter, lte(jpStudyState.dueAt, now)))
     .orderBy(asc(jpStudyState.dueAt))
     .limit(limit)
+  const freshLimit = freshCount(limits, due.length)
   const fresh =
-    due.length < limit
+    freshLimit > 0
       ? await db
           .select(vocabColumns)
           .from(jpVocab)
           .leftJoin(jpStudyState, vocabProgress(userId))
           .where(and(filter, isNull(jpStudyState.id)))
           .orderBy(...deckOrder)
-          .limit(limit - due.length)
+          .limit(freshLimit)
       : []
   return [...due, ...fresh].map(vocabCard)
 }
@@ -194,9 +282,10 @@ async function vocabQueue(
 async function lexiconQueue(
   userId: string,
   lexiconId: string,
-  limit: number,
+  limits: QueueLimits,
   now: Date
 ) {
+  const { limit } = limits
   const lexicon = await ownedLexicon(lexiconId, userId)
   const base = () =>
     db
@@ -220,12 +309,13 @@ async function lexiconQueue(
     )
     .orderBy(asc(jpStudyState.dueAt))
     .limit(limit)
+  const freshLimit = freshCount(limits, due.length)
   const fresh =
-    due.length < limit
+    freshLimit > 0
       ? await base()
           .where(and(inList, isNull(jpStudyState.id)))
           .orderBy(asc(jpLexiconEntries.position))
-          .limit(limit - due.length)
+          .limit(freshLimit)
       : []
   const entries = [...due, ...fresh]
 
@@ -267,6 +357,7 @@ async function lexiconQueue(
         partOfSpeech: entry.pos,
         meanings,
         example: contextExample(entry.contextSentence),
+        audio: { word: null, example: null },
         isNew: entry.dueAt === null,
         intervalDays: entry.intervalDays ?? 0
       }
@@ -300,7 +391,8 @@ async function attachExamples(cards: StudyCard[]) {
       ja: jpVocabExamples.ja,
       furigana: jpVocabExamples.furigana,
       zh: jpVocabExamples.zh,
-      en: jpVocabExamples.en
+      en: jpVocabExamples.en,
+      audioPath: jpVocabExamples.audioPath
     })
     .from(jpVocabExamples)
     .where(inArray(jpVocabExamples.vocabId, ids))
@@ -318,8 +410,9 @@ async function attachExamples(cards: StudyCard[]) {
     if (!("vocabId" in card.key) || card.example !== null) continue
     const example = byWord.get(card.key.vocabId)
     if (example) {
-      const { vocabId: _vocabId, ...sentence } = example
+      const { vocabId: _vocabId, audioPath, ...sentence } = example
       card.example = { ...sentence, source: "bank" }
+      card.audio.example = audioUrl(audioPath)
     }
   }
   return cards
@@ -334,7 +427,11 @@ const listDecks = protectedProcedure.handler(async ({ context }) => {
   const now = new Date()
   const [levels, moji, lexicons] = await Promise.all([
     db
-      .select({ level: jpVocab.level, ...progressCounts(now) })
+      .select({
+        level: jpVocab.level,
+        ...progressCounts(now),
+        ...bookColumns(now)
+      })
       .from(jpVocab)
       .leftJoin(jpStudyState, vocabProgress(userId))
       .groupBy(jpVocab.level),
@@ -372,11 +469,19 @@ const listDecks = protectedProcedure.handler(async ({ context }) => {
   return {
     levels: LEVELS.map((level) => {
       const row = levels.find((found) => found.level === level)
+      const num = (key: keyof BookColumns | "total" | "studied" | "due") =>
+        Number(row?.[key] ?? 0)
       return {
         level,
-        total: row?.total ?? 0,
-        studied: row?.studied ?? 0,
-        due: row?.due ?? 0
+        total: num("total"),
+        studied: num("studied"),
+        due: num("due"),
+        books: POS_BOOKS.map((pos) => ({
+          pos,
+          total: num(`${pos}Total` as const),
+          studied: num(`${pos}Studied` as const),
+          due: num(`${pos}Due` as const)
+        }))
       }
     }),
     moji,
@@ -391,20 +496,26 @@ const studyQueue = protectedProcedure
   .input(
     z.object({
       deck: DeckSchema,
-      limit: z.number().int().min(1).max(50).default(DEFAULT_BATCH)
+      limit: z.number().int().min(1).max(50).default(DEFAULT_BATCH),
+      /** Cap on unseen cards, so the daily new-word target is respected. */
+      newLimit: z.number().int().min(0).max(50).optional()
     })
   )
   .handler(async ({ input, context }) => {
     const userId = context.session.user.id
     const now = new Date()
-    const { deck, limit } = input
+    const { deck } = input
+    const limits = { limit: input.limit, newLimit: input.newLimit }
     let cards: StudyCard[]
     if (deck.kind === "level") {
       cards = await vocabQueue(
         userId,
-        eq(jpVocab.level, deck.level),
+        and(
+          eq(jpVocab.level, deck.level),
+          deck.pos ? posFilter(deck.pos) : undefined
+        ),
         [asc(jpVocab.id)],
-        limit,
+        limits,
         now
       )
     } else if (deck.kind === "moji") {
@@ -415,11 +526,11 @@ const studyQueue = protectedProcedure
           asc(sql`(${mojiField("page")})::int`),
           asc(sql`(${mojiField("position")})::int`)
         ],
-        limit,
+        limits,
         now
       )
     } else {
-      cards = await lexiconQueue(userId, deck.id, limit, now)
+      cards = await lexiconQueue(userId, deck.id, limits, now)
     }
     return { cards: await attachExamples(cards) }
   })
@@ -433,12 +544,24 @@ const rateCard = protectedProcedure
     z.object({
       key: CardKeySchema,
       rating: RatingSchema,
-      timeZone: TimeZoneSchema
+      timeZone: TimeZoneSchema,
+      /** Client-made id for an offline rating, so a replay is applied once. */
+      clientId: z
+        .string()
+        .regex(/^[\w-]{8,64}$/)
+        .optional(),
+      /** When the reader rated the card offline. */
+      occurredAt: z.date().optional()
     })
   )
   .handler(async ({ input, context }) => {
     const userId = context.session.user.id
-    const now = new Date()
+    const now = replayTime(input.occurredAt, new Date())
+    // Prefixed with the user so one reader's ids can never collide with another's.
+    const activityId =
+      input.clientId === undefined
+        ? undefined
+        : `jp-rate:${userId}:${input.clientId}`
     let target: SQL | undefined
     let values: { vocabId: string } | { lexiconEntryId: number }
     let term: string | undefined
@@ -481,15 +604,39 @@ const rateCard = protectedProcedure
       target = eq(jpStudyState.lexiconEntryId, entry.id)
     }
 
+    if (activityId !== undefined) {
+      const [seen] = await db
+        .select({ id: learningActivities.id })
+        .from(learningActivities)
+        .where(eq(learningActivities.id, activityId))
+        .limit(1)
+      if (seen) {
+        const [state] = await db
+          .select({
+            dueAt: jpStudyState.dueAt,
+            intervalDays: jpStudyState.intervalDays
+          })
+          .from(jpStudyState)
+          .where(and(eq(jpStudyState.userId, userId), target))
+          .limit(1)
+        return state ? { ...state, progress: null } : undefined
+      }
+    }
+
     const [previous] = await db
       .select()
       .from(jpStudyState)
       .where(and(eq(jpStudyState.userId, userId), target))
       .limit(1)
+    // A late offline replay never schedules from before a newer review.
+    const reviewedAt =
+      previous?.lastReviewedAt && previous.lastReviewedAt > now
+        ? previous.lastReviewedAt
+        : now
     const next = calculateNextReview(
-      previous ?? createDefaultReviewState(now),
+      previous ?? createDefaultReviewState(reviewedAt),
       input.rating as Rating,
-      now
+      reviewedAt
     )
     const [saved] = await db
       .insert(jpStudyState)
@@ -499,7 +646,7 @@ const rateCard = protectedProcedure
           "vocabId" in values
             ? [jpStudyState.userId, jpStudyState.vocabId]
             : [jpStudyState.userId, jpStudyState.lexiconEntryId],
-        set: { ...next, updatedAt: now }
+        set: { ...next, updatedAt: new Date() }
       })
       .returning({
         dueAt: jpStudyState.dueAt,
@@ -507,6 +654,7 @@ const rateCard = protectedProcedure
       })
     // A card seen for the first time counts as learning a new word.
     const progress = await recordLearningActivity(db, {
+      id: activityId,
       userId,
       kind: previous ? "vocab_review" : "vocab_new",
       refId:
@@ -519,8 +667,139 @@ const rateCard = protectedProcedure
     return saved ? { ...saved, progress } : saved
   })
 
+const parseDeck = (value: string | null): StudyDeck | null => {
+  if (value === null) return null
+  try {
+    const parsed = DeckSchema.safeParse(JSON.parse(value))
+    return parsed.success ? parsed.data : null
+  } catch {
+    // A deck saved by an older client in another shape is simply forgotten.
+    return null
+  }
+}
+
+/**
+ * japanese.study.plan - The caller's daily plan and how far today has got:
+ * new words and reviews done, and what is left of each.
+ */
+const getPlan = protectedProcedure
+  .input(z.object({ timeZone: TimeZoneSchema }).optional())
+  .handler(async ({ input, context }) => {
+    const userId = context.session.user.id
+    const now = new Date()
+    const settings = await loadStreakSettings(db, userId)
+    const timeZone = resolveTimeZone(settings, input?.timeZone)
+    const localDate = getLocalDate(now, timeZone, settings.dayStartHour)
+    const [[plan], done, [due]] = await Promise.all([
+      db
+        .select()
+        .from(jpStudyPlans)
+        .where(eq(jpStudyPlans.userId, userId))
+        .limit(1),
+      db
+        .select({ kind: learningActivities.kind, count: count() })
+        .from(learningActivities)
+        .where(
+          and(
+            eq(learningActivities.userId, userId),
+            eq(learningActivities.localDate, localDate),
+            inArray(learningActivities.kind, ["vocab_new", "vocab_review"])
+          )
+        )
+        .groupBy(learningActivities.kind),
+      db
+        .select({ count: count() })
+        .from(jpStudyState)
+        .where(
+          and(eq(jpStudyState.userId, userId), lte(jpStudyState.dueAt, now))
+        )
+    ])
+    const doneOf = (kind: string) =>
+      done.find((row) => row.kind === kind)?.count ?? 0
+    const dailyNewWords = plan?.dailyNewWords ?? DEFAULT_DAILY_NEW_WORDS
+    const dailyReviewLimit = plan?.dailyReviewLimit ?? null
+    const newDone = doneOf("vocab_new")
+    const reviewDone = doneOf("vocab_review")
+    const dueNow = due?.count ?? 0
+    return {
+      dailyNewWords,
+      dailyReviewLimit,
+      deck: parseDeck(plan?.deck ?? null),
+      today: {
+        localDate,
+        newDone,
+        reviewDone,
+        dueNow,
+        ...planToday({
+          dailyNewWords,
+          dailyReviewLimit,
+          newDone,
+          reviewDone,
+          dueNow
+        })
+      }
+    }
+  })
+
+const optionOf = (options: readonly number[], message: string) =>
+  z
+    .number()
+    .int()
+    .refine((value) => (options as readonly number[]).includes(value), {
+      message
+    })
+
+/**
+ * japanese.study.updatePlan - Change the daily plan; omitted fields stay.
+ */
+const updatePlan = protectedProcedure
+  .input(
+    z.object({
+      dailyNewWords: optionOf(
+        DAILY_NEW_WORD_OPTIONS,
+        "Unsupported daily new-word count"
+      ).optional(),
+      dailyReviewLimit: optionOf(
+        DAILY_REVIEW_LIMIT_OPTIONS,
+        "Unsupported review limit"
+      )
+        .nullable()
+        .optional(),
+      deck: DeckSchema.nullable().optional()
+    })
+  )
+  .handler(async ({ input, context }) => {
+    const userId = context.session.user.id
+    const changes = {
+      ...(input.dailyNewWords === undefined
+        ? {}
+        : { dailyNewWords: input.dailyNewWords }),
+      ...(input.dailyReviewLimit === undefined
+        ? {}
+        : { dailyReviewLimit: input.dailyReviewLimit }),
+      ...(input.deck === undefined
+        ? {}
+        : { deck: input.deck === null ? null : JSON.stringify(input.deck) })
+    }
+    const [saved] = await db
+      .insert(jpStudyPlans)
+      .values({ userId, ...changes })
+      .onConflictDoUpdate({
+        target: jpStudyPlans.userId,
+        set: { ...changes, updatedAt: new Date() }
+      })
+      .returning()
+    return {
+      dailyNewWords: saved?.dailyNewWords ?? DEFAULT_DAILY_NEW_WORDS,
+      dailyReviewLimit: saved?.dailyReviewLimit ?? null,
+      deck: parseDeck(saved?.deck ?? null)
+    }
+  })
+
 export const japaneseStudyRouter = {
   decks: listDecks,
   queue: studyQueue,
-  rate: rateCard
+  rate: rateCard,
+  plan: getPlan,
+  updatePlan
 }

@@ -77,6 +77,7 @@ import {
   jpLexiconsRelations,
   jpLexiconEntries,
   jpLexiconEntriesRelations,
+  jpStudyPlans,
   jpStudyState
 } from "./schema/japanese-library"
 import {
@@ -101,6 +102,7 @@ export {
   jpLexiconsRelations,
   jpLexiconEntries,
   jpLexiconEntriesRelations,
+  jpStudyPlans,
   jpStudyState
 } from "./schema/japanese-library"
 
@@ -118,6 +120,7 @@ const schema = {
   jpLexiconsRelations,
   jpLexiconEntries,
   jpLexiconEntriesRelations,
+  jpStudyPlans,
   jpStudyState,
   // Japanese word bank
   jpGrammar,

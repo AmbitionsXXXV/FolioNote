@@ -10,7 +10,9 @@
  */
 export const STORAGE_BUCKETS = {
   AVATARS: "avatars",
-  ATTACHMENTS: "attachments"
+  ATTACHMENTS: "attachments",
+  /** Public bucket of pre-generated Japanese pronunciations (word bank only). */
+  JP_AUDIO: "jp-audio"
 } as const
 
 export type StorageBucket =

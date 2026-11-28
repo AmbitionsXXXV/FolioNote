@@ -21,6 +21,9 @@ export {
 } from "./avatar"
 export { getS3Client, resetS3Client } from "./client"
 
+// Pre-generated Japanese pronunciations
+export { getJpAudioUrl, JP_AUDIO_CONTENT_TYPE, uploadJpAudio } from "./jp-audio"
+
 // Constants
 export {
   ALLOWED_ATTACHMENT_IMAGE_TYPES,
