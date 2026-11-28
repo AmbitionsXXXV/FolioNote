@@ -98,7 +98,6 @@ export default function SignUpScreen() {
   return (
     <Container
       className="flex-1"
-      disableBottomInset
       disableContentInsetAdjustment
       disableTopInset
     >
