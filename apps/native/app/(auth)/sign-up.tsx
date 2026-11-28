@@ -96,11 +96,7 @@ export default function SignUpScreen() {
   }
 
   return (
-    <Container
-      className="flex-1"
-      disableContentInsetAdjustment
-      disableTopInset
-    >
+    <Container className="flex-1" disableContentInsetAdjustment disableTopInset>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         className="flex-1"
