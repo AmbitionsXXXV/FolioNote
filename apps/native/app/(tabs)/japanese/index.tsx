@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next"
 import { ScrollView, Text, View } from "react-native"
 
 import { Container } from "@/components/container"
+import { DailyStudyCard } from "@/components/japanese/daily-study-card"
 import { JapaneseAttribution } from "@/components/japanese/japanese-attribution"
 import { JapaneseSearchResults } from "@/components/japanese/japanese-search-results"
 import { JapaneseSectionTitle } from "@/components/japanese/japanese-section-title"
@@ -249,6 +250,7 @@ export default function JapaneseHubScreen() {
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
+        <DailyStudyCard />
         <View>
           <Text className="text-sm text-muted">
             {t("japanese.description")}
