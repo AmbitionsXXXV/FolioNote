@@ -6,6 +6,7 @@ import {
 } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { cn, useThemeColor } from "heroui-native"
+import type { ComponentRef } from "react"
 import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Keyboard, Pressable, Text, TextInput, View } from "react-native"
@@ -71,7 +72,7 @@ export function CaptureStep({
   const accentForeground = useThemeColor("accent-foreground")
   const [text, setText] = useState("")
   const [sent, setSent] = useState<string | null>(initialNote)
-  const inputRef = useRef<TextInput>(null)
+  const inputRef = useRef<ComponentRef<typeof TextInput>>(null)
 
   const ideas = [
     t("onboarding.flow.capture.idea1"),

@@ -1,6 +1,7 @@
-import { cn, useThemeColor } from "heroui-native"
+import { cn } from "heroui-native"
 import { Text, View } from "react-native"
 import Svg, { Circle } from "react-native-svg"
+import { useCSSVariable } from "uniwind"
 
 /**
  * The red check-in seal: a thick outer ring, a dashed inner ring, the glyph
@@ -17,7 +18,7 @@ export function PaperSeal({
   size?: number
   className?: string
 }) {
-  const stamp = useThemeColor("stamp")
+  const stamp = String(useCSSVariable("--color-stamp") ?? "red")
   const outer = size * 0.445
   const inner = size * 0.37
   return (

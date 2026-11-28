@@ -1,8 +1,8 @@
 import { formatDate } from "@folionote/locales"
+import type { ComponentRef } from "react"
 import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Pressable, Text, View } from "react-native"
-import type { TextInput } from "react-native"
+import { Pressable, Text, TextInput, View } from "react-native"
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller"
 import Animated, {
   useAnimatedStyle,
@@ -58,8 +58,8 @@ export function SignUpStep({
   const [isGoingLocal, setIsGoingLocal] = useState(false)
   const { style: shakeStyle, shake } = useShake()
   const fold = useSharedValue(0)
-  const emailRef = useRef<TextInput>(null)
-  const passwordRef = useRef<TextInput>(null)
+  const emailRef = useRef<ComponentRef<typeof TextInput>>(null)
+  const passwordRef = useRef<ComponentRef<typeof TextInput>>(null)
 
   const receiptStyle = useAnimatedStyle(() => ({
     opacity: 1 - fold.value,

@@ -1,8 +1,8 @@
 import { router } from "expo-router"
+import type { ComponentRef } from "react"
 import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Pressable, Text, View } from "react-native"
-import type { TextInput } from "react-native"
+import { Pressable, Text, TextInput, View } from "react-native"
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { z } from "zod"
@@ -31,7 +31,7 @@ export default function SignInScreen() {
   const [errors, setErrors] = useState<FieldErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { style: shakeStyle, shake } = useShake()
-  const passwordRef = useRef<TextInput>(null)
+  const passwordRef = useRef<ComponentRef<typeof TextInput>>(null)
 
   const submit = async () => {
     const found: FieldErrors = {}

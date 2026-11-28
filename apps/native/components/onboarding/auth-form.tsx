@@ -1,7 +1,7 @@
 import { ViewIcon, ViewOffIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useThemeColor } from "heroui-native"
-import type { ReactNode, Ref } from "react"
+import type { ComponentRef, ReactNode, Ref } from "react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"
@@ -70,7 +70,7 @@ export function FormRow({
   error?: string | null
   isLast?: boolean
   isPassword?: boolean
-  inputRef?: Ref<TextInput>
+  inputRef?: Ref<ComponentRef<typeof TextInput>>
 }) {
   const { t } = useTranslation()
   const muted = useThemeColor("muted")

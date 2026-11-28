@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Switch, Text, TextInput, View } from "react-native"
 import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useCSSVariable } from "uniwind"
 
 import { haptics } from "@/lib/haptics"
 import {
@@ -87,7 +88,7 @@ export function PlanStep({
   const insets = useSafeAreaInsets()
   const accent = useThemeColor("accent")
   const accentForeground = useThemeColor("accent-foreground")
-  const divider = useThemeColor("divider")
+  const divider = String(useCSSVariable("--color-divider") ?? "gray")
   const [plan, setPlan] = useState(initialPlan)
   const [typed, setTyped] = useState<string | null>(null)
 

@@ -1,4 +1,5 @@
 import { cn } from "heroui-native"
+import type { ComponentRef } from "react"
 import { useEffect, useRef, useState } from "react"
 import { ScrollView, Text, View } from "react-native"
 import type {
@@ -30,7 +31,7 @@ export function RulerWheel({
   onChange: (value: number) => void
   accessibilityLabel: string
 }) {
-  const scrollRef = useRef<ScrollView>(null)
+  const scrollRef = useRef<ComponentRef<typeof ScrollView>>(null)
   const [width, setWidth] = useState(0)
   const dragging = useRef(false)
   const lastValue = useRef(value)

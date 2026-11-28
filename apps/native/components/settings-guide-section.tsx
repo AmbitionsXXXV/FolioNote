@@ -8,6 +8,7 @@ import { useThemeColor } from "heroui-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionSheetIOS, Alert, Switch, View } from "react-native"
+import { useCSSVariable } from "uniwind"
 
 import {
   GroupedCard,
@@ -36,7 +37,7 @@ import { client } from "@/utils/orpc"
 export function SettingsGuideSection() {
   const { t } = useTranslation()
   const accent = useThemeColor("accent")
-  const divider = useThemeColor("divider")
+  const divider = String(useCSSVariable("--color-divider") ?? "gray")
   const { data: session } = authClient.useSession()
   const reminder = useReminderTime()
   const refresh = useRefreshReminderTime()

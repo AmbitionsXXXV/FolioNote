@@ -15,6 +15,7 @@ import Animated, {
 } from "react-native-reanimated"
 import type { SharedValue } from "react-native-reanimated"
 import Svg, { Circle } from "react-native-svg"
+import { useCSSVariable } from "uniwind"
 
 import { haptics } from "@/lib/haptics"
 
@@ -57,7 +58,7 @@ export function HoldToStamp({
   onStamp: () => void
 }) {
   const { t } = useTranslation()
-  const stamp = useThemeColor("stamp")
+  const stamp = String(useCSSVariable("--color-stamp") ?? "red")
   const background = useThemeColor("background")
   const reduceMotion = useReducedMotion()
   const timers = useRef<ReturnType<typeof setTimeout>[]>([])
