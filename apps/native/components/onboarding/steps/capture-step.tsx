@@ -100,7 +100,7 @@ export function CaptureStep({
           title={t("onboarding.flow.capture.title")}
         />
 
-        <View className="mt-7 -mx-2 gap-2.5">
+        <View className="-mx-2 mt-7 gap-2.5">
           <View className="flex-row items-center gap-1.5 px-2">
             <HugeiconsIcon color={muted} icon={InboxIcon} size={15} />
             <Text className="text-[13px] font-semibold text-muted">
@@ -120,7 +120,7 @@ export function CaptureStep({
               }}
             >
               <View className="min-w-0 flex-1 gap-[3px]">
-                <Text className="text-base font-medium leading-[22px] text-foreground">
+                <Text className="text-base leading-[22px] font-medium text-foreground">
                   {sent}
                 </Text>
                 <Text className="text-[13px] text-muted">
@@ -153,7 +153,7 @@ export function CaptureStep({
             {t("onboarding.flow.capture.after")}
           </Animated.Text>
         ) : (
-          <View className="mt-6 -mx-2 gap-2">
+          <View className="-mx-2 mt-6 gap-2">
             <Text className="px-2 text-[13px] text-muted">
               {t("onboarding.flow.capture.ideasLabel")}
             </Text>

@@ -1,6 +1,10 @@
 import { DeviceMotion } from "expo-sensors"
 import { useEffect } from "react"
-import { useReducedMotion, useSharedValue, withSpring } from "react-native-reanimated"
+import {
+  useReducedMotion,
+  useSharedValue,
+  withSpring
+} from "react-native-reanimated"
 import type { SharedValue } from "react-native-reanimated"
 
 const UPDATE_INTERVAL_MS = 50

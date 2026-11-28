@@ -21,7 +21,11 @@ import type { StampGlyph } from "@/lib/stamp-glyph"
 import { queryClient } from "@/utils/orpc"
 
 import { FormCard, FormRow, useShake } from "../auth-form"
-import { GlassBackButton, PrimaryButton, StepHeading } from "../onboarding-chrome"
+import {
+  GlassBackButton,
+  PrimaryButton,
+  StepHeading
+} from "../onboarding-chrome"
 import { PaperSeal } from "../paper-seal"
 
 const PASSWORD_MIN_LENGTH = 10
@@ -74,8 +78,10 @@ export function SignUpStep({
   const validate = (): FieldErrors => {
     const found: FieldErrors = {}
     if (!name.trim()) found.name = t("auth.nameRequired")
-    if (!z.email().safeParse(email.trim()).success) found.email = t("auth.invalidEmail")
-    if (password.length < PASSWORD_MIN_LENGTH) found.password = t("auth.passwordTooShort")
+    if (!z.email().safeParse(email.trim()).success)
+      found.email = t("auth.invalidEmail")
+    if (password.length < PASSWORD_MIN_LENGTH)
+      found.password = t("auth.passwordTooShort")
     return found
   }
 
@@ -124,7 +130,9 @@ export function SignUpStep({
   const planLine = (): string | null => {
     if (!plan?.useJapanese) return null
     if (!plan.remind) {
-      return t("onboarding.flow.signUp.receiptPlan", { count: plan.dailyNewWords })
+      return t("onboarding.flow.signUp.receiptPlan", {
+        count: plan.dailyNewWords
+      })
     }
     return t("onboarding.flow.signUp.receiptPlanRemind", {
       count: plan.dailyNewWords,
@@ -134,7 +142,9 @@ export function SignUpStep({
 
   const receiptLines = [
     note ? t("onboarding.flow.signUp.receiptNote") : null,
-    wordSaved ? t("onboarding.flow.signUp.receiptWord", { word: DEMO_WORD.headword }) : null,
+    wordSaved
+      ? t("onboarding.flow.signUp.receiptWord", { word: DEMO_WORD.headword })
+      : null,
     planLine()
   ].filter((line): line is string => line !== null)
 
@@ -191,8 +201,15 @@ export function SignUpStep({
               </Text>
             )}
           </View>
-          <View className="self-center" style={{ transform: [{ rotate: "-8deg" }] }}>
-            <PaperSeal caption={t("onboarding.flow.stamp.dayOne")} glyph={glyph} size={72} />
+          <View
+            className="self-center"
+            style={{ transform: [{ rotate: "-8deg" }] }}
+          >
+            <PaperSeal
+              caption={t("onboarding.flow.stamp.dayOne")}
+              glyph={glyph}
+              size={72}
+            />
           </View>
         </Animated.View>
 
@@ -241,7 +258,10 @@ export function SignUpStep({
             />
           </FormCard>
           {submitError ? (
-            <Text accessibilityLiveRegion="polite" className="-mt-2 px-4 text-[13px] text-danger">
+            <Text
+              accessibilityLiveRegion="polite"
+              className="-mt-2 px-4 text-[13px] text-danger"
+            >
               {submitError}
             </Text>
           ) : null}
@@ -252,9 +272,17 @@ export function SignUpStep({
           />
           <View className="items-center gap-0.5">
             <View className="h-11 flex-row items-center">
-              <Text className="text-[15px] text-muted">{t("auth.haveAccount")}</Text>
-              <Pressable accessibilityRole="link" className="px-1 py-3" onPress={onSignIn}>
-                <Text className="text-[15px] font-semibold text-accent">{t("auth.signIn")}</Text>
+              <Text className="text-[15px] text-muted">
+                {t("auth.haveAccount")}
+              </Text>
+              <Pressable
+                accessibilityRole="link"
+                className="px-1 py-3"
+                onPress={onSignIn}
+              >
+                <Text className="text-[15px] font-semibold text-accent">
+                  {t("auth.signIn")}
+                </Text>
               </Pressable>
             </View>
             <Pressable
@@ -273,4 +301,3 @@ export function SignUpStep({
     </View>
   )
 }
-

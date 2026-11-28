@@ -7,9 +7,20 @@ import { HugeiconsIcon } from "@hugeicons/react-native"
 import { cn, useThemeColor } from "heroui-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Pressable, ScrollView, Switch, Text, TextInput, View } from "react-native"
+import {
+  Pressable,
+  ScrollView,
+  Switch,
+  Text,
+  TextInput,
+  View
+} from "react-native"
 import { KeyboardStickyView } from "react-native-keyboard-controller"
-import Animated, { FadeIn, FadeOut, LinearTransition } from "react-native-reanimated"
+import Animated, {
+  FadeIn,
+  FadeOut,
+  LinearTransition
+} from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useCSSVariable } from "uniwind"
 
@@ -65,7 +76,11 @@ function UseCard({
           )}
         >
           {isOn ? (
-            <HugeiconsIcon color={accentForeground} icon={Tick02Icon} size={14} />
+            <HugeiconsIcon
+              color={accentForeground}
+              icon={Tick02Icon}
+              size={14}
+            />
           ) : null}
         </View>
       </View>
@@ -176,10 +191,14 @@ export function PlanStep({
                     <Text
                       className={cn(
                         "text-[14px] font-semibold",
-                        selected ? "text-accent-soft-foreground" : "text-foreground"
+                        selected
+                          ? "text-accent-soft-foreground"
+                          : "text-foreground"
                       )}
                     >
-                      {level === "beginner" ? t("onboarding.flow.plan.beginner") : level}
+                      {level === "beginner"
+                        ? t("onboarding.flow.plan.beginner")
+                        : level}
                     </Text>
                   </Pressable>
                 )
@@ -258,13 +277,20 @@ export function PlanStep({
       </ScrollView>
 
       <KeyboardStickyView offset={{ opened: insets.bottom }}>
-        <View className="px-6 pt-2" style={{ paddingBottom: insets.bottom + 12 }}>
+        <View
+          className="px-6 pt-2"
+          style={{ paddingBottom: insets.bottom + 12 }}
+        >
           <PrimaryButton
             isDisabled={!(plan.useNotes || plan.useJapanese)}
             label={t("onboarding.flow.plan.done")}
             onPress={() => onDone(plan)}
             trailing={
-              <HugeiconsIcon color={accentForeground} icon={ArrowRight01Icon} size={18} />
+              <HugeiconsIcon
+                color={accentForeground}
+                icon={ArrowRight01Icon}
+                size={18}
+              />
             }
           />
         </View>

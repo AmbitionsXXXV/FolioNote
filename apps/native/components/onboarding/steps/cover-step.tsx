@@ -157,10 +157,7 @@ export function CoverStep({
 
   // One light landing once the last card has settled.
   useEffect(() => {
-    const timer = setTimeout(
-      haptics.settle,
-      CARD_COUNT * DROP_STAGGER_MS + 380
-    )
+    const timer = setTimeout(haptics.settle, CARD_COUNT * DROP_STAGGER_MS + 380)
     return () => clearTimeout(timer)
   }, [])
 
@@ -169,7 +166,10 @@ export function CoverStep({
     ActionSheetIOS.showActionSheetWithOptions(
       {
         title: t("onboarding.flow.cover.language"),
-        options: [...languages.map((lang) => LANGUAGE_LABELS[lang]), t("common.cancel")],
+        options: [
+          ...languages.map((lang) => LANGUAGE_LABELS[lang]),
+          t("common.cancel")
+        ],
         cancelButtonIndex: languages.length
       },
       (index) => {
@@ -207,21 +207,36 @@ export function CoverStep({
       <View
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
-        style={{ position: "absolute", top: 0, left: 0, right: 0, height: at(520) }}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: at(520)
+        }}
       >
         <FloatingCard
           order={0}
-          spec={{ depth: 1, amplitude: -9, rotateFrom: -6, rotateTo: -5, durationMs: 7000 }}
+          spec={{
+            depth: 1,
+            amplitude: -9,
+            rotateFrom: -6,
+            rotateTo: -5,
+            durationMs: 7000
+          }}
           style={{ left: at(26), top: at(150), width: at(196) }}
           tilt={tilt}
         >
-          <View className="gap-1.5 rounded-[20px] bg-surface p-[18px]" style={cardShadow}>
+          <View
+            className="gap-1.5 rounded-[20px] bg-surface p-[18px]"
+            style={cardShadow}
+          >
             <Text className="text-[11px] font-semibold tracking-wider text-muted">
               今日の一語
             </Text>
             <View>
               <Text className="text-[12px] text-muted">こもれび</Text>
-              <Text className="text-[34px] font-bold leading-[44px] text-foreground">
+              <Text className="text-[34px] leading-[44px] font-bold text-foreground">
                 木漏れ日
               </Text>
             </View>
@@ -233,12 +248,21 @@ export function CoverStep({
 
         <FloatingCard
           order={1}
-          spec={{ depth: 0.45, amplitude: 7, rotateFrom: 5, rotateTo: 6, durationMs: 8500 }}
+          spec={{
+            depth: 0.45,
+            amplitude: 7,
+            rotateFrom: 5,
+            rotateTo: 6,
+            durationMs: 8500
+          }}
           style={{ right: at(22), top: at(122), width: at(150) }}
           tilt={tilt}
         >
-          <View className="gap-2 rounded-2xl bg-surface p-3.5" style={cardShadow}>
-            <Text className="text-[13px] font-semibold leading-[18px] text-foreground">
+          <View
+            className="gap-2 rounded-2xl bg-surface p-3.5"
+            style={cardShadow}
+          >
+            <Text className="text-[13px] leading-[18px] font-semibold text-foreground">
               {t("onboarding.flow.cover.noteCard")}
             </Text>
             <View className="h-[5px] rounded-full bg-default" />
@@ -251,22 +275,38 @@ export function CoverStep({
 
         <FloatingCard
           order={2}
-          spec={{ depth: 0.7, amplitude: -6, rotateFrom: -3, rotateTo: -2, durationMs: 6500 }}
+          spec={{
+            depth: 0.7,
+            amplitude: -6,
+            rotateFrom: -3,
+            rotateTo: -2,
+            durationMs: 6500
+          }}
           style={{ right: at(30), top: at(312), width: at(214) }}
           tilt={tilt}
         >
           <View
-            className="flex-row items-center gap-2.5 rounded-2xl bg-stage px-3.5 py-3"
+            className="bg-stage flex-row items-center gap-2.5 rounded-2xl px-3.5 py-3"
             style={cardShadow}
           >
-            <View className="size-[30px] items-center justify-center rounded-full bg-stage-foreground/15">
-              <HugeiconsIcon color={stageForeground} icon={PlayIcon} size={12} />
+            <View className="bg-stage-foreground/15 size-[30px] items-center justify-center rounded-full">
+              <HugeiconsIcon
+                color={stageForeground}
+                icon={PlayIcon}
+                size={12}
+              />
             </View>
             <View className="min-w-0 flex-1 gap-0.5">
-              <Text className="text-[14px] font-medium text-stage-foreground" numberOfLines={1}>
+              <Text
+                className="text-stage-foreground text-[14px] font-medium"
+                numberOfLines={1}
+              >
                 <Text className="text-warning">木漏れ日</Text>がきれいでした
               </Text>
-              <Text className="text-[11px] text-stage-muted" style={{ fontVariant: ["tabular-nums"] }}>
+              <Text
+                className="text-stage-muted text-[11px]"
+                style={{ fontVariant: ["tabular-nums"] }}
+              >
                 0:42 · {t("onboarding.flow.cover.subtitle")}
               </Text>
             </View>
@@ -275,7 +315,13 @@ export function CoverStep({
 
         <FloatingCard
           order={3}
-          spec={{ depth: 0.25, amplitude: 5, rotateFrom: -10, rotateTo: -12, durationMs: 9000 }}
+          spec={{
+            depth: 0.25,
+            amplitude: 5,
+            rotateFrom: -10,
+            rotateTo: -12,
+            durationMs: 9000
+          }}
           style={{ left: at(58), top: at(318) }}
           tilt={tilt}
         >
@@ -284,10 +330,13 @@ export function CoverStep({
       </View>
 
       <View className="absolute inset-x-6 gap-3.5" style={{ top: at(478) }}>
-        <BrandLockup size={40} wordmarkClassName="text-[26px] text-foreground" />
+        <BrandLockup
+          size={40}
+          wordmarkClassName="text-[26px] text-foreground"
+        />
         <Text
           accessibilityRole="header"
-          className="text-[36px] font-bold leading-[42px] tracking-tight text-foreground"
+          className="text-[36px] leading-[42px] font-bold tracking-tight text-foreground"
         >
           {t("onboarding.flow.cover.title")}
         </Text>
@@ -296,7 +345,10 @@ export function CoverStep({
         </Text>
       </View>
 
-      <View className="absolute inset-x-6 gap-1.5" style={{ bottom: insets.bottom + 12 }}>
+      <View
+        className="absolute inset-x-6 gap-1.5"
+        style={{ bottom: insets.bottom + 12 }}
+      >
         <PrimaryButton
           label={t("onboarding.flow.cover.start")}
           onPress={() => {
@@ -304,7 +356,11 @@ export function CoverStep({
             onStart()
           }}
           trailing={
-            <HugeiconsIcon color={accentForeground} icon={ArrowRight01Icon} size={18} />
+            <HugeiconsIcon
+              color={accentForeground}
+              icon={ArrowRight01Icon}
+              size={18}
+            />
           }
         />
         {onHaveAccount ? (

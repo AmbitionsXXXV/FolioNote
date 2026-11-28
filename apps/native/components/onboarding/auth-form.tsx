@@ -52,7 +52,10 @@ export function FormCard({
   shakeStyle?: ReturnType<typeof useShake>["style"]
 }) {
   return (
-    <Animated.View className="overflow-hidden rounded-[20px] bg-surface" style={shakeStyle}>
+    <Animated.View
+      className="overflow-hidden rounded-[20px] bg-surface"
+      style={shakeStyle}
+    >
       {children}
     </Animated.View>
   )
@@ -95,7 +98,9 @@ export function FormRow({
         {isPassword ? (
           <Pressable
             accessibilityLabel={
-              revealed ? t("onboarding.flow.form.hidePassword") : t("onboarding.flow.form.showPassword")
+              revealed
+                ? t("onboarding.flow.form.hidePassword")
+                : t("onboarding.flow.form.showPassword")
             }
             accessibilityRole="button"
             className="size-11 items-center justify-center"
@@ -104,17 +109,27 @@ export function FormRow({
               setRevealed((value) => !value)
             }}
           >
-            <HugeiconsIcon color={muted} icon={revealed ? ViewOffIcon : ViewIcon} size={20} />
+            <HugeiconsIcon
+              color={muted}
+              icon={revealed ? ViewOffIcon : ViewIcon}
+              size={20}
+            />
           </Pressable>
         ) : null}
       </View>
       {error ? (
-        <Text accessibilityLiveRegion="polite" className="-mt-1.5 pr-4 pb-2.5 text-[13px] text-danger">
+        <Text
+          accessibilityLiveRegion="polite"
+          className="-mt-1.5 pr-4 pb-2.5 text-[13px] text-danger"
+        >
           {error}
         </Text>
       ) : null}
       {isLast ? null : (
-        <View className="bg-divider" style={{ height: StyleSheet.hairlineWidth }} />
+        <View
+          className="bg-divider"
+          style={{ height: StyleSheet.hairlineWidth }}
+        />
       )}
     </View>
   )

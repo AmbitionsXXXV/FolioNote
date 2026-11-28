@@ -4,7 +4,13 @@ import { GlassView, isLiquidGlassAvailable } from "expo-glass-effect"
 import { cn, useThemeColor } from "heroui-native"
 import type { ReactNode } from "react"
 import { useTranslation } from "react-i18next"
-import { ActivityIndicator, Platform, Pressable, Text, View } from "react-native"
+import {
+  ActivityIndicator,
+  Platform,
+  Pressable,
+  Text,
+  View
+} from "react-native"
 import type { StyleProp, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -168,7 +174,7 @@ export function StepHeading({
     <View className="gap-2">
       <Text
         accessibilityRole="header"
-        className="text-[30px] font-bold leading-9 tracking-tight text-foreground"
+        className="text-[30px] leading-9 font-bold tracking-tight text-foreground"
       >
         {title}
       </Text>

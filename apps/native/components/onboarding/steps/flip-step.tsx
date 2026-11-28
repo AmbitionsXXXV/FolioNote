@@ -28,7 +28,13 @@ import {
 const FLIP_MS = 520
 const FLIP_EASING = Easing.bezier(0.2, 0.8, 0.2, 1)
 /** Interval stops on the timeline; each rating lands on one of them. */
-const STOP_KEYS = ["tenMinutes", "tomorrow", "threeDays", "oneWeek", "oneMonth"] as const
+const STOP_KEYS = [
+  "tenMinutes",
+  "tomorrow",
+  "threeDays",
+  "oneWeek",
+  "oneMonth"
+] as const
 const STOP_OF: Record<RatingFeel, number> = { again: 0, hard: 1, good: 2 }
 
 const cardShadow = {
@@ -154,7 +160,7 @@ export function FlipStep({
               onPress={flip}
               style={cardShadow}
             >
-              <Text className="text-[58px] font-bold leading-[64px] text-foreground">
+              <Text className="text-[58px] leading-[64px] font-bold text-foreground">
                 木漏れ日
               </Text>
               <Text className="text-[13px] text-muted">
@@ -176,13 +182,13 @@ export function FlipStep({
                 </Text>
               </View>
             </View>
-            <Text className="text-[34px] font-bold leading-[40px] text-foreground">
+            <Text className="text-[34px] leading-[40px] font-bold text-foreground">
               木漏れ日
             </Text>
             <Text className="text-[19px] font-semibold text-foreground">
               {t("onboarding.flow.demoMeaning")}
             </Text>
-            <View className="my-2 h-px bg-divider" />
+            <View className="bg-divider my-2 h-px" />
             <Text className="text-[17px] leading-[26px] text-foreground">
               木漏れ日の中を歩く。
             </Text>

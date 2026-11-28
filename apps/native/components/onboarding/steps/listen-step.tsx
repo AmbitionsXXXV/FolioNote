@@ -88,17 +88,28 @@ function WaveBar({
       (index * 53) % 400,
       withRepeat(
         withSequence(
-          withTiming(0.45, { duration: period / 2, easing: Easing.inOut(Easing.sin) }),
-          withTiming(1, { duration: period / 2, easing: Easing.inOut(Easing.sin) })
+          withTiming(0.45, {
+            duration: period / 2,
+            easing: Easing.inOut(Easing.sin)
+          }),
+          withTiming(1, {
+            duration: period / 2,
+            easing: Easing.inOut(Easing.sin)
+          })
         ),
         -1
       )
     )
   }, [index, playing, scale])
-  const style = useAnimatedStyle(() => ({ transform: [{ scaleY: scale.value }] }))
+  const style = useAnimatedStyle(() => ({
+    transform: [{ scaleY: scale.value }]
+  }))
   return (
     <Animated.View
-      className={cn("w-1 rounded-full", played ? "bg-warning" : "bg-stage-foreground/30")}
+      className={cn(
+        "w-1 rounded-full",
+        played ? "bg-warning" : "bg-stage-foreground/30"
+      )}
       style={[{ height }, style]}
     />
   )
@@ -180,7 +191,7 @@ export function ListenStep({
           title={t("onboarding.flow.listen.title")}
         />
 
-        <View className="mt-7 h-[132px] justify-between rounded-[20px] bg-stage px-[18px] py-4">
+        <View className="bg-stage mt-7 h-[132px] justify-between rounded-[20px] px-[18px] py-4">
           <View
             accessibilityElementsHidden
             className="h-14 flex-row items-center justify-between"
@@ -200,26 +211,35 @@ export function ListenStep({
             <Pressable
               accessibilityLabel={t("onboarding.flow.listen.replay")}
               accessibilityRole="button"
-              className="size-9 items-center justify-center rounded-full bg-stage-foreground/15 active:opacity-70"
+              className="bg-stage-foreground/15 size-9 items-center justify-center rounded-full active:opacity-70"
               hitSlop={4}
               onPress={() => {
                 haptics.tap()
                 play()
               }}
             >
-              <HugeiconsIcon color={stageForeground} icon={RepeatIcon} size={16} />
+              <HugeiconsIcon
+                color={stageForeground}
+                icon={RepeatIcon}
+                size={16}
+              />
             </Pressable>
-            <Text className="text-[13px] text-stage-muted" style={{ fontVariant: ["tabular-nums"] }}>
+            <Text
+              className="text-stage-muted text-[13px]"
+              style={{ fontVariant: ["tabular-nums"] }}
+            >
               0:42 / 3:15
             </Text>
-            <Text className="ml-auto text-xs text-stage-muted">
+            <Text className="text-stage-muted ml-auto text-xs">
               {t("onboarding.flow.listen.source")}
             </Text>
           </View>
         </View>
 
         <View className="mt-6 gap-3">
-          <Text className="text-[15px] text-muted/70">今日は公園を散歩しました。</Text>
+          <Text className="text-[15px] text-muted/70">
+            今日は公園を散歩しました。
+          </Text>
           <View className="flex-row flex-wrap items-baseline">
             <Pressable
               accessibilityLabel={t("onboarding.flow.listen.wordAria", {
@@ -256,13 +276,19 @@ export function ListenStep({
           <Text className="-mt-1.5 text-sm text-muted">
             {t("onboarding.flow.listen.translation")}
           </Text>
-          <Text className="text-[15px] text-muted/70">また来たいと思います。</Text>
+          <Text className="text-[15px] text-muted/70">
+            また来たいと思います。
+          </Text>
         </View>
 
         {open ? null : (
           <Animated.View className="mt-8 flex-row" entering={FadeIn.delay(900)}>
             <View className="flex-row items-center gap-1.5 rounded-full bg-accent-soft px-3.5 py-2">
-              <HugeiconsIcon color={softForeground} icon={SparklesIcon} size={15} />
+              <HugeiconsIcon
+                color={softForeground}
+                icon={SparklesIcon}
+                size={15}
+              />
               <Text className="text-sm font-medium text-accent-soft-foreground">
                 {t("onboarding.flow.listen.hint")}
               </Text>
@@ -294,9 +320,13 @@ export function ListenStep({
               <Text className="text-[28px] font-bold text-foreground">
                 {DEMO_WORD.headword}
               </Text>
-              <Text className="text-[15px] text-muted">{DEMO_WORD.reading}</Text>
+              <Text className="text-[15px] text-muted">
+                {DEMO_WORD.reading}
+              </Text>
               <View className="ml-auto rounded-full bg-accent-soft px-2.5 py-[3px]">
-                <Text className="text-xs font-medium text-accent-soft-foreground">{t("onboarding.flow.flip.noun")}</Text>
+                <Text className="text-xs font-medium text-accent-soft-foreground">
+                  {t("onboarding.flow.flip.noun")}
+                </Text>
               </View>
             </View>
             <Text className="text-[17px] text-foreground">
@@ -308,11 +338,15 @@ export function ListenStep({
             {saved ? (
               <View className="gap-2.5">
                 <Animated.View
-                  className="h-11 flex-row items-center justify-center gap-1.5 rounded-full bg-good-soft"
+                  className="bg-good-soft h-11 flex-row items-center justify-center gap-1.5 rounded-full"
                   entering={ZoomIn.springify()}
                 >
-                  <HugeiconsIcon color={goodForeground} icon={CheckmarkCircle02Icon} size={17} />
-                  <Text className="text-[15px] font-semibold text-good-soft-foreground">
+                  <HugeiconsIcon
+                    color={goodForeground}
+                    icon={CheckmarkCircle02Icon}
+                    size={17}
+                  />
+                  <Text className="text-good-soft-foreground text-[15px] font-semibold">
                     {t("onboarding.flow.listen.saved")}
                   </Text>
                 </Animated.View>
@@ -320,7 +354,11 @@ export function ListenStep({
                   label={t("onboarding.flow.listen.next")}
                   onPress={onNext}
                   trailing={
-                    <HugeiconsIcon color={accentForeground} icon={ArrowRight01Icon} size={18} />
+                    <HugeiconsIcon
+                      color={accentForeground}
+                      icon={ArrowRight01Icon}
+                      size={18}
+                    />
                   }
                 />
               </View>
@@ -329,7 +367,11 @@ export function ListenStep({
                 label={t("onboarding.flow.listen.save")}
                 onPress={save}
                 trailing={
-                  <HugeiconsIcon color={accentForeground} icon={BookmarkAdd01Icon} size={18} />
+                  <HugeiconsIcon
+                    color={accentForeground}
+                    icon={BookmarkAdd01Icon}
+                    size={18}
+                  />
                 }
               />
             )}

@@ -97,7 +97,9 @@ export function StampStep({
       transform: [
         { translateY: interpolate(landed.value, [0, 1], [hover.lift, 0]) },
         { scale },
-        { rotate: `${interpolate(landed.value, [0, 1], [hover.rotate, -8])}deg` }
+        {
+          rotate: `${interpolate(landed.value, [0, 1], [hover.rotate, -8])}deg`
+        }
       ]
     }
   })
@@ -105,15 +107,25 @@ export function StampStep({
     opacity: ripple.value === 0 ? 0 : 0.5 * (1 - ripple.value),
     transform: [{ scale: 1 + 0.55 * ripple.value }]
   }))
-  const slotStyle = useAnimatedStyle(() => ({ opacity: 0.7 * (1 - landed.value) }))
+  const slotStyle = useAnimatedStyle(() => ({
+    opacity: 0.7 * (1 - landed.value)
+  }))
 
   return (
     <View className="flex-1 bg-background">
       <OnboardingTopBar onBack={onBack} progress={5} />
       <View className="flex-1 px-6" style={{ paddingTop: insets.top + 72 }}>
         <StepHeading
-          subtitle={done ? t("onboarding.flow.stamp.doneBody") : t("onboarding.flow.stamp.body")}
-          title={done ? t("onboarding.flow.stamp.doneTitle") : t("onboarding.flow.stamp.title")}
+          subtitle={
+            done
+              ? t("onboarding.flow.stamp.doneBody")
+              : t("onboarding.flow.stamp.body")
+          }
+          title={
+            done
+              ? t("onboarding.flow.stamp.doneTitle")
+              : t("onboarding.flow.stamp.title")
+          }
         />
 
         <View
@@ -166,7 +178,10 @@ export function StampStep({
             {week.map((day) => {
               const isToday = day.toDateString() === today.toDateString()
               return (
-                <View className="flex-1 items-center gap-[5px]" key={day.toDateString()}>
+                <View
+                  className="flex-1 items-center gap-[5px]"
+                  key={day.toDateString()}
+                >
                   <Text className="text-[11px] text-muted">
                     {formatDate(day, {
                       locale: i18n.language,
@@ -177,7 +192,9 @@ export function StampStep({
                     className={cn(
                       "size-[26px] items-center justify-center rounded-full",
                       isToday && done && "border-[1.8px] border-stamp",
-                      isToday && !done && "border-[1.5px] border-dashed border-muted/60",
+                      isToday &&
+                        !done &&
+                        "border-[1.5px] border-dashed border-muted/60",
                       !isToday && "bg-default"
                     )}
                   >
@@ -204,12 +221,16 @@ export function StampStep({
             const selected = option === glyph
             return (
               <Pressable
-                accessibilityLabel={t("onboarding.flow.stamp.glyphAria", { glyph: option })}
+                accessibilityLabel={t("onboarding.flow.stamp.glyphAria", {
+                  glyph: option
+                })}
                 accessibilityRole="button"
                 accessibilityState={{ selected }}
                 className={cn(
                   "size-11 items-center justify-center rounded-full",
-                  selected ? "border-2 border-stamp" : "border border-divider bg-surface"
+                  selected
+                    ? "border-2 border-stamp"
+                    : "border border-divider bg-surface"
                 )}
                 key={option}
                 onPress={() => {
@@ -219,7 +240,10 @@ export function StampStep({
                 }}
               >
                 <Text
-                  className={cn("text-[19px] font-black", selected ? "text-stamp" : "text-muted")}
+                  className={cn(
+                    "text-[19px] font-black",
+                    selected ? "text-stamp" : "text-muted"
+                  )}
                 >
                   {option}
                 </Text>
@@ -229,14 +253,24 @@ export function StampStep({
         </View>
       </View>
 
-      <View className="items-center px-6" style={{ paddingBottom: insets.bottom + 12 }}>
+      <View
+        className="items-center px-6"
+        style={{ paddingBottom: insets.bottom + 12 }}
+      >
         {done && released ? (
-          <Animated.View className="self-stretch" entering={FadeIn.delay(reduceMotion ? 0 : 240)}>
+          <Animated.View
+            className="self-stretch"
+            entering={FadeIn.delay(reduceMotion ? 0 : 240)}
+          >
             <PrimaryButton
               label={nextLabel}
               onPress={onNext}
               trailing={
-                <HugeiconsIcon color={accentForeground} icon={ArrowRight01Icon} size={18} />
+                <HugeiconsIcon
+                  color={accentForeground}
+                  icon={ArrowRight01Icon}
+                  size={18}
+                />
               }
             />
           </Animated.View>

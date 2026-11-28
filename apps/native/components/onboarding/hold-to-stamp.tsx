@@ -39,7 +39,8 @@ const pulseSchedule = (): number[] => {
   while (at < HOLD_MS) {
     times.push(at)
     const progress = at / HOLD_MS
-    at += FIRST_PULSE_GAP_MS - (FIRST_PULSE_GAP_MS - LAST_PULSE_GAP_MS) * progress
+    at +=
+      FIRST_PULSE_GAP_MS - (FIRST_PULSE_GAP_MS - LAST_PULSE_GAP_MS) * progress
   }
   return times
 }
@@ -125,8 +126,15 @@ export function HoldToStamp({
   }))
 
   return (
-    <View className="items-center justify-center" style={{ width: RING, height: RING }}>
-      <Svg height={RING} style={{ position: "absolute", transform: [{ rotate: "-90deg" }] }} width={RING}>
+    <View
+      className="items-center justify-center"
+      style={{ width: RING, height: RING }}
+    >
+      <Svg
+        height={RING}
+        style={{ position: "absolute", transform: [{ rotate: "-90deg" }] }}
+        width={RING}
+      >
         <Circle
           cx={RING / 2}
           cy={RING / 2}

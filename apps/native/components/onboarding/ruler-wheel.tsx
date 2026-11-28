@@ -43,12 +43,16 @@ export function RulerWheel({
   useEffect(() => {
     if (dragging.current || width === 0) return
     lastValue.current = value
-    scrollRef.current?.scrollTo({ x: (value - min) * TICK_SPACING, animated: true })
+    scrollRef.current?.scrollTo({
+      x: (value - min) * TICK_SPACING,
+      animated: true
+    })
   }, [min, value, width])
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (!dragging.current) return
-    const raw = Math.round(event.nativeEvent.contentOffset.x / TICK_SPACING) + min
+    const raw =
+      Math.round(event.nativeEvent.contentOffset.x / TICK_SPACING) + min
     const next = Math.max(min, Math.min(max, raw))
     if (next === lastValue.current) return
     lastValue.current = next
@@ -110,7 +114,10 @@ export function RulerWheel({
               <View
                 className="items-center"
                 key={tick}
-                style={{ width: TICK_SPACING, marginLeft: tick === min ? -TICK_SPACING / 2 : 0 }}
+                style={{
+                  width: TICK_SPACING,
+                  marginLeft: tick === min ? -TICK_SPACING / 2 : 0
+                }}
               >
                 <View
                   className={cn(
@@ -122,7 +129,9 @@ export function RulerWheel({
                   <Text
                     className={cn(
                       "absolute top-6 w-8 text-center text-[11px]",
-                      tick === value ? "font-semibold text-foreground" : "text-muted"
+                      tick === value
+                        ? "font-semibold text-foreground"
+                        : "text-muted"
                     )}
                     style={{ fontVariant: ["tabular-nums"] }}
                   >

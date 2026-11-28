@@ -110,7 +110,7 @@ export default function SignInScreen() {
           />
           <Text
             accessibilityRole="header"
-            className="text-[34px] font-bold leading-10 tracking-tight text-foreground"
+            className="text-[34px] leading-10 font-bold tracking-tight text-foreground"
           >
             {t("onboarding.flow.signIn.title")}
           </Text>
@@ -155,7 +155,9 @@ export default function SignInScreen() {
             onPress={submit}
           />
           <View className="h-11 flex-row items-center justify-center">
-            <Text className="text-[15px] text-muted">{t("auth.noAccount")}</Text>
+            <Text className="text-[15px] text-muted">
+              {t("auth.noAccount")}
+            </Text>
             <Pressable
               accessibilityRole="link"
               className="px-1 py-3"

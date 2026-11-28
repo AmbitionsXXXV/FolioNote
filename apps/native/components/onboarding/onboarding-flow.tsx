@@ -11,10 +11,20 @@ import Animated, {
 } from "react-native-reanimated"
 
 import { useLocalMode } from "@/contexts/local-mode-context"
-import { DEFAULT_REMINDER_TIME, scheduleDailyReminder } from "@/lib/daily-reminder"
-import { DEFAULT_DAILY_NEW_WORDS, saveOnboardingDraft } from "@/lib/onboarding-draft"
+import {
+  DEFAULT_REMINDER_TIME,
+  scheduleDailyReminder
+} from "@/lib/daily-reminder"
+import {
+  DEFAULT_DAILY_NEW_WORDS,
+  saveOnboardingDraft
+} from "@/lib/onboarding-draft"
 import type { OnboardingOutcome, OnboardingPlan } from "@/lib/onboarding-draft"
-import { DEFAULT_STAMP_GLYPH, useSaveStampGlyph, useStampGlyph } from "@/lib/stamp-glyph"
+import {
+  DEFAULT_STAMP_GLYPH,
+  useSaveStampGlyph,
+  useStampGlyph
+} from "@/lib/stamp-glyph"
 import type { StampGlyph } from "@/lib/stamp-glyph"
 
 import { CaptureStep } from "./steps/capture-step"
@@ -25,7 +35,14 @@ import { PlanStep } from "./steps/plan-step"
 import { SignUpStep } from "./steps/sign-up-step"
 import { StampStep } from "./steps/stamp-step"
 
-type Step = "cover" | "capture" | "flip" | "listen" | "plan" | "stamp" | "signUp"
+type Step =
+  | "cover"
+  | "capture"
+  | "flip"
+  | "listen"
+  | "plan"
+  | "stamp"
+  | "signUp"
 
 const DEFAULT_PLAN: OnboardingPlan = {
   useNotes: true,
@@ -76,7 +93,7 @@ export function OnboardingFlow({
     setStep(next)
   }
   const back = () => {
-    const previous = history[history.length - 1]
+    const previous = history.at(-1)
     if (!previous) return
     setDirection(-1)
     setHistory((visited) => visited.slice(0, -1))
@@ -141,7 +158,9 @@ export function OnboardingFlow({
 
   const entering = (() => {
     if (reduceMotion) return FadeIn.duration(220)
-    return (direction === 1 ? SlideInRight : SlideInLeft).springify().damping(22)
+    return (direction === 1 ? SlideInRight : SlideInLeft)
+      .springify()
+      .damping(22)
   })()
   const skipAction = isReplay ? onClose : skip
 
@@ -166,7 +185,13 @@ export function OnboardingFlow({
           />
         )
       case "flip":
-        return <FlipStep onBack={back} onNext={() => go("listen")} onSkip={skipAction} />
+        return (
+          <FlipStep
+            onBack={back}
+            onNext={() => go("listen")}
+            onSkip={skipAction}
+          />
+        )
       case "listen":
         return (
           <ListenStep
@@ -190,7 +215,9 @@ export function OnboardingFlow({
         return (
           <StampStep
             glyph={stampGlyph}
-            nextLabel={isReplay ? t("common.done") : t("onboarding.flow.stamp.next")}
+            nextLabel={
+              isReplay ? t("common.done") : t("onboarding.flow.stamp.next")
+            }
             onBack={back}
             onGlyphChange={changeGlyph}
             onNext={() => (isReplay ? onClose?.() : go("signUp"))}
@@ -215,11 +242,7 @@ export function OnboardingFlow({
 
   return (
     <View className="flex-1 bg-background">
-      <Animated.View
-        className="flex-1"
-        entering={entering}
-        key={step}
-      >
+      <Animated.View className="flex-1" entering={entering} key={step}>
         {renderStep()}
       </Animated.View>
     </View>
