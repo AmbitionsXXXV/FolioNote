@@ -879,7 +879,20 @@
       },
       "transcript": {
         "label": "字幕",
-        "backToCurrent": "回到当前句"
+        "backToCurrent": "回到当前句",
+        "tapWordHint": "点当前这句里的词，可以查意思、加入生词本（会记下这句和时间点）。",
+        "replayLine": "从这句开头重播"
+      },
+      "library": {
+        "add": "添加视频",
+        "captionPolicy": "字幕只来自你自己导入的 SRT/VTT。视频用 YouTube 官方播放器播放，不会下载。",
+        "loadFailed": "听读列表加载失败，请刷新重试。",
+        "finished": "已听完",
+        "progress": "听到第 {{current}} / {{total}} 句",
+        "addFailed": "添加失败，请稍后重试。",
+        "loading": "正在加载…",
+        "notFound": "找不到这个视频，可能已经删除。",
+        "back": "回到听读列表"
       }
     }
   },

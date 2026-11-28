@@ -60,7 +60,8 @@ export function SelectedWordPanel({
   analysis,
   lexiconMatches = [],
   allowSave = false,
-  articleId
+  articleId,
+  videoContext
 }: {
   word: Word
   analysis: AnalyzedText
@@ -69,6 +70,8 @@ export function SelectedWordPanel({
   allowSave?: boolean
   /** The saved article the sentence belongs to, kept with the saved word. */
   articleId?: string
+  /** The video line the sentence came from, so the notebook can jump back. */
+  videoContext?: { materialId: string; timeMs: number }
 }) {
   const { t } = useTranslation()
   const posLabel = t(`review.japaneseTyping.posCategories.${word.pos}`)
@@ -104,7 +107,8 @@ export function SelectedWordPanel({
               pos: posLabel,
               context: {
                 sentence: analysis.text.trim(),
-                ...(articleId ? { articleId } : {})
+                ...(articleId ? { articleId } : {}),
+                ...videoContext
               }
             }}
           />

@@ -19,7 +19,12 @@ export type NotebookWord =
       reading?: string | null
       baseForm: string
       pos?: string | null
-      context?: { sentence: string; articleId?: string }
+      context?: {
+        sentence: string
+        articleId?: string
+        materialId?: string
+        timeMs?: number
+      }
     }
 
 export function meaningLanguageFor(language: string): MeaningLanguage {

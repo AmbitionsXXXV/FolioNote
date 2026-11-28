@@ -825,7 +825,20 @@
       },
       "transcript": {
         "label": "Captions",
-        "backToCurrent": "Back to current line"
+        "backToCurrent": "Back to current line",
+        "tapWordHint": "Tap a word in the current line to look it up and save it to your notebook (with this line and its time).",
+        "replayLine": "Replay this line"
+      },
+      "library": {
+        "add": "Add a video",
+        "captionPolicy": "Captions only come from SRT/VTT you provide. Videos play in YouTube's official player and are never downloaded.",
+        "loadFailed": "Couldn't load your videos. Refresh to try again.",
+        "finished": "Finished",
+        "progress": "Line {{current}} of {{total}}",
+        "addFailed": "Couldn't add the video. Try again later.",
+        "loading": "Loading…",
+        "notFound": "This video wasn't found. It may have been deleted.",
+        "back": "Back to listening"
       }
     }
   },

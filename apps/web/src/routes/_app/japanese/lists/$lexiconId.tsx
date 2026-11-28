@@ -341,7 +341,23 @@ function JapaneseLexiconPage() {
                           {entry.contextSentence}
                         </span>
                       ) : null}
-                      {entry.contextArticleId && entry.contextArticleTitle ? (
+                      {entry.contextMaterialId && entry.contextMaterialTitle ? (
+                        <Link
+                          className={SOURCE_LINK_CLASS}
+                          params={{ materialId: entry.contextMaterialId }}
+                          search={
+                            entry.contextTimeMs === null
+                              ? {}
+                              : { t: entry.contextTimeMs }
+                          }
+                          to="/japanese/listen/$materialId"
+                        >
+                          {entry.contextMaterialTitle}
+                        </Link>
+                      ) : null}
+                      {!entry.contextMaterialId &&
+                      entry.contextArticleId &&
+                      entry.contextArticleTitle ? (
                         <Link
                           className={SOURCE_LINK_CLASS}
                           lang="ja"
@@ -350,7 +366,10 @@ function JapaneseLexiconPage() {
                         >
                           {entry.contextArticleTitle}
                         </Link>
-                      ) : (
+                      ) : null}
+                      {entry.contextMaterialId ||
+                      (entry.contextArticleId &&
+                        entry.contextArticleTitle) ? null : (
                         <span className="text-xs text-muted-foreground">
                           {entry.contextSentence
                             ? t("japanese.notebook.fromYourReading")

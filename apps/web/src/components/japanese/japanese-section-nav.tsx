@@ -9,7 +9,7 @@ const SECTIONS = [
   {
     to: "/japanese/listen",
     labelKey: "japanese.sections.listening",
-    fuzzy: false
+    fuzzy: true
   },
   { to: "/japanese/library", labelKey: "japanese.library.title", fuzzy: true },
   {

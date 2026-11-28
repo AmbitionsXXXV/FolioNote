@@ -774,7 +774,20 @@
       },
       "transcript": {
         "label": "字幕",
-        "backToCurrent": "現在の行に戻る"
+        "backToCurrent": "現在の行に戻る",
+        "tapWordHint": "再生中の行の単語をタップすると、意味を調べて単語帳に保存できます（この行と時間も一緒に）。",
+        "replayLine": "この行から再生"
+      },
+      "library": {
+        "add": "動画を追加",
+        "captionPolicy": "字幕は自分で用意した SRT/VTT のみ。動画は YouTube 公式プレーヤーで再生し、ダウンロードはしません。",
+        "loadFailed": "一覧を読み込めませんでした。再読み込みしてください。",
+        "finished": "視聴済み",
+        "progress": "{{current}} / {{total}} 行目",
+        "addFailed": "追加できませんでした。しばらくしてからお試しください。",
+        "loading": "読み込み中…",
+        "notFound": "この動画が見つかりません。削除された可能性があります。",
+        "back": "リスニング一覧へ"
       }
     }
   },

@@ -1,3 +1,4 @@
+import type { AnalyzedText, Word } from "@folionote/japanese"
 import type { SubtitleCue } from "@folionote/utils/subtitles"
 import { findActiveCueIndex, formatCueTime } from "@folionote/utils/subtitles"
 import { Button } from "@heroui/react"
@@ -14,6 +15,7 @@ import { useYouTubePlayer } from "@/hooks/use-youtube-player"
 import { cn } from "@/lib/utils"
 
 import { NATIVE_SELECT_CLASS, TogglePill } from "../japanese-reading-controls"
+import { ListenLineWords, ListenWordPanel } from "./listen-line-words"
 
 const OFFSET_STEP_MS = 250
 // Seeking lands a hair early so the first syllable of the line isn't clipped.
@@ -29,13 +31,29 @@ const isTypingTarget = (target: EventTarget | null) =>
  * is highlighted, tapping a line seeks to it, one line can loop, and speed and
  * caption offset are adjustable (user-supplied SRT/VTT often drifts).
  */
+interface SelectedWord {
+  cueIndex: number
+  word: Word
+  analysis: AnalyzedText
+}
+
 export function ListenPlayer({
+  materialId,
   videoId,
+  title,
   cues,
+  initialIndex,
+  onActiveIndexChange,
   onChangeSource
 }: {
+  materialId: string
   videoId: string
+  /** Saved title; the player's own title is used until it loads. */
+  title: string
   cues: SubtitleCue[]
+  /** Line to start from (resume point or a notebook link's timestamp). */
+  initialIndex: number
+  onActiveIndexChange: (index: number) => void
   onChangeSource: () => void
 }) {
   const { t } = useTranslation()
@@ -43,6 +61,8 @@ export function ListenPlayer({
   const player = useYouTubePlayer(hostRef, videoId)
   const { getCurrentTimeMs, seekToMs, play, pause, status } = player
   const [activeIndex, setActiveIndex] = useState(-1)
+  const [selected, setSelected] = useState<SelectedWord | null>(null)
+  const hasResumedRef = useRef(false)
   const [loopIndex, setLoopIndex] = useState<number | null>(null)
   // Added to every cue time: positive when the captions run ahead of the voice.
   const [offsetMs, setOffsetMs] = useState(0)
@@ -63,6 +83,34 @@ export function ListenPlayer({
       play()
     },
     [cues, offsetMs, play, seekToMs]
+  )
+
+  // Jump to the resume line once, without starting playback (autoplay rules,
+  // and the reader may just be looking).
+  useEffect(() => {
+    if (status !== "ready" || hasResumedRef.current) return
+    hasResumedRef.current = true
+    const cue = cues[initialIndex]
+    if (!cue || initialIndex === 0) return
+    seekToMs(cue.startMs + offsetMs - SEEK_LEAD_MS)
+    activeIndexRef.current = initialIndex
+    setActiveIndex(initialIndex)
+  }, [cues, initialIndex, offsetMs, seekToMs, status])
+
+  useEffect(() => {
+    if (activeIndex >= 0) onActiveIndexChange(activeIndex)
+  }, [activeIndex, onActiveIndexChange])
+
+  const selectWord = useCallback(
+    (cueIndex: number, word: Word, analysis: AnalyzedText) => {
+      pause()
+      setSelected((current) =>
+        current?.cueIndex === cueIndex && current.word.index === word.index
+          ? null
+          : { cueIndex, word, analysis }
+      )
+    },
+    [pause]
   )
 
   // One rAF loop drives the highlight and the single-line loop. It runs while
@@ -165,9 +213,7 @@ export function ListenPlayer({
         </div>
 
         <div className="flex min-w-0 items-start justify-between gap-3">
-          <p className="line-clamp-2 min-w-0 text-sm font-medium">
-            {player.title ?? t("japanese.listen.player.untitled")}
-          </p>
+          <p className="line-clamp-2 min-w-0 text-sm font-medium">{title}</p>
           <Button onPress={onChangeSource} size="sm" variant="ghost">
             {t("japanese.listen.player.changeSource")}
           </Button>
@@ -264,6 +310,19 @@ export function ListenPlayer({
             {t("japanese.listen.player.shortcuts")}
           </span>
         </div>
+
+        {selected ? (
+          <ListenWordPanel
+            analysis={selected.analysis}
+            materialId={materialId}
+            timeMs={cues[selected.cueIndex]?.startMs ?? 0}
+            word={selected.word}
+          />
+        ) : (
+          <p className="text-xs text-muted-foreground">
+            {t("japanese.listen.transcript.tapWordHint")}
+          </p>
+        )}
       </div>
 
       <section
@@ -287,36 +346,62 @@ export function ListenPlayer({
                   else lineRefs.current.delete(cue.index)
                 }}
               >
-                <button
-                  aria-current={isActive ? "true" : undefined}
-                  className={cn(
-                    "flex w-full gap-3 rounded-xl px-3 py-2.5 text-left transition-colors focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none",
-                    isActive
-                      ? "bg-primary/12 text-foreground ring-1 ring-primary/25"
-                      : "text-muted-foreground hover:bg-surface-secondary hover:text-foreground"
-                  )}
-                  disabled={status !== "ready"}
-                  onClick={() => seekToCue(cue.index)}
-                  type="button"
-                >
-                  <span className="mt-0.5 w-12 shrink-0 font-mono text-[11px] tabular-nums opacity-70">
-                    {formatCueTime(cue.startMs)}
-                  </span>
-                  <span
-                    className="font-script-ja text-base leading-relaxed whitespace-pre-line"
-                    lang="ja"
+                {isActive ? (
+                  // The current line's words are their own buttons, so the
+                  // row can't be one; its timestamp replays the line instead.
+                  <div
+                    aria-current="true"
+                    className="flex w-full gap-3 rounded-xl bg-primary/12 px-3 py-2.5 text-foreground ring-1 ring-primary/25"
                   >
-                    {cue.text}
-                  </span>
-                  {isLooping ? (
-                    <HugeiconsIcon
-                      aria-label={t("japanese.listen.player.looping")}
-                      className="mt-1 ml-auto shrink-0 text-primary"
-                      icon={RefreshIcon}
-                      size={14}
-                    />
-                  ) : null}
-                </button>
+                    <button
+                      aria-label={t("japanese.listen.transcript.replayLine")}
+                      className="mt-0.5 w-12 shrink-0 self-start rounded-sm text-left font-mono text-[11px] tabular-nums opacity-70 hover:opacity-100 focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
+                      disabled={status !== "ready"}
+                      onClick={() => seekToCue(cue.index)}
+                      type="button"
+                    >
+                      {formatCueTime(cue.startMs)}
+                    </button>
+                    <div className="min-w-0 flex-1 font-script-ja text-lg leading-relaxed">
+                      <ListenLineWords
+                        onSelectWord={(word, analysis) =>
+                          selectWord(cue.index, word, analysis)
+                        }
+                        selectedWordIndex={
+                          selected?.cueIndex === cue.index
+                            ? selected.word.index
+                            : null
+                        }
+                        text={cue.text}
+                      />
+                    </div>
+                    {isLooping ? (
+                      <HugeiconsIcon
+                        aria-label={t("japanese.listen.player.looping")}
+                        className="mt-1 shrink-0 text-primary"
+                        icon={RefreshIcon}
+                        size={14}
+                      />
+                    ) : null}
+                  </div>
+                ) : (
+                  <button
+                    className="flex w-full gap-3 rounded-xl px-3 py-2.5 text-left text-muted-foreground transition-colors hover:bg-surface-secondary hover:text-foreground focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
+                    disabled={status !== "ready"}
+                    onClick={() => seekToCue(cue.index)}
+                    type="button"
+                  >
+                    <span className="mt-0.5 w-12 shrink-0 font-mono text-[11px] tabular-nums opacity-70">
+                      {formatCueTime(cue.startMs)}
+                    </span>
+                    <span
+                      className="font-script-ja text-base leading-relaxed whitespace-pre-line"
+                      lang="ja"
+                    >
+                      {cue.text}
+                    </span>
+                  </button>
+                )}
               </li>
             )
           })}

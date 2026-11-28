@@ -14,6 +14,8 @@ export interface ListenSource {
   videoInput: string
   videoId: string
   subtitleText: string
+  /** Set when the captions came from an uploaded file. */
+  fileName: string | null
   cues: SubtitleCue[]
 }
 
@@ -27,18 +29,16 @@ const MAX_SUBTITLE_FILE_BYTES = 2 * 1024 * 1024
  * (pasted or uploaded SRT/VTT); we never fetch YouTube's caption tracks here.
  */
 export function ListenSourceForm({
-  initialVideoInput,
-  initialSubtitleText,
+  isSubmitting,
   onSubmit
 }: {
-  initialVideoInput: string
-  initialSubtitleText: string
+  isSubmitting: boolean
   onSubmit: (source: ListenSource) => void
 }) {
   const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [videoInput, setVideoInput] = useState(initialVideoInput)
-  const [subtitleText, setSubtitleText] = useState(initialSubtitleText)
+  const [videoInput, setVideoInput] = useState("")
+  const [subtitleText, setSubtitleText] = useState("")
   const [fileName, setFileName] = useState<string | null>(null)
   const [videoError, setVideoError] = useState(false)
   const [subtitleError, setSubtitleError] = useState<string | null>(null)
@@ -68,7 +68,13 @@ export function ListenSourceForm({
       cues.length === 0 ? t("japanese.listen.source.noCues") : null
     )
     if (videoId === null || cues.length === 0) return
-    onSubmit({ videoInput: videoInput.trim(), videoId, subtitleText, cues })
+    onSubmit({
+      videoInput: videoInput.trim(),
+      videoId,
+      subtitleText,
+      fileName,
+      cues
+    })
   }
 
   const cueCount = parseSubtitles(subtitleText).length
@@ -154,7 +160,7 @@ export function ListenSourceForm({
       </div>
 
       <div>
-        <Button type="submit" variant="primary">
+        <Button isDisabled={isSubmitting} type="submit" variant="primary">
           {t("japanese.listen.source.start")}
         </Button>
       </div>
