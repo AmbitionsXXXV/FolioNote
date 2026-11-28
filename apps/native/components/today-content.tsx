@@ -1,55 +1,65 @@
+import { formatDate } from "@folionote/locales"
+import {
+  CheckmarkCircle02Icon,
+  RefreshIcon,
+  SparklesIcon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { useThemeColor } from "heroui-native"
 import type { ReactNode } from "react"
-import { RefreshControl, ScrollView } from "react-native"
+import { useTranslation } from "react-i18next"
+import { RefreshControl, ScrollView, Text } from "react-native"
 
-import { QuickStatsCard } from "./quick-stats-card"
-import { TodayHeader } from "./today-header"
-import { TodayReviewCard } from "./today-review-card"
+import {
+  GroupedCard,
+  GroupedRow,
+  GroupedSection,
+  RowSeparator
+} from "./grouped-list"
 
 interface TodayContentProps {
-  userName: string
+  /** Offline / local-mode fallback; the check-in card shows it when signed in. */
   streak: number
-  dueToday: number
-  overdue: number
-  reviewedToday: number
+  totalDue: number
   newCount: number
-  totalEntries: number
-  starredEntries: number
-  unreviewedEntries: number
   isRefetching: boolean
   onRefresh: () => void
   onStartReview: () => void
-  /** Rendered under the greeting (check-in card, local-mode banner). */
+  /** The check-in card (hero) and the local-mode banner. */
   header?: ReactNode
-  /** Rendered after the stats (recent entries). */
+  /** Recent entries. */
   footer?: ReactNode
 }
 
+/**
+ * Today: date eyebrow under the large title, the check-in card as the hero,
+ * a "to do today" list that links into each task, then recent entries.
+ */
 export function TodayContent({
-  userName,
   streak,
-  dueToday,
-  overdue,
-  reviewedToday,
+  totalDue,
   newCount,
-  totalEntries,
-  starredEntries,
-  unreviewedEntries,
   isRefetching,
   onRefresh,
   onStartReview,
   header,
   footer
 }: TodayContentProps) {
+  const { t, i18n } = useTranslation()
   const accentColor = useThemeColor("accent")
 
-  const totalDue = overdue + dueToday
-  const hasItemsToReview = totalDue > 0 || newCount > 0
+  const dateString = formatDate(new Date(), {
+    locale: i18n.language,
+    preset: "full"
+  })
+  const eyebrow =
+    streak > 0
+      ? `${dateString} · ${t("review.streakDays", { count: streak })}`
+      : dateString
+  const isAllDone = totalDue === 0 && newCount === 0
 
   return (
     <ScrollView
-      // iOS: 自动调整内容偏移以适应透明 header (Liquid Glass)
-      contentContainerStyle={{ padding: 16, flexGrow: 1 }}
+      contentContainerStyle={{ padding: 16, paddingTop: 4, gap: 16 }}
       contentInsetAdjustmentBehavior="automatic"
       refreshControl={
         <RefreshControl
@@ -59,25 +69,36 @@ export function TodayContent({
         />
       }
     >
-      <TodayHeader streak={streak} userName={userName} />
+      <Text className="px-1 text-[13px] text-muted">{eyebrow}</Text>
 
       {header}
 
-      <TodayReviewCard
-        dueToday={dueToday}
-        hasItemsToReview={hasItemsToReview}
-        newCount={newCount}
-        onStartReview={onStartReview}
-        overdue={overdue}
-        reviewedToday={reviewedToday}
-        totalDue={totalDue}
-      />
-
-      <QuickStatsCard
-        starredEntries={starredEntries}
-        totalEntries={totalEntries}
-        unreviewedEntries={unreviewedEntries}
-      />
+      <GroupedSection title={t("today.todoTitle")}>
+        <GroupedCard>
+          {isAllDone ? (
+            <GroupedRow
+              icon={CheckmarkCircle02Icon}
+              label={t("review.allCompleted")}
+            />
+          ) : (
+            <>
+              <GroupedRow
+                icon={RefreshIcon}
+                label={t("today.todoDue")}
+                onPress={onStartReview}
+                value={totalDue}
+              />
+              <RowSeparator />
+              <GroupedRow
+                icon={SparklesIcon}
+                label={t("today.todoNew")}
+                onPress={onStartReview}
+                value={newCount}
+              />
+            </>
+          )}
+        </GroupedCard>
+      </GroupedSection>
 
       {footer}
     </ScrollView>

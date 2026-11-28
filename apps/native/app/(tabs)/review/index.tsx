@@ -1,12 +1,17 @@
 import { getTzOffset } from "@folionote/utils"
 import {
+  Album01Icon,
   Cancel01Icon,
   CheckmarkCircle02Icon,
-  PlayIcon
+  RefreshIcon,
+  SparklesIcon,
+  StarIcon,
+  Tick02Icon
 } from "@hugeicons-pro/core-stroke-rounded"
+import type { IconSvgElement } from "@hugeicons/react-native"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { Button, Card, useThemeColor } from "heroui-native"
+import { Button, cn, useThemeColor } from "heroui-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import {
@@ -18,9 +23,14 @@ import {
 } from "react-native"
 
 import { Container } from "@/components/container"
+import {
+  GroupedCard,
+  GroupedRow,
+  GroupedSection,
+  RowSeparator
+} from "@/components/grouped-list"
 import { ReviewCard } from "@/components/review-card"
 import { ReviewRatingButtons } from "@/components/review-rating-buttons"
-import { ReviewRuleCard } from "@/components/review-rule-card"
 import { useDataServiceContext } from "@/contexts/data-service-context"
 import { useHideTabBar } from "@/contexts/tab-bar-context"
 import { orpc } from "@/utils/orpc"
@@ -110,13 +120,43 @@ function ReviewCompletedView({
       <Text className="mt-4 text-center text-muted">
         {t("review.reviewedTodayCount", { count: reviewedCount })}
       </Text>
-      <Button
-        className="mt-8 bg-accent px-8 py-4 active:opacity-70"
-        onPress={onDone}
-      >
-        <Text className="font-medium text-white">{t("common.done")}</Text>
+      <Button className="mt-8 px-8" onPress={onDone} size="lg">
+        <Button.Label>{t("common.done")}</Button.Label>
       </Button>
     </Container>
+  )
+}
+
+interface ScopeOption {
+  rule: ReviewRule
+  icon: IconSvgElement
+  iconTone?: "accent" | "neutral"
+  title: string
+  description: string
+  count: number | undefined
+}
+
+function StatCell({
+  label,
+  value,
+  valueClassName
+}: {
+  label: string
+  value: string | number
+  valueClassName?: string
+}) {
+  return (
+    <View className="flex-1 items-center gap-0.5 py-3.5">
+      <Text
+        className={cn(
+          "text-[22px] font-bold text-foreground tabular-nums",
+          valueClassName
+        )}
+      >
+        {value}
+      </Text>
+      <Text className="text-xs text-muted">{label}</Text>
+    </View>
   )
 }
 
@@ -151,6 +191,19 @@ export default function ReviewScreen() {
       const todayStats = await dataService.review.getTodayStats(getTzOffset())
       return { items, reviewedTodayCount: todayStats.reviewedToday }
     },
+    enabled: !!dataService
+  })
+
+  // Same keys as the Today tab, so both read one cache.
+  const { data: dueStats } = useQuery({
+    queryKey: ["review", "dueStats"],
+    queryFn: () => dataService?.review.getDueStats(getTzOffset()),
+    enabled: !!dataService
+  })
+
+  const { data: todayStats } = useQuery({
+    queryKey: ["review", "todayStats"],
+    queryFn: () => dataService?.review.getTodayStats(getTzOffset()),
     enabled: !!dataService
   })
 
@@ -226,99 +279,166 @@ export default function ReviewScreen() {
     )
   }
 
+  const totalDue = (dueStats?.overdue ?? 0) + (dueStats?.dueToday ?? 0)
+  const goalTotal = reviewedTodayCount + totalDue
+  const progress = goalTotal > 0 ? reviewedTodayCount / goalTotal : 0
+  const scopeOptions: ScopeOption[] = [
+    {
+      rule: "due",
+      icon: RefreshIcon,
+      title: t("review.dueEntries"),
+      description: t("review.dueEntriesDescription"),
+      count: totalDue
+    },
+    {
+      rule: "new",
+      icon: SparklesIcon,
+      title: t("review.newEntries"),
+      description: t("review.newEntriesDescription"),
+      count: dueStats?.newCount
+    },
+    {
+      rule: "starred",
+      icon: StarIcon,
+      title: t("review.starredEntries"),
+      description: t("review.starredEntriesDescription"),
+      count: todayStats?.starredEntries
+    },
+    {
+      rule: "all",
+      icon: Album01Icon,
+      iconTone: "neutral",
+      title: t("review.allEntries"),
+      description: t("review.allEntriesDescription"),
+      count: todayStats?.totalEntries
+    }
+  ]
+
   return (
     <Container className="flex-1" disableScroll disableTopInset>
       <ScrollView
-        // iOS: 自动调整内容偏移以适应透明 header (Liquid Glass)
-        contentContainerStyle={{ padding: 16, flexGrow: 1 }}
+        contentContainerStyle={{ padding: 16, paddingTop: 4, gap: 16 }}
         contentInsetAdjustmentBehavior="automatic"
         refreshControl={
           <RefreshControl
             onRefresh={() => {
               refetch()
+              queryClient.invalidateQueries({ queryKey: ["review"] })
             }}
             refreshing={isRefetching}
             tintColor={accentColor}
           />
         }
       >
-        <View className="mb-6">
-          <Text className="text-2xl font-bold text-foreground">
-            {t("review.reviewQueue")}
-          </Text>
-          <Text className="mt-1 text-muted">{t("review.description")}</Text>
-        </View>
-
-        <Card className="mb-4 p-4" variant="secondary">
-          <View className="flex-row items-center justify-between">
-            <Text className="font-medium text-foreground">
-              {t("review.statsReviewedToday")}
-            </Text>
-            <Text className="text-lg font-bold text-accent">
-              {reviewedTodayCount}
-            </Text>
-          </View>
-        </Card>
-
-        <Text className="mb-3 font-semibold text-foreground">
-          {t("review.selectMode")}
+        <Text className="px-1 text-[13px] text-muted">
+          {t("review.description")}
         </Text>
 
-        <ReviewRuleCard
-          description={t("review.dueEntriesDescription")}
-          iconColorKey="accent"
-          iconName="calendar"
-          isSelected={currentRule === "due"}
-          onPress={() => handleRuleChange("due")}
-          rule="due"
-          title={t("review.dueEntries")}
-        />
+        <GroupedCard className="p-4">
+          <View className="flex-row items-end justify-between gap-3">
+            <View>
+              <Text className="text-[13px] text-muted">
+                {t("review.dueToday")}
+              </Text>
+              <Text className="text-[44px] leading-[48px] font-bold text-foreground tabular-nums">
+                {totalDue}
+                <Text className="text-[17px] font-medium text-muted">
+                  {` ${t("review.itemsUnit", { count: totalDue })}`}
+                </Text>
+              </Text>
+            </View>
+            {(dueStats?.overdue ?? 0) > 0 && (
+              <Text className="pb-1.5 text-[13px] text-danger">
+                {t("review.overdueCount", { count: dueStats?.overdue ?? 0 })}
+              </Text>
+            )}
+          </View>
 
-        <ReviewRuleCard
-          description={t("review.newEntriesDescription")}
-          iconColorKey="success"
-          iconName="sparkles"
-          isSelected={currentRule === "new"}
-          onPress={() => handleRuleChange("new")}
-          rule="new"
-          title={t("review.newEntries")}
-        />
+          <View
+            accessibilityLabel={t("review.reviewedToday", {
+              count: reviewedTodayCount
+            })}
+            accessibilityRole="progressbar"
+            accessibilityValue={{
+              now: Math.round(progress * 100),
+              min: 0,
+              max: 100
+            }}
+            className="mt-3.5 h-1.5 overflow-hidden rounded-full bg-default"
+          >
+            <View
+              className="h-1.5 rounded-full bg-accent"
+              style={{ width: `${Math.round(progress * 100)}%` }}
+            />
+          </View>
+          <Text className="mt-1.5 text-[13px] text-muted">
+            {t("review.reviewedToday", { count: reviewedTodayCount })}
+          </Text>
 
-        <ReviewRuleCard
-          description={t("review.starredEntriesDescription")}
-          iconColorKey="warning"
-          iconName="star"
-          isSelected={currentRule === "starred"}
-          onPress={() => handleRuleChange("starred")}
-          rule="starred"
-          title={t("review.starredEntries")}
-        />
-
-        <ReviewRuleCard
-          description={t("review.allEntriesDescription")}
-          iconColorKey="muted"
-          iconName="albums"
-          isSelected={currentRule === "all"}
-          onPress={() => handleRuleChange("all")}
-          rule="all"
-          title={t("review.allEntries")}
-        />
-
-        <View className="mt-4">
           <Button
-            className="flex-row items-center justify-center bg-accent p-4 active:opacity-70"
+            className="mt-4"
             isDisabled={entries.length === 0}
             onPress={handleStartReview}
-            style={{ opacity: entries.length > 0 ? 1 : 0.5 }}
+            size="lg"
           >
-            <HugeiconsIcon color="white" icon={PlayIcon} size={20} />
-            <Text className="ml-2 font-semibold text-white">
+            <Button.Label>
               {entries.length > 0
-                ? `${t("review.reviewSession")} (${entries.length})`
+                ? t("review.startCount", { count: entries.length })
                 : t("review.noReviewItems")}
-            </Text>
+            </Button.Label>
           </Button>
-        </View>
+        </GroupedCard>
+
+        <GroupedSection title={t("review.scopeTitle")}>
+          <GroupedCard>
+            {scopeOptions.map((option, index) => {
+              const isSelected = currentRule === option.rule
+              return (
+                <View key={option.rule}>
+                  {index > 0 && <RowSeparator />}
+                  <GroupedRow
+                    accessibilityState={{ selected: isSelected }}
+                    accessory={
+                      <View className="w-5 items-center">
+                        {isSelected && (
+                          <HugeiconsIcon
+                            color={accentColor}
+                            icon={Tick02Icon}
+                            size={18}
+                          />
+                        )}
+                      </View>
+                    }
+                    icon={option.icon}
+                    iconTone={option.iconTone}
+                    label={option.title}
+                    onPress={() => handleRuleChange(option.rule)}
+                    sublabel={option.description}
+                    value={option.count}
+                  />
+                </View>
+              )
+            })}
+          </GroupedCard>
+        </GroupedSection>
+
+        <GroupedSection title={t("review.statsTitle")}>
+          <GroupedCard className="flex-row">
+            <StatCell
+              label={t("review.statsStreak")}
+              value={t("streak.days", { count: todayStats?.streak ?? 0 })}
+              valueClassName="text-danger"
+            />
+            <StatCell
+              label={t("review.statsTotalEntries")}
+              value={todayStats?.totalEntries ?? 0}
+            />
+            <StatCell
+              label={t("review.statsUnreviewedEntries")}
+              value={todayStats?.unreviewedEntries ?? 0}
+            />
+          </GroupedCard>
+        </GroupedSection>
       </ScrollView>
     </Container>
   )

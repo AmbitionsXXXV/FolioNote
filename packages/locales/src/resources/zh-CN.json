@@ -454,7 +454,12 @@
         "expression": "表达"
       }
     },
-    "statsLoadFailed": "复习统计加载失败"
+    "statsLoadFailed": "复习统计加载失败",
+    "itemsUnit": "条",
+    "overdueCount": "逾期 {{count}}",
+    "startCount": "开始复习 · {{count}} 条",
+    "scopeTitle": "复习范围",
+    "statsTitle": "统计"
   },
   "japanese": {
     "title": "日语",
@@ -1876,5 +1881,15 @@
     },
     "stampMark": "学",
     "freezeMark": "补"
+  },
+  "today": {
+    "todoTitle": "今天要做",
+    "todoDue": "复习到期笔记",
+    "todoNew": "新笔记首次复习"
+  },
+  "inbox": {
+    "filterAll": "全部",
+    "filterPinned": "置顶",
+    "filterStarred": "星标"
   }
 }

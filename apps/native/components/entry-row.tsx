@@ -2,7 +2,7 @@ import { formatDate } from "@folionote/locales"
 import { PinIcon, StarIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useRouter } from "expo-router"
-import { Card, PressableFeedback, useThemeColor } from "heroui-native"
+import { cn, PressableFeedback, useThemeColor } from "heroui-native"
 import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
@@ -17,11 +17,15 @@ interface Entry {
   updatedAt: Date | string | number | null | undefined
 }
 
-interface EntryCardProps {
+interface EntryRowProps {
   entry: Entry
   onPress?: (entry: Entry) => void
   /** Whether to navigate to detail page on press (default: true) */
   navigateOnPress?: boolean
+  /** Two lines of body text under the title (inbox); off for compact lists. */
+  showPreview?: boolean
+  /** Extra meta after the time, e.g. "收件箱". */
+  meta?: string
 }
 
 function truncateText(text: string | null, maxLength: number): string {
@@ -50,7 +54,7 @@ function toValidDate(dateValue: Entry["updatedAt"]): Date | null {
   return normalizedDate
 }
 
-function formatUpdatedAtSafely(
+export function formatUpdatedAtSafely(
   dateValue: Entry["updatedAt"],
   locale: string
 ): string {
@@ -70,14 +74,20 @@ function formatUpdatedAtSafely(
   }
 }
 
-export function EntryCard({
+/**
+ * One note as a row inside a GroupedCard: title (with pin / star marks),
+ * optional two-line preview, then the relative time. Rows carry no card of
+ * their own; the grouped card and hairline separators frame them.
+ */
+export function EntryRow({
   entry,
   onPress,
-  navigateOnPress = true
-}: EntryCardProps) {
+  navigateOnPress = true,
+  showPreview = false,
+  meta
+}: EntryRowProps) {
   const { t, i18n } = useTranslation()
   const router = useRouter()
-  const warningColor = useThemeColor("warning")
   const accentColor = useThemeColor("accent")
 
   const handlePress = () => {
@@ -93,43 +103,38 @@ export function EntryCard({
     ? truncateText(entry.contentText, 120)
     : t("entryCard.emptyNote")
   const updatedAtText = formatUpdatedAtSafely(entry.updatedAt, i18n.language)
+  const metaText = meta ? `${updatedAtText} · ${meta}` : updatedAtText
 
   return (
-    <PressableFeedback onPress={handlePress}>
+    <PressableFeedback accessibilityRole="button" onPress={handlePress}>
       <PressableFeedback.Highlight />
-      <Card className="p-4" variant="secondary">
-        <View className="flex-row items-start justify-between">
-          <View className="flex-1 pr-2">
-            <View className="mb-1 flex-row items-center">
-              {entry.isPinned && (
-                <View className="mr-1">
-                  <HugeiconsIcon color={accentColor} icon={PinIcon} size={14} />
-                </View>
-              )}
-              <Text
-                className="flex-1 text-base font-medium text-foreground"
-                numberOfLines={1}
-              >
-                {title}
-              </Text>
-            </View>
-
-            {preview && (
-              <Text className="mb-2 text-sm text-muted" numberOfLines={2}>
-                {preview}
-              </Text>
+      <View className="gap-0.5 px-4 py-3">
+        <View className="flex-row items-center gap-1.5">
+          {entry.isPinned && (
+            <HugeiconsIcon color={accentColor} icon={PinIcon} size={13} />
+          )}
+          <Text
+            className={cn(
+              "flex-1 text-base text-foreground",
+              showPreview ? "font-semibold" : "font-medium"
             )}
-
-            <View className="flex-row items-center">
-              <Text className="text-xs text-muted">{updatedAtText}</Text>
-            </View>
-          </View>
-
+            numberOfLines={1}
+          >
+            {title}
+          </Text>
           {entry.isStarred && (
-            <HugeiconsIcon color={warningColor} icon={StarIcon} size={18} />
+            <HugeiconsIcon color={accentColor} icon={StarIcon} size={14} />
           )}
         </View>
-      </Card>
+
+        {showPreview && (
+          <Text className="text-sm leading-5 text-muted" numberOfLines={2}>
+            {preview}
+          </Text>
+        )}
+
+        <Text className="text-[13px] text-muted">{metaText}</Text>
+      </View>
     </PressableFeedback>
   )
 }

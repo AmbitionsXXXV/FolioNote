@@ -1,14 +1,15 @@
-import {
-  ArrowRight01Icon,
-  CloudIcon,
-  NoteIcon
-} from "@hugeicons-pro/core-stroke-rounded"
+import { CloudIcon, NoteIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
-import { Button, Card } from "heroui-native"
+import { Button } from "heroui-native"
 import type { useTranslation } from "react-i18next"
-import { ActivityIndicator, Pressable, Text, View } from "react-native"
+import { ActivityIndicator, Text, View } from "react-native"
 
-import { EntryCard } from "@/components/entry-card"
+import { EntryRow } from "@/components/entry-row"
+import {
+  GroupedCard,
+  GroupedSection,
+  RowSeparator
+} from "@/components/grouped-list"
 
 type TranslateFn = ReturnType<typeof useTranslation>["t"]
 
@@ -28,11 +29,11 @@ interface RecentEntriesContentProps {
   isLoading: boolean
   accentColor: string
   mutedColor: string
-  t: (key: string) => string
+  t: TranslateFn
 }
 
 /**
- * Recent entries content component
+ * Recent entries as rows in one grouped card.
  */
 function RecentEntriesContent({
   entries,
@@ -51,26 +52,27 @@ function RecentEntriesContent({
 
   if (entries.length === 0) {
     return (
-      <Card className="p-6" variant="secondary">
-        <View className="items-center">
-          <HugeiconsIcon color={mutedColor} icon={NoteIcon} size={48} />
-          <Text className="mt-3 text-center text-muted">
-            {t("activity.noRecentEntries")}
-          </Text>
-          <Text className="mt-1 text-center text-sm text-muted">
-            {t("activity.startCapturing")}
-          </Text>
-        </View>
-      </Card>
+      <GroupedCard className="items-center p-6">
+        <HugeiconsIcon color={mutedColor} icon={NoteIcon} size={40} />
+        <Text className="mt-3 text-center text-muted">
+          {t("activity.noRecentEntries")}
+        </Text>
+        <Text className="mt-1 text-center text-sm text-muted">
+          {t("activity.startCapturing")}
+        </Text>
+      </GroupedCard>
     )
   }
 
   return (
-    <View className="gap-3">
-      {entries.map((entry) => (
-        <EntryCard entry={entry} key={entry.id} />
+    <GroupedCard>
+      {entries.map((entry, index) => (
+        <View key={entry.id}>
+          {index > 0 && <RowSeparator inset={16} />}
+          <EntryRow entry={entry} />
+        </View>
       ))}
-    </View>
+    </GroupedCard>
   )
 }
 
@@ -89,12 +91,9 @@ export function LocalModeBanner({
   t
 }: LocalModeBannerProps) {
   return (
-    <Card
-      className="mb-4 border border-accent-soft-hover bg-accent/5 p-4"
-      variant="secondary"
-    >
+    <GroupedCard className="p-4">
       <View className="flex-row items-center">
-        <View className="mr-3 size-10 items-center justify-center rounded-full bg-accent/10">
+        <View className="mr-3 size-10 items-center justify-center rounded-full bg-accent/15">
           <HugeiconsIcon color={accentColor} icon={CloudIcon} size={20} />
         </View>
         <View className="flex-1">
@@ -105,16 +104,11 @@ export function LocalModeBanner({
             {t("onboarding.localModeHint")}
           </Text>
         </View>
-        <Button
-          className="bg-accent px-3 py-2 active:opacity-70"
-          onPress={onSignIn}
-        >
-          <Text className="text-xs font-medium text-white">
-            {t("auth.signIn")}
-          </Text>
+        <Button onPress={onSignIn} size="sm">
+          <Button.Label>{t("auth.signIn")}</Button.Label>
         </Button>
       </View>
-    </Card>
+    </GroupedCard>
   )
 }
 
@@ -139,19 +133,11 @@ export function RecentEntriesSection({
   t
 }: RecentEntriesSectionProps) {
   return (
-    <View className="mb-6">
-      <View className="mb-3 flex-row items-center justify-between">
-        <Text className="text-lg font-semibold text-foreground">
-          {t("activity.recentEntries")}
-        </Text>
-        <Pressable className="flex-row items-center" onPress={onViewAll}>
-          <Text className="mr-1 text-sm text-muted">
-            {t("activity.viewAll")}
-          </Text>
-          <HugeiconsIcon color={mutedColor} icon={ArrowRight01Icon} size={16} />
-        </Pressable>
-      </View>
-
+    <GroupedSection
+      actionLabel={t("activity.viewAll")}
+      onAction={onViewAll}
+      title={t("activity.recentEntries")}
+    >
       <RecentEntriesContent
         accentColor={accentColor}
         entries={entries}
@@ -159,6 +145,6 @@ export function RecentEntriesSection({
         mutedColor={mutedColor}
         t={t}
       />
-    </View>
+    </GroupedSection>
   )
 }
