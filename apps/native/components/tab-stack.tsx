@@ -5,7 +5,7 @@ import { Platform, View } from "react-native"
 
 import { useAppTheme } from "@/contexts/app-theme-context"
 
-import { HeaderAvatarButton } from "./header-avatar-button"
+import { HeaderAccountButton } from "./header-account-button"
 
 /**
  * Shared Stack configuration for tab screens
@@ -28,7 +28,7 @@ export function TabStack({ children }: { children?: React.ReactNode }) {
   const backgroundColor = useThemeColor("background")
   const foregroundColor = useThemeColor("foreground")
 
-  const renderAvatar = () => <HeaderAvatarButton />
+  const renderAccount = () => <HeaderAccountButton />
 
   // iOS 26+ Liquid Glass: 系统会自动应用玻璃效果
   // 在非 Liquid Glass 环境下使用传统的模糊效果
@@ -56,8 +56,8 @@ export function TabStack({ children }: { children?: React.ReactNode }) {
               android: backgroundColor
             })
           },
-          // Settings has no tab; the avatar opens it (theme lives there too).
-          headerRight: renderAvatar,
+          // Settings has no tab; the account button opens it (theme lives there too).
+          headerRight: renderAccount,
           headerBackButtonDisplayMode: "generic",
           gestureEnabled: true,
           gestureDirection: "horizontal",

@@ -1,6 +1,7 @@
 import type { ExpoConfig } from "expo/config"
 
 import pkg from "./package.json"
+import withTabIcons from "./plugins/with-tab-icons"
 
 const config: ExpoConfig = {
   owner: "etcetera",
@@ -82,4 +83,5 @@ const config: ExpoConfig = {
   }
 }
 
-export default config
+// Custom tab icons go into the iOS asset catalog on prebuild.
+export default withTabIcons(config)
