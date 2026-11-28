@@ -1158,7 +1158,140 @@
     "localModeTitle": "ローカルモード",
     "localModeFeatureComingSoon": "オフライン機能は近日公開",
     "localModeFeatureDesc": "サインインしてクラウド同期、復習スケジュールなどを利用できます。ローカルストレージのサポートは開発中です。",
-    "signInNow": "今すぐサインイン"
+    "signInNow": "今すぐサインイン",
+    "flow": {
+      "previous": "前へ",
+      "skip": "スキップ",
+      "progress": "ガイドの進み具合",
+      "demoMeaning": "木の葉の間から差し込む日の光",
+      "cover": {
+        "title": "学んだことを、\nちゃんと残す。",
+        "body": "メモも単語も、聞いたフレーズも。一度残せば、ちょうどいい頃にまた会いに来ます。",
+        "start": "最初のページを開く",
+        "haveAccount": "アカウントを持っています",
+        "language": "表示言語",
+        "languageAria": "表示言語：{{language}}",
+        "noteCard": "SQLite の WAL モードが速い理由",
+        "noteDue": "3 日後に復習",
+        "subtitle": "字幕"
+      },
+      "capture": {
+        "title": "まずはひとつメモ",
+        "body": "覚えたばかりの単語でも一文でも。整理はあとで、まず受信箱に入ります。",
+        "inbox": "受信箱",
+        "slot": "最初のメモはここに入ります",
+        "ideasLabel": "思いつかなければ、これを試して",
+        "idea1": "「木漏れ日」＝木の葉の間から差し込む日の光",
+        "idea2": "今日知った：WAL モードでは読み書きが互いを止めない",
+        "idea3": "覚えておきたい一言：急がば回れ",
+        "placeholder": "メモする、または単語を貼り付け…",
+        "inputLabel": "メモする",
+        "send": "受信箱に入れる",
+        "justNow": "たった今 · 明日はじめての復習",
+        "points": "+2 pt",
+        "after": "保存しました。忘れるリズムに合わせて戻ってきます：明日、3 日後、1 週間後…あなたは書くだけ。",
+        "next": "次へ：カードをめくる"
+      },
+      "flip": {
+        "title": "時間です、一枚めくろう",
+        "body": "まず読みと意味を思い出してから、めくります。正直に評価すると、次に会う日が決まります。",
+        "tapToFlip": "タップでめくる",
+        "flipAria": "めくって答えを見る",
+        "noun": "名詞",
+        "exampleMeaning": "木漏れ日の中を歩く。",
+        "again": "わからない",
+        "hard": "あいまい",
+        "good": "わかる",
+        "nextLabel": "次に会うのは：",
+        "next": {
+          "again": "10 分後、このラウンドが終わる前",
+          "hard": "明日",
+          "good": "3 日後"
+        },
+        "stops": {
+          "tenMinutes": "10 分",
+          "tomorrow": "明日",
+          "threeDays": "3 日後",
+          "oneWeek": "1 週間後",
+          "oneMonth": "1 か月後"
+        },
+        "continue": "次へ：一文を聞く"
+      },
+      "listen": {
+        "title": "聞いたことも、残せる",
+        "body": "動画で日本語を学ぶとき、字幕の単語をタップすると、その文ごと単語帳に入ります。",
+        "replay": "もう一度聞く",
+        "source": "例文 · システム音声",
+        "translation": "木漏れ日がとてもきれいでした。",
+        "wordAria": "「{{word}}」を見る",
+        "hint": "光っている単語をタップ",
+        "keeps": "いっしょに保存：この字幕と時間 0:42",
+        "save": "単語帳に追加",
+        "saved": "単語帳に追加しました · 明日から復習",
+        "next": "次へ：ペースを決める"
+      },
+      "plan": {
+        "title": "毎日の量を決めよう",
+        "body": "少なくて大丈夫、毎日続けることが大事です。あとから設定でいつでも変えられます。",
+        "usesLabel": "何に使いますか（複数選択可）",
+        "notes": "メモ",
+        "notesSub": "復習のタイミングでお知らせ",
+        "japanese": "日本語",
+        "japaneseSub": "単語・読解・リスニング",
+        "levelLabel": "いまの日本語レベル",
+        "beginner": "はじめて",
+        "newWords": "1 日の新しい単語",
+        "minutes_one": "約 {{count}} 分",
+        "minutes_other": "約 {{count}} 分",
+        "countHint": "直接入力もできます（{{min}}〜{{max}}）",
+        "unit": "語",
+        "remind": "毎日 21:00 にお知らせ",
+        "remindSub": "オンにしたときだけ通知の許可を求めます",
+        "done": "これでいく"
+      },
+      "stamp": {
+        "title": "長押しで、1 日目のはんこ",
+        "body": "今日はメモをひとつ、カードを一枚、単語をひとつ。はんこを押すには十分です。",
+        "doneTitle": "1 日目、押しました",
+        "doneBody": "明日また来れば「2 日連続」です。",
+        "pageOne": "1 ページ目",
+        "dayOne": "1 日目",
+        "sealAria": "1 日目のはんこ",
+        "glyphLabel": "はんこの字",
+        "glyphAria": "はんこに「{{glyph}}」を彫る",
+        "hold": "長押し",
+        "holdAria": "長押しではんこを押す",
+        "holdHint": "1 秒ほど押し続けてください",
+        "next": "このページを保存する"
+      },
+      "signUp": {
+        "title": "このページを保存しよう",
+        "body": "アカウントを作ると、いまの内容がウェブやほかの端末にも同期されます。",
+        "receiptTitle": "最初のページ · {{date}}",
+        "receiptNote": "メモ 1 件、受信箱に入りました",
+        "receiptWord": "単語 1 つ：{{word}}",
+        "receiptPlan_one": "毎日 {{count}} 語",
+        "receiptPlan_other": "毎日 {{count}} 語",
+        "receiptPlanRemind_one": "毎日 {{count}} 語 · {{time}} にお知らせ",
+        "receiptPlanRemind_other": "毎日 {{count}} 語 · {{time}} にお知らせ",
+        "receiptEmpty": "はんこ 1 つ：1 日目",
+        "submit": "アカウントを作って保存",
+        "local": "登録せず、この iPhone だけに保存"
+      },
+      "signIn": {
+        "title": "おかえりなさい",
+        "body": "前回のページの続きから。",
+        "fromStart": "最初のページから"
+      },
+      "form": {
+        "nickname": "ニックネーム",
+        "nicknamePlaceholder": "なんと呼べばいい？",
+        "passwordMin": "10 文字以上",
+        "passwordPlaceholder": "パスワードを入力",
+        "showPassword": "パスワードを表示",
+        "hidePassword": "パスワードを隠す"
+      }
+    }
   },
   "home": {
     "systemReady": "システム準備完了",
@@ -1984,5 +2117,17 @@
     "today": "今日",
     "yesterday": "昨日",
     "emptyFilter": "条件に合うノートはありません"
+  },
+  "reminder": {
+    "title": "FolioNote",
+    "body": "今日のページはまだ空白です。カードを何枚かめくりませんか？",
+    "section": "リマインダーとガイド",
+    "daily": "毎日のリマインダー",
+    "dailyHint": "毎日同じ時間に少しだけ学ぶきっかけを",
+    "time": "通知の時刻",
+    "timeTitle": "何時にお知らせしますか",
+    "replayOnboarding": "ガイドをもう一度見る",
+    "deniedTitle": "通知がオフです",
+    "deniedBody": "iPhone の「設定 › 通知 › FolioNote」で通知を許可してから、リマインダーをオンにしてください。"
   }
 }

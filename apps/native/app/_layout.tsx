@@ -13,6 +13,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 
 import { FirstLaunchHandler } from "@/components/first-launch-handler"
+import { OnboardingDraftApplier } from "@/components/onboarding/onboarding-draft-applier"
 import { AppThemeProvider, useAppTheme } from "@/contexts/app-theme-context"
 import { DataServiceProvider } from "@/contexts/data-service-context"
 import { LocalModeProvider, useLocalMode } from "@/contexts/local-mode-context"
@@ -114,6 +115,10 @@ function StackLayout() {
           options={{ ...detailScreenOptions, title: t("common.settings") }}
         />
         <Stack.Screen
+          name="welcome"
+          options={{ headerShown: false, presentation: "fullScreenModal" }}
+        />
+        <Stack.Screen
           name="japanese/word/[id]"
           options={{ ...detailScreenOptions, title: "" }}
         />
@@ -179,6 +184,7 @@ export default function Layout() {
                   <HeroUINativeProvider>
                     <StackLayout />
                     <FirstLaunchHandler />
+                    <OnboardingDraftApplier />
                   </HeroUINativeProvider>
                 </DataServiceProvider>
               </LocalModeProvider>

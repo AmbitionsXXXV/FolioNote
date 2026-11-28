@@ -33,6 +33,16 @@
   --color-stamp: var(--stamp);
   --color-stamp-foreground: var(--stamp-foreground);
   --color-freeze: var(--freeze);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-foreground: var(--accent-soft-foreground);
+  --color-again-soft: var(--again-soft);
+  --color-again-soft-foreground: var(--again-soft-foreground);
+  --color-good-soft: var(--good-soft);
+  --color-good-soft-foreground: var(--good-soft-foreground);
+  /* Video/subtitle stage: always dark, in both themes */
+  --color-stage: oklch(0.215 0.005 70);
+  --color-stage-foreground: oklch(0.94 0.006 70);
+  --color-stage-muted: oklch(0.715 0.015 74);
 }
 
 @layer theme {
@@ -88,6 +98,14 @@
       --stamp: oklch(0.53 0.165 33);
       --stamp-foreground: oklch(0.96 0.008 75);
       --freeze: oklch(0.47 0.08 258);
+
+      /* Soft chips: selected level, +points badge, rating buttons */
+      --accent-soft: oklch(0.941 0.035 70);
+      --accent-soft-foreground: oklch(0.42 0.09 65);
+      --again-soft: oklch(0.935 0.023 24);
+      --again-soft-foreground: oklch(0.492 0.147 26);
+      --good-soft: oklch(0.94 0.028 155);
+      --good-soft-foreground: oklch(0.521 0.121 150);
 
       /* Component Colors */
       --segment: oklch(0.995 0.0015 70);
@@ -147,6 +165,13 @@
       --stamp: oklch(0.66 0.16 33);
       --stamp-foreground: oklch(0.22 0.02 40);
       --freeze: oklch(0.72 0.08 258);
+
+      --accent-soft: oklch(0.3 0.05 70);
+      --accent-soft-foreground: oklch(0.842 0.106 76);
+      --again-soft: oklch(0.275 0.043 25);
+      --again-soft-foreground: oklch(0.74 0.126 28);
+      --good-soft: oklch(0.302 0.045 154);
+      --good-soft-foreground: oklch(0.729 0.132 152);
 
       /* Component Colors */
       --segment: oklch(0.29 0.007 70);

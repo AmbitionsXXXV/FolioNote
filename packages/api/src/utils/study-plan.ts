@@ -6,8 +6,10 @@
  * large so the pile can shrink instead of growing every day.
  */
 
-export const DAILY_NEW_WORD_OPTIONS = [5, 10, 15, 20, 30] as const
 export const DEFAULT_DAILY_NEW_WORDS = 10
+/** Any whole count in this range is accepted (the iPhone ruler and input). */
+export const DAILY_NEW_WORDS_MIN = 1
+export const DAILY_NEW_WORDS_MAX = 50
 export const DAILY_REVIEW_LIMIT_OPTIONS = [100, 200] as const
 /** Due cards above this count halve today's new-word target. */
 export const REVIEW_BACKLOG_THRESHOLD = 100

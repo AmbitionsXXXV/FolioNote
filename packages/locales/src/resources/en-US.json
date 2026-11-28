@@ -1159,7 +1159,140 @@
     "localModeTitle": "Local Mode",
     "localModeFeatureComingSoon": "Offline features coming soon",
     "localModeFeatureDesc": "Sign in to access cloud sync, review scheduling, and more. Local storage support is being developed.",
-    "signInNow": "Sign In Now"
+    "signInNow": "Sign In Now",
+    "flow": {
+      "previous": "Previous step",
+      "skip": "Skip",
+      "progress": "Onboarding progress",
+      "demoMeaning": "sunlight filtering through leaves",
+      "cover": {
+        "title": "What you learn,\nyou get to keep.",
+        "body": "Notes, words, lines you heard: save them once and they come back to you right on time.",
+        "start": "Open the first page",
+        "haveAccount": "I already have an account",
+        "language": "App language",
+        "languageAria": "App language: {{language}}",
+        "noteCard": "Why SQLite WAL mode is faster",
+        "noteDue": "Review in 3 days",
+        "subtitle": "Subtitle"
+      },
+      "capture": {
+        "title": "Jot something down",
+        "body": "A word or a sentence you just learned. No need to sort it; it lands in your inbox first.",
+        "inbox": "Inbox",
+        "slot": "Your first note will land here",
+        "ideasLabel": "Not sure what to write? Try one",
+        "idea1": "木漏れ日 = sunlight filtering through leaves",
+        "idea2": "TIL: in WAL mode, reads and writes don't block each other",
+        "idea3": "A line to remember: 急がば回れ (more haste, less speed)",
+        "placeholder": "Jot something, or paste a word…",
+        "inputLabel": "Jot something down",
+        "send": "Save to inbox",
+        "justNow": "Just now · first review tomorrow",
+        "points": "+2 pts",
+        "after": "Saved. It comes back on the forgetting curve: tomorrow, in 3 days, in a week… you just write.",
+        "next": "Next: flip a card"
+      },
+      "flip": {
+        "title": "Time to flip one",
+        "body": "Recall the reading and meaning first, then flip. Rate honestly; that decides when the card returns.",
+        "tapToFlip": "Tap to flip",
+        "flipAria": "Flip to see the answer",
+        "noun": "Noun",
+        "exampleMeaning": "Walking through the dappled sunlight.",
+        "again": "Forgot",
+        "hard": "Unsure",
+        "good": "Knew it",
+        "nextLabel": "See it again: ",
+        "next": {
+          "again": "in 10 minutes, before this round ends",
+          "hard": "tomorrow",
+          "good": "in 3 days"
+        },
+        "stops": {
+          "tenMinutes": "10 min",
+          "tomorrow": "Tomorrow",
+          "threeDays": "3 days",
+          "oneWeek": "1 week",
+          "oneMonth": "1 month"
+        },
+        "continue": "Next: hear a line"
+      },
+      "listen": {
+        "title": "What you hear can stay too",
+        "body": "Watching Japanese videos, tap a word in the subtitles and it goes into your word book with the sentence.",
+        "replay": "Play again",
+        "source": "Sample line · system voice",
+        "translation": "The sunlight through the leaves was beautiful.",
+        "wordAria": "Look up {{word}}",
+        "hint": "Tap the highlighted word",
+        "keeps": "Saved with it: this subtitle and the time 0:42",
+        "save": "Add to word book",
+        "saved": "In your word book · reviews start tomorrow",
+        "next": "Next: set your pace"
+      },
+      "plan": {
+        "title": "Set a daily amount",
+        "body": "A little is fine; showing up every day is what counts. You can change it in Settings anytime.",
+        "usesLabel": "What will you use it for? (pick any)",
+        "notes": "Notes",
+        "notesSub": "Reminders to review",
+        "japanese": "Japanese",
+        "japaneseSub": "Words, reading, listening",
+        "levelLabel": "Your Japanese level",
+        "beginner": "New",
+        "newWords": "New words a day",
+        "minutes_one": "about {{count}} minute",
+        "minutes_other": "about {{count}} minutes",
+        "countHint": "You can type it, {{min}} to {{max}}",
+        "unit": "words",
+        "remind": "Remind me daily at 21:00",
+        "remindSub": "Asks for notification access only when on",
+        "done": "Sounds good"
+      },
+      "stamp": {
+        "title": "Hold to stamp day one",
+        "body": "You wrote a note, flipped a card and saved a word today. That earns a stamp.",
+        "doneTitle": "Day 1, stamped",
+        "doneBody": "Come back tomorrow and it becomes a 2-day streak.",
+        "pageOne": "Page 1",
+        "dayOne": "DAY 1",
+        "sealAria": "Day 1 stamp",
+        "glyphLabel": "Stamp glyph",
+        "glyphAria": "Carve {{glyph}} on the stamp",
+        "hold": "Hold",
+        "holdAria": "Hold to stamp",
+        "holdHint": "Press and hold for about a second",
+        "next": "Save this page"
+      },
+      "signUp": {
+        "title": "Save this page",
+        "body": "Create an account and all of this syncs to the web and your other devices.",
+        "receiptTitle": "YOUR FIRST PAGE · {{date}}",
+        "receiptNote": "1 note, in your inbox",
+        "receiptWord": "1 word: {{word}}",
+        "receiptPlan_one": "{{count}} new word a day",
+        "receiptPlan_other": "{{count}} new words a day",
+        "receiptPlanRemind_one": "{{count}} new word a day · reminder at {{time}}",
+        "receiptPlanRemind_other": "{{count}} new words a day · reminder at {{time}}",
+        "receiptEmpty": "One stamp: day 1",
+        "submit": "Create account and save",
+        "local": "Not now, keep it on this iPhone only"
+      },
+      "signIn": {
+        "title": "Welcome back",
+        "body": "Pick up the page where you left off.",
+        "fromStart": "Start from page one"
+      },
+      "form": {
+        "nickname": "Name",
+        "nicknamePlaceholder": "What should we call you",
+        "passwordMin": "At least 10 characters",
+        "passwordPlaceholder": "Enter password",
+        "showPassword": "Show password",
+        "hidePassword": "Hide password"
+      }
+    }
   },
   "home": {
     "systemReady": "System Ready",
@@ -1987,5 +2120,17 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "emptyFilter": "No notes match this filter"
+  },
+  "reminder": {
+    "title": "FolioNote",
+    "body": "Today's page is still empty. Flip a few cards?",
+    "section": "Reminders & guide",
+    "daily": "Daily reminder",
+    "dailyHint": "A nudge at the same time every day",
+    "time": "Reminder time",
+    "timeTitle": "When should we remind you?",
+    "replayOnboarding": "See the intro again",
+    "deniedTitle": "Notifications are off",
+    "deniedBody": "Allow notifications in iPhone Settings › Notifications › FolioNote, then turn the reminder on."
   }
 }

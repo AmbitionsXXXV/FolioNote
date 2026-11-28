@@ -40,8 +40,13 @@ export const hasOnlyBasicJapaneseVoice = async (): Promise<boolean> => {
 /**
  * Read Japanese text aloud with the system voice, stopping anything already
  * playing. Resolves when speech finishes or is stopped by the next call.
+ * `onWord` gets the character offset of each word as the voice reaches it.
  */
-export async function speakJapanese(text: string, rate = 1): Promise<void> {
+export async function speakJapanese(
+  text: string,
+  rate = 1,
+  onWord?: (charIndex: number) => void
+): Promise<void> {
   Speech.stop()
   const voice = await pickJapaneseVoice()
   return new Promise((resolve, reject) => {
@@ -49,6 +54,9 @@ export async function speakJapanese(text: string, rate = 1): Promise<void> {
       language: JAPANESE_LANGUAGE,
       voice,
       rate,
+      onBoundary: onWord
+        ? (event: { charIndex: number }) => onWord(event.charIndex)
+        : undefined,
       onDone: () => resolve(),
       onStopped: () => resolve(),
       onError: (error) =>

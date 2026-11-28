@@ -1,228 +1,173 @@
-import { useForm } from "@tanstack/react-form"
 import { router } from "expo-router"
-import { useHeaderHeight } from "expo-router/react-navigation"
-import { Button, FieldError, Input, Label, TextField } from "heroui-native"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  View
-} from "react-native"
+import { Pressable, Text, View } from "react-native"
+import type { TextInput } from "react-native"
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { z } from "zod"
 
-import { Container } from "@/components/container"
+import { BrandLockup } from "@/components/brand-lockup"
+import { FormCard, FormRow, useShake } from "@/components/onboarding/auth-form"
+import {
+  GlassBackButton,
+  PrimaryButton
+} from "@/components/onboarding/onboarding-chrome"
+import { PaperSeal } from "@/components/onboarding/paper-seal"
 import { authClient } from "@/lib/auth-client"
-import { prettifyFormErrors } from "@/utils/form-error"
+import { haptics } from "@/lib/haptics"
 import { queryClient } from "@/utils/orpc"
 
-// 声明 Expo/React Native 的全局 __DEV__ 变量
-declare const __DEV__: boolean
+type FieldErrors = Partial<Record<"email" | "password", string>>
+
+const backToStart = () =>
+  router.replace({ pathname: "/(auth)/onboarding", params: { start: "1" } })
 
 export default function SignInScreen() {
   const { t } = useTranslation()
   const insets = useSafeAreaInsets()
-  const headerHeight = useHeaderHeight()
-  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [errors, setErrors] = useState<FieldErrors>({})
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { style: shakeStyle, shake } = useShake()
+  const passwordRef = useRef<TextInput>(null)
 
-  // 创建带有国际化错误消息的 schema
-  const signInSchema = z.object({
-    email: z.email(t("auth.invalidEmail")),
-    password: z.string().min(1, t("auth.passwordRequired"))
-  })
-
-  const form = useForm({
-    defaultValues: {
-      email: "",
-      password: ""
-    },
-    validators: {
-      onSubmit: signInSchema
-    },
-    onSubmit: async ({ value }) => {
-      setSubmitError(null)
-
-      await authClient.signIn.email(
-        {
-          email: value.email.trim(),
-          password: value.password
-        },
-        {
-          onError(signInError) {
-            // 使用 prettifyError 格式化日志输出
-            if (__DEV__) {
-              console.warn("[SignIn] Auth error:", signInError.error?.message)
-            }
-            setSubmitError(signInError.error?.message || t("auth.signInFailed"))
-          },
-          onSuccess() {
-            form.reset()
-            queryClient.refetchQueries()
-            // Stack.Protected will automatically navigate when session state updates
-          }
-        }
-      )
-    },
-    onSubmitInvalid: ({ formApi }) => {
-      // 表单验证失败时，记录格式化的错误日志
-      if (__DEV__) {
-        const { errors } = formApi.state
-        if (errors.length > 0) {
-          console.warn("[SignIn] Form validation failed:")
-          for (const error of errors) {
-            if (error && typeof error === "object" && "issues" in error) {
-              // 使用 prettifyError 格式化输出
-              console.warn(prettifyFormErrors(error as unknown as z.ZodError))
-              break
-            }
-          }
-        }
-      }
+  const submit = async () => {
+    const found: FieldErrors = {}
+    if (!z.email().safeParse(email.trim()).success) {
+      found.email = t("auth.invalidEmail")
     }
-  })
+    if (!password) found.password = t("auth.passwordRequired")
+    setErrors(found)
+    if (Object.keys(found).length > 0) {
+      shake()
+      return
+    }
 
-  const navigateToSignUp = () => {
-    router.replace("/(auth)/sign-up")
+    setIsSubmitting(true)
+    try {
+      const result = await authClient.signIn.email({
+        email: email.trim(),
+        password
+      })
+      if (result.error) {
+        // Wrong credentials belong to the password row.
+        setErrors({
+          password: result.error.message || t("auth.signInFailed")
+        })
+        shake()
+        setIsSubmitting(false)
+        return
+      }
+      haptics.done()
+      queryClient.refetchQueries()
+      // Stack.Protected moves to Today once the session updates.
+    } catch {
+      setErrors({ password: t("auth.signInFailed") })
+      shake()
+      setIsSubmitting(false)
+    }
   }
 
   return (
-    <Container className="flex-1" disableContentInsetAdjustment disableTopInset>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        className="flex-1"
+    <View className="flex-1 bg-background">
+      {/* A faint 続 seal in the corner, under everything. */}
+      <View
+        accessibilityElementsHidden
+        className="absolute"
+        importantForAccessibility="no-hide-descendants"
+        pointerEvents="none"
+        style={{
+          right: -70,
+          bottom: -60,
+          opacity: 0.13,
+          transform: [{ rotate: "-12deg" }]
+        }}
       >
-        <View
-          className="flex-1 px-6"
-          style={{ paddingBottom: insets.bottom, paddingTop: headerHeight }}
-        >
-          {/* Form */}
-          <View className="flex-1 pt-2">
-            {/* Welcome Text */}
-            <Text className="mb-2 text-xl font-semibold text-foreground">
-              {t("auth.welcomeBack")}
-            </Text>
-            <Text className="mb-8 text-muted">{t("auth.signInSubtitle")}</Text>
+        <PaperSeal glyph="続" size={300} />
+      </View>
 
-            {/* Form Error Message */}
-            {submitError ? (
-              <View className="mb-4 rounded-xl bg-danger/10 p-4">
-                <Text className="text-sm text-danger">{submitError}</Text>
-              </View>
-            ) : null}
+      <View className="absolute left-4 z-10" style={{ top: insets.top + 6 }}>
+        <GlassBackButton
+          onPress={() => (router.canGoBack() ? router.back() : backToStart())}
+        />
+      </View>
 
-            {/* Email Input */}
-            <form.Field
-              name="email"
-              validators={{
-                onBlur: z.email(t("auth.invalidEmail"))
-              }}
+      <KeyboardAwareScrollView
+        bottomOffset={24}
+        contentContainerStyle={{
+          paddingTop: insets.top + 84,
+          paddingBottom: insets.bottom + 24
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View className="gap-2.5 px-6">
+          <BrandLockup
+            className="mb-3.5 gap-2.5"
+            size={36}
+            wordmarkClassName="text-[23px] text-foreground"
+          />
+          <Text
+            accessibilityRole="header"
+            className="text-[34px] font-bold leading-10 tracking-tight text-foreground"
+          >
+            {t("onboarding.flow.signIn.title")}
+          </Text>
+          <Text className="text-base leading-6 text-muted">
+            {t("onboarding.flow.signIn.body")}
+          </Text>
+        </View>
+
+        <View className="mt-8 gap-4 px-4">
+          <FormCard shakeStyle={shakeStyle}>
+            <FormRow
+              autoComplete="email"
+              error={errors.email}
+              keyboardType="email-address"
+              label={t("auth.email")}
+              onChangeText={setEmail}
+              onSubmitEditing={() => passwordRef.current?.focus()}
+              placeholder="name@example.com"
+              returnKeyType="next"
+              submitBehavior="submit"
+              textContentType="emailAddress"
+              value={email}
+            />
+            <FormRow
+              autoComplete="current-password"
+              error={errors.password}
+              inputRef={passwordRef}
+              isLast
+              isPassword
+              label={t("auth.password")}
+              onChangeText={setPassword}
+              onSubmitEditing={submit}
+              placeholder={t("onboarding.flow.form.passwordPlaceholder")}
+              returnKeyType="go"
+              textContentType="password"
+              value={password}
+            />
+          </FormCard>
+          <PrimaryButton
+            isLoading={isSubmitting}
+            label={t("auth.signIn")}
+            onPress={submit}
+          />
+          <View className="h-11 flex-row items-center justify-center">
+            <Text className="text-[15px] text-muted">{t("auth.noAccount")}</Text>
+            <Pressable
+              accessibilityRole="link"
+              className="px-1 py-3"
+              onPress={backToStart}
             >
-              {(field) => {
-                // 提取第一个错误消息，支持 Zod v4 的 flattenError 格式
-                const errorMessage = field.state.meta.errors[0]
-                const displayError =
-                  typeof errorMessage === "string"
-                    ? errorMessage
-                    : errorMessage?.message
-
-                return (
-                  <TextField
-                    className="mb-4"
-                    isInvalid={
-                      field.state.meta.isTouched &&
-                      field.state.meta.errors.length > 0
-                    }
-                  >
-                    <Label>{t("auth.email")}</Label>
-                    <Input
-                      autoCapitalize="none"
-                      autoComplete="email"
-                      keyboardType="email-address"
-                      onBlur={field.handleBlur}
-                      onChangeText={field.handleChange}
-                      placeholder={t("auth.emailPlaceholder")}
-                      value={field.state.value}
-                    />
-                    <FieldError>{displayError}</FieldError>
-                  </TextField>
-                )
-              }}
-            </form.Field>
-
-            {/* Password Input */}
-            <form.Field
-              name="password"
-              validators={{
-                onBlur: z.string().min(1, t("auth.passwordRequired"))
-              }}
-            >
-              {(field) => {
-                const errorMessage = field.state.meta.errors[0]
-                const displayError =
-                  typeof errorMessage === "string"
-                    ? errorMessage
-                    : errorMessage?.message
-
-                return (
-                  <TextField
-                    isInvalid={
-                      field.state.meta.isTouched &&
-                      field.state.meta.errors.length > 0
-                    }
-                  >
-                    <Label>{t("auth.password")}</Label>
-                    <Input
-                      autoCapitalize="none"
-                      autoComplete="password"
-                      onBlur={field.handleBlur}
-                      onChangeText={field.handleChange}
-                      onSubmitEditing={() => form.handleSubmit()}
-                      placeholder={t("auth.passwordPlaceholder")}
-                      returnKeyType="done"
-                      secureTextEntry
-                      value={field.state.value}
-                    />
-                    <FieldError>{displayError}</FieldError>
-                  </TextField>
-                )
-              }}
-            </form.Field>
-          </View>
-
-          {/* Bottom Actions */}
-          <View>
-            {/* Sign In Button */}
-            <form.Subscribe
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
-            >
-              {([canSubmit, isSubmitting]) => (
-                <Button
-                  className="mb-4 w-full"
-                  isDisabled={!canSubmit || isSubmitting}
-                  onPress={() => form.handleSubmit()}
-                >
-                  {isSubmitting ? (
-                    <ActivityIndicator color="white" size="small" />
-                  ) : (
-                    t("auth.signIn")
-                  )}
-                </Button>
-              )}
-            </form.Subscribe>
-
-            {/* Sign Up Link */}
-            <View className="flex-row items-center justify-center">
-              <Text className="text-muted">{t("auth.noAccount")} </Text>
-              <Button onPress={navigateToSignUp} size="sm" variant="ghost">
-                <Text className="text-accent">{t("auth.signUp")}</Text>
-              </Button>
-            </View>
+              <Text className="text-[15px] font-semibold text-accent">
+                {t("onboarding.flow.signIn.fromStart")}
+              </Text>
+            </Pressable>
           </View>
         </View>
-      </KeyboardAvoidingView>
-    </Container>
+      </KeyboardAwareScrollView>
+    </View>
   )
 }
