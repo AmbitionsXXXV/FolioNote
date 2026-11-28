@@ -73,6 +73,8 @@ export const jpVocab = pgTable(
       .default([]),
     source: text("source").notNull().default("openjlpt"),
     sourceVersion: text("source_version").notNull(),
+    /** Object path of the pre-generated pronunciation of `reading` (jp-audio bucket). */
+    audioPath: text("audio_path"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -117,7 +119,9 @@ export const jpVocabExamples = pgTable(
         sourceVersion: string
       }
     }>(),
-    tatoebaId: integer("tatoeba_id")
+    tatoebaId: integer("tatoeba_id"),
+    /** Object path of the pre-generated reading of `ja` (jp-audio bucket). */
+    audioPath: text("audio_path")
   },
   (table) => [
     uniqueIndex("jp_vocab_examples_vocab_id_position_idx").on(

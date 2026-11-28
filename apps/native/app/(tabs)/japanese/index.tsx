@@ -18,6 +18,7 @@ import {
   GroupedSection,
   RowSeparator
 } from "@/components/grouped-list"
+import { DailyStudyCard } from "@/components/japanese/daily-study-card"
 import { JapaneseAttribution } from "@/components/japanese/japanese-attribution"
 import { JapaneseSearchResults } from "@/components/japanese/japanese-search-results"
 import { useDebounce } from "@/hooks/use-debounce"
@@ -201,6 +202,7 @@ export default function JapaneseHubScreen() {
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
+        <DailyStudyCard />
         <View>
           <Text className="px-1 text-[13px] text-muted">
             {t("japanese.description")}

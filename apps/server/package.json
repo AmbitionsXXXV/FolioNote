@@ -10,7 +10,8 @@
     "dev:collab": "tsx watch src/collab/index.ts",
     "start": "node dist/index.mjs",
     "start:collab": "node dist/collab/index.mjs",
-    "dev:ai-devtools": "npx @ai-sdk/devtools"
+    "dev:ai-devtools": "npx @ai-sdk/devtools",
+    "jp:audio": "tsx scripts/generate-jp-audio.ts"
   },
   "dependencies": {
     "@ai-sdk/devtools": "catalog:",

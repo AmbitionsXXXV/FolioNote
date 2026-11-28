@@ -12,6 +12,7 @@ export {
   jpLexiconsRelations,
   jpLexiconEntries,
   jpLexiconEntriesRelations,
+  jpStudyPlans,
   jpStudyState
 } from "./schema/japanese-library"
 // The type import below is erased at compile time and produces no runtime code.

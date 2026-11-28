@@ -87,6 +87,19 @@ function StackLayout() {
     }
   } satisfies ComponentProps<typeof Stack.Screen>["options"]
 
+  // Sheets sit over everything, tab bar included (system form sheet).
+  const sheetScreenOptions = {
+    presentation: "formSheet",
+    sheetGrabberVisible: true,
+    sheetAllowedDetents: [0.75, 1],
+    headerShown: true,
+    headerTitleAlign: "center",
+    headerShadowVisible: false,
+    headerTintColor: foregroundColor,
+    headerStyle: { backgroundColor },
+    contentStyle: { backgroundColor }
+  } satisfies ComponentProps<typeof Stack.Screen>["options"]
+
   return (
     <Stack screenOptions={{}}>
       {/* Protected routes for authenticated users or local mode */}
@@ -109,6 +122,25 @@ function StackLayout() {
           options={{
             ...detailScreenOptions,
             title: t("japanese.reading.title")
+          }}
+        />
+        {/* Daily vocabulary: an immersive session plus two system form sheets. */}
+        <Stack.Screen
+          name="japanese/study"
+          options={{ headerShown: false, gestureEnabled: true }}
+        />
+        <Stack.Screen
+          name="japanese/books"
+          options={{
+            ...sheetScreenOptions,
+            title: t("japanese.daily.books.title")
+          }}
+        />
+        <Stack.Screen
+          name="japanese/plan"
+          options={{
+            ...sheetScreenOptions,
+            title: t("japanese.daily.plan.title")
           }}
         />
       </Stack.Protected>
