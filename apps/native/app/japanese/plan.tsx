@@ -89,7 +89,7 @@ function ToggleRow({
 
 function SectionLabel({ children }: { children: string }) {
   return (
-    <Text className="mx-1 -mb-1.5 mt-1 text-[13px] font-semibold text-muted">
+    <Text className="mx-1 mt-1 -mb-1.5 text-[13px] font-semibold text-muted">
       {children}
     </Text>
   )
