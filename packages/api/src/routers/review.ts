@@ -1,4 +1,11 @@
-import { db, entries, entryReviewState, reviewEvents } from "@folionote/db"
+import {
+  db,
+  entries,
+  entryColumns,
+  entryReviewState,
+  reviewEvents
+} from "@folionote/db"
+import type { EntryRow } from "@folionote/db"
 import { ORPCError } from "@orpc/server"
 import {
   and,
@@ -17,12 +24,20 @@ import { z } from "zod"
 
 import { protectedProcedure } from "../index"
 import {
+  loadStreakSettings,
+  recordLearningActivity,
+  resolveSnapshot,
+  resolveTimeZone
+} from "../utils/learning-activity"
+import {
   calculateNextReview,
   createDefaultReviewState,
   getEndOfUserToday,
   getStartOfUserToday
 } from "../utils/spaced-repetition"
 import type { Rating } from "../utils/spaced-repetition"
+import { displayStreak, getLocalDate } from "../utils/streak"
+import { TimeZoneSchema } from "../utils/time-zone-schema"
 
 /**
  * Rating schema for review actions
@@ -51,7 +66,8 @@ const GetReviewQueueInputSchema = z.object({
 const MarkReviewedInputSchema = z.object({
   entryId: z.string(),
   rating: RatingSchema,
-  note: z.string().optional()
+  note: z.string().optional(),
+  timeZone: TimeZoneSchema
 })
 
 /**
@@ -67,7 +83,8 @@ const GetReviewHistoryInputSchema = z.object({
  * Input schema for getting due stats
  */
 const GetDueStatsInputSchema = z.object({
-  tzOffset: z.number().int().min(-720).max(840).default(0)
+  tzOffset: z.number().int().min(-720).max(840).default(0),
+  timeZone: TimeZoneSchema
 })
 
 /**
@@ -130,13 +147,13 @@ export const getReviewQueue = protectedProcedure
       baseConditions.push(notInArray(entries.id, reviewedTodayIds))
     }
 
-    let items: (typeof entries.$inferSelect)[] = []
+    let items: EntryRow[] = []
 
     switch (rule) {
       case "due": {
         // Get due entries (dueAt <= now)
         const dueItems = await db
-          .select({ entry: entries, state: entryReviewState })
+          .select({ entry: entryColumns, state: entryReviewState })
           .from(entryReviewState)
           .innerJoin(entries, eq(entryReviewState.entryId, entries.id))
           .where(
@@ -161,7 +178,7 @@ export const getReviewQueue = protectedProcedure
 
           // Get entries without review state (new entries)
           const newItems = await db
-            .select({ entry: entries })
+            .select({ entry: entryColumns })
             .from(entries)
             .leftJoin(
               entryReviewState,
@@ -194,7 +211,7 @@ export const getReviewQueue = protectedProcedure
 
         // Get entries without review state (never reviewed)
         const newItems = await db
-          .select({ entry: entries })
+          .select({ entry: entryColumns })
           .from(entries)
           .leftJoin(entryReviewState, eq(entries.id, entryReviewState.entryId))
           .where(
@@ -213,7 +230,7 @@ export const getReviewQueue = protectedProcedure
       case "starred": {
         // Starred entries
         items = await db
-          .select()
+          .select(entryColumns)
           .from(entries)
           .where(and(...baseConditions, eq(entries.isStarred, true)))
           .orderBy(desc(entries.updatedAt))
@@ -223,7 +240,7 @@ export const getReviewQueue = protectedProcedure
       case "unreviewed": {
         // Entries that have never been reviewed (no review state)
         const unreviewedItems = await db
-          .select({ entry: entries })
+          .select({ entry: entryColumns })
           .from(entries)
           .leftJoin(entryReviewState, eq(entries.id, entryReviewState.entryId))
           .where(and(...baseConditions, isNull(entryReviewState.entryId)))
@@ -236,7 +253,7 @@ export const getReviewQueue = protectedProcedure
       default: {
         // All entries (excluding already reviewed today)
         items = await db
-          .select()
+          .select(entryColumns)
           .from(entries)
           .where(and(...baseConditions))
           .orderBy(desc(entries.updatedAt))
@@ -266,7 +283,7 @@ export const markReviewed = protectedProcedure
     return await db.transaction(async (tx) => {
       // 1. Verify the entry belongs to the user and is not deleted
       const [entry] = await tx
-        .select()
+        .select(entryColumns)
         .from(entries)
         .where(
           and(
@@ -345,10 +362,20 @@ export const markReviewed = protectedProcedure
         })
         .returning()
 
+      const progress = await recordLearningActivity(tx, {
+        userId,
+        kind: "entry_review",
+        refId: entryId,
+        meta: { rating, title: entry.title },
+        occurredAt: now,
+        timeZone: input.timeZone
+      })
+
       return {
         success: true,
         reviewEvent,
-        state: newState
+        state: newState,
+        progress
       }
     })
   })
@@ -454,8 +481,14 @@ export const getTodayStats = protectedProcedure
         )
       )
 
-    // Calculate streak: consecutive days with at least one review
-    const streak = await calculateReviewStreak(userId, tzOffset)
+    // Covers every kind of study, not only entry reviews.
+    const settings = await loadStreakSettings(db, userId)
+    const timeZone = resolveTimeZone(settings, input?.timeZone)
+    const today = getLocalDate(new Date(), timeZone, settings.dayStartHour)
+    const streak = displayStreak(
+      await resolveSnapshot(db, userId, settings, today, timeZone),
+      today
+    )
 
     return {
       reviewedToday: todayReviews.length,
@@ -465,77 +498,6 @@ export const getTodayStats = protectedProcedure
       streak
     }
   })
-
-/**
- * Calculate review streak - consecutive days with at least one review
- * Looks back up to 365 days to find the streak
- */
-async function calculateReviewStreak(
-  userId: string,
-  tzOffset: number
-): Promise<number> {
-  const startOfToday = getStartOfUserToday(tzOffset)
-  const oneYearAgo = new Date(
-    startOfToday.getTime() - 365 * 24 * 60 * 60 * 1000
-  )
-
-  // Get all review events from the past year, grouped by date
-  const reviews = await db
-    .select({
-      reviewedAt: reviewEvents.reviewedAt
-    })
-    .from(reviewEvents)
-    .where(
-      and(
-        eq(reviewEvents.userId, userId),
-        gte(reviewEvents.reviewedAt, oneYearAgo)
-      )
-    )
-    .orderBy(desc(reviewEvents.reviewedAt))
-
-  if (reviews.length === 0) {
-    return 0
-  }
-
-  // Convert to user timezone dates (YYYY-MM-DD format)
-  const reviewDates = new Set<string>()
-  for (const review of reviews) {
-    const userTime = new Date(
-      review.reviewedAt.getTime() + tzOffset * 60 * 1000
-    )
-    const dateStr = userTime.toISOString().split("T")[0] as string
-    reviewDates.add(dateStr)
-  }
-
-  // Check if today has reviews
-  const todayUserTime = new Date(Date.now() + tzOffset * 60 * 1000)
-  const todayStr = todayUserTime.toISOString().split("T")[0] as string
-  const hasReviewToday = reviewDates.has(todayStr)
-
-  // Start counting from today or yesterday
-  let streak = 0
-  const currentDate = new Date(startOfToday)
-
-  // If no review today, start from yesterday
-  if (!hasReviewToday) {
-    currentDate.setTime(currentDate.getTime() - 24 * 60 * 60 * 1000)
-  }
-
-  // Count consecutive days
-  for (let i = 0; i < 365; i++) {
-    const userTime = new Date(currentDate.getTime() + tzOffset * 60 * 1000)
-    const dateStr = userTime.toISOString().split("T")[0] as string
-
-    if (reviewDates.has(dateStr)) {
-      streak += 1
-      currentDate.setTime(currentDate.getTime() - 24 * 60 * 60 * 1000)
-    } else {
-      break
-    }
-  }
-
-  return streak
-}
 
 /**
  * review.getDueStats - Get due statistics with timezone support
@@ -628,7 +590,7 @@ export const getEntryReviewCount = protectedProcedure
 
     // Verify the entry belongs to the user
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -684,7 +646,7 @@ export const snooze = protectedProcedure
 
     // Verify the entry belongs to the user
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(

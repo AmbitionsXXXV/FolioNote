@@ -11,7 +11,7 @@ import {
 } from "@folionote/ui/select"
 import { Skeleton } from "@folionote/ui/skeleton"
 import { Chip } from "@heroui/react"
-import { ArrowRight01Icon } from "@hugeicons/core-free-icons"
+import { ArrowRight01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
@@ -27,6 +27,9 @@ import {
   PRACTICE_VIEW_MIN_HEIGHT
 } from "@/components/japanese/japanese-practice-tabs"
 import { JapaneseRuby } from "@/components/japanese/japanese-ruby"
+import { JapaneseSpeakButton } from "@/components/japanese/japanese-speak-button"
+import { getBrowserTimeZone } from "@/components/streak/streak-utils"
+import { useLearningProgress } from "@/components/streak/use-learning-progress"
 import { parseFuriganaMarkup } from "@/lib/japanese-furigana"
 import { circledAccent, pitchPattern } from "@/lib/japanese/pitch-accent"
 import { cn } from "@/lib/utils"
@@ -73,10 +76,12 @@ function decodeDeck(value: string | undefined): StudyDeck | null {
   return null
 }
 
-/** A deck from the URL, else the first MOJi list, else N5. */
+/** A deck from the URL, else the notebook, else the first MOJi list, else N5. */
 function resolveDeck(param: string | undefined, decks: Decks): StudyDeck {
   const requested = decodeDeck(param)
   if (requested) return requested
+  const notebook = decks.lexicons.find((deck) => deck.kind === "notebook")
+  if (notebook) return { kind: "lexicon", id: notebook.id }
   const firstMoji = decks.moji[0]
   return firstMoji
     ? { kind: "moji", collectionId: firstMoji.collectionId }
@@ -114,7 +119,8 @@ function DeckPicker({
     })),
     ...decks.lexicons.map((deck) => ({
       value: encodeDeck({ kind: "lexicon", id: deck.id }),
-      label: deck.name,
+      label:
+        deck.kind === "notebook" ? t("japanese.notebook.title") : deck.name,
       group: "lexicons",
       ...deck
     }))
@@ -246,12 +252,17 @@ function StudyCardFace({
             {card.isNew ? t("japanese.study.new") : t("japanese.study.review")}
           </Chip>
         </div>
-        <p
-          className="font-script-ja text-5xl leading-tight font-semibold md:text-6xl"
-          lang="ja"
-        >
-          {card.word}
-        </p>
+        <div className="flex items-center gap-1">
+          <p
+            className="font-script-ja text-5xl leading-tight font-semibold md:text-6xl"
+            lang="ja"
+          >
+            {card.word}
+          </p>
+          {revealed ? (
+            <JapaneseSpeakButton text={card.reading ?? card.word} />
+          ) : null}
+        </div>
         {revealed ? (
           <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-muted-foreground">
             {card.reading ? (
@@ -293,9 +304,17 @@ function StudyCardFace({
 
           {example ? (
             <section className="rounded-2xl border border-border/50 bg-card/60 p-4">
-              <h2 className="text-xs text-muted-foreground">
-                {t("japanese.word.examples")}
-              </h2>
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-xs text-muted-foreground">
+                  {example.source === "context"
+                    ? t("japanese.notebook.fromYourReading")
+                    : t("japanese.word.examples")}
+                </h2>
+                <JapaneseSpeakButton
+                  label={t("japanese.speech.playSentence")}
+                  text={example.ja}
+                />
+              </div>
               <p
                 className="mt-2 font-script-ja text-lg leading-[1.9]"
                 lang="ja"
@@ -346,6 +365,7 @@ function StudyCardFace({
 function StudySession({ deck }: { deck: StudyDeck }) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
+  const onProgress = useLearningProgress()
   const [index, setIndex] = useState(0)
   const [revealed, setRevealed] = useState(false)
   const [ratedCount, setRatedCount] = useState(0)
@@ -364,7 +384,8 @@ function StudySession({ deck }: { deck: StudyDeck }) {
 
   const rate = useMutation(
     orpc.japanese.study.rate.mutationOptions({
-      onSuccess: () => {
+      onSuccess: (saved) => {
+        onProgress(saved?.progress)
         // Only the deck counts; the batch itself stays a fixed snapshot.
         queryClient.invalidateQueries({
           queryKey: orpc.japanese.study.decks.key()
@@ -381,7 +402,7 @@ function StudySession({ deck }: { deck: StudyDeck }) {
 
   const handleRate = (rating: (typeof RATINGS)[number]["rating"]) => {
     if (!card || !revealed || rate.isPending) return
-    rate.mutate({ key: card.key, rating })
+    rate.mutate({ key: card.key, rating, timeZone: getBrowserTimeZone() })
   }
 
   const startNextBatch = async () => {

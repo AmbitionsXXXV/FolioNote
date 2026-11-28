@@ -16,14 +16,14 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-email/components": "^1.0.8",
+    "@react-email/components": "^1.0.12",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
   "devDependencies": {
     "@folionote/config": "workspace:*",
     "@types/react": "catalog:",
-    "react-email": "^6.6.0",
+    "react-email": "^6.11.16",
     "typescript": "catalog:"
   }
 }

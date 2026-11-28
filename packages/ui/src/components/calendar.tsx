@@ -3,7 +3,7 @@ import {
   ArrowDownIcon,
   ArrowLeftIcon,
   ArrowRightIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import * as React from "react"
 import { DayPicker, getDefaultClassNames } from "react-day-picker"

@@ -41,6 +41,13 @@ jobs:
           cache: true
           run-install: false
 
+      - name: Configure Hugeicons Pro registry auth
+        # pnpm ignores credentials in the repository .npmrc, so the token goes
+        # into the runner's user-level pnpm config instead.
+        run: pnpm config set "//npm.collectui.pro/:_authToken" "$HUGEICONS_NPM_TOKEN"
+        env:
+          HUGEICONS_NPM_TOKEN: ${{ secrets.HUGEICONS_NPM_TOKEN }}
+
       - name: Install dependencies
         run: vp install --frozen-lockfile
         env:
@@ -88,6 +95,13 @@ jobs:
           cache: true
           run-install: false
 
+      - name: Configure Hugeicons Pro registry auth
+        # pnpm ignores credentials in the repository .npmrc, so the token goes
+        # into the runner's user-level pnpm config instead.
+        run: pnpm config set "//npm.collectui.pro/:_authToken" "$HUGEICONS_NPM_TOKEN"
+        env:
+          HUGEICONS_NPM_TOKEN: ${{ secrets.HUGEICONS_NPM_TOKEN }}
+
       - name: Install dependencies
         run: vp install --frozen-lockfile
         env:
@@ -119,6 +133,13 @@ jobs:
           node-version-file: ".node-version"
           cache: true
           run-install: false
+
+      - name: Configure Hugeicons Pro registry auth
+        # pnpm ignores credentials in the repository .npmrc, so the token goes
+        # into the runner's user-level pnpm config instead.
+        run: pnpm config set "//npm.collectui.pro/:_authToken" "$HUGEICONS_NPM_TOKEN"
+        env:
+          HUGEICONS_NPM_TOKEN: ${{ secrets.HUGEICONS_NPM_TOKEN }}
 
       - name: Install dependencies
         run: vp install --frozen-lockfile

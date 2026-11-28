@@ -12,10 +12,9 @@ import {
   Delete02Icon,
   ImageUploadIcon,
   Time02Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import * as FileSystem from "expo-file-system"
 import * as ImageManipulator from "expo-image-manipulator"
 import * as ImagePicker from "expo-image-picker"
 import {
@@ -29,6 +28,7 @@ import { useEffect, useImperativeHandle, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Alert, Pressable, Text, View } from "react-native"
 
+import { useBottomSheetOpenState } from "@/hooks/use-bottom-sheet-open-state"
 import { client } from "@/utils/orpc"
 
 type AllowedAvatarMimeType =
@@ -248,6 +248,10 @@ export function AvatarUploader({
 }: AvatarUploaderProps): React.ReactElement {
   const { t } = useTranslation()
   const [actionSheetVisible, setActionSheetVisible] = useState(false)
+  const actionSheet = useBottomSheetOpenState(
+    actionSheetVisible,
+    setActionSheetVisible
+  )
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
   const accentColor = useThemeColor("accent")
@@ -325,8 +329,7 @@ export function AvatarUploader({
 
     const asset = result.assets[0]
     const mimeType = asset.mimeType ?? "image/jpeg"
-    const fileInfo = await FileSystem.getInfoAsync(asset.uri)
-    const fileSize = fileInfo.exists ? (fileInfo.size ?? 0) : 0
+    const fileSize = asset.fileSize ?? 0
 
     const error = validateFile(mimeType, fileSize)
     if (error) {
@@ -435,53 +438,44 @@ export function AvatarUploader({
         )}
       </Pressable>
 
-      <BottomSheet
-        isOpen={actionSheetVisible}
-        onOpenChange={setActionSheetVisible}
-      >
-        <BottomSheet.Portal>
-          <BottomSheet.Overlay />
-          <BottomSheet.Content>
-            <BottomSheet.Title className="mb-4 text-center text-lg font-semibold">
-              {t("avatar.actions")}
-            </BottomSheet.Title>
+      <BottomSheet {...actionSheet}>
+        <BottomSheet.Content>
+          <BottomSheet.Title className="mb-4 text-center text-lg font-semibold">
+            {t("avatar.actions")}
+          </BottomSheet.Title>
 
-            <RateLimitWarning
-              countdown={countdown}
-              isRateLimited={isRateLimited}
-              warningColor={warningColor}
-            />
+          <RateLimitWarning
+            countdown={countdown}
+            isRateLimited={isRateLimited}
+            warningColor={warningColor}
+          />
 
-            <RateLimitStatus
-              isRateLimited={isRateLimited}
-              mutedColor={mutedColor}
-              rateLimitStatus={rateLimitStatus}
-            />
+          <RateLimitStatus
+            isRateLimited={isRateLimited}
+            mutedColor={mutedColor}
+            rateLimitStatus={rateLimitStatus}
+          />
 
-            <View className="gap-2">
-              <UploadButton
-                accentColor={accentColor}
-                foregroundColor={foregroundColor}
-                isRateLimited={isRateLimited}
-                mutedColor={mutedColor}
-                onPress={pickImage}
-              />
-
-              {displayUrl && (
-                <DeleteButton
-                  dangerColor={dangerColor}
-                  onPress={handleDelete}
-                />
-              )}
-            </View>
-
-            <CancelButton
+          <View className="gap-2">
+            <UploadButton
+              accentColor={accentColor}
               foregroundColor={foregroundColor}
+              isRateLimited={isRateLimited}
               mutedColor={mutedColor}
-              onPress={closeActionSheet}
+              onPress={pickImage}
             />
-          </BottomSheet.Content>
-        </BottomSheet.Portal>
+
+            {displayUrl && (
+              <DeleteButton dangerColor={dangerColor} onPress={handleDelete} />
+            )}
+          </View>
+
+          <CancelButton
+            foregroundColor={foregroundColor}
+            mutedColor={mutedColor}
+            onPress={closeActionSheet}
+          />
+        </BottomSheet.Content>
       </BottomSheet>
     </View>
   )

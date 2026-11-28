@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@folionote/ui/dialog"
-import { ArrowDown02Icon, Tick02Icon } from "@hugeicons/core-free-icons"
+import { ArrowDown02Icon, Tick02Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ComponentProps, ReactNode } from "react"
 import { memo, useMemo, useState } from "react"

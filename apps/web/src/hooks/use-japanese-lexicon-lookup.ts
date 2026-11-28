@@ -1,5 +1,6 @@
 import { useQueries, useQuery } from "@tanstack/react-query"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 import { orpc } from "@/utils/orpc"
 
@@ -9,7 +10,9 @@ const LOOKUP_STALE_MS = 60 * 1000
 
 export interface LexiconMatch {
   baseForm: string
+  entryId: number
   lexiconId: string
+  lexiconKind: "book" | "deck" | "notebook"
   lexiconName: string
   level: string | null
   unit: string | null
@@ -47,6 +50,8 @@ export function useJapaneseLexiconLookup(
     return result
   }, [baseForms])
 
+  const { t } = useTranslation()
+  const notebookName = t("japanese.notebook.title")
   const lexicons = useQuery({
     ...orpc.japanese.lexicons.list.queryOptions(),
     staleTime: LOOKUP_STALE_MS,
@@ -75,6 +80,8 @@ export function useJapaneseLexiconLookup(
       const list = matches.get(entry.baseForm) ?? []
       list.push({
         ...entry,
+        lexiconName:
+          entry.lexiconKind === "notebook" ? notebookName : entry.lexiconName,
         level: levelByLexicon.get(entry.lexiconId) ?? null
       })
       matches.set(entry.baseForm, list)
@@ -92,5 +99,5 @@ export function useJapaneseLexiconLookup(
       )
     }
     return { matches, tags }
-  }, [found, lexicons.data])
+  }, [found, lexicons.data, notebookName])
 }

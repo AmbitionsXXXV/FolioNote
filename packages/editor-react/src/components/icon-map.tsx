@@ -15,7 +15,7 @@ import {
   QuoteUpIcon,
   Table01Icon,
   Tag01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ReactNode } from "react"
 

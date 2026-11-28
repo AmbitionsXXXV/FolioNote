@@ -16,7 +16,11 @@ const serverEnvSchema = z.object({
   DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
   BETTER_AUTH_SECRET: z.string().min(1, "BETTER_AUTH_SECRET is required"),
   CORS_ORIGIN: z.string().optional(),
-  PORT: z.string().optional()
+  PORT: z.string().optional(),
+  /** Shared secret for GET /internal/perf. Route is disabled when unset. */
+  PERF_TOKEN: z.string().min(16).optional(),
+  /** Calls slower than this (ms) are logged individually. Default 500. */
+  PERF_SLOW_MS: z.coerce.number().int().positive().default(500)
 })
 
 const parsed = serverEnvSchema.safeParse(process.env)

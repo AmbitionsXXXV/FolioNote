@@ -1,6 +1,6 @@
 import { Button } from "@folionote/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@folionote/ui/card"
-import { ViewOffIcon } from "@hugeicons/core-free-icons"
+import { ViewOffIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Link } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"

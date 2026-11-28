@@ -20,7 +20,7 @@ import {
   Tick02Icon,
   TimeSetting01Icon,
   UserGroupIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useCallback, useState } from "react"
@@ -494,6 +494,7 @@ function CollaboratorsSection({
           className="min-w-0 flex-1"
           onChange={setInviteEmail}
           onKeyDown={(event) => {
+            if (event.nativeEvent.isComposing || event.keyCode === 229) return
             if (event.key === "Enter" && inviteEmail.trim()) {
               onInvite()
             }

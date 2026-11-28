@@ -40,7 +40,8 @@
     "tocPositionRight": "Right",
     "permissionRequired": "Permission Required",
     "navigation": "Navigation",
-    "optional": "optional"
+    "optional": "optional",
+    "success": "Success"
   },
   "auth": {
     "signIn": "Sign In",
@@ -67,8 +68,8 @@
     "getStarted": "Get started",
     "signUpSubtitle": "Create your account to start using FolioNote",
     "namePlaceholder": "Enter your name",
-    "passwordHint": "Password must be at least 8 characters",
-    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordHint": "Password must be at least 10 characters",
+    "passwordTooShort": "Password must be at least 10 characters",
     "signUpFailed": "Sign up failed",
     "haveAccount": "Already have an account?",
     "nameRequired": "Name is required",
@@ -80,7 +81,7 @@
     "continueWithGoogle": "Continue with Google",
     "orContinueWith": "or continue with",
     "secureLogin": "Secure login powered by Better Auth",
-    "passwordRequirements": "Must be at least 8 characters long",
+    "passwordRequirements": "Must be at least 10 characters long",
     "termsAgreement": "By signing up, you agree to our Terms and Privacy Policy",
     "forgotPasswordTitle": "Forgot Password",
     "forgotPasswordSubtitle": "Enter your email and we'll send you a link to reset your password",
@@ -397,7 +398,8 @@
         "auxiliary": "Auxiliary",
         "expression": "Expression"
       }
-    }
+    },
+    "statsLoadFailed": "Failed to load review stats"
   },
   "japanese": {
     "title": "Japanese",
@@ -645,7 +647,8 @@
       },
       "kind": {
         "book": "Book",
-        "deck": "Deck"
+        "deck": "Deck",
+        "notebook": "Notebook"
       },
       "meaningLanguage": {
         "zh": "中文",
@@ -749,6 +752,35 @@
       "loadFailed": "Couldn't load",
       "retry": "Try again",
       "rateFailed": "Progress wasn't saved. Please try again."
+    },
+    "notebook": {
+      "title": "Notebook",
+      "save": "Save to notebook",
+      "saved": "In your notebook",
+      "remove": "Remove from notebook",
+      "savedToast": "Saved to your notebook",
+      "removedToast": "Removed from your notebook",
+      "saveFailed": "Couldn't save to your notebook. Try again.",
+      "removeFailed": "Couldn't remove it from your notebook. Try again.",
+      "fromYourReading": "From your reading",
+      "study": "Study notebook",
+      "wordCount": "{{count}} words",
+      "dueCount": "{{count}} due",
+      "recent": "Recently added: ",
+      "startReview": "Start review",
+      "startReviewDue": "Start review · {{count}} due",
+      "viewAll": "View all",
+      "empty": "Tap “Add to notebook” while reading or searching, and the word lands here with its sentence.",
+      "listMeta": "Added while reading and searching",
+      "colSource": "Source",
+      "colActions": "Actions",
+      "fromSearch": "Added from search"
+    },
+    "speech": {
+      "play": "Play",
+      "playWord": "Play “{{text}}”",
+      "playSentence": "Play sentence",
+      "failed": "Couldn't play it: no Japanese voice is available in this browser."
     }
   },
   "activity": {
@@ -786,7 +818,12 @@
     "profile": "Profile",
     "knowledge": "Knowledge",
     "graph": "Graph",
-    "import": "Import"
+    "import": "Import",
+    "sectionMain": "Main",
+    "sectionExplore": "Explore",
+    "record": "Learning record",
+    "capture": "Jot down",
+    "capturePlaceholder": "Jot something down, or paste a word…"
   },
   "search": {
     "placeholder": "Search entries...",
@@ -1238,7 +1275,9 @@
       "hour": "hour",
       "day": "day"
     },
-    "permissionDenied": "Please grant photo library access to upload an avatar."
+    "permissionDenied": "Please grant photo library access to upload an avatar.",
+    "compressError": "Failed to process the image",
+    "success": "Success"
   },
   "share": {
     "title": "Share",
@@ -1528,7 +1567,11 @@
       "reject": "Reject",
       "accepted": "Accepted",
       "rejected": "Rejected"
-    }
+    },
+    "toggleImageGeneration": "Toggle image generation",
+    "imageGenerationEnabled": "Image generation enabled",
+    "enableImageGeneration": "Enable image generation",
+    "imagePromptPlaceholder": "Describe the image you want to create…"
   },
   "aiProvider": {
     "title": "AI Provider Settings",
@@ -1762,5 +1805,78 @@
       "review_one": "Review {{count}} conflict",
       "review_other": "Review {{count}} conflicts"
     }
+  },
+  "streak": {
+    "record": "Learning record",
+    "openRecord": "View learning record",
+    "headlineCheckedIn": "Stamped today: {{count}}-day streak",
+    "headlineToCheckIn": "Study a little to earn stamp #{{count}}",
+    "headlineStart": "Study a little to earn your first stamp",
+    "currentLabel": "Current streak",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "stampLabel": "day streak",
+    "stampAria": "Stamp for a {{count}}-day streak",
+    "longest": "Longest {{count}} days",
+    "toMilestone": "{{count}} more days to the {{milestone}}-day milestone",
+    "freezes_one": "{{count}} streak freeze",
+    "freezes_other": "{{count}} streak freezes",
+    "freezeHint": "Missing a day uses a freeze automatically. Earn one every 7 days in a row, up to {{max}}.",
+    "frozenNote": "Missed {{count}} day(s); a freeze kept your streak.",
+    "atRisk": "You haven't studied today. Study before {{hour}}:00 tomorrow morning to keep your streak.",
+    "week": "This week",
+    "today": "Today",
+    "goalTitle": "Daily goal",
+    "goalRemaining": "{{count}} points to go",
+    "goalMet": "Daily goal met",
+    "pointsOf": "/ {{goal}} pts",
+    "goalAria": "Daily goal {{points}} of {{goal}} points",
+    "goalHint": "Review a card +1 · New word +2 · Note +2 · Article +5",
+    "continue": "Keep studying",
+    "lang": {
+      "ja": "Japanese",
+      "en": "English",
+      "other": "Notes"
+    },
+    "status": {
+      "active": "Studied",
+      "goal_met": "Goal met",
+      "frozen": "Freeze",
+      "none": "Missed",
+      "future": "Upcoming"
+    },
+    "calendar": {
+      "prevMonth": "Previous month",
+      "nextMonth": "Next month",
+      "currentStreak": "Current streak",
+      "studyDays": "Days studied",
+      "monthPoints": "Points this month",
+      "goalMetDays": "Goal met",
+      "goalMetValue": "{{count}} / {{total}} days",
+      "dayDetail": "Day details",
+      "noActivity": "Nothing studied this day",
+      "noteLabel": "A line about this day (optional)",
+      "notePlaceholder": "What did you learn?",
+      "noteSaved": "Saved",
+      "noteFailed": "Couldn't save",
+      "dayPoints": "{{count}} pts",
+      "loadFailed": "Couldn't load your learning record"
+    },
+    "kinds": {
+      "entry_review": "Reviewed a note",
+      "vocab_review": "Reviewed a word",
+      "vocab_new": "Learned a new word",
+      "entry_create": "Wrote a note",
+      "article_read": "Finished an article",
+      "exam_complete": "Finished a quiz"
+    },
+    "toast": {
+      "checkedIn": "Stamped! {{count}}-day streak",
+      "goalMet": "Daily goal met · {{points}} pts",
+      "milestone": "Milestone: {{count}}-day streak",
+      "freezeEarned": "You earned a streak freeze"
+    },
+    "stampMark": "✓",
+    "freezeMark": "❄"
   }
 }

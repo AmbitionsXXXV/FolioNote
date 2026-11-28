@@ -33,7 +33,7 @@ import {
   Settings02Icon,
   Sun03Icon,
   UserCircleIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Link, useNavigate } from "@tanstack/react-router"
 import { useTheme } from "next-themes"

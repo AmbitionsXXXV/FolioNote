@@ -23,7 +23,7 @@ import { queryClient } from "@/utils/orpc"
 // 声明 Expo/React Native 的全局 __DEV__ 变量
 declare const __DEV__: boolean
 
-const PASSWORD_MIN_LENGTH = 8
+const PASSWORD_MIN_LENGTH = 10
 
 export default function SignUpScreen() {
   const { t } = useTranslation()

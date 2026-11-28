@@ -6,7 +6,7 @@ import {
   Cancel01Icon,
   Delete02Icon,
   Tick02Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ComponentProps } from "react"
 import { memo, useCallback } from "react"

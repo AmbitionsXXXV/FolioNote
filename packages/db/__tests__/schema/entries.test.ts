@@ -9,9 +9,9 @@ import {
   createTestUser
 } from "../fixtures/factories"
 import { db } from "../setup"
-import { cleanupDatabase } from "../utils/db-helper"
+import { cleanupDatabase, hasTestDatabase } from "../utils/db-helper"
 
-describe("Entries schema", () => {
+describe.skipIf(!hasTestDatabase)("Entries schema", () => {
   beforeEach(async () => {
     await cleanupDatabase()
   })

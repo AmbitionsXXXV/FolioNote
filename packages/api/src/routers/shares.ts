@@ -1,7 +1,7 @@
-import { db, entries, entryShares } from "@folionote/db"
+import { db, entries, entryColumns, entryShares } from "@folionote/db"
 import { ORPCError } from "@orpc/server"
 import bcrypt from "bcryptjs"
-import { and, eq, isNull } from "drizzle-orm"
+import { and, eq, isNull, sql } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 
@@ -71,7 +71,7 @@ export const createShare = protectedProcedure
 
     // Verify the entry belongs to the user and is not deleted
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -139,7 +139,7 @@ export const getSharesByEntry = protectedProcedure
 
     // Verify the entry belongs to the user
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(
         and(
@@ -318,7 +318,7 @@ export const getPublicEntry = publicProcedure
 
     // Get the entry
     const [entry] = await db
-      .select()
+      .select(entryColumns)
       .from(entries)
       .where(and(eq(entries.id, share.entryId), isNull(entries.deletedAt)))
       .limit(1)
@@ -331,7 +331,7 @@ export const getPublicEntry = publicProcedure
     await db
       .update(entryShares)
       .set({
-        viewCount: share.viewCount + 1,
+        viewCount: sql`${entryShares.viewCount} + 1`,
         lastViewedAt: new Date()
       })
       .where(eq(entryShares.id, share.id))

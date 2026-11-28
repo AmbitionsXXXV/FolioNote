@@ -400,11 +400,12 @@ export class ReviewRepository {
   /**
    * Get today's review stats
    */
-  async getTodayStats(userId: string, tzOffset = 0): Promise<TodayStats> {
-    // Calculate today's start/end based on timezone offset
+  async getTodayStats(userId: string, _tzOffset = 0): Promise<TodayStats> {
+    // setHours() already works in the device's local time zone, so local
+    // midnight is the day boundary. Adding the offset again (it is the device
+    // offset, e.g. +480 in UTC+8) would shift "today" to 08:00–08:00.
     const todayStart = new Date()
     todayStart.setHours(0, 0, 0, 0)
-    todayStart.setMinutes(todayStart.getMinutes() + tzOffset)
 
     const todayEnd = new Date(todayStart)
     todayEnd.setDate(todayEnd.getDate() + 1)
@@ -453,7 +454,7 @@ export class ReviewRepository {
       )
 
     // Calculate streak (consecutive days with at least one review)
-    const streak = await this.calculateStreak(userId, tzOffset)
+    const streak = await this.calculateStreak(userId)
 
     return {
       reviewedToday: reviewedResult[0]?.count ?? 0,
@@ -467,11 +468,10 @@ export class ReviewRepository {
   /**
    * Get due stats
    */
-  async getDueStats(userId: string, tzOffset = 0): Promise<DueStats> {
-    // Calculate today's start/end based on timezone offset
+  async getDueStats(userId: string, _tzOffset = 0): Promise<DueStats> {
+    // Local midnight is the day boundary; see getTodayStats.
     const todayStart = new Date()
     todayStart.setHours(0, 0, 0, 0)
-    todayStart.setMinutes(todayStart.getMinutes() + tzOffset)
 
     const todayEnd = new Date(todayStart)
     todayEnd.setDate(todayEnd.getDate() + 1)
@@ -538,10 +538,7 @@ export class ReviewRepository {
   /**
    * Calculate review streak
    */
-  private async calculateStreak(
-    userId: string,
-    tzOffset: number
-  ): Promise<number> {
+  private async calculateStreak(userId: string): Promise<number> {
     // Get distinct review dates in descending order
     const events = await localDb
       .select({ reviewedAt: reviewEvents.reviewedAt })
@@ -555,17 +552,13 @@ export class ReviewRepository {
     }
 
     // Convert to dates and count consecutive days
-    const nowDate = new Date()
-    nowDate.setMinutes(nowDate.getMinutes() + tzOffset)
-
-    const today = new Date(nowDate)
+    const today = new Date()
     today.setHours(0, 0, 0, 0)
 
     // Get unique dates
     const uniqueDates = new Set<string>()
     for (const event of events) {
       const date = new Date(event.reviewedAt)
-      date.setMinutes(date.getMinutes() + tzOffset)
       date.setHours(0, 0, 0, 0)
       const dateStr = date.toISOString().split("T")[0]
       if (dateStr) {

@@ -3,7 +3,7 @@ import {
   Cancel01Icon,
   CheckmarkCircle02Icon,
   PlayIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react-native"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { Button, Card, useThemeColor } from "heroui-native"
@@ -22,6 +22,8 @@ import { ReviewCard } from "@/components/review-card"
 import { ReviewRatingButtons } from "@/components/review-rating-buttons"
 import { ReviewRuleCard } from "@/components/review-rule-card"
 import { useDataServiceContext } from "@/contexts/data-service-context"
+import { useHideTabBar } from "@/contexts/tab-bar-context"
+import { orpc } from "@/utils/orpc"
 
 type ReviewRule = "due" | "new" | "starred" | "unreviewed" | "all"
 type Rating = "again" | "hard" | "good" | "easy"
@@ -125,6 +127,8 @@ export default function ReviewScreen() {
   const [currentRule, setCurrentRule] = useState<ReviewRule>("due")
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isReviewing, setIsReviewing] = useState(false)
+  // A session is immersive: the tab bar would cover the rating bar.
+  useHideTabBar(isReviewing)
 
   const accentColor = useThemeColor("accent")
 
@@ -159,6 +163,7 @@ export default function ReviewScreen() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["review"] })
+      queryClient.invalidateQueries({ queryKey: orpc.streak.key() })
       setCurrentIndex((prev) => prev + 1)
     }
   })

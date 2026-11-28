@@ -1,4 +1,4 @@
-import { db, entries, entrySources, sources } from "@folionote/db"
+import { db, entries, entryColumns, entrySources, sources } from "@folionote/db"
 import { and, desc, eq, isNotNull, isNull, lt } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
@@ -310,7 +310,7 @@ export const addSourceToEntry = protectedProcedure
     const entryResult = await findOneOrNotFound(
       () =>
         db
-          .select()
+          .select(entryColumns)
           .from(entries)
           .where(
             and(
@@ -396,7 +396,7 @@ export const removeSourceFromEntry = protectedProcedure
     const entryResult = await findOneOrNotFound(
       () =>
         db
-          .select()
+          .select(entryColumns)
           .from(entries)
           .where(
             and(
@@ -436,7 +436,7 @@ export const getEntrySources = protectedProcedure
     const entryResult = await findOneOrNotFound(
       () =>
         db
-          .select()
+          .select(entryColumns)
           .from(entries)
           .where(
             and(
@@ -498,7 +498,7 @@ export const getSourceEntries = protectedProcedure
     // Get all entries for this source
     const associations = await db
       .select({
-        entry: entries,
+        entry: entryColumns,
         position: entrySources.position
       })
       .from(entrySources)

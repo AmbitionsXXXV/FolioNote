@@ -1,7 +1,10 @@
 import { Button } from "@folionote/ui/button"
 import { Input } from "@folionote/ui/input"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@folionote/ui/tooltip"
-import { ArrowLeft01Icon, Loading02Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowLeft01Icon,
+  Loading02Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useHotkey } from "@tanstack/react-hotkeys"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -103,6 +106,7 @@ function NewEntryPage() {
   // Keyboard shortcut: ⌘/Ctrl + S to save
   useHotkey("Mod+S", (event) => {
     event.preventDefault()
+    if (createMutation.isPending) return
     if (title.trim() || content.trim()) {
       handleSave()
     }
@@ -204,7 +208,7 @@ function NewEntryPage() {
             <TooltipTrigger
               aria-describedby="save-shortcut"
               aria-label={t("common.save")}
-              className="group/button inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-full border border-transparent bg-primary bg-clip-padding px-2.5 text-sm font-medium whitespace-nowrap text-black transition-all outline-none select-none hover:bg-primary/80 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50"
+              className="group/button inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-full border border-transparent bg-primary bg-clip-padding px-2.5 text-sm font-medium whitespace-nowrap text-primary-foreground transition-all outline-none select-none hover:bg-primary/80 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50"
               disabled={
                 createMutation.isPending || !(title.trim() || content.trim())
               }

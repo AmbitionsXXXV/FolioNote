@@ -1,5 +1,5 @@
 import { Button, buttonVariants } from "@folionote/ui/button"
-import { Alert02Icon, RefreshIcon } from "@hugeicons/core-free-icons"
+import { Alert02Icon, RefreshIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { ErrorComponent, Link, useRouter } from "@tanstack/react-router"
 import type { ErrorComponentProps } from "@tanstack/react-router"

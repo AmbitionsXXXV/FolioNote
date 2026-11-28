@@ -1,4 +1,4 @@
-import { AiBrain01Icon } from "@hugeicons/core-free-icons"
+import { AiBrain01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { memo, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"

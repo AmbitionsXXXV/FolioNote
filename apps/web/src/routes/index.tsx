@@ -1,23 +1,5 @@
-import { Badge } from "@folionote/ui/badge"
-import { Button } from "@folionote/ui/button"
-import { Separator } from "@folionote/ui/separator"
 import { useGSAP } from "@gsap/react"
-import {
-  AiChat02Icon,
-  ArrowRight02Icon,
-  BookOpen01Icon,
-  Calendar03Icon,
-  CheckmarkCircle02Icon,
-  ComputerIcon,
-  GridViewIcon,
-  InboxIcon,
-  MagicWand01Icon,
-  PencilEdit02Icon,
-  Search01Icon,
-  SmartPhone01Icon,
-  Tag01Icon
-} from "@hugeicons/core-free-icons"
-import type { IconSvgElement } from "@hugeicons/react"
+import { Add01Icon, ArrowRight02Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { createFileRoute, Link, redirect } from "@tanstack/react-router"
 import gsap from "gsap"
@@ -25,13 +7,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import Lenis from "lenis"
 
 import "lenis/dist/lenis.css"
-import type { ReactNode } from "react"
-import { useEffect, useRef } from "react"
+import { Fragment, useEffect, useRef } from "react"
 import { useTranslation } from "react-i18next"
 
 import { BrandLockup } from "@/components/brand-lockup"
 import { getUser } from "@/functions/get-user"
-import { cn } from "@/lib/utils"
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
@@ -45,180 +25,29 @@ export const Route = createFileRoute("/")({
   }
 })
 
-// Obsidian-glossy brand objects (chroma-keyed transparent PNGs).
-const OBJ = {
-  note: "/img/3d/note.webp",
-  lens: "/img/3d/lens.webp",
-  bookmark: "/img/3d/bookmark.webp",
-  brain: "/img/3d/brain.webp",
-  calendar: "/img/3d/calendar.webp",
-  graph: "/img/3d/graph.webp",
-  tag: "/img/3d/tag.webp",
-  sparkle: "/img/3d/sparkle.webp"
-} as const
+// Text-first redesign: a white page with Claude clay as the only accent.
+// Geist reads, JetBrains Mono records (labels, numbers), and Fraunces is used
+// once, on the tagline.
+//
+// Clay tokens, scoped to the landing root:
+// --clay        #D97757, large type, rules, the chart line, the CTA panel
+// --clay-strong #B5532F, button fills (white text passes 4.5:1)
+// --clay-ink    small clay text; lightens in dark mode to keep contrast
+const LANDING_ROOT_CLASS =
+  "[--clay:#d97757] [--clay-strong:#b5532f] [--clay-ink:#b5532f] dark:[--clay-ink:#e0895f]"
 
-// Warm, obsidian-tinted floating shadow for the 3D objects.
-const OBJ_SHADOW = "drop-shadow-[0_30px_46px_rgba(28,20,10,0.34)]"
+// The landing motion curve is cubic-bezier(0.22, 1, 0.36, 1), a quint
+// ease-out; GSAP's power4.out is the same family.
+const LANDING_EASE = "power4.out"
+const EASE_CLASS = "ease-[cubic-bezier(0.22,1,0.36,1)]"
 
-// ---------------------------------------------------------------------------
-// Primitives
-// ---------------------------------------------------------------------------
-
-// A glossy brand object. When `float` is set, the outer node is marked for
-// hero parallax and the inner node for the idle float animation.
-function Obj({
-  src,
-  alt = "",
-  className,
-  float = false,
-  depth
-}: {
-  src: string
-  alt?: string
-  className?: string
-  float?: boolean
-  depth?: number
-}) {
-  const img = (
-    <img
-      alt={alt}
-      aria-hidden={alt ? undefined : "true"}
-      className={cn("size-full select-none", OBJ_SHADOW)}
-      draggable={false}
-      loading="lazy"
-      src={src}
-    />
-  )
-  if (!float) {
-    return <div className={className}>{img}</div>
-  }
-  return (
-    <div
-      className={cn("will-change-transform", className)}
-      data-depth={depth ?? 1}
-      data-parallax=""
-    >
-      <div className="will-change-transform" data-float="">
-        {img}
-      </div>
-    </div>
-  )
-}
-
-// Soft radial amber glow placed behind hero/CTA objects.
-function Halo({
-  className,
-  ...rest
-}: {
-  className?: string
-} & Record<`data-${string}`, string>) {
-  return (
-    <div
-      aria-hidden="true"
-      className={cn(
-        "pointer-events-none absolute rounded-full bg-primary/25 blur-3xl",
-        className
-      )}
-      {...rest}
-    />
-  )
-}
-
-// Organic blurred decorative blob.
-function Blob({
-  className,
-  shape = "47% 53% 60% 40% / 50% 45% 55% 50%"
-}: {
-  className?: string
-  shape?: string
-}) {
-  return (
-    <div
-      aria-hidden="true"
-      className={cn("pointer-events-none absolute blur-3xl", className)}
-      style={{ borderRadius: shape }}
-    />
-  )
-}
-
-// Counts a numeric value up when scrolled into view (static if non-numeric or
-// reduced-motion). Keeps the rendered value for SSR / no-JS.
-function CountUp({ value, className }: { value: string; className?: string }) {
-  const ref = useRef<HTMLSpanElement>(null)
-
-  useGSAP(
-    () => {
-      const el = ref.current
-      const match = value.match(/^(\D*)(\d+(?:\.\d+)?)(.*)$/)
-      if (!(el && match)) {
-        return
-      }
-      const prefix = match[1] ?? ""
-      const digits = match[2] ?? ""
-      const suffix = match[3] ?? ""
-      const target = Number.parseFloat(digits)
-      const counter = { v: 0 }
-      const mm = gsap.matchMedia()
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        el.textContent = `${prefix}0${suffix}`
-        gsap.to(counter, {
-          v: target,
-          duration: 1.6,
-          ease: "power2.out",
-          scrollTrigger: { trigger: el, start: "top 88%", once: true },
-          onUpdate: () => {
-            el.textContent = `${prefix}${Math.round(counter.v)}${suffix}`
-          }
-        })
-      })
-    },
-    { scope: ref }
-  )
-
-  return (
-    <span className={className} ref={ref}>
-      {value}
-    </span>
-  )
-}
-
-// Magnetic wrapper: nudges children toward the pointer for tactile CTAs.
-function useMagnetic<T extends HTMLElement>(strength = 0.4) {
-  const ref = useRef<T>(null)
-  useGSAP(
-    (_context, contextSafe) => {
-      const el = ref.current
-      if (!(el && contextSafe)) {
-        return
-      }
-      const mm = gsap.matchMedia()
-      mm.add(
-        "(prefers-reduced-motion: no-preference) and (pointer: fine)",
-        () => {
-          const xTo = gsap.quickTo(el, "x", { duration: 0.5, ease: "power3" })
-          const yTo = gsap.quickTo(el, "y", { duration: 0.5, ease: "power3" })
-          const onMove = contextSafe((event: PointerEvent) => {
-            const rect = el.getBoundingClientRect()
-            xTo((event.clientX - (rect.left + rect.width / 2)) * strength)
-            yTo((event.clientY - (rect.top + rect.height / 2)) * strength)
-          })
-          const onLeave = contextSafe(() => {
-            xTo(0)
-            yTo(0)
-          })
-          el.addEventListener("pointermove", onMove)
-          el.addEventListener("pointerleave", onLeave)
-          return () => {
-            el.removeEventListener("pointermove", onMove)
-            el.removeEventListener("pointerleave", onLeave)
-          }
-        }
-      )
-    },
-    { scope: ref }
-  )
-  return ref
-}
+const CONTAINER_CLASS = "mx-auto w-full max-w-6xl px-6 md:px-10"
+const EYEBROW_CLASS = "font-jetbrains text-sm text-(--clay-ink)"
+const SECTION_TITLE_CLASS =
+  "text-4xl font-semibold tracking-tight text-balance md:text-5xl"
+const PRIMARY_CTA_CLASS = `group inline-flex items-center gap-2 rounded-lg bg-(--clay-strong) px-4 py-3 text-base font-semibold text-white transition-transform duration-500 ${EASE_CLASS} hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--clay-strong) active:scale-[0.98]`
+const NAV_LINK_CLASS =
+  "rounded-sm text-muted-foreground transition-colors duration-300 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--clay-ink)"
 
 // ---------------------------------------------------------------------------
 // Navbar
@@ -226,68 +55,48 @@ function useMagnetic<T extends HTMLElement>(strength = 0.4) {
 
 function LandingNavbar() {
   const { t } = useTranslation()
-  const navRef = useRef<HTMLElement>(null)
-
-  useGSAP(() => {
-    ScrollTrigger.create({
-      start: 24,
-      end: "max",
-      onToggle: (self) =>
-        navRef.current?.toggleAttribute("data-scrolled", self.isActive)
-    })
-  })
 
   return (
-    <nav
-      className="fixed top-4 right-4 left-4 z-50 mx-auto flex max-w-6xl items-center justify-between rounded-full border border-transparent px-5 py-2.5 transition-all duration-300 data-[scrolled]:border-border/60 data-[scrolled]:bg-background/75 data-[scrolled]:shadow-lg data-[scrolled]:backdrop-blur-xl"
-      ref={navRef}
-    >
-      <Link className="group flex cursor-pointer items-center gap-2.5" to="/">
-        <BrandLockup
-          iconClassName="size-9 transition-transform duration-300 group-hover:scale-105"
-          wordmarkClassName="text-xl"
-        />
-      </Link>
+    <div className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
+      <nav
+        aria-label={t("landing.nav.label", "Main")}
+        className="flex items-center gap-6 rounded-2xl border border-foreground/10 bg-white/80 py-2 pr-2 pl-4 backdrop-blur-xl dark:bg-[#181818]/80"
+      >
+        <Link
+          className="flex items-center rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--clay-ink)"
+          to="/"
+        >
+          <BrandLockup iconClassName="size-7" wordmarkClassName="text-base" />
+        </Link>
 
-      <div className="hidden items-center gap-8 md:flex">
-        <a
-          className="cursor-pointer text-sm text-muted-foreground transition-colors hover:text-foreground"
-          href="#features"
-        >
-          {t("landing.nav.features", "Features")}
-        </a>
-        <a
-          className="cursor-pointer text-sm text-muted-foreground transition-colors hover:text-foreground"
-          href="#how-it-works"
-        >
-          {t("landing.nav.howItWorks", "How It Works")}
-        </a>
-        <a
-          className="cursor-pointer text-sm text-muted-foreground transition-colors hover:text-foreground"
-          href="#showcase"
-        >
-          {t("landing.nav.showcase", "Showcase")}
-        </a>
-      </div>
+        <div className="hidden items-center gap-6 text-sm md:flex">
+          <a className={NAV_LINK_CLASS} href="#features">
+            {t("landing.nav.features", "Features")}
+          </a>
+          <a className={NAV_LINK_CLASS} href="#how-it-works">
+            {t("landing.nav.howItWorks", "How it works")}
+          </a>
+          <a className={NAV_LINK_CLASS} href="#faq">
+            {t("landing.nav.faq", "FAQ")}
+          </a>
+        </div>
 
-      <div className="flex items-center gap-2">
-        <Link to="/login">
-          <Button
-            className="cursor-pointer rounded-full"
-            size="sm"
-            variant="ghost"
+        <div className="flex items-center gap-4 text-sm">
+          <Link
+            className="rounded-sm font-medium text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--clay-ink)"
+            to="/login"
           >
-            {t("auth.signIn", "Sign In")}
-          </Button>
-        </Link>
-        <Link to="/register">
-          <Button className="cursor-pointer gap-1.5 rounded-full px-5">
-            {t("landing.nav.getStarted", "Get Started")}
-            <HugeiconsIcon className="size-4" icon={ArrowRight02Icon} />
-          </Button>
-        </Link>
-      </div>
-    </nav>
+            {t("auth.signIn", "Sign in")}
+          </Link>
+          <Link
+            className={`rounded-lg bg-(--clay-strong) px-3 py-2 text-sm font-semibold text-white transition-transform duration-500 ${EASE_CLASS} hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--clay-strong) active:scale-[0.98]`}
+            to="/register"
+          >
+            {t("landing.nav.getStarted", "Get started")}
+          </Link>
+        </div>
+      </nav>
+    </div>
   )
 }
 
@@ -300,1153 +109,834 @@ function HeroSection() {
   const root = useRef<HTMLElement>(null)
 
   useGSAP(
-    (_context, contextSafe) => {
-      const mm = gsap.matchMedia()
-
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const tl = gsap.timeline({
-          defaults: { ease: "power3.out", duration: 0.9 }
-        })
-        tl.from("[data-hero-rise]", { y: 28, autoAlpha: 0, stagger: 0.1 })
-
-        const underline = root.current?.querySelector<SVGPathElement>(
-          "[data-hero-underline] path"
-        )
-        if (underline) {
-          const len = underline.getTotalLength()
-          gsap.set(underline, { strokeDasharray: len, strokeDashoffset: len })
-          tl.to(
-            underline,
-            { strokeDashoffset: 0, duration: 0.9, ease: "power2.inOut" },
-            "-=0.35"
-          )
-        }
-
-        tl.from(
-          "[data-parallax]",
-          {
-            autoAlpha: 0,
-            scale: 0.6,
-            y: 40,
-            stagger: 0.12,
-            duration: 1,
-            ease: "back.out(1.5)"
-          },
-          "-=0.8"
-        )
-
-        // Idle float + gentle spin per object
-        for (const el of gsap.utils.toArray<HTMLElement>(
-          "[data-float]",
-          root.current
-        )) {
-          gsap.to(el, {
-            y: gsap.utils.random(-14, -24),
-            duration: gsap.utils.random(3, 4.6),
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: gsap.utils.random(0, 1)
-          })
-          gsap.to(el, {
-            rotation: gsap.utils.random(-6, 6),
-            duration: gsap.utils.random(4.5, 6.5),
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut"
-          })
-        }
-
-        // Scroll parallax: objects drift up at depth-scaled rates
-        for (const el of gsap.utils.toArray<HTMLElement>(
-          "[data-parallax]",
-          root.current
-        )) {
-          const depth = Number.parseFloat(el.dataset.depth ?? "1")
-          gsap.to(el, {
-            yPercent: -16 * depth,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom top",
-              scrub: true
-            }
-          })
-        }
-
-        // Copy gently lifts away on scroll
-        gsap.to("[data-hero-copy]", {
-          yPercent: -8,
-          autoAlpha: 0.4,
-          ease: "none",
-          scrollTrigger: {
-            trigger: root.current,
-            start: "top top",
-            end: "bottom 40%",
-            scrub: true
-          }
-        })
-
-        // Pointer parallax for the object cluster
-        const items = gsap.utils.toArray<HTMLElement>(
-          "[data-parallax]",
-          root.current
-        )
-        const setters = items.map((el) => ({
-          x: gsap.quickTo(el, "x", { duration: 0.7, ease: "power3" }),
-          depth: Number.parseFloat(el.dataset.depth ?? "1")
-        }))
-        const onMove = contextSafe?.((event: PointerEvent) => {
-          const dx = (event.clientX - window.innerWidth / 2) / window.innerWidth
-          for (const s of setters) {
-            s.x(dx * 52 * s.depth)
-          }
-        })
-        if (onMove) {
-          window.addEventListener("pointermove", onMove)
-          return () => window.removeEventListener("pointermove", onMove)
-        }
-      })
-    },
-    { scope: root }
-  )
-
-  return (
-    <section
-      className="relative flex min-h-dvh flex-col justify-start overflow-hidden pt-32 pb-20 md:justify-center md:pt-36 md:pb-28"
-      ref={root}
-    >
-      <Blob className="-top-32 left-1/4 size-[460px] bg-primary/20" />
-      <Blob
-        className="top-10 right-0 size-[380px] bg-amber-300/15"
-        shape="60% 40% 30% 70% / 60% 30% 70% 40%"
-      />
-      <Blob
-        className="bottom-0 left-0 size-[320px] bg-primary/10"
-        shape="40% 60% 55% 45% / 55% 50% 50% 45%"
-      />
-
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-10 px-6 lg:grid-cols-[1.05fr_0.95fr]">
-        {/* Copy */}
-        <div className="text-center lg:text-left" data-hero-copy="">
-          <Badge
-            className="mb-6 gap-1.5 rounded-full px-3 py-1"
-            data-hero-rise=""
-            variant="secondary"
-          >
-            <HugeiconsIcon className="size-3.5" icon={MagicWand01Icon} />
-            {t("landing.hero.badge", "Your personal learning companion")}
-          </Badge>
-
-          <h1
-            className="font-display text-[2.75rem] leading-[1.05] font-bold tracking-tight md:text-6xl"
-            data-hero-rise=""
-          >
-            {t("landing.hero.titleLine1", "Capture, organize &")}{" "}
-            <span className="relative inline-block font-script font-normal text-primary">
-              {t("landing.hero.titleHighlight", "remember")}
-              <svg
-                aria-hidden="true"
-                className="absolute -bottom-2 left-0 w-full text-primary/50"
-                data-hero-underline=""
-                fill="none"
-                preserveAspectRatio="none"
-                viewBox="0 0 200 12"
-              >
-                <path
-                  d="M2 8C40 3 80 3 120 6C150 8 180 7 198 4"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="3"
-                />
-              </svg>
-            </span>{" "}
-            {t("landing.hero.titleLine2", "everything you learn")}
-          </h1>
-
-          <p
-            className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground md:text-xl lg:mx-0"
-            data-hero-rise=""
-          >
-            {t(
-              "landing.hero.subtitle",
-              "A warm, playful home for your notes. Capture ideas in a flash, let AI connect the dots, and let spaced review make them stick — so nothing you learn slips away."
-            )}
-          </p>
-
-          <div
-            className="mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
-            data-hero-rise=""
-          >
-            <Link to="/register">
-              <Button className="h-12 cursor-pointer gap-2 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-transform hover:scale-[1.04] active:scale-[0.97]">
-                {t("landing.hero.cta", "Start learning — free")}
-                <HugeiconsIcon className="size-5" icon={ArrowRight02Icon} />
-              </Button>
-            </Link>
-            <a href="#features">
-              <Button
-                className="h-12 cursor-pointer gap-2 rounded-full px-7 text-base transition-transform hover:scale-[1.04] active:scale-[0.97]"
-                variant="outline"
-              >
-                {t("landing.hero.ctaSecondary", "Take the tour")}
-              </Button>
-            </a>
-          </div>
-
-          <div
-            className="mt-10 flex items-center justify-center gap-7 lg:justify-start"
-            data-hero-rise=""
-          >
-            <HeroStat
-              label={t("landing.hero.statPlatforms", "Platforms")}
-              value="3"
-            />
-            <Separator className="h-9" orientation="vertical" />
-            <HeroStat
-              label={t("landing.hero.statFreeLabel", "To start")}
-              value={t("landing.hero.statFreeValue", "Free")}
-            />
-            <Separator className="h-9" orientation="vertical" />
-            <HeroStat
-              label={t("landing.hero.statYoursLabel", "Yours")}
-              value="100%"
-            />
-          </div>
-        </div>
-
-        {/* Floating obsidian object cluster */}
-        <div className="relative mx-auto h-[360px] w-full max-w-md md:h-[460px]">
-          <Halo className="top-1/2 left-1/2 size-72 -translate-x-1/2 -translate-y-1/2" />
-          <Obj
-            alt={t(
-              "landing.hero.objectBook",
-              "A notebook full of what you've learned"
-            )}
-            className="absolute top-6 left-1/2 size-56 -translate-x-1/2 md:size-72"
-            depth={1.6}
-            float
-            src={OBJ.note}
-          />
-          <Obj
-            alt={t("landing.hero.objectSearch", "Search across everything")}
-            className="absolute top-0 right-2 size-24 md:size-28"
-            depth={2.4}
-            float
-            src={OBJ.lens}
-          />
-          <Obj
-            alt={t("landing.hero.objectBookmark", "Save what matters")}
-            className="absolute bottom-2 left-0 size-20 md:size-24"
-            depth={2.1}
-            float
-            src={OBJ.bookmark}
-          />
-          <Obj
-            className="absolute right-6 bottom-10 size-14 md:size-16"
-            depth={3}
-            float
-            src={OBJ.sparkle}
-          />
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function HeroStat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="text-center lg:text-left">
-      <p className="font-number text-3xl text-primary md:text-4xl">
-        <CountUp value={value} />
-      </p>
-      <p className="mt-0.5 text-xs text-muted-foreground">{label}</p>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Features
-// ---------------------------------------------------------------------------
-
-interface FeatureItem {
-  description: string
-  gradient: string
-  icon: IconSvgElement
-  title: string
-}
-
-function FeaturesSection() {
-  const { t } = useTranslation()
-  const root = useRef<HTMLElement>(null)
-
-  const features: FeatureItem[] = [
-    {
-      icon: PencilEdit02Icon,
-      title: t("landing.features.capture.title", "Quick Capture"),
-      description: t(
-        "landing.features.capture.desc",
-        "Catch ideas the moment they strike with a rich, distraction-free editor. Tag and organize without breaking your flow."
-      ),
-      gradient: "from-primary/25 to-amber-300/10"
-    },
-    {
-      icon: Calendar03Icon,
-      title: t("landing.features.review.title", "Spaced Repetition"),
-      description: t(
-        "landing.features.review.desc",
-        "Never forget what you learn. A friendly review schedule resurfaces your notes at exactly the right moment."
-      ),
-      gradient: "from-amber-300/20 to-primary/15"
-    },
-    {
-      icon: AiChat02Icon,
-      title: t("landing.features.ai.title", "AI Knowledge Assistant"),
-      description: t(
-        "landing.features.ai.desc",
-        "Chat with your notes. Ask questions, get summaries, and uncover connections across your whole knowledge base."
-      ),
-      gradient: "from-primary/20 to-orange-300/10"
-    },
-    {
-      icon: Search01Icon,
-      title: t("landing.features.search.title", "Powerful Search"),
-      description: t(
-        "landing.features.search.desc",
-        "Find anything in seconds with full-text and AI-powered semantic search across every entry you've ever made."
-      ),
-      gradient: "from-amber-400/15 to-primary/15"
-    },
-    {
-      icon: Tag01Icon,
-      title: t("landing.features.tags.title", "Smart Organization"),
-      description: t(
-        "landing.features.tags.desc",
-        "Tags, collections, and sources that grow into a personal taxonomy — structure that feels effortless."
-      ),
-      gradient: "from-primary/20 to-amber-300/15"
-    },
-    {
-      icon: GridViewIcon,
-      title: t("landing.features.graph.title", "Knowledge Graph"),
-      description: t(
-        "landing.features.graph.desc",
-        "Watch your notes link up. Explore hidden relationships and see the big picture of everything you know."
-      ),
-      gradient: "from-amber-300/15 to-primary/20"
-    }
-  ]
-
-  useGSAP(
     () => {
       const mm = gsap.matchMedia()
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set("[data-feature-card]", { y: 40, autoAlpha: 0 })
-        ScrollTrigger.batch("[data-feature-card]", {
-          start: "top 88%",
-          onEnter: (batch) =>
-            gsap.to(batch, {
-              y: 0,
-              autoAlpha: 1,
-              stagger: 0.12,
-              duration: 0.7,
-              ease: "power3.out",
-              overwrite: true
-            })
+        gsap
+          .timeline({ defaults: { ease: LANDING_EASE, duration: 0.7 } })
+          .from("[data-hero-rise]", { y: 32, autoAlpha: 0, stagger: 0.06 })
+          .from(
+            "[data-hero-preview]",
+            { y: 32, autoAlpha: 0, duration: 0.8 },
+            "-=0.4"
+          )
+      })
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.from("[data-hero-rise], [data-hero-preview]", {
+          autoAlpha: 0,
+          duration: 0.5,
+          ease: "power1.out"
         })
       })
     },
     { scope: root }
   )
 
-  return (
-    <section className="relative py-20 md:py-28" id="features" ref={root}>
-      <Obj
-        className="animate-floaty pointer-events-none absolute top-16 right-[6%] hidden size-20 lg:block"
-        src={OBJ.tag}
-      />
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeader
-          badge={t("landing.features.badge", "Core Features")}
-          description={t(
-            "landing.features.description",
-            "Everything you need to capture, organize, and actually retain what you learn — in one playful place."
-          )}
-          title={t("landing.features.title", "Built for Lifelong Learners")}
-        />
+  const proofPoints = [
+    t("landing.hero.proofFree", "Free to start, no card needed"),
+    t("landing.hero.proofPlatforms", "Web, iOS and Android"),
+    t("landing.hero.proofOpenSource", "Open source under MIT")
+  ]
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((feature) => (
-            <FeatureCard feature={feature} key={feature.title} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function FeatureCard({ feature }: { feature: FeatureItem }) {
   return (
-    <div
-      className="group relative h-full overflow-hidden rounded-3xl border border-border/60 bg-card/70 p-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-xl"
-      data-feature-card=""
-    >
-      <div
-        className={cn(
-          "absolute inset-0 bg-linear-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100",
-          feature.gradient
-        )}
-      />
-      <div className="relative">
-        <div
-          className={cn(
-            "mb-4 flex size-14 items-center justify-center rounded-2xl bg-linear-to-br transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110",
-            feature.gradient
-          )}
+    <section className={`${CONTAINER_CLASS} pt-40 pb-16`} ref={root}>
+      <div className="flex flex-col items-start gap-6">
+        <p
+          className="inline-flex items-center gap-2 rounded-full border border-foreground/10 py-1 pr-3 pl-1 text-sm text-muted-foreground"
+          data-hero-rise=""
         >
-          <HugeiconsIcon className="size-7 text-primary" icon={feature.icon} />
-        </div>
-        <h3 className="mb-2 font-display text-xl font-semibold">
-          {feature.title}
-        </h3>
-        <p className="text-sm leading-relaxed text-muted-foreground">
-          {feature.description}
+          <span className="rounded-full bg-(--clay)/15 px-2 py-0.5 text-xs font-semibold text-(--clay-ink)">
+            {t("landing.hero.badgeTag", "New")}
+          </span>
+          {t("landing.hero.badge", "Edit a note together in real time")}
         </p>
-      </div>
-    </div>
-  )
-}
 
-// ---------------------------------------------------------------------------
-// How It Works — sticky scrollytelling
-// ---------------------------------------------------------------------------
+        {/* pb-2 keeps descenders inside the clipped gradient. */}
+        <h1
+          className="max-w-[680px] bg-linear-to-r from-black to-[#666666] bg-clip-text pb-2 text-5xl font-semibold tracking-tight text-balance text-transparent md:text-6xl dark:from-white dark:to-[#9b9b9b]"
+          data-hero-rise=""
+        >
+          <span className="block">
+            {t("landing.hero.titleLine1", "Learn it once.")}
+          </span>
+          <span className="block">
+            {t("landing.hero.titleLine2", "Remember it for good.")}
+          </span>
+        </h1>
 
-interface StepItem {
-  number: string
-  title: string
-  description: string
-  icon: IconSvgElement
-  object: string
-}
-
-function HowItWorksSection() {
-  const { t } = useTranslation()
-  const root = useRef<HTMLElement>(null)
-
-  const steps: StepItem[] = [
-    {
-      number: "1",
-      title: t("landing.howItWorks.step1.title", "Capture"),
-      description: t(
-        "landing.howItWorks.step1.desc",
-        "Jot ideas, highlights, and learnings as they come. Rich editor, quick capture, paste from anywhere."
-      ),
-      icon: PencilEdit02Icon,
-      object: OBJ.note
-    },
-    {
-      number: "2",
-      title: t("landing.howItWorks.step2.title", "Organize"),
-      description: t(
-        "landing.howItWorks.step2.desc",
-        "Tag your entries, add sources, and let AI help categorize. Your notes become a living knowledge base."
-      ),
-      icon: InboxIcon,
-      object: OBJ.bookmark
-    },
-    {
-      number: "3",
-      title: t("landing.howItWorks.step3.title", "Remember"),
-      description: t(
-        "landing.howItWorks.step3.desc",
-        "Spaced review surfaces the right notes at the right time. Revisit, strengthen, and truly retain."
-      ),
-      icon: BookOpen01Icon,
-      object: OBJ.lens
-    }
-  ]
-
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-
-      mm.add(
-        "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          const layers = gsap.utils.toArray<HTMLElement>(
-            "[data-hiw-layer]",
-            root.current
-          )
-          const stepEls = gsap.utils.toArray<HTMLElement>(
-            "[data-hiw-step]",
-            root.current
-          )
-          const dots = gsap.utils.toArray<HTMLElement>(
-            "[data-hiw-dot]",
-            root.current
-          )
-
-          const setActive = (idx: number) => {
-            for (const [i, el] of layers.entries()) {
-              gsap.to(el, {
-                autoAlpha: i === idx ? 1 : 0,
-                scale: i === idx ? 1 : 0.86,
-                yPercent: i === idx ? 0 : 6,
-                duration: 0.6,
-                ease: "power3.out"
-              })
-            }
-            for (const [i, el] of stepEls.entries()) {
-              gsap.to(el, {
-                autoAlpha: i === idx ? 1 : 0.4,
-                duration: 0.4,
-                ease: "power2.out"
-              })
-            }
-            for (const [i, el] of dots.entries()) {
-              el.classList.toggle("bg-primary", i === idx)
-              el.classList.toggle("bg-muted-foreground/30", i !== idx)
-              gsap.to(el, { scale: i === idx ? 1.4 : 1, duration: 0.3 })
-            }
-          }
-
-          gsap.set(layers, { autoAlpha: 0, scale: 0.86 })
-          setActive(0)
-
-          for (let i = 0; i < steps.length; i++) {
-            ScrollTrigger.create({
-              trigger: `[data-hiw-step="${i}"]`,
-              start: "top center",
-              end: "bottom center",
-              onToggle: (self) => {
-                if (self.isActive) {
-                  setActive(i)
-                }
-              }
-            })
-          }
-
-          gsap.to("[data-hiw-halo]", {
-            yPercent: 16,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom bottom",
-              scrub: true
-            }
-          })
-        }
-      )
-
-      mm.add(
-        "(max-width: 1023px) and (prefers-reduced-motion: no-preference)",
-        () => {
-          gsap.set("[data-hiw-card]", { y: 40, autoAlpha: 0 })
-          ScrollTrigger.batch("[data-hiw-card]", {
-            start: "top 85%",
-            onEnter: (batch) =>
-              gsap.to(batch, {
-                y: 0,
-                autoAlpha: 1,
-                stagger: 0.15,
-                duration: 0.7,
-                ease: "power3.out",
-                overwrite: true
-              })
-          })
-        }
-      )
-    },
-    { scope: root }
-  )
-
-  return (
-    <section className="relative py-20 md:py-28" id="how-it-works" ref={root}>
-      <Blob className="top-1/3 left-1/2 size-[520px] -translate-x-1/2 bg-primary/8" />
-
-      <div className="relative mx-auto max-w-6xl px-6">
-        <SectionHeader
-          badge={t("landing.howItWorks.badge", "Simple Process")}
-          description={t(
-            "landing.howItWorks.description",
-            "Three playful steps to a knowledge system that finally works for you."
+        <p
+          className="max-w-[680px] text-lg text-pretty text-muted-foreground md:text-xl"
+          data-hero-rise=""
+        >
+          {t(
+            "landing.hero.subtitle",
+            "FolioNote is a learning notebook for students, engineers and language learners. Save notes and links on any device, ask AI about everything you have saved, and get a short daily review that brings ideas back before they fade."
           )}
-          title={t("landing.howItWorks.title", "How It Works")}
-        />
+        </p>
 
-        {/* Desktop: sticky media + scrolling steps */}
-        <div className="mt-8 hidden gap-16 lg:grid lg:grid-cols-2">
-          <div className="relative">
-            <div className="sticky top-0 flex h-dvh items-center justify-center">
-              <div className="relative size-[22rem]">
-                <Halo
-                  className="top-1/2 left-1/2 size-72 -translate-x-1/2 -translate-y-1/2"
-                  data-hiw-halo=""
-                />
-                {steps.map((step, i) => (
-                  <div
-                    className={cn(
-                      "absolute inset-0 flex items-center justify-center will-change-transform",
-                      i !== 0 && "opacity-0"
-                    )}
-                    data-hiw-layer=""
-                    key={step.number}
+        <div
+          className="flex flex-wrap items-center gap-x-6 gap-y-4 pt-2"
+          data-hero-rise=""
+        >
+          <Link className={PRIMARY_CTA_CLASS} to="/register">
+            {t("landing.hero.cta", "Create your free notebook")}
+            <HugeiconsIcon
+              className={`size-4 transition-transform duration-500 ${EASE_CLASS} group-hover:translate-x-1`}
+              icon={ArrowRight02Icon}
+            />
+          </Link>
+          <ul className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
+            {proofPoints.map((point, index) => (
+              <li className="flex items-center gap-4" key={point}>
+                {index > 0 && (
+                  <span
+                    aria-hidden="true"
+                    className="hidden text-foreground/25 sm:inline"
                   >
-                    <img
-                      alt={step.title}
-                      className={cn("size-80 select-none", OBJ_SHADOW)}
-                      draggable={false}
-                      src={step.object}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="relative">
-            {/* progress rail */}
-            <div className="pointer-events-none fixed top-1/2 right-8 z-10 hidden -translate-y-1/2 flex-col items-center gap-3 lg:flex xl:right-16">
-              {steps.map((step, i) => (
-                <span
-                  className="size-2.5 rounded-full bg-muted-foreground/30 transition-colors"
-                  data-hiw-dot={i}
-                  key={step.number}
-                />
-              ))}
-            </div>
-
-            {steps.map((step, i) => (
-              <div
-                className="flex min-h-dvh flex-col justify-center"
-                data-hiw-step={i}
-                key={step.number}
-              >
-                <StepBody step={step} />
-              </div>
+                    ·
+                  </span>
+                )}
+                {point}
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
+      </div>
 
-        {/* Mobile: stacked cards */}
-        <div className="mt-12 grid gap-8 lg:hidden">
-          {steps.map((step) => (
-            <div
-              className="rounded-3xl border border-border/60 bg-card/70 p-6 text-center shadow-sm backdrop-blur-sm"
-              data-hiw-card=""
-              key={step.number}
-            >
-              <div className="relative mx-auto mb-5 size-32">
-                <Halo className="inset-0" />
-                <img
-                  alt={step.title}
-                  className={cn("relative size-32 select-none", OBJ_SHADOW)}
-                  draggable={false}
-                  src={step.object}
-                />
-              </div>
-              <StepBody step={step} />
-            </div>
-          ))}
-        </div>
+      <div className="pt-16" data-hero-preview="">
+        <HeroNotePreview />
       </div>
     </section>
   )
 }
 
-function StepBody({ step }: { step: StepItem }) {
-  return (
-    <div>
-      <div className="mb-4 inline-flex items-center gap-3 lg:mb-5">
-        <span className="flex size-11 items-center justify-center rounded-2xl bg-primary font-number text-lg text-primary-foreground shadow-md">
-          {step.number}
-        </span>
-        <span className="flex size-11 items-center justify-center rounded-2xl bg-primary/12">
-          <HugeiconsIcon className="size-5 text-primary" icon={step.icon} />
-        </span>
-      </div>
-      <h3 className="mb-3 font-display text-3xl font-bold md:text-4xl">
-        {step.title}
-      </h3>
-      <p className="mx-auto max-w-md text-lg leading-relaxed text-muted-foreground lg:mx-0">
-        {step.description}
-      </p>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Product Showcase (Bento Grid)
-// ---------------------------------------------------------------------------
-
-function ShowcaseSection() {
-  const { t } = useTranslation()
-  const root = useRef<HTMLElement>(null)
-
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set("[data-bento]", { y: 44, autoAlpha: 0 })
-        ScrollTrigger.batch("[data-bento]", {
-          start: "top 88%",
-          onEnter: (batch) =>
-            gsap.to(batch, {
-              y: 0,
-              autoAlpha: 1,
-              stagger: 0.1,
-              duration: 0.7,
-              ease: "power3.out",
-              overwrite: true
-            })
-        })
-
-        gsap.from("[data-chat]", {
-          autoAlpha: 0,
-          y: 14,
-          stagger: 0.25,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: { trigger: "[data-chat]", start: "top 85%" }
-        })
-
-        const edges = gsap.utils.toArray<SVGLineElement>(
-          "[data-graph-edge]",
-          root.current
-        )
-        for (const line of edges) {
-          const len = line.getTotalLength()
-          gsap.set(line, { strokeDasharray: len, strokeDashoffset: len })
-        }
-        gsap.to(edges, {
-          strokeDashoffset: 0,
-          duration: 0.8,
-          stagger: 0.08,
-          ease: "power2.inOut",
-          scrollTrigger: { trigger: "[data-graph]", start: "top 80%" }
-        })
-        gsap.from("[data-graph-node]", {
-          scale: 0,
-          transformOrigin: "center",
-          stagger: 0.08,
-          duration: 0.5,
-          ease: "back.out(2)",
-          scrollTrigger: { trigger: "[data-graph]", start: "top 80%" }
-        })
-
-        gsap.from("[data-review-day]", {
-          autoAlpha: 0,
-          y: 12,
-          scale: 0.8,
-          stagger: 0.08,
-          duration: 0.5,
-          ease: "back.out(1.7)",
-          scrollTrigger: { trigger: "[data-review]", start: "top 85%" }
-        })
-
-        gsap.from("[data-editor-line]", {
-          scaleX: 0,
-          transformOrigin: "left",
-          stagger: 0.12,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: { trigger: "[data-editor]", start: "top 85%" }
-        })
-      })
-    },
-    { scope: root }
-  )
-
-  return (
-    <section className="relative py-20 md:py-28" id="showcase" ref={root}>
-      <div className="mx-auto max-w-6xl px-6">
-        <SectionHeader
-          badge={t("landing.showcase.badge", "Product Tour")}
-          description={t(
-            "landing.showcase.description",
-            "Delightful tools designed to make learning stick."
-          )}
-          title={t(
-            "landing.showcase.title",
-            "Everything You Need, Nothing You Don’t"
-          )}
-        />
-
-        <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <BentoCard
-            className="lg:col-span-2"
-            description={t(
-              "landing.showcase.ai.desc",
-              "Have a conversation with your knowledge base. Ask questions, get summaries, and discover insights you never knew were there."
-            )}
-            icon={AiChat02Icon}
-            object={OBJ.brain}
-            title={t("landing.showcase.ai.title", "AI-Powered Chat")}
-          >
-            <div className="mt-4 space-y-3">
-              <ChatBubble
-                isAi={false}
-                text={t(
-                  "landing.showcase.ai.userMsg",
-                  "What did I learn about React hooks last week?"
-                )}
-              />
-              <ChatBubble
-                isAi
-                text={t(
-                  "landing.showcase.ai.aiMsg",
-                  "From your 3 entries last week: useEffect cleanup, custom hook patterns, and the rules of hooks…"
-                )}
-              />
-            </div>
-          </BentoCard>
-
-          <BentoCard
-            description={t(
-              "landing.showcase.graph.desc",
-              "See how your notes connect. Explore topics and uncover hidden relationships."
-            )}
-            icon={GridViewIcon}
-            title={t("landing.showcase.graph.title", "Knowledge Graph")}
-          >
-            <div
-              className="mt-4 flex items-center justify-center"
-              data-graph=""
-            >
-              <GraphMock />
-            </div>
-          </BentoCard>
-
-          <BentoCard
-            description={t(
-              "landing.showcase.review.desc",
-              "Science-backed review scheduling that helps you remember what matters most."
-            )}
-            icon={Calendar03Icon}
-            object={OBJ.calendar}
-            title={t("landing.showcase.review.title", "Spaced Repetition")}
-          >
-            <div className="mt-4 flex gap-2" data-review="">
-              {REVIEW_DAYS.map((day, i) => (
-                <div
-                  className="flex-1 text-center"
-                  data-review-day=""
-                  key={day}
-                >
-                  <div
-                    className={cn(
-                      "mx-auto mb-1 flex size-8 items-center justify-center rounded-xl font-medium text-xs",
-                      i < 3 && "bg-primary/20 text-primary",
-                      i === 3 &&
-                        "bg-amber-400/25 text-amber-700 dark:text-amber-300",
-                      i > 3 && "bg-surface-secondary/60 text-muted-foreground"
-                    )}
-                  >
-                    {i < 3 ? (
-                      <HugeiconsIcon
-                        className="size-4"
-                        icon={CheckmarkCircle02Icon}
-                      />
-                    ) : (
-                      i + 1
-                    )}
-                  </div>
-                  <span className="text-xs text-muted-foreground">{day}</span>
-                </div>
-              ))}
-            </div>
-          </BentoCard>
-
-          <BentoCard
-            className="lg:col-span-2"
-            description={t(
-              "landing.showcase.editor.desc",
-              "A beautiful, distraction-free editor with markdown, code blocks, and rich media."
-            )}
-            icon={PencilEdit02Icon}
-            title={t("landing.showcase.editor.title", "Rich Text Editor")}
-          >
-            <div
-              className="mt-4 rounded-2xl border border-border/40 bg-background/60 p-4"
-              data-editor=""
-            >
-              <div className="mb-3 flex gap-2 border-b border-border/40 pb-3">
-                {EDITOR_TOOLS.map((btn) => (
-                  <div
-                    className="flex size-7 items-center justify-center rounded-lg bg-surface-secondary/50 font-mono text-xs text-muted-foreground"
-                    key={btn}
-                  >
-                    {btn}
-                  </div>
-                ))}
-              </div>
-              <div className="space-y-2">
-                {EDITOR_LINES.map((line) => (
-                  <div
-                    className={cn(
-                      "h-2.5 rounded-full bg-primary/15",
-                      line.width
-                    )}
-                    data-editor-line=""
-                    key={line.id}
-                  />
-                ))}
-              </div>
-            </div>
-          </BentoCard>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-const REVIEW_DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri"] as const
-const EDITOR_TOOLS = ["B", "I", "U", "H1", "H2", "</>"] as const
-const EDITOR_LINES = [
-  { id: "a", width: "w-4/5" },
-  { id: "b", width: "w-full" },
-  { id: "c", width: "w-3/5" }
+// Sample note and answer drawn as text in the hero. It is a picture of the
+// product, so the copy stays fixed instead of going through i18n.
+const PREVIEW_TAGS = ["react", "forms", "react 19"] as const
+const PREVIEW_CITATIONS = [
+  "React useActionState",
+  "Form actions in React 19",
+  "Controlled inputs, a refresher"
 ] as const
 
-function BentoCard({
-  icon,
-  title,
-  description,
-  className,
-  object,
-  children
-}: {
-  icon: IconSvgElement
-  title: string
-  description: string
-  className?: string
-  object?: string
-  children?: ReactNode
-}) {
+function HeroNotePreview() {
+  const { t } = useTranslation()
+
   return (
-    <div
-      className={cn(
-        "group relative h-full overflow-hidden rounded-3xl border border-border/60 bg-card/70 p-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg",
-        className
+    <figure
+      aria-label={t(
+        "landing.hero.previewLabel",
+        "FolioNote showing a note about React useActionState next to the AI assistant answering a question with links to three entries"
       )}
-      data-bento=""
+      className="m-0 rounded-3xl border border-foreground/10 bg-[#faf9f5] p-2 dark:bg-[#1f1f1f]"
     >
-      {object ? (
-        <img
-          alt=""
+      <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+        <article
           aria-hidden="true"
-          className={cn(
-            "-top-6 -right-6 pointer-events-none absolute size-28 rotate-6 opacity-90 transition-transform duration-500 group-hover:-rotate-3 group-hover:scale-110",
-            OBJ_SHADOW
-          )}
-          draggable={false}
-          src={object}
-        />
-      ) : null}
-      <div className="relative mb-3 flex items-center gap-3">
-        <div className="flex size-11 items-center justify-center rounded-2xl bg-linear-to-br from-primary/20 to-amber-300/15">
-          <HugeiconsIcon className="size-5 text-primary" icon={icon} />
+          className="flex flex-col gap-4 rounded-2xl bg-white p-6 md:p-8 dark:bg-[#272727]"
+        >
+          <p className="font-jetbrains text-xs text-muted-foreground">
+            Saved Oct 21 · react.dev
+          </p>
+          <p className="text-3xl font-semibold tracking-tight">
+            React useActionState
+          </p>
+          <p className="text-base text-pretty text-foreground/80">
+            A hook for state that changes as the result of a form action. You
+            pass it an action and an initial state, and it gives back the
+            current state, a wrapped action, and a pending flag.
+          </p>
+          <p className="text-base text-pretty text-foreground/80">
+            <mark className="rounded-sm bg-(--clay)/15 px-1 text-foreground">
+              Reach for it when the form itself owns the result,
+            </mark>{" "}
+            such as a sign up error or a saved message. Keep plain useState for
+            values the user is still typing.
+          </p>
+          <ul className="flex flex-wrap gap-2 pt-2">
+            {PREVIEW_TAGS.map((tag) => (
+              <li
+                className="rounded-full border border-foreground/10 px-2 py-0.5 text-xs text-muted-foreground"
+                key={tag}
+              >
+                {tag}
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        <div
+          aria-hidden="true"
+          className="flex flex-col gap-4 rounded-2xl bg-white p-6 md:p-8 dark:bg-[#272727]"
+        >
+          <p className="font-jetbrains text-xs text-muted-foreground">
+            Ask your notes
+          </p>
+          <p className="max-w-[85%] self-end rounded-xl bg-[#f5f4ed] px-3 py-2 text-sm dark:bg-[#313131]">
+            When should I use useActionState instead of useState?
+          </p>
+          <p className="text-base text-pretty text-foreground/80">
+            Use it when a form action produces the state, like a server reply or
+            a validation error <Cite n={1} />. It also tracks the pending state
+            for you, so you can drop the manual loading flag <Cite n={2} />. For
+            live input values, your notes still recommend useState{" "}
+            <Cite n={3} />.
+          </p>
+          <ol className="flex flex-col gap-2 pt-4 text-sm">
+            {PREVIEW_CITATIONS.map((title, index) => (
+              <li
+                className="flex gap-3 rounded-lg bg-[#faf9f5] px-3 py-2 dark:bg-[#1f1f1f]"
+                key={title}
+              >
+                <span className="font-jetbrains text-(--clay-ink)">
+                  {index + 1}
+                </span>
+                {title}
+              </li>
+            ))}
+          </ol>
         </div>
-        <h3 className="font-display text-lg font-semibold">{title}</h3>
       </div>
-      <p className="relative text-sm leading-relaxed text-muted-foreground">
-        {description}
-      </p>
-      {children}
-    </div>
+    </figure>
   )
 }
 
-function ChatBubble({ text, isAi }: { text: string; isAi: boolean }) {
+function Cite({ n }: { n: number }) {
+  return <sup className="font-jetbrains font-medium text-(--clay-ink)">{n}</sup>
+}
+
+// Rises each [data-reveal] child once as it enters the viewport. With reduced
+// motion it only fades.
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null)
+
+  useGSAP(
+    (_context, contextSafe) => {
+      const el = ref.current
+      if (!(el && contextSafe)) {
+        return
+      }
+      const targets = gsap.utils.toArray<HTMLElement>("[data-reveal]", el)
+      const mm = gsap.matchMedia()
+      mm.add(
+        {
+          motion: "(prefers-reduced-motion: no-preference)",
+          reduce: "(prefers-reduced-motion: reduce)"
+        },
+        (context) => {
+          const rise = Boolean(context.conditions?.motion)
+          gsap.set(targets, { autoAlpha: 0, y: rise ? 32 : 0 })
+          const reveal = contextSafe((target: Element) => {
+            gsap.to(target, {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.7,
+              ease: rise ? LANDING_EASE : "power1.out"
+            })
+          })
+          const observer = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (entry.isIntersecting) {
+                  observer.unobserve(entry.target)
+                  reveal(entry.target)
+                }
+              }
+            },
+            { rootMargin: "0px 0px -12% 0px" }
+          )
+          for (const target of targets) {
+            observer.observe(target)
+          }
+          return () => observer.disconnect()
+        }
+      )
+    },
+    { scope: ref }
+  )
+
+  return ref
+}
+
+// ---------------------------------------------------------------------------
+// Problem
+// ---------------------------------------------------------------------------
+
+function ProblemSection() {
+  const { t } = useTranslation()
+  const root = useReveal<HTMLElement>()
+
+  const pains = [
+    {
+      marker: "a",
+      title: t("landing.problem.links.title", "Links pile up unread"),
+      desc: t(
+        "landing.problem.links.desc",
+        "Bookmarks and read later queues grow faster than you can open them."
+      )
+    },
+    {
+      marker: "b",
+      title: t("landing.problem.scatter.title", "Notes scatter across apps"),
+      desc: t(
+        "landing.problem.scatter.desc",
+        "Chat threads, docs and phone photos each hold a piece, and none of them talk to each other."
+      )
+    },
+    {
+      marker: "c",
+      title: t(
+        "landing.problem.fade.title",
+        "Memory fades without a second look"
+      ),
+      desc: t(
+        "landing.problem.fade.desc",
+        "An idea you never revisit is mostly gone within days. A few short reviews keep it."
+      )
+    }
+  ]
+
   return (
-    <div
-      className={cn("flex", isAi ? "justify-start" : "justify-end")}
-      data-chat=""
-    >
-      <div
-        className={cn(
-          "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
-          isAi
-            ? "rounded-tl-sm bg-surface-secondary/70 text-foreground"
-            : "rounded-tr-sm bg-primary/15 text-foreground"
-        )}
-      >
-        {text}
+    <section className={`${CONTAINER_CLASS} py-24`} ref={root}>
+      <div className="flex flex-wrap items-center gap-16">
+        <div
+          className="flex min-w-0 flex-[1_1_420px] flex-col gap-6"
+          data-reveal=""
+        >
+          <p className={EYEBROW_CLASS}>
+            01 · {t("landing.problem.eyebrow", "Why notes do not stick")}
+          </p>
+          <h2 className={SECTION_TITLE_CLASS}>
+            {/* Block lines balance on their own, so a phone wrap never
+                strands one word. */}
+            <span className="block">
+              {t("landing.problem.titleLine1", "Saving is easy.")}
+            </span>
+            <span className="block text-(--clay)">
+              {t("landing.problem.titleLine2", "Remembering is harder.")}
+            </span>
+          </h2>
+          <p className="max-w-[560px] text-lg text-pretty text-muted-foreground">
+            {t(
+              "landing.problem.lede",
+              "Most learning tools stop at the save button. FolioNote keeps going after it, so the things you collect turn into things you know."
+            )}
+          </p>
+          <ul className="flex flex-col gap-6 pt-4">
+            {pains.map((pain) => (
+              <li className="flex gap-4" key={pain.marker}>
+                <span className="font-jetbrains text-sm leading-6 text-(--clay-ink)">
+                  {pain.marker}
+                </span>
+                <div>
+                  <h3 className="text-lg font-semibold">{pain.title}</h3>
+                  <p className="text-base text-pretty text-muted-foreground">
+                    {pain.desc}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <figure
+          className="m-0 flex min-w-0 flex-[1_1_420px] flex-col gap-4 rounded-3xl border border-foreground/10 p-6 md:p-8"
+          data-reveal=""
+        >
+          <div className="flex flex-wrap items-baseline justify-between gap-4">
+            <p className="text-base font-semibold">
+              {t(
+                "landing.problem.chartTitle",
+                "How much you keep over a month"
+              )}
+            </p>
+            <p className="font-jetbrains text-xs text-muted-foreground">
+              {t("landing.problem.chartNote", "Illustration")}
+            </p>
+          </div>
+          <ForgettingCurveChart />
+          <figcaption className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <span className="w-4 border-t-2 border-dashed border-muted-foreground" />
+              {t("landing.problem.legendWithout", "Without review")}
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="w-4 border-t-2 border-(--clay)" />
+              {t(
+                "landing.problem.legendWith",
+                "With a FolioNote review on days 1, 3, 7 and 16"
+              )}
+            </span>
+          </figcaption>
+        </figure>
       </div>
-    </div>
+    </section>
   )
 }
 
-function GraphMock() {
+// Illustrative curves, not measured data: recall decays on its own, and each
+// review lifts it back up and slows the next decay.
+const CURVE_AXIS_DAYS = [
+  { label: "1", x: 98 },
+  { label: "3", x: 152 },
+  { label: "7", x: 232 },
+  { label: "16", x: 382 },
+  { label: "30", x: 462 }
+] as const
+const CURVE_REVIEW_POINTS = [
+  { x: 98, y: 28 },
+  { x: 152, y: 30 },
+  { x: 232, y: 34 },
+  { x: 382, y: 38 }
+] as const
+
+function ForgettingCurveChart() {
+  const { t } = useTranslation()
+
   return (
     <svg
-      aria-label="Knowledge graph visualization"
-      className="h-32 w-full text-primary"
-      preserveAspectRatio="xMidYMid meet"
+      aria-label={t(
+        "landing.problem.chartLabel",
+        "Two curves. Without review, recall drops quickly and stays low. With reviews on days 1, 3, 7 and 16, recall is lifted back up each time and ends high."
+      )}
+      className="h-auto w-full"
       role="img"
-      viewBox="0 0 100 100"
+      viewBox="0 0 480 240"
     >
-      {GRAPH_EDGES.map(([from, to]) => {
-        const a = GRAPH_NODES.at(from)
-        const b = GRAPH_NODES.at(to)
-        if (!(a && b)) {
-          return null
-        }
-        return (
-          <line
-            data-graph-edge=""
-            key={`${from}-${to}`}
-            stroke="currentColor"
-            strokeOpacity="0.3"
-            strokeWidth="0.6"
-            x1={a.x}
-            x2={b.x}
-            y1={a.y}
-            y2={b.y}
-          />
-        )
-      })}
-      {GRAPH_NODES.map((node) => (
-        <g data-graph-node="" key={node.label}>
-          <circle
-            cx={node.x}
-            cy={node.y}
-            fill="currentColor"
-            fillOpacity="0.18"
-            r={node.size}
-          />
-          <circle
-            cx={node.x}
-            cy={node.y}
-            fill="currentColor"
-            fillOpacity="0.75"
-            r={node.size * 0.4}
-          />
-          <text
-            className="fill-muted-foreground"
-            dominantBaseline="hanging"
-            fontSize="4"
-            textAnchor="middle"
-            x={node.x}
-            y={node.y + node.size + 2}
-          >
-            {node.label}
+      <g className="stroke-foreground/10" strokeWidth={1}>
+        <line x1={40} x2={40} y1={20} y2={200} />
+        <line x1={40} x2={470} y1={200} y2={200} />
+        <line strokeDasharray="2 4" x1={40} x2={470} y1={110} y2={110} />
+      </g>
+      <g className="fill-muted-foreground font-jetbrains" fontSize={12}>
+        <text x={0} y={24}>
+          100%
+        </text>
+        <text x={8} y={114}>
+          50%
+        </text>
+        <text x={40} y={222}>
+          {t("landing.problem.chartDay", "Day 0")}
+        </text>
+        {CURVE_AXIS_DAYS.map((day) => (
+          <text key={day.label} textAnchor="middle" x={day.x} y={222}>
+            {day.label}
           </text>
-        </g>
-      ))}
+        ))}
+      </g>
+      <path
+        className="stroke-muted-foreground"
+        d="M40 20 C70 120 120 160 200 172 S380 186 470 190"
+        fill="none"
+        strokeDasharray="6 6"
+        strokeWidth={2}
+      />
+      <path
+        className="stroke-(--clay)"
+        d="M40 20 C60 70 80 88 98 96 L98 28 C120 70 136 82 152 86 L152 30 C185 62 210 72 232 76 L232 34 C300 56 345 64 382 66 L382 38 C410 48 440 54 470 56"
+        fill="none"
+        strokeLinejoin="round"
+        strokeWidth={2.5}
+      />
+      <g className="fill-(--clay)">
+        {CURVE_REVIEW_POINTS.map((point) => (
+          <circle cx={point.x} cy={point.y} key={point.x} r={4} />
+        ))}
+      </g>
     </svg>
   )
 }
 
-const GRAPH_NODES = [
-  { x: 50, y: 30, size: 10, label: "React" },
-  { x: 25, y: 60, size: 8, label: "Hooks" },
-  { x: 75, y: 55, size: 9, label: "State" },
-  { x: 40, y: 85, size: 7, label: "Effects" },
-  { x: 70, y: 80, size: 6, label: "Memo" }
-] as const
-const GRAPH_EDGES: [number, number][] = [
-  [0, 1],
-  [0, 2],
-  [1, 3],
-  [2, 4],
-  [1, 2]
-]
-
 // ---------------------------------------------------------------------------
-// Stats
+// Benefits
 // ---------------------------------------------------------------------------
 
-interface StatItem {
-  value: string
-  label: string
-  icon: IconSvgElement
-}
-
-function StatsSection() {
+function BenefitsSection() {
   const { t } = useTranslation()
-  const root = useRef<HTMLElement>(null)
+  const root = useReveal<HTMLElement>()
 
-  const stats: StatItem[] = [
+  const benefits = [
     {
-      value: "6+",
-      label: t("landing.stats.features", "Core Features"),
-      icon: MagicWand01Icon
+      number: "01",
+      title: t(
+        "landing.benefits.capture.title",
+        "Capture in seconds, from anywhere"
+      ),
+      desc: t(
+        "landing.benefits.capture.desc",
+        "A calm editor with markdown, code blocks and images on the web, plus quick notes from your phone. Every entry keeps its source, so you always know where an idea came from."
+      )
     },
     {
-      value: "3",
-      label: t("landing.stats.platforms", "Platforms"),
-      icon: SmartPhone01Icon
+      number: "02",
+      title: t(
+        "landing.benefits.ask.title",
+        "Ask your notes, get answers with sources"
+      ),
+      desc: t(
+        "landing.benefits.ask.desc",
+        "Chat with everything you have saved. Each answer links back to the entries it used. Connect your own model provider key if you prefer."
+      )
     },
     {
-      value: t("landing.stats.freeValue", "Free"),
-      label: t("landing.stats.freeLabel", "To Get Started"),
-      icon: CheckmarkCircle02Icon
+      number: "03",
+      title: t("landing.benefits.review.title", "Review a few minutes a day"),
+      desc: t(
+        "landing.benefits.review.desc",
+        "Spaced repetition brings each note back right before you would forget it. Rate your recall and the next review moves to match."
+      )
     },
     {
-      value: t("landing.stats.openSourceValue", "Open"),
-      label: t("landing.stats.openSource", "Source Project"),
-      icon: ComputerIcon
+      number: "04",
+      title: t("landing.benefits.graph.title", "See how your ideas connect"),
+      desc: t(
+        "landing.benefits.graph.desc",
+        "Links and shared tags draw a map of what you know, so a new note can find its neighbors."
+      )
+    },
+    {
+      number: "05",
+      title: t(
+        "landing.benefits.japanese.title",
+        "Read Japanese with grammar in color"
+      ),
+      desc: t(
+        "landing.benefits.japanese.desc",
+        "Paste an article and every word gets furigana and a part of speech color. Then practice with JLPT style questions."
+      )
     }
   ]
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.set("[data-stat]", { y: 36, autoAlpha: 0 })
-        ScrollTrigger.batch("[data-stat]", {
-          start: "top 88%",
-          onEnter: (batch) =>
-            gsap.to(batch, {
-              y: 0,
-              autoAlpha: 1,
-              stagger: 0.1,
-              duration: 0.6,
-              ease: "power3.out",
-              overwrite: true
-            })
-        })
-      })
-    },
-    { scope: root }
-  )
-
   return (
-    <section className="relative py-20 md:py-28" ref={root}>
-      <Blob className="top-1/2 left-1/2 size-[460px] -translate-x-1/2 -translate-y-1/2 bg-amber-300/8" />
-      <Obj
-        className="animate-floaty pointer-events-none absolute top-6 left-[8%] hidden size-16 lg:block"
-        src={OBJ.sparkle}
-      />
-
-      <div className="relative mx-auto max-w-6xl px-6">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <StatCard key={stat.label} stat={stat} />
-          ))}
-        </div>
+    <section
+      className={`${CONTAINER_CLASS} scroll-mt-24 py-24`}
+      id="features"
+      ref={root}
+    >
+      <div className="flex flex-col gap-6 pb-16" data-reveal="">
+        <p className={EYEBROW_CLASS}>
+          02 · {t("landing.benefits.eyebrow", "What you get")}
+        </p>
+        <h2 className={`${SECTION_TITLE_CLASS} max-w-[760px]`}>
+          <span className="block">
+            {t("landing.benefits.titleLine1", "One notebook that keeps up")}
+          </span>
+          <span className="block">
+            {t("landing.benefits.titleLine2", "with how you learn")}
+          </span>
+        </h2>
       </div>
+
+      <ul className="flex flex-col border-y border-foreground/10">
+        {benefits.map((benefit) => (
+          <li
+            className="flex flex-wrap gap-x-10 gap-y-4 border-foreground/10 py-8 not-first:border-t"
+            data-reveal=""
+            key={benefit.number}
+          >
+            <span className="flex-[0_0_64px] font-jetbrains text-3xl text-(--clay)">
+              {benefit.number}
+            </span>
+            <h3 className="min-w-0 flex-[1_1_280px] text-2xl font-semibold text-balance">
+              {benefit.title}
+            </h3>
+            <p className="min-w-0 flex-[1_1_400px] text-lg text-pretty text-muted-foreground">
+              {benefit.desc}
+            </p>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
 
-function StatCard({ stat }: { stat: StatItem }) {
+// ---------------------------------------------------------------------------
+// Tagline
+// ---------------------------------------------------------------------------
+
+// Words light up as the tagline crosses this band of the viewport, measured
+// as fractions of its height from the top.
+const TAGLINE_START = 0.85
+const TAGLINE_END = 0.45
+
+function TaglineSection() {
+  const { t, i18n } = useTranslation()
+  const textRef = useRef<HTMLParagraphElement>(null)
+
+  const lines = [
+    t("landing.tagline.line1", "Every idea you save"),
+    t("landing.tagline.line2", "should still be with you"),
+    t("landing.tagline.line3", "a year from now.")
+  ]
+  // Word segmentation instead of splitting on spaces, so languages written
+  // without spaces still light word by word.
+  const segmenter = new Intl.Segmenter(i18n.language, { granularity: "word" })
+
+  useEffect(() => {
+    const text = textRef.current
+    if (!text) {
+      return
+    }
+    const words = [...text.querySelectorAll<HTMLElement>("[data-word]")]
+    let frame = 0
+
+    const update = () => {
+      frame = 0
+      const rect = text.getBoundingClientRect()
+      const start = window.innerHeight * TAGLINE_START
+      const end = window.innerHeight * TAGLINE_END
+      const progress = (start - rect.top) / (start - end + rect.height)
+      const lit = Math.round(gsap.utils.clamp(0, 1, progress) * words.length)
+      for (const [index, word] of words.entries()) {
+        word.toggleAttribute("data-lit", index < lit)
+      }
+    }
+    // Scroll fires every frame; batch the reads into one rAF.
+    const schedule = () => {
+      if (!frame) {
+        frame = requestAnimationFrame(update)
+      }
+    }
+
+    update()
+    window.addEventListener("scroll", schedule, { passive: true })
+    window.addEventListener("resize", schedule)
+    return () => {
+      window.removeEventListener("scroll", schedule)
+      window.removeEventListener("resize", schedule)
+      cancelAnimationFrame(frame)
+    }
+  }, [])
+
   return (
-    <div
-      className="rounded-3xl border border-border/60 bg-card/70 p-6 text-center shadow-sm backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1"
-      data-stat=""
-    >
-      <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-primary/15">
-        <HugeiconsIcon className="size-6 text-primary" icon={stat.icon} />
-      </div>
-      <p className="font-number text-4xl text-primary">
-        <CountUp value={stat.value} />
+    <section className={`${CONTAINER_CLASS} py-24`}>
+      <p
+        className="max-w-[900px] font-display text-4xl font-normal tracking-tight text-balance md:text-6xl"
+        ref={textRef}
+      >
+        {lines.map((line) => (
+          <span className="block" key={line}>
+            {[...segmenter.segment(line)].map((segment) =>
+              // Punctuation lights with the words; only spaces stay plain.
+              segment.segment.trim() ? (
+                <span
+                  className={`text-foreground/30 transition-colors duration-500 ${EASE_CLASS} data-lit:text-foreground`}
+                  data-word=""
+                  key={segment.index}
+                >
+                  {segment.segment}
+                </span>
+              ) : (
+                <Fragment key={segment.index}>{segment.segment}</Fragment>
+              )
+            )}
+          </span>
+        ))}
       </p>
-      <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
-    </div>
+    </section>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// How it works
+// ---------------------------------------------------------------------------
+
+function HowItWorksSection() {
+  const { t } = useTranslation()
+  const root = useReveal<HTMLElement>()
+
+  const steps = [
+    {
+      number: "1",
+      title: t("landing.howItWorks.step1.title", "Capture"),
+      desc: t(
+        "landing.howItWorks.step1.desc",
+        "Write ideas, highlights and lessons as they come. Use the full editor on the web or a quick note from your phone, and paste from anywhere."
+      )
+    },
+    {
+      number: "2",
+      title: t("landing.howItWorks.step2.title", "Organize"),
+      desc: t(
+        "landing.howItWorks.step2.desc",
+        "Tag entries, keep their sources, and let AI suggest where each one belongs. Related notes find each other through links and shared tags."
+      )
+    },
+    {
+      number: "3",
+      title: t("landing.howItWorks.step3.title", "Remember"),
+      desc: t(
+        "landing.howItWorks.step3.desc",
+        "A short daily review brings back the notes you are about to forget. Rate your recall and the next review moves to match."
+      )
+    }
+  ]
+
+  return (
+    <section
+      className={`${CONTAINER_CLASS} scroll-mt-24 py-24`}
+      id="how-it-works"
+      ref={root}
+    >
+      <div className="flex flex-col gap-6 pb-16" data-reveal="">
+        <p className={EYEBROW_CLASS}>
+          03 · {t("landing.howItWorks.eyebrow", "How it works")}
+        </p>
+        <h2 className={`${SECTION_TITLE_CLASS} max-w-[760px]`}>
+          <span className="block">
+            {t("landing.howItWorks.titleLine1", "Three steps from")}
+          </span>
+          <span className="block">
+            {t("landing.howItWorks.titleLine2", "saved to known")}
+          </span>
+        </h2>
+      </div>
+
+      <ol className="grid grid-cols-1 gap-x-10 gap-y-12 md:grid-cols-3">
+        {steps.map((step) => (
+          <li className="flex flex-col gap-4" data-reveal="" key={step.number}>
+            <span className="font-jetbrains text-6xl font-semibold text-(--clay)">
+              {step.number}
+            </span>
+            <h3 className="text-2xl font-semibold">{step.title}</h3>
+            <p className="text-base text-pretty text-muted-foreground">
+              {step.desc}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// FAQ
+// ---------------------------------------------------------------------------
+
+const REPOSITORY_URL = "https://github.com/AmbitionsXXXV/FolioNote"
+
+function FaqSection() {
+  const { t } = useTranslation()
+  const root = useReveal<HTMLElement>()
+
+  const questions = [
+    {
+      id: "free",
+      q: t("landing.faq.free.q", "Is FolioNote free?"),
+      a: t(
+        "landing.faq.free.a",
+        "Yes. Every feature is free and no card is needed. There is no paid plan today."
+      )
+    },
+    {
+      id: "devices",
+      q: t("landing.faq.devices.q", "Which devices does it run on?"),
+      a: t(
+        "landing.faq.devices.a",
+        "The web, iOS and Android. Your notes are the same on every device you sign in on."
+      )
+    },
+    {
+      id: "model",
+      q: t("landing.faq.model.q", "Can I use my own AI model?"),
+      a: t(
+        "landing.faq.model.a",
+        "Yes. Add your own model provider key in settings. Every answer still links back to the entries it used."
+      )
+    },
+    {
+      id: "review",
+      q: t("landing.faq.review.q", "How does the daily review pick notes?"),
+      a: t(
+        "landing.faq.review.a",
+        "It uses spaced repetition. Each note comes back right before you are likely to forget it, and your recall rating sets the next date."
+      )
+    },
+    {
+      id: "collab",
+      q: t("landing.faq.collab.q", "Can I edit a note with someone else?"),
+      a: t(
+        "landing.faq.collab.a",
+        "Yes. Invite a collaborator to an entry and you both edit it in real time."
+      )
+    },
+    {
+      id: "japanese",
+      q: t("landing.faq.japanese.q", "Does it help with learning Japanese?"),
+      a: t(
+        "landing.faq.japanese.a",
+        "Paste an article to get furigana and part of speech colors on every word, then practice with JLPT style questions."
+      )
+    },
+    {
+      id: "openSource",
+      q: t("landing.faq.openSource.q", "Is the code open source?"),
+      a: t(
+        "landing.faq.openSource.a",
+        "Yes, under the MIT license. Read the code, file an issue or send a pull request on GitHub."
+      ),
+      link: REPOSITORY_URL
+    }
+  ]
+
+  return (
+    <section
+      className={`${CONTAINER_CLASS} scroll-mt-24 py-24`}
+      id="faq"
+      ref={root}
+    >
+      <div className="flex flex-wrap gap-x-16 gap-y-12">
+        <div
+          className="flex min-w-0 flex-[1_1_320px] flex-col gap-6"
+          data-reveal=""
+        >
+          <p className={EYEBROW_CLASS}>
+            04 · {t("landing.faq.eyebrow", "Questions")}
+          </p>
+          <h2 className={SECTION_TITLE_CLASS}>
+            <span className="block">
+              {t("landing.faq.titleLine1", "Before you")}
+            </span>
+            <span className="block">
+              {t("landing.faq.titleLine2", "start")}
+            </span>
+          </h2>
+        </div>
+
+        <div
+          className="flex min-w-0 flex-[2_1_560px] flex-col border-b border-foreground/10"
+          data-reveal=""
+        >
+          {questions.map((item) => (
+            <details
+              className="group border-t border-foreground/10"
+              key={item.id}
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 rounded-sm py-6 text-lg font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--clay-ink) [&::-webkit-details-marker]:hidden">
+                {item.q}
+                <HugeiconsIcon
+                  className={`size-5 flex-none text-(--clay-ink) transition-transform duration-500 ${EASE_CLASS} group-open:rotate-45`}
+                  icon={Add01Icon}
+                />
+              </summary>
+              <div className="flex flex-col gap-2 pr-12 pb-6 text-base text-pretty text-muted-foreground">
+                <p>{item.a}</p>
+                {item.link && (
+                  <a
+                    className="w-fit rounded-sm font-medium text-(--clay-ink) underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--clay-ink)"
+                    href={item.link}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    github.com/AmbitionsXXXV/FolioNote
+                  </a>
+                )}
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
 
@@ -1454,106 +944,47 @@ function StatCard({ stat }: { stat: StatItem }) {
 // Final CTA
 // ---------------------------------------------------------------------------
 
-function FinalCTASection() {
+function FinalCtaSection() {
   const { t } = useTranslation()
-  const root = useRef<HTMLElement>(null)
-  const magneticRef = useMagnetic<HTMLSpanElement>(0.5)
+  const root = useReveal<HTMLElement>()
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.from("[data-cta-rise]", {
-          y: 40,
-          autoAlpha: 0,
-          stagger: 0.12,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: { trigger: root.current, start: "top 75%" }
-        })
-        gsap.to("[data-cta-float]", {
-          y: -18,
-          duration: 3.4,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut"
-        })
-        gsap.to("[data-cta-glow]", {
-          autoAlpha: 0.55,
-          scale: 1.12,
-          duration: 2.6,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut"
-        })
-      })
-    },
-    { scope: root }
-  )
-
+  // The panel is clay in both themes, so its text and button stay dark slate.
   return (
-    <section className="relative py-20 md:py-28" ref={root}>
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="relative overflow-hidden rounded-[2.5rem] border border-border/60 bg-card/70 px-6 py-14 text-center shadow-lg backdrop-blur-sm md:px-16 md:py-20">
-          <Blob className="-top-24 left-1/3 size-[420px] bg-primary/18" />
-          <Blob
-            className="-right-16 -bottom-24 size-[320px] bg-amber-300/15"
-            shape="60% 40% 30% 70% / 60% 30% 70% 40%"
+    <section className={`${CONTAINER_CLASS} pt-16 pb-24`} ref={root}>
+      <div
+        className="flex flex-col items-center gap-6 rounded-3xl bg-(--clay) px-6 py-20 text-center text-[#141413] md:px-10"
+        data-reveal=""
+      >
+        <h2 className={`${SECTION_TITLE_CLASS} max-w-[680px]`}>
+          <span className="block">
+            {t("landing.cta.titleLine1", "Keep what you learn.")}
+          </span>
+          <span className="block">
+            {t("landing.cta.titleLine2", "Start with your next note.")}
+          </span>
+        </h2>
+        <p className="max-w-[560px] text-lg text-pretty">
+          {t(
+            "landing.cta.description",
+            "Capture it, ask about it, and review it for a few minutes a day."
+          )}
+        </p>
+        <Link
+          className={`group inline-flex items-center gap-2 rounded-lg bg-[#141413] px-4 py-3 text-base font-semibold text-white transition-transform duration-500 ${EASE_CLASS} hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#141413] active:scale-[0.98]`}
+          to="/register"
+        >
+          {t("landing.hero.cta", "Create your free notebook")}
+          <HugeiconsIcon
+            className={`size-4 transition-transform duration-500 ${EASE_CLASS} group-hover:translate-x-1`}
+            icon={ArrowRight02Icon}
           />
-
-          <div className="relative mx-auto mb-6 size-28 md:size-32">
-            <Halo
-              className="top-1/2 left-1/2 size-32 -translate-x-1/2 -translate-y-1/2 opacity-70"
-              data-cta-glow=""
-            />
-            <img
-              alt=""
-              aria-hidden="true"
-              className={cn(
-                "relative size-28 select-none md:size-32",
-                OBJ_SHADOW
-              )}
-              data-cta-float=""
-              draggable={false}
-              src={OBJ.note}
-            />
-          </div>
-
-          <div className="relative">
-            <h2
-              className="font-display text-3xl font-bold md:text-5xl"
-              data-cta-rise=""
-            >
-              {t("landing.cta.title", "Ready to build your")}{" "}
-              <span className="font-script font-normal text-primary">
-                {t("landing.cta.titleAccent", "knowledge system")}
-              </span>
-              ?
-            </h2>
-            <p
-              className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground"
-              data-cta-rise=""
-            >
-              {t(
-                "landing.cta.description",
-                "Join the learners using FolioNote to capture, organize, and remember everything they learn."
-              )}
-            </p>
-            <div
-              className="mt-9 flex flex-wrap items-center justify-center gap-4"
-              data-cta-rise=""
-            >
-              <Link to="/register">
-                <span className="inline-block" ref={magneticRef}>
-                  <Button className="h-12 cursor-pointer gap-2 rounded-full px-8 text-base shadow-lg shadow-primary/25 transition-transform hover:scale-[1.04] active:scale-[0.97]">
-                    {t("landing.cta.button", "Get started for free")}
-                    <HugeiconsIcon className="size-5" icon={ArrowRight02Icon} />
-                  </Button>
-                </span>
-              </Link>
-            </div>
-          </div>
-        </div>
+        </Link>
+        <p className="text-sm">
+          {t(
+            "landing.cta.riskReversal",
+            "Free to start. No card needed. Open source under MIT."
+          )}
+        </p>
       </div>
     </section>
   )
@@ -1568,95 +999,39 @@ function LandingFooter() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-border/60 py-10">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-          <div className="flex items-center gap-2.5">
-            <BrandLockup iconClassName="size-6" wordmarkClassName="text-base" />
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
-            <a
-              className="cursor-pointer transition-colors hover:text-foreground"
-              href="#features"
-            >
-              {t("landing.nav.features", "Features")}
-            </a>
-            <a
-              className="cursor-pointer transition-colors hover:text-foreground"
-              href="#how-it-works"
-            >
-              {t("landing.nav.howItWorks", "How It Works")}
-            </a>
-            <a
-              className="cursor-pointer transition-colors hover:text-foreground"
-              href="#showcase"
-            >
-              {t("landing.nav.showcase", "Showcase")}
-            </a>
-
-            <Separator className="hidden h-4 md:block" orientation="vertical" />
-
-            <Link
-              className="transition-colors hover:text-foreground"
-              to="/login"
-            >
-              {t("auth.signIn", "Sign In")}
-            </Link>
-          </div>
-
-          <p className="text-xs text-muted-foreground">
-            {t("landing.footer.copyright", "© {{year}} FolioNote", { year })}
-          </p>
-        </div>
-      </div>
-    </footer>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Shared
-// ---------------------------------------------------------------------------
-
-function SectionHeader({
-  badge,
-  title,
-  description
-}: {
-  badge: string
-  title: string
-  description: string
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.from(gsap.utils.toArray(ref.current?.children ?? []), {
-          y: 26,
-          autoAlpha: 0,
-          stagger: 0.12,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: { trigger: ref.current, start: "top 85%" }
-        })
-      })
-    },
-    { scope: ref }
-  )
-
-  return (
-    <div className="mx-auto max-w-2xl text-center" ref={ref}>
-      <Badge className="mb-4 rounded-full px-3 py-1" variant="secondary">
-        {badge}
-      </Badge>
-      <h2 className="font-display text-3xl font-bold tracking-tight md:text-4xl">
-        {title}
-      </h2>
-      <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-        {description}
+    <footer
+      className={`${CONTAINER_CLASS} flex flex-wrap items-center justify-between gap-6 py-10 text-sm`}
+    >
+      <BrandLockup iconClassName="size-6" wordmarkClassName="text-base" />
+      <nav
+        aria-label={t("landing.footer.navLabel", "Footer")}
+        className="flex flex-wrap gap-6"
+      >
+        <a className={NAV_LINK_CLASS} href="#features">
+          {t("landing.nav.features", "Features")}
+        </a>
+        <a className={NAV_LINK_CLASS} href="#how-it-works">
+          {t("landing.nav.howItWorks", "How it works")}
+        </a>
+        <a className={NAV_LINK_CLASS} href="#faq">
+          {t("landing.nav.faq", "FAQ")}
+        </a>
+        <a
+          className={NAV_LINK_CLASS}
+          href={REPOSITORY_URL}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          GitHub
+        </a>
+        <Link className={NAV_LINK_CLASS} to="/login">
+          {t("auth.signIn", "Sign in")}
+        </Link>
+      </nav>
+      <p className="text-muted-foreground">
+        {t("landing.footer.copyright", "© {{year}} FolioNote", { year })}
       </p>
-    </div>
+    </footer>
   )
 }
 
@@ -1665,7 +1040,7 @@ function SectionHeader({
 // ---------------------------------------------------------------------------
 
 function LandingPage() {
-  const root = useRef<HTMLDivElement>(null)
+  const { t } = useTranslation()
 
   // Smooth scroll (Lenis) wired into GSAP's ticker + ScrollTrigger.
   useEffect(() => {
@@ -1703,41 +1078,27 @@ function LandingPage() {
     }
   }, [])
 
-  // Top scroll-progress bar.
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.to("[data-progress]", {
-          scaleX: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: document.documentElement,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.3
-          }
-        })
-      })
-    },
-    { scope: root }
-  )
-
+  // z-[1] lifts the flat page above the body's marketing glow and grain
+  // overlays (packages/ui index.css), which would tint the white canvas.
   return (
-    <div className="relative min-h-screen overflow-x-clip" ref={root}>
-      <span
-        aria-hidden="true"
-        className="fixed top-0 left-0 z-[60] h-1 w-full origin-left scale-x-0 bg-linear-to-r from-primary to-amber-400"
-        data-progress=""
-      />
+    <div
+      className={`${LANDING_ROOT_CLASS} relative z-[1] min-h-screen overflow-x-clip bg-white font-geist text-foreground dark:bg-[#181818]`}
+    >
+      <a
+        className="fixed top-4 left-4 z-[60] -translate-y-24 rounded-lg bg-foreground px-3 py-2 text-sm text-background focus-visible:translate-y-0"
+        href="#main"
+      >
+        {t("landing.skipToContent", "Skip to content")}
+      </a>
       <LandingNavbar />
-      <main>
+      <main id="main">
         <HeroSection />
-        <FeaturesSection />
+        <ProblemSection />
+        <BenefitsSection />
+        <TaglineSection />
         <HowItWorksSection />
-        <ShowcaseSection />
-        <StatsSection />
-        <FinalCTASection />
+        <FaqSection />
+        <FinalCtaSection />
       </main>
       <LandingFooter />
     </div>

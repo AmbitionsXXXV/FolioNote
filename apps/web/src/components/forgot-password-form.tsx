@@ -6,7 +6,7 @@ import {
   ArrowLeft02Icon,
   Mail01Icon,
   SentIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useForm } from "@tanstack/react-form"
 import { Link } from "@tanstack/react-router"

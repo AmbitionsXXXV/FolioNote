@@ -8,7 +8,7 @@ import {
   News01Icon,
   Pdf01Icon,
   Video01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import type { IconSvgElement } from "@hugeicons/react"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
@@ -84,6 +84,8 @@ export const Route = createFileRoute("/_app/sources")({
     queryClient.ensureInfiniteQueryData({
       queryKey: ["sources", "infinite", "all"],
       queryFn: () => orpc.sources.list.call({ type: undefined, limit: 20 }),
+      getNextPageParam: (lastPage) =>
+        lastPage?.hasMore ? lastPage.nextCursor : undefined,
       initialPageParam: undefined as string | undefined
     })
   },

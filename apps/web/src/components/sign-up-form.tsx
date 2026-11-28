@@ -15,7 +15,7 @@ import {
   UserIcon,
   ViewIcon,
   ViewOffSlashIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useForm } from "@tanstack/react-form"
 import type { AnyFieldApi } from "@tanstack/react-form"
@@ -32,7 +32,7 @@ import { prettifyFormErrors } from "@/lib/form-error"
 
 import Loader from "./loader"
 
-const PASSWORD_MIN_LENGTH = 8
+const PASSWORD_MIN_LENGTH = 10
 
 /**
  * Render a sign-up form UI and handle user registration flow.

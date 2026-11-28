@@ -7,7 +7,7 @@ import {
   Switch,
   Tabs
 } from "@heroui/react"
-import { GlobeIcon } from "@hugeicons/core-free-icons"
+import { GlobeIcon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"

@@ -2,7 +2,7 @@ import {
   AccountSetting01Icon,
   AiBeautifyIcon,
   PlugSocketIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { Link, useMatchRoute } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"

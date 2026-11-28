@@ -15,7 +15,7 @@ import {
   Cancel01Icon,
   Key01Icon,
   Search01Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useCallback, useMemo, useState } from "react"

@@ -79,6 +79,14 @@ import {
   jpLexiconEntriesRelations,
   jpStudyState
 } from "./schema/japanese-library"
+import {
+  learningActivities,
+  learningActivitiesRelations,
+  userMilestones,
+  userMilestonesRelations,
+  userStreaks,
+  userStreaksRelations
+} from "./schema/learning"
 
 export {
   entryExternalLinks,
@@ -97,6 +105,13 @@ export {
 } from "./schema/japanese-library"
 
 const schema = {
+  // Learning record / streak
+  learningActivities,
+  learningActivitiesRelations,
+  userStreaks,
+  userStreaksRelations,
+  userMilestones,
+  userMilestonesRelations,
   jpArticles,
   jpArticlesRelations,
   jpLexicons,
@@ -211,6 +226,7 @@ export {
   dailyLogsRelations,
   entries,
   entriesRelations,
+  entryColumns,
   entryChunks,
   entryChunksRelations,
   entryCollaborators,
@@ -234,6 +250,15 @@ export {
   tags,
   tagsRelations
 } from "./schema/entries"
+export type { DailyActivityCounts, EntryRow } from "./schema/entries"
+export {
+  learningActivities,
+  learningActivitiesRelations,
+  userMilestones,
+  userMilestonesRelations,
+  userStreaks,
+  userStreaksRelations
+} from "./schema/learning"
 export { entryLinks, entryLinksRelations } from "./schema/graph"
 export {
   jpGrammar,

@@ -1,7 +1,10 @@
 import type { AnalyzedText } from "@folionote/japanese"
 import { Skeleton } from "@folionote/ui/skeleton"
 import { Button } from "@heroui/react"
-import { ArrowLeft01Icon, ArrowUpRight01Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowLeft01Icon,
+  ArrowUpRight01Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   useMutation,
@@ -416,7 +419,9 @@ export function JapaneseArticleReadingView({
         <aside className="lg:sticky lg:top-6 lg:self-start">
           {selectedWord && selectedSentence?.analysis ? (
             <SelectedWordPanel
+              allowSave
               analysis={selectedSentence.analysis}
+              articleId={articleId}
               lexiconMatches={lexicons.matches.get(selectedWord.baseForm)}
               word={selectedWord}
             />

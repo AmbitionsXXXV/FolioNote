@@ -11,7 +11,7 @@ import {
   ArrowRight01Icon,
   Attachment01Icon,
   MultiplicationSignIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { cjk } from "@streamdown/cjk"
 import { code } from "@streamdown/code"

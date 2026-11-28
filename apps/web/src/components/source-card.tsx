@@ -4,7 +4,7 @@ import {
   Delete02Icon,
   Edit02Icon,
   Link04Icon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import type { IconSvgElement } from "@hugeicons/react"
 import { HugeiconsIcon } from "@hugeicons/react"
 

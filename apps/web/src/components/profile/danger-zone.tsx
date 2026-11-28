@@ -11,7 +11,7 @@ import {
 import { Button } from "@folionote/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@folionote/ui/card"
 import { Separator } from "@folionote/ui/separator"
-import { Alert01Icon, Logout03Icon } from "@hugeicons/core-free-icons"
+import { Alert01Icon, Logout03Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"

@@ -8,6 +8,7 @@
 import { client } from "../../utils/orpc"
 import type { Entry, Source, Tag } from "../db/schema"
 import type { ReviewRating } from "../repositories/review-repository"
+import { getDeviceTimeZone } from "../study-day"
 import type {
   CreateEntryInput,
   CreateSourceInput,
@@ -558,7 +559,11 @@ export function createRemoteDataService(): DataService {
         entryId: string,
         rating: ReviewRating = "good"
       ): Promise<void> {
-        await client.review.markReviewed({ entryId, rating })
+        await client.review.markReviewed({
+          entryId,
+          rating,
+          timeZone: getDeviceTimeZone()
+        })
       },
 
       async snooze(

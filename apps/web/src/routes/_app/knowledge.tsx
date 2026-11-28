@@ -10,7 +10,7 @@ import {
   MessageAdd01Icon,
   Setting06Icon,
   SidebarLeftIcon
-} from "@hugeicons/core-free-icons"
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, Link } from "@tanstack/react-router"

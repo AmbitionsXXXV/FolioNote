@@ -14,7 +14,7 @@ import {
   RadioGroup,
   TextField
 } from "@heroui/react"
-import { Upload01Icon } from "@hugeicons/core-free-icons"
+import { Upload01Icon } from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   keepPreviousData,

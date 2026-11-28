@@ -3,7 +3,10 @@ import {
   CollapsibleContent,
   CollapsibleTrigger
 } from "@folionote/ui/collapsible"
-import { ArrowDown01Icon, BookOpen01Icon } from "@hugeicons/core-free-icons"
+import {
+  ArrowDown01Icon,
+  BookOpen01Icon
+} from "@hugeicons-pro/core-stroke-rounded"
 import { HugeiconsIcon } from "@hugeicons/react"
 import type { ComponentProps } from "react"
 import { useTranslation } from "react-i18next"
