@@ -466,7 +466,8 @@
     "sections": {
       "search": "查词",
       "reading": "阅读",
-      "practice": "练习"
+      "practice": "练习",
+      "listening": "听读"
     },
     "search": {
       "label": "搜索日语词库",
@@ -836,6 +837,48 @@
       "playWord": "朗读「{{text}}」",
       "playSentence": "朗读整句",
       "failed": "朗读失败：这个浏览器没有可用的日语语音"
+    },
+    "listen": {
+      "title": "YouTube 听读",
+      "description": "粘贴 YouTube 链接和字幕文件，边听边读：当前句高亮、点句跳转、单句循环、调速。",
+      "source": {
+        "videoLabel": "YouTube 链接",
+        "videoInvalid": "没认出视频链接，请粘贴单个视频的地址（watch、youtu.be 或 shorts）。",
+        "subtitleLabel": "字幕（SRT 或 VTT）",
+        "subtitlePlaceholder": "粘贴 .srt / .vtt 内容，例如：\n1\n00:00:01,000 --> 00:00:03,000\nこんにちは",
+        "subtitleHint": "可粘贴字幕文本，或上传 .srt / .vtt 文件。",
+        "upload": "上传字幕文件",
+        "cueCount": "已识别 {{count}} 句",
+        "noCues": "没找到带时间轴的字幕行，请确认是 SRT 或 VTT 格式。",
+        "fileTooLarge": "文件太大（超过 2 MB），请确认是字幕文件。",
+        "fileUnreadable": "读取文件失败，请重试。",
+        "start": "开始听读"
+      },
+      "player": {
+        "untitled": "YouTube 视频",
+        "changeSource": "换视频或字幕",
+        "previous": "上一句",
+        "next": "下一句",
+        "play": "播放",
+        "pause": "暂停",
+        "loop": "单句循环",
+        "looping": "正在循环",
+        "speed": "倍速",
+        "offset": "字幕偏移",
+        "offsetHint": "字幕比声音早出现就点 +，晚出现就点 −。",
+        "shortcuts": "快捷键：空格 播放/暂停 · ← → 上/下一句 · R 单句循环",
+        "error": {
+          "invalid": "视频链接无效。",
+          "unavailable": "视频不存在或已设为私享。",
+          "embedDisabled": "该视频的作者不允许在其他网站播放。",
+          "playback": "播放出错，请刷新重试。",
+          "apiUnavailable": "无法加载 YouTube 播放器，请检查网络后刷新。"
+        }
+      },
+      "transcript": {
+        "label": "字幕",
+        "backToCurrent": "回到当前句"
+      }
     }
   },
   "activity": {

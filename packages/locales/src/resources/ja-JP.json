@@ -361,7 +361,8 @@
     "sections": {
       "search": "検索",
       "reading": "読む",
-      "practice": "練習"
+      "practice": "練習",
+      "listening": "リスニング"
     },
     "search": {
       "label": "日本語の単語帳を検索",
@@ -731,6 +732,48 @@
       "playWord": "「{{text}}」を読み上げ",
       "playSentence": "文を読み上げ",
       "failed": "読み上げできませんでした。このブラウザで使える日本語音声がありません。"
+    },
+    "listen": {
+      "title": "YouTube リスニング",
+      "description": "YouTube のリンクと字幕ファイルを貼り付けて、聞きながら読む：再生中の行をハイライト、行をタップでジャンプ、一文リピート、速度調整。",
+      "source": {
+        "videoLabel": "YouTube リンク",
+        "videoInvalid": "動画のリンクとして認識できません。単一の動画 URL（watch・youtu.be・shorts）を貼り付けてください。",
+        "subtitleLabel": "字幕（SRT または VTT）",
+        "subtitlePlaceholder": ".srt / .vtt の内容を貼り付け（例）\n1\n00:00:01,000 --> 00:00:03,000\nこんにちは",
+        "subtitleHint": "字幕テキストを貼り付けるか、.srt / .vtt ファイルをアップロード。",
+        "upload": "字幕ファイルをアップロード",
+        "cueCount": "{{count}} 行を認識しました",
+        "noCues": "タイムコード付きの字幕行が見つかりません。SRT か VTT か確認してください。",
+        "fileTooLarge": "ファイルが 2 MB を超えています。字幕ファイルか確認してください。",
+        "fileUnreadable": "ファイルを読み込めませんでした。もう一度お試しください。",
+        "start": "リスニング開始"
+      },
+      "player": {
+        "untitled": "YouTube 動画",
+        "changeSource": "動画・字幕を変更",
+        "previous": "前の行",
+        "next": "次の行",
+        "play": "再生",
+        "pause": "一時停止",
+        "loop": "一文リピート",
+        "looping": "リピート中",
+        "speed": "速度",
+        "offset": "字幕のずれ",
+        "offsetHint": "字幕が音声より早いなら +、遅いなら −。",
+        "shortcuts": "ショートカット：Space 再生/停止 · ← → 前/次の行 · R 一文リピート",
+        "error": {
+          "invalid": "動画のリンクが無効です。",
+          "unavailable": "動画が存在しないか非公開です。",
+          "embedDisabled": "この動画は投稿者により外部サイトでの再生が許可されていません。",
+          "playback": "再生に失敗しました。再読み込みしてください。",
+          "apiUnavailable": "YouTube プレーヤーを読み込めません。接続を確認して再読み込みしてください。"
+        }
+      },
+      "transcript": {
+        "label": "字幕",
+        "backToCurrent": "現在の行に戻る"
+      }
     }
   },
   "activity": {

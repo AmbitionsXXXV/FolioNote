@@ -6,6 +6,11 @@ import { cn } from "@/lib/utils"
 const SECTIONS = [
   { to: "/japanese", labelKey: "japanese.sections.search", fuzzy: false },
   { to: "/japanese/read", labelKey: "japanese.sections.reading", fuzzy: true },
+  {
+    to: "/japanese/listen",
+    labelKey: "japanese.sections.listening",
+    fuzzy: false
+  },
   { to: "/japanese/library", labelKey: "japanese.library.title", fuzzy: true },
   {
     to: "/japanese/practice/exam",
@@ -14,7 +19,7 @@ const SECTIONS = [
   }
 ] as const
 
-/** Pill links between the hub's real destinations: Search · Reading · Library · Practice. */
+/** Pill links between the hub's real destinations: Search · Reading · Listening · Library · Practice. */
 export function JapaneseSectionNav() {
   const { t } = useTranslation()
   const matchRoute = useMatchRoute()

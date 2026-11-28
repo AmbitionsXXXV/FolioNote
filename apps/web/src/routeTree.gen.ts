@@ -37,6 +37,7 @@ import { Route as AppEntriesNewRouteImport } from './routes/_app/entries/new'
 import { Route as AppJapaneseIndexRouteImport } from './routes/_app/japanese/index'
 import { Route as AppJapaneseImportRouteImport } from './routes/_app/japanese/import'
 import { Route as AppJapaneseLibraryRouteImport } from './routes/_app/japanese/library'
+import { Route as AppJapaneseListenRouteImport } from './routes/_app/japanese/listen'
 import { Route as AppSettingsConnectionsRouteImport } from './routes/_app/settings/connections'
 import { Route as AppSettingsGeneralRouteImport } from './routes/_app/settings/general'
 import { Route as AppSettingsModelsRouteImport } from './routes/_app/settings/models'
@@ -186,6 +187,11 @@ const AppJapaneseLibraryRoute = AppJapaneseLibraryRouteImport.update({
   path: '/library',
   getParentRoute: () => AppJapaneseRoute,
 } as any)
+const AppJapaneseListenRoute = AppJapaneseListenRouteImport.update({
+  id: '/listen',
+  path: '/listen',
+  getParentRoute: () => AppJapaneseRoute,
+} as any)
 const AppSettingsConnectionsRoute = AppSettingsConnectionsRouteImport.update({
   id: '/connections',
   path: '/connections',
@@ -262,6 +268,7 @@ export interface FileRoutesByFullPath {
   '/entries/new': typeof AppEntriesNewRoute
   '/japanese/import': typeof AppJapaneseImportRoute
   '/japanese/library': typeof AppJapaneseLibraryRoute
+  '/japanese/listen': typeof AppJapaneseListenRoute
   '/settings/connections': typeof AppSettingsConnectionsRoute
   '/settings/general': typeof AppSettingsGeneralRoute
   '/settings/models': typeof AppSettingsModelsRoute
@@ -299,6 +306,7 @@ export interface FileRoutesByTo {
   '/entries/new': typeof AppEntriesNewRoute
   '/japanese/import': typeof AppJapaneseImportRoute
   '/japanese/library': typeof AppJapaneseLibraryRoute
+  '/japanese/listen': typeof AppJapaneseListenRoute
   '/settings/connections': typeof AppSettingsConnectionsRoute
   '/settings/general': typeof AppSettingsGeneralRoute
   '/settings/models': typeof AppSettingsModelsRoute
@@ -339,6 +347,7 @@ export interface FileRoutesById {
   '/_app/entries/new': typeof AppEntriesNewRoute
   '/_app/japanese/import': typeof AppJapaneseImportRoute
   '/_app/japanese/library': typeof AppJapaneseLibraryRoute
+  '/_app/japanese/listen': typeof AppJapaneseListenRoute
   '/_app/settings/connections': typeof AppSettingsConnectionsRoute
   '/_app/settings/general': typeof AppSettingsGeneralRoute
   '/_app/settings/models': typeof AppSettingsModelsRoute
@@ -379,6 +388,7 @@ export interface FileRouteTypes {
     | '/entries/new'
     | '/japanese/import'
     | '/japanese/library'
+    | '/japanese/listen'
     | '/settings/connections'
     | '/settings/general'
     | '/settings/models'
@@ -416,6 +426,7 @@ export interface FileRouteTypes {
     | '/entries/new'
     | '/japanese/import'
     | '/japanese/library'
+    | '/japanese/listen'
     | '/settings/connections'
     | '/settings/general'
     | '/settings/models'
@@ -455,6 +466,7 @@ export interface FileRouteTypes {
     | '/_app/entries/new'
     | '/_app/japanese/import'
     | '/_app/japanese/library'
+    | '/_app/japanese/listen'
     | '/_app/settings/connections'
     | '/_app/settings/general'
     | '/_app/settings/models'
@@ -677,6 +689,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppJapaneseLibraryRouteImport
       parentRoute: typeof AppJapaneseRoute
     }
+    '/_app/japanese/listen': {
+      id: '/_app/japanese/listen'
+      path: '/listen'
+      fullPath: '/japanese/listen'
+      preLoaderRoute: typeof AppJapaneseListenRouteImport
+      parentRoute: typeof AppJapaneseRoute
+    }
     '/_app/settings/connections': {
       id: '/_app/settings/connections'
       path: '/connections'
@@ -746,6 +765,7 @@ declare module '@tanstack/react-router' {
 interface AppJapaneseRouteChildren {
   AppJapaneseImportRoute: typeof AppJapaneseImportRoute
   AppJapaneseLibraryRoute: typeof AppJapaneseLibraryRoute
+  AppJapaneseListenRoute: typeof AppJapaneseListenRoute
   AppJapaneseIndexRoute: typeof AppJapaneseIndexRoute
   AppJapaneseListsLexiconIdRoute: typeof AppJapaneseListsLexiconIdRoute
   AppJapanesePracticeExamRoute: typeof AppJapanesePracticeExamRoute
@@ -758,6 +778,7 @@ interface AppJapaneseRouteChildren {
 const AppJapaneseRouteChildren: AppJapaneseRouteChildren = {
   AppJapaneseImportRoute: AppJapaneseImportRoute,
   AppJapaneseLibraryRoute: AppJapaneseLibraryRoute,
+  AppJapaneseListenRoute: AppJapaneseListenRoute,
   AppJapaneseIndexRoute: AppJapaneseIndexRoute,
   AppJapaneseListsLexiconIdRoute: AppJapaneseListsLexiconIdRoute,
   AppJapanesePracticeExamRoute: AppJapanesePracticeExamRoute,
