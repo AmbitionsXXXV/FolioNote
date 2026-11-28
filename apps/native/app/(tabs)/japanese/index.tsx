@@ -31,10 +31,10 @@ const LEVELS_STALE_MS = 5 * 60 * 1000
 const LEVEL_ORDER = ["N5", "N4", "N3", "N2", "N1"]
 /**
  * The word book list lives in the root stack (app/japanese/books.tsx, added
- * with the daily-vocab work). Typed as Href by hand until that route exists;
- * drop the annotation once it does.
+ * with the daily-vocab work). Widened to string and cast to Href until that route exists;
+ * drop both casts once it does.
  */
-const WORD_BOOK_PATH: string = "/japanese/books"
+const WORD_BOOK_PATH = "/japanese/books" as string
 
 interface LevelCount {
   level: string
