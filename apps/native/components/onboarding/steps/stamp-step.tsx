@@ -62,6 +62,7 @@ export function StampStep({
   const reduceMotion = useReducedMotion()
   const accentForeground = useThemeColor("accent-foreground")
   const [done, setDone] = useState(false)
+  const [released, setReleased] = useState(false)
   const hold = useSharedValue(0)
   const landed = useSharedValue(0)
   const ripple = useSharedValue(0)
@@ -110,16 +111,10 @@ export function StampStep({
     <View className="flex-1 bg-background">
       <OnboardingTopBar onBack={onBack} progress={5} />
       <View className="flex-1 px-6" style={{ paddingTop: insets.top + 72 }}>
-        <View className="items-center">
-          <StepHeading
-            subtitle={
-              done ? t("onboarding.flow.stamp.doneBody") : t("onboarding.flow.stamp.body")
-            }
-            title={
-              done ? t("onboarding.flow.stamp.doneTitle") : t("onboarding.flow.stamp.title")
-            }
-          />
-        </View>
+        <StepHeading
+          subtitle={done ? t("onboarding.flow.stamp.doneBody") : t("onboarding.flow.stamp.body")}
+          title={done ? t("onboarding.flow.stamp.doneTitle") : t("onboarding.flow.stamp.title")}
+        />
 
         <View
           className="mx-4 mt-6 h-[318px] items-center justify-between rounded-[22px] bg-surface px-[18px] pt-[18px] pb-4"
@@ -235,8 +230,8 @@ export function StampStep({
       </View>
 
       <View className="items-center px-6" style={{ paddingBottom: insets.bottom + 12 }}>
-        {done ? (
-          <Animated.View className="self-stretch" entering={FadeIn.delay(reduceMotion ? 0 : 420)}>
+        {done && released ? (
+          <Animated.View className="self-stretch" entering={FadeIn.delay(reduceMotion ? 0 : 240)}>
             <PrimaryButton
               label={nextLabel}
               onPress={onNext}
@@ -246,7 +241,11 @@ export function StampStep({
             />
           </Animated.View>
         ) : (
-          <HoldToStamp onStamp={stampDown} progress={hold} />
+          <HoldToStamp
+            onRelease={() => setReleased(true)}
+            onStamp={stampDown}
+            progress={hold}
+          />
         )}
       </View>
     </View>

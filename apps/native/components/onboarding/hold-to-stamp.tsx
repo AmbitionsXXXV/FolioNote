@@ -52,16 +52,20 @@ const PULSES = pulseSchedule()
  */
 export function HoldToStamp({
   progress,
-  onStamp
+  onStamp,
+  onRelease
 }: {
   progress: SharedValue<number>
   onStamp: () => void
+  /** The finger lifted after a stamp; only now may the button be swapped out. */
+  onRelease: () => void
 }) {
   const { t } = useTranslation()
   const stamp = String(useCSSVariable("--color-stamp") ?? "red")
   const background = useThemeColor("background")
   const reduceMotion = useReducedMotion()
   const timers = useRef<ReturnType<typeof setTimeout>[]>([])
+  const stamped = useRef(false)
   const breathe = useSharedValue(1)
 
   useEffect(() => {
@@ -94,6 +98,7 @@ export function HoldToStamp({
       ...PULSES.map((at) => setTimeout(haptics.charge, at)),
       setTimeout(() => {
         timers.current = []
+        stamped.current = true
         haptics.stamp()
         onStamp()
       }, HOLD_MS)
@@ -101,6 +106,12 @@ export function HoldToStamp({
   }
 
   const pressOut = () => {
+    // Unmounting this Pressable while it still owns the touch makes iOS drop
+    // the next tap, so the parent waits for the release before swapping it.
+    if (stamped.current) {
+      onRelease()
+      return
+    }
     if (timers.current.length === 0) return
     clearTimers()
     progress.value = withSpring(0, { damping: 16, stiffness: 180 })
@@ -144,8 +155,11 @@ export function HoldToStamp({
           accessibilityRole="button"
           // VoiceOver users can't hold-and-wait; a double tap stamps.
           onAccessibilityTap={() => {
+            if (stamped.current) return
+            stamped.current = true
             haptics.stamp()
             onStamp()
+            onRelease()
           }}
           onPressIn={pressIn}
           onPressOut={pressOut}
