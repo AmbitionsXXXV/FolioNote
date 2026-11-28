@@ -16,6 +16,7 @@ import {
   sourcesRepository,
   tagsRepository
 } from "../repositories"
+import { getDeviceTimeZone } from "../study-day"
 import { pendingOperations } from "./pending-operations"
 import type {
   ConflictStrategy,
@@ -832,7 +833,8 @@ class SyncService {
     if (payload.rating) {
       await client.review.markReviewed({
         entryId,
-        rating: payload.rating as "again" | "hard" | "good" | "easy"
+        rating: payload.rating as "again" | "hard" | "good" | "easy",
+        timeZone: getDeviceTimeZone()
       })
     }
   }
@@ -1416,7 +1418,8 @@ class SyncService {
       try {
         await client.review.markReviewed({
           entryId: state.entryId,
-          rating: "good"
+          rating: "good",
+          timeZone: getDeviceTimeZone()
         })
         await reviewRepository.markStateSynced(state.entryId)
         uploadedCount++

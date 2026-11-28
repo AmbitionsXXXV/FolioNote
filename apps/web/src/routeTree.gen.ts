@@ -25,6 +25,7 @@ import { Route as AppJapaneseRouteImport } from './routes/_app/japanese'
 import { Route as AppKnowledgeRouteImport } from './routes/_app/knowledge'
 import { Route as AppLibraryRouteImport } from './routes/_app/library'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
+import { Route as AppRecordRouteImport } from './routes/_app/record'
 import { Route as AppReviewRouteImport } from './routes/_app/review'
 import { Route as AppSearchRouteImport } from './routes/_app/search'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
@@ -123,6 +124,11 @@ const AppLibraryRoute = AppLibraryRouteImport.update({
 const AppProfileRoute = AppProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRecordRoute = AppRecordRouteImport.update({
+  id: '/record',
+  path: '/record',
   getParentRoute: () => AppRoute,
 } as any)
 const AppReviewRoute = AppReviewRouteImport.update({
@@ -245,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/knowledge': typeof AppKnowledgeRoute
   '/library': typeof AppLibraryRoute
   '/profile': typeof AppProfileRoute
+  '/record': typeof AppRecordRoute
   '/review': typeof AppReviewRoute
   '/search': typeof AppSearchRoute
   '/settings': typeof AppSettingsRouteWithChildren
@@ -281,6 +288,7 @@ export interface FileRoutesByTo {
   '/knowledge': typeof AppKnowledgeRoute
   '/library': typeof AppLibraryRoute
   '/profile': typeof AppProfileRoute
+  '/record': typeof AppRecordRoute
   '/review': typeof AppReviewRoute
   '/search': typeof AppSearchRoute
   '/settings': typeof AppSettingsRouteWithChildren
@@ -320,6 +328,7 @@ export interface FileRoutesById {
   '/_app/knowledge': typeof AppKnowledgeRoute
   '/_app/library': typeof AppLibraryRoute
   '/_app/profile': typeof AppProfileRoute
+  '/_app/record': typeof AppRecordRoute
   '/_app/review': typeof AppReviewRoute
   '/_app/search': typeof AppSearchRoute
   '/_app/settings': typeof AppSettingsRouteWithChildren
@@ -359,6 +368,7 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/library'
     | '/profile'
+    | '/record'
     | '/review'
     | '/search'
     | '/settings'
@@ -395,6 +405,7 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/library'
     | '/profile'
+    | '/record'
     | '/review'
     | '/search'
     | '/settings'
@@ -433,6 +444,7 @@ export interface FileRouteTypes {
     | '/_app/knowledge'
     | '/_app/library'
     | '/_app/profile'
+    | '/_app/record'
     | '/_app/review'
     | '/_app/search'
     | '/_app/settings'
@@ -579,6 +591,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/record': {
+      id: '/_app/record'
+      path: '/record'
+      fullPath: '/record'
+      preLoaderRoute: typeof AppRecordRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/review': {
@@ -777,6 +796,7 @@ interface AppRouteChildren {
   AppKnowledgeRoute: typeof AppKnowledgeRoute
   AppLibraryRoute: typeof AppLibraryRoute
   AppProfileRoute: typeof AppProfileRoute
+  AppRecordRoute: typeof AppRecordRoute
   AppReviewRoute: typeof AppReviewRoute
   AppSearchRoute: typeof AppSearchRoute
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
@@ -795,6 +815,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppKnowledgeRoute: AppKnowledgeRoute,
   AppLibraryRoute: AppLibraryRoute,
   AppProfileRoute: AppProfileRoute,
+  AppRecordRoute: AppRecordRoute,
   AppReviewRoute: AppReviewRoute,
   AppSearchRoute: AppSearchRoute,
   AppSettingsRoute: AppSettingsRouteWithChildren,
